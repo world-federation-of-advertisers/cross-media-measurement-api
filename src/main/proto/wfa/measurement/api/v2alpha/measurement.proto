@@ -19,7 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/data_provider.proto";
 import "wfa/measurement/api/v2alpha/measurement_consumer.proto";
-import "wfa/measurement/api/v2alpha/sketch.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -161,15 +161,8 @@ message MeasurementSpec {
   // associated with. Required.
   bytes measurement_public_key = 1;
 
-  message EncryptedSketch {
-    // Resource key of the sketch configuration. Required.
-    SketchConfig.Key sketch_config = 1;
-  }
-
-  // What data the requisition is for, i.e. what data is being requisitioned.
-  // Required.
-  oneof for {
-    // The data being requisitioned is an encrypted sketch.
-    EncryptedSketch encrypted_sketch = 2;
+  // Configuration for the computation protocol.
+  oneof protocol_config {
+    LiquidLegionsV2Config liquid_legions_v2 = 2;
   }
 }
