@@ -22,6 +22,9 @@ option java_outer_classname = "ExchangeWorkflowProto";
 
 // A generic panel matching workflow. Many different pairs of parties may use
 // the same ExchangeWorkflow.
+//
+// See docs/panelmatch/example-exchange-workflow.textproto for an example
+// ExchangeWorkflow.
 message ExchangeWorkflow {
   // Sequence of steps of the workflow.
   repeated Step steps = 1;
@@ -38,10 +41,8 @@ message ExchangeWorkflow {
     // when, for each input label, there is a completed step with the same
     // output label.
     //
-    // Some input labels may have no step that produces that label as an output.
-    // This are the original sources of data. To execute the protocol, the party
-    // will need to provide a configuration showing where these original data
-    // sources come from.
+    // Inputs to the protocol are provided via InputStep step types -- this
+    // ensures that all inputs to all steps appear as some output label.
     map<string, string> input_labels = 3;
     map<string, string> output_labels = 4;
 
@@ -52,6 +53,7 @@ message ExchangeWorkflow {
       TableQueryStep table_query = 10;
       EncryptAndShareStep encrypt_and_share = 11;
       DecryptStep decrypt = 12;
+      InputStep input = 13;
     }
   }
 
@@ -77,4 +79,11 @@ message ExchangeWorkflow {
   message TableQueryStep {}
   message EncryptAndShareStep {}
   message DecryptStep {}
+
+  // Represents an input to the protocol derived from some unknown process by
+  // the `party`.
+  //
+  // These steps are used as placeholders to allow parties to signal when their
+  // inputs are ready.
+  message InputStep {}
 }
