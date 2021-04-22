@@ -83,8 +83,8 @@ message ExchangeStep {
         // with access tokens in here.
         string https_uri = 2;
 
-        // Represents a query to execute under BigQuery.
-        string big_query = 3;
+        // Represents a query to execute under Google Cloud's BigQuery.
+        string google_big_query = 3;
 
         // Represents a file accessible via Google Cloud Storage. While
         // sometime HTTPS can be used directly, some may prefer to use ACLs

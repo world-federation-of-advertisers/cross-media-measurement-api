@@ -118,7 +118,7 @@ message FinishExchangeStepAttemptRequest {
 
   // Contains an entry for each output accessible to the other party among those
   // in the ExchangeStep's `step.output_labels` map. The keys here are values
-  // from `output_labels.
+  // from `output_labels`.
   //
   // This field will be ignored if the `final_state` is `FAILED`.
   map<string, ExchangeStep.SharedData> shared_outputs = 4;
