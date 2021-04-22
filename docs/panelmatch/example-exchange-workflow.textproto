@@ -8,9 +8,7 @@ steps {
 
   input {}
 
-  output_labels: [
-    { key: "input", value: "mp-commutative-deterministic-key" }
-  ]
+  output_labels { key: "input" value: "mp-commutative-deterministic-key" }
 }
 
 # Get the MP's unencrypted joinkeys as input.
@@ -20,9 +18,7 @@ steps {
 
   input {}
 
-  output_labels: [
-    { key: "input", value: "raw-joinkeys" }
-  ]
+  output_labels { key: "input" value: "raw-joinkeys" }
 }
 
 # Get the EDP's private key as input.
@@ -32,9 +28,7 @@ steps {
 
   input {}
 
-  output_labels: [
-    { key: "input", value: "edp-commutative-deterministic-key" }
-  ]
+  output_labels { key: "input" value: "edp-commutative-deterministic-key" }
 }
 
 # Get the EDP's event data as input.
@@ -44,9 +38,7 @@ steps {
 
   input {}
 
-  output_labels: [
-    { key: "input", value: "event-data" }
-  ]
+  output_labels { key: "input" value: "event-data" }
 }
 
 # Get the previous protocol execution's blinded joinkeys as input.
@@ -59,9 +51,7 @@ steps {
 
   input {}
 
-  output_labels: [
-    { key: "input" value: "previous-single-blinded-joinkeys" }
-  ]
+  output_labels { key: "input" value: "previous-single-blinded-joinkeys" }
 }
 
 # MP wraps their panelist identifiers in a layer of deterministic commutative
@@ -74,14 +64,10 @@ steps {
     input_format: PLAINTEXT
   }
 
-  input_labels: [
-    { key: "data", value: "raw-joinkeys" },
-    { key: "crypto-key", value: "mp-commutative-deterministic-key" }
-  ]
+  input_labels { key: "data" value: "raw-joinkeys" }
+  input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
 
-  output_labels: [
-    { key: "output", value: "single-blinded-joinkeys" }
-  ]
+  output_labels { key: "output" value: "single-blinded-joinkeys" }
 }
 
 # EDP validates that the single-encrypted panelist identifiers are sufficiently
@@ -97,15 +83,14 @@ steps {
     minimum_overlap: 0.99
   }
 
-  input_labels: [
-    { key: "current-data" value: "single-blinded-joinkeys" },
-    { key: "previous-data" value: "previous-single-blinded-joinkeys" }
-  ]
+  input_labels { key: "current-data" value: "single-blinded-joinkeys" }
+  input_labels {
+    key: "previous-data"
+    value: "previous-single-blinded-joinkeys"
+  }
 
-  output_labels: [
-    # Outputs "current-data" as a local copy for long-term auditing storage.
-    { key: "output" value: "single-blinded-joinkeys-edp-copy" }
-  ]
+  # Outputs "current-data" as a local copy for long-term auditing storage.
+  output_labels { key: "output" value: "single-blinded-joinkeys-edp-copy" }
 }
 
 # EDP wraps the single-encrypted panelist identifiers in another layer of
@@ -118,14 +103,10 @@ steps {
     input_format: CIPHERTEXT
   }
 
-  input_labels: [
-    { key: "data", value: "single-blinded-joinkeys-edp-copy" },
-    { key: "crypto-key", value: "edp-commutative-deterministic-key" }
-  ]
+  input_labels { key: "data" value: "single-blinded-joinkeys-edp-copy" }
+  input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
 
-  output_labels: [
-    { key: "output", value: "double-blinded-joinkeys" }
-  ]
+  output_labels { key: "output" value: "double-blinded-joinkeys" }
 }
 
 # MP removes their layer of commutative, deterministic encryption.
@@ -135,14 +116,10 @@ steps {
 
   decrypt {}
 
-  input_labels: [
-    { key: "data", value: "double-blinded-joinkeys" },
-    { key: "crypto-key", value: "mp-commutative-deterministic-key" }
-  ]
+  input_labels { key: "data" value: "double-blinded-joinkeys" }
+  input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
 
-  output_labels: [
-    { key: "output", value: "lookup-keys" }
-  ]
+  output_labels { key: "output" value: "lookup-keys" }
 }
 
 # MP performs the lookup to get event-level data.
@@ -152,13 +129,9 @@ steps {
 
   table_query {}
 
-  input_labels: [
-    { key: "table", value: "event-data" },
-    { key: "keys", value: "lookup-keys" }
-  ]
+  input_labels { key: "table" value: "event-data" }
+  input_labels { key: "keys" value: "lookup-keys" }
 
-  output_labels: [
-    { key: "output", value: "encrypted-results" }
-  ]
+  output_labels { key: "output" value: "encrypted-results" }
 }
 

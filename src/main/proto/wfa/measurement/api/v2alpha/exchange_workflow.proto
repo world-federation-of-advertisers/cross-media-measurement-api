@@ -67,7 +67,7 @@ message ExchangeWorkflow {
     message EncryptAndShareStep {
       enum InputFormat {
         INPUT_FORMAT_UNSPECIFIED = 0;
-        PLAINTEXT = 1;  // For initial encryption
+        PLAINTEXT = 1;   // For initial encryption
         CIPHERTEXT = 2;  // For double-encryption
       }
       InputFormat input_format = 1;
