@@ -41,3 +41,17 @@ message SignedData {
   // Cryptographic digital signature of `data`.
   bytes signature = 2;
 }
+
+// A public key for asymmetric encryption.
+message EncryptionPublicKey {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    // Elliptic curve key on the NIST P-256 curve.
+    EC_P256 = 1;
+  }
+  // Type of encryption key. Required.
+  Type type = 1;
+
+  // Key material in DER format. Required.
+  bytes key_material = 2;
+}
