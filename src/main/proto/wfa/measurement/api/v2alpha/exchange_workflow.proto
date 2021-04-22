@@ -26,9 +26,14 @@ option java_outer_classname = "ExchangeWorkflowProto";
 // See docs/panelmatch/example-exchange-workflow.textproto for an example
 // ExchangeWorkflow.
 message ExchangeWorkflow {
-  // Sequence of steps of the workflow.
-  repeated Step steps = 1;
+  // The type of participant that executes each step.
+  enum Party {
+    PARTY_UNSPECIFIED = 0;
+    MODEL_PROVIDER = 1;
+    DATA_PROVIDER = 2;
+  }
 
+  // Building blocks of the ExchangeWorkflow.
   message Step {
     // Identifier unique in the ExchangeWorkflow.
     string step_id = 1;
@@ -46,44 +51,46 @@ message ExchangeWorkflow {
     map<string, string> input_labels = 3;
     map<string, string> output_labels = 4;
 
+    // Compares the inputs to determine if they overlap sufficiently.
+    message IntersectAndValidateStep {
+      // The maximum number of items in to allow.
+      int64 max_size = 3;
+
+      // The minimum fraction of items that must exist in both input data sets.
+      float minimum_overlap = 4;
+    }
+
+    // Selects a subset of key-value pairs.
+    message TableQueryStep {}
+
+    // Applies deterministic, commutative encryption to the input data.
+    message EncryptAndShareStep {
+      enum InputFormat {
+        INPUT_FORMAT_UNSPECIFIED = 0;
+        PLAINTEXT = 1;  // For initial encryption
+        CIPHERTEXT = 2;  // For double-encryption
+      }
+      InputFormat input_format = 1;
+    }
+
+    // Removes a layer of deterministic, commutative encryption from the input.
+    message DecryptStep {}
+
+    // Represents an input to the protocol derived from some unknown process by
+    // the `party`.
+    //
+    // These steps are used as placeholders to allow parties to signal when
+    // their inputs are ready.
+    message InputStep {}
+
     oneof step {
-      EncryptAndHashStep encrypt_and_hash = 7;
-      IntersectAndValidateStep intersect_and_validate = 8;
-      JoinAndDecryptStep join_and_decrypt = 9;
-      TableQueryStep table_query = 10;
-      EncryptAndShareStep encrypt_and_share = 11;
-      DecryptStep decrypt = 12;
-      InputStep input = 13;
+      IntersectAndValidateStep intersect_and_validate = 5;
+      TableQueryStep table_query = 6;
+      EncryptAndShareStep encrypt_and_share = 7;
+      DecryptStep decrypt = 8;
+      InputStep input = 9;
     }
   }
-
-  enum Party {
-    PARTY_UNSPECIFIED = 0;
-    MODEL_PROVIDER = 1;
-    DATA_PROVIDER = 2;
-  }
-
-  // TODO: fill in details as necessary for each step.
-  message EncryptAndHashStep {}
-
-  message IntersectAndValidateStep {
-    // The maximum number of joinkeys to allow.
-    int64 max_size = 1;
-
-    // The minimum fraction of joinkeys that must exist in both this and the
-    // previous execution.
-    float minimum_overlap = 2;
-  }
-
-  message JoinAndDecryptStep {}
-  message TableQueryStep {}
-  message EncryptAndShareStep {}
-  message DecryptStep {}
-
-  // Represents an input to the protocol derived from some unknown process by
-  // the `party`.
-  //
-  // These steps are used as placeholders to allow parties to signal when their
-  // inputs are ready.
-  message InputStep {}
+  // Sequence of steps of the workflow.
+  repeated Step steps = 1;
 }

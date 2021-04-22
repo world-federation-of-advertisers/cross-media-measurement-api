@@ -70,7 +70,9 @@ steps {
   step_id: "single-blind"
   party: MODEL_PROVIDER
 
-  encrypt_and_share {}
+  encrypt_and_share {
+    input_format: PLAINTEXT
+  }
 
   input_labels: [
     { key: "data", value: "raw-joinkeys" },
@@ -101,7 +103,8 @@ steps {
   ]
 
   output_labels: [
-    { key: "status" value: "validation-status" }
+    # Outputs "current-data" as a local copy for long-term auditing storage.
+    { key: "output" value: "single-blinded-joinkeys-edp-copy" }
   ]
 }
 
@@ -111,12 +114,13 @@ steps {
   step_id: "double-blind"
   party: DATA_PROVIDER
 
-  encrypt_and_share {}
+  encrypt_and_share {
+    input_format: CIPHERTEXT
+  }
 
   input_labels: [
-    { key: "data", value: "single-blinded-joinkeys" },
-    { key: "crypto-key", value: "edp-commutative-deterministic-key" },
-    { key: "wait-for", value: "validation-status" }
+    { key: "data", value: "single-blinded-joinkeys-edp-copy" },
+    { key: "crypto-key", value: "edp-commutative-deterministic-key" }
   ]
 
   output_labels: [
@@ -158,19 +162,3 @@ steps {
   ]
 }
 
-# MP decrypts the final results.
-steps {
-  step_id: "decrypt-results"
-  party: MODEL_PROVIDER
-
-  join_and_decrypt {}
-
-  input_labels: [
-    { key: "encrypted-data" value: "encrypted-results" },
-    { key: "decryption-keys" value: "lookup-keys" }
-  ]
-
-  output_labels: [
-    { key: "output", value: "final-results" }
-  ]
-}
