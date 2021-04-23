@@ -45,9 +45,13 @@ message ExchangeStep {
   // here are the values of that map.
   map<string, SharedData> inputs = 4;
 
-  // Output-only. If ExchangeStep has a `state` of `SUCCEEDED`, it will contain
-  // an entry for each `step.output_labels` entry available to the other party.
-  // The keys here are the values of that map.
+  // Output-only. This will be populated only if `state` is `SUCCEEDED`.
+  // The keys of `outputs` are the subset of values of `step.output_labels`
+  // that are also values of `input_labels` of some `ExchangeWorkflow.Step` to
+  // be executed by the other party.
+  //
+  // Intuitively, these are the output labels that that other party needs to
+  // access.
   map<string, SharedData> outputs = 5;
 
   enum State {
@@ -84,6 +88,8 @@ message ExchangeStep {
         string https_uri = 2;
 
         // Represents a query to execute under Google Cloud's BigQuery.
+        // The exact details are TBD but this may end up being the name of an
+        // AuthorizedView from which all rows should be read.
         string google_big_query = 3;
 
         // Represents a file accessible via Google Cloud Storage. While
@@ -94,6 +100,8 @@ message ExchangeStep {
 
         // Represents a file accessible via AWS S3. While sometimes HTTPS can be
         // used directly, some may prefer to use ACLs rather than access tokens.
+        // This should be a standard S3 path of the format
+        // "s3://bucket-name/and/some/path".
         string amazon_s3 = 5;
       }
     }
