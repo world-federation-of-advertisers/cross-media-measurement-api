@@ -19,7 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/data_provider.proto";
 import "wfa/measurement/api/v2alpha/measurement_consumer.proto";
-import "wfa/measurement/api/v2alpha/sketch.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -70,7 +70,7 @@ message Measurement {
     // Resource key of the DataProviderCertificate. Required. Immutable.
     DataProviderCertificate.Key data_provider_certificate = 2;
 
-    // Pre-shared encryption public key, which can be verified using
+    // Pre-shared serialized `EncryptionPublicKey`, which can be verified using
     // `data_provider_certificate`. Required. Immutable.
     SignedData data_provider_public_key = 3;
 
@@ -98,6 +98,10 @@ message Measurement {
   // represented as a map uniquely keyed by `DataProvider.Key`. Required.
   // Immutable.
   repeated DataProviderEntry data_provider_entries = 6;
+
+  // Resource key of the well-known `ProtocolConfig` selected for
+  // `measurement_spec`. Output-only. Immutable.
+  ProtocolConfig.Key protocol_config = 7;
 
   enum State {
     STATE_UNSPECIFIED = 0;
@@ -135,8 +139,10 @@ message Measurement {
   // `SUCCEEDED`.
   bytes aggregator_certificate = 9;
 
-  // Encryption public key for the `Result`, which can be verified using
-  // `aggregator_certificate`. Output-only. Only set if `state` is `SUCCEEDED`.
+  // Serialized `EncryptionPublicKey` for the `Result`, which can be verified
+  // using `aggregator_certificate`. Output-only.
+  //
+  // Only set if `state` is `SUCCEEDED`.
   SignedData result_public_key = 10;
 
   // Encrypted `SignedData` containing the serialized `Result`, which can be
@@ -153,23 +159,4 @@ message Measurement {
   // `Measurement` to aid in filtering and identifying later on.
   // Do not put sensitive data in this field.
   map<string, string> tags = 12;
-}
-
-// Specification for a `Measurement`. Immutable.
-message MeasurementSpec {
-  // Encryption public key for the `Measurement` that this `MeasurementSpec` is
-  // associated with. Required.
-  bytes measurement_public_key = 1;
-
-  message EncryptedSketch {
-    // Resource key of the sketch configuration. Required.
-    SketchConfig.Key sketch_config = 1;
-  }
-
-  // What data the requisition is for, i.e. what data is being requisitioned.
-  // Required.
-  oneof for {
-    // The data being requisitioned is an encrypted sketch.
-    EncryptedSketch encrypted_sketch = 2;
-  }
 }

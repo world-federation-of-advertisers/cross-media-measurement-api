@@ -74,8 +74,11 @@ message RequisitionSpec {
   // as this `Requisition`.
   repeated EventGroupEntry event_group_entries = 1;
 
-  // Encryption public key for the `Measurement` that this `RequisitionSpec` is
-  // associated with. Required. Immutable.
+  // Serialized `EncryptionPublicKey` for the `Measurement` that this
+  // `RequisitionSpec` is associated with. Required. Immutable.
+  //
+  // This is serialized so it can be easily compared with the same field in
+  // `MeasurementSpec`.
   bytes measurement_public_key = 2;
 
   // SHA256 hash of the concatenation of `serialized_data_provider_list` and
