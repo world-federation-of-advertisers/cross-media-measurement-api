@@ -1,6 +1,14 @@
 # proto-file: src/main/proto/wfa/measurement/api/v2alpha/exchange_workflow.proto
 # proto-message: ExchangeWorkflow
 
+################################################################################
+# This is an example protocol for a Panel Match exchange.                      #
+#                                                                              #
+# * For details on each field, see the ExchangeWorkflow message definition.    #
+# * Each step is run on hardware controlled by the `party` given in each step. #
+################################################################################
+
+
 # Get the MP's private key as input.
 steps {
   step_id: "mp-input-commutative-deterministic-key"
