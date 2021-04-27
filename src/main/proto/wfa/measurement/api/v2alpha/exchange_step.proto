@@ -76,6 +76,7 @@ message ExchangeStep {
     // `Location` payloads.
     bytes encrypted_signed_location = 1;
 
+    // TODO(@efoxepstein): refactor to use a resource URI or something generic.
     message Location {
       // This should correspond to one of the values in the
       // `ExchangeWorkflow.Step.output_labels` map for a step.
