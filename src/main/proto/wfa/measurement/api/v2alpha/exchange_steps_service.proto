@@ -51,8 +51,8 @@ message GetExchangeStepRequest {
 message FindReadyExchangeStepRequest {
   // Required. Only includes steps belonging to this party.
   oneof party {
-    DataProvider.Key data_provider = 3;
-    ModelProvider.Key model_provider = 4;
+    DataProvider.Key data_provider = 1;
+    ModelProvider.Key model_provider = 2;
   }
 }
 
