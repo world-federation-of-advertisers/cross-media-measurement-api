@@ -60,21 +60,21 @@ message ExchangeStep {
     // Some predecessor ExchangeStep is not in state SUCCEEDED.
     BLOCKED = 1;
 
-    // All predecessor ExchangeSteps are in state SUCCEEDED and all associated
-    // ExchangeStepAttempts, if there are any, are in a FAILED state.
+    // All predecessor ExchangeSteps are in state `SUCCEEDED` and all associated
+    // ExchangeStepAttempts, if there are any, are in a `TEMPORARILY_FAILED`
+    // state.
     READY = 2;
 
-    // All predecessor ExchangeSteps are in state SUCCEEDED and an associated
-    // ExchangeStepAttempt is in an ACTIVE state.
+    // All predecessor ExchangeSteps are in state `SUCCEEDED` and an associated
+    // ExchangeStepAttempt is in state `ACTIVE`.
     IN_PROGRESS = 3;
 
     // The step has succeeded. Terminal state. This implies that an associated
-    // ExchangeStepAttempt is in a SUCCEEDED state.
+    // ExchangeStepAttempt is in state `SUCCEEDED`.
     SUCCEEDED = 4;
 
-    // The step has permanently failed. Terminal state. Note that the presence
-    // of associated ExchangeStepAttempts in a FAILED state does not imply that
-    // the ExchangeStep will be FAILED.
+    // The step has permanently failed. Terminal state. This implies that an
+    // associated ExchangeStepAttempt is in state `PERMANENTLY_FAILED`.
     FAILED = 5;
   }
 

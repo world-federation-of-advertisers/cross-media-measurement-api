@@ -29,16 +29,16 @@ service ExchangeSteps {
   // Returns the `ExchangeStep` with the specified resource key.
   rpc GetExchangeStep(GetExchangeStepRequest) returns (ExchangeStep);
 
-  // Finds ExchangeSteps that are ready to be worked on.
+  // Finds a single ExchangeStep that is ready to be worked on.
   //
-  // This is different from a standard List RPC endpoint because (a) it only
-  // includes results in state READY and (b) there are no filters or parent
-  // selection. Instead, the "parent" is either the DataProvider or the
-  // ModelProvider -- the party to execute the step.
+  // This could be emulated with a single standard List RPC endpoint with
+  // appropriate filters, but that adds unnecessary complexity to the API.
   //
-  // This method is focused on the one known use case of listing ExchangeSteps.
-  rpc ListReadyExchangeSteps(ListReadyExchangeStepsRequest)
-      returns (ListReadyExchangeStepsResponse);
+  // If there are no ready ExchangeSteps, this will return an empty response.
+  // Since this is expected, normal behavior, it does NOT return a NOT_FOUND
+  // error.
+  rpc FindReadyExchangeStep(FindReadyExchangeStepRequest)
+      returns (FindReadyExchangeStepResponse);
 }
 
 // Request message for `GetExchangeStep` method.
@@ -47,22 +47,8 @@ message GetExchangeStepRequest {
   ExchangeStep.Key key = 1;
 }
 
-// Request message for `ListReadyExchangeSteps` method.
-message ListReadyExchangeStepsRequest {
-  // The maximum number of `ExchangeStep`s to return.
-  // The service may return fewer than this value.
-  // If unspecified, at most 50 `ExchangeStep`s will be returned.
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 1;
-
-  // A page token, received from a previous `ListExchangeStepsRequest` call.
-  // Provide this to retrieve the subsequent page.
-  //
-  // When paginating, all other parameters provided to
-  // `ListReadyExchangeStepsRequest` must match the call that provided the page
-  // token.
-  string page_token = 2;
-
+// Request message for `FindReadyExchangeStep` method.
+message FindReadyExchangeStepRequest {
   // Required. Only includes steps belonging to this party.
   oneof party {
     DataProvider.Key data_provider = 3;
@@ -70,12 +56,8 @@ message ListReadyExchangeStepsRequest {
   }
 }
 
-// Response message for `ListReadyExchangeSteps` method.
-message ListReadyExchangeStepsResponse {
-  // Page of `ExchangeStep`s.
-  repeated ExchangeStep exchange_steps = 1;
-
-  // A token, which can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2;
+// Response message for `FindReadyExchangeStep` method.
+message FindReadyExchangeStepResponse {
+  // If unset, there was no ready `ExchangeStep`.
+  ExchangeStep exchange_step = 1;
 }
