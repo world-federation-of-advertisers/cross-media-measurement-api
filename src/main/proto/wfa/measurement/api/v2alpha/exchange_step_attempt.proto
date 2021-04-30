@@ -50,11 +50,11 @@ message ExchangeStepAttempt {
 
     // The attempt has failed but the `ExchangeStep` can be retried.
     // Terminal state.
-    TEMPORARILY_FAILED = 4;
+    FAILED = 4;
 
     // The attempt has failed and the `ExchangeStep` should not be retried.
     // Terminal state.
-    PERMANENTLY_FAILED = 5;
+    FAILED_STEP = 5;
   }
 
   // State of the ExchangeStepAttempt. Output-only.
