@@ -61,8 +61,7 @@ message ExchangeStep {
     BLOCKED = 1;
 
     // All predecessor ExchangeSteps are in state `SUCCEEDED` and all associated
-    // ExchangeStepAttempts, if there are any, are in a `TEMPORARILY_FAILED`
-    // state.
+    // ExchangeStepAttempts, if there are any, are in state `FAILED`.
     READY = 2;
 
     // All predecessor ExchangeSteps are in state `SUCCEEDED` and an associated
@@ -74,7 +73,7 @@ message ExchangeStep {
     SUCCEEDED = 4;
 
     // The step has permanently failed. Terminal state. This implies that an
-    // associated ExchangeStepAttempt is in state `PERMANENTLY_FAILED`.
+    // associated ExchangeStepAttempt is in state `FAILED_STEP`.
     FAILED = 5;
   }
 
