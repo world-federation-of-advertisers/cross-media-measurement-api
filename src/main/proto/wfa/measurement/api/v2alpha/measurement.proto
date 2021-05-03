@@ -82,17 +82,6 @@ message Measurement {
     // between `measurement_public_key` in `measurement_spec` and
     // `data_provider_public_key`.
     bytes encrypted_requisition_spec = 4;
-
-    // Cryptographic digital signature of the "requisition fingerprint" which
-    // can be verified using the `DataProvider`'s certificate. Output-only. Only
-    // set if the corresponding `Requisition` has been fulfilled.
-    //
-    // The requisition fingerprint is defined as the concatenation of:
-    // 1. The SHA256 hash of `encrypted_requisition_spec`.
-    // 2. The SHA256 hash of the concatenation of
-    //    `serialized_data_provider_list` and `data_provider_list_salt`.
-    // 3. The `data` in `measurement_spec`.
-    bytes data_provider_participation_signature = 5;
   }
   // The measurement entry for each `DataProvider`. This can be logically
   // represented as a map uniquely keyed by `DataProvider.Key`. Required.
@@ -154,9 +143,11 @@ message Measurement {
   // `result_public_key`.
   bytes encrypted_result = 11;
 
-  // Map of caller-defined tag keys to values for this `Measurement`.
-  // These are to enable `MeasurementConsumer`s to apply labels to the
-  // `Measurement` to aid in filtering and identifying later on.
-  // Do not put sensitive data in this field.
-  map<string, string> tags = 12;
+  // ID referencing the `Measurement` in an external system, provided by the
+  // Measurement Consumer.
+  //
+  // If set, this value must be unique among `Measurement`s for the parent
+  // `MeasurementConsumer`. This serves as an idempotency key for the
+  // `Measurement`.
+  string measurement_reference_id = 12;
 }

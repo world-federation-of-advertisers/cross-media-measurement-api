@@ -32,6 +32,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":crypto_proto",
+        ":data_provider_proto",
         ":duchy_proto",
         ":measurement_consumer_proto",
         ":measurement_proto",
@@ -110,6 +111,7 @@ proto_library(
     deps = [
         ":data_provider_proto",
         ":measurement_consumer_proto",
+        ":measurement_proto",
         ":requisition_proto",
     ],
 )
