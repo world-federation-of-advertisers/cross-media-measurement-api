@@ -62,6 +62,6 @@ message ClaimReadyExchangeStepResponse {
   // The `ExchangeStep`.
   ExchangeStep exchange_step = 1;
 
-  // A new ExchangeStepAttempt for `exchange_step`.
-  ExchangeStepAttempt exchange_step_attempt = 2;
+  // Resource key of a new ExchangeStepAttempt for `exchange_step`.
+  ExchangeStepAttempt.Key exchange_step_attempt = 2;
 }
