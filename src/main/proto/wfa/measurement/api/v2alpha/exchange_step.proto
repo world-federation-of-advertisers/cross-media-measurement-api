@@ -49,6 +49,13 @@ message ExchangeStep {
   //
   // The values of this map are serialized SignedData. Each SignedData's payload
   // is a byte string of concatenated encrypted values of uniform length.
+  //
+  // When ExchangeStepAttempts are completed successfully,
+  // `/ExchangeStepAttempts.FinishExchangeStepAttempt` is provided
+  // with outputs via its `shared_outputs` field. To populate this field, all of
+  // the shared_outputs are (logically) aggregated into one map, and then
+  // `shared_inputs` is the subset of that map consisting of labels from
+  // `step.input_labels`.
   map<string, bytes> shared_inputs = 4;
 
   enum State {
