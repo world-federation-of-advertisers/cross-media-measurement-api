@@ -49,7 +49,12 @@ message ExchangeWorkflow {
     // Inputs to the protocol are provided via InputStep step types -- this
     // ensures that all inputs to all steps appear as some output label.
     map<string, string> input_labels = 3;
+    // Inputs to be fetched from shared storage
+    map<string, string> shared_input_labels = 10;
+    // Outputs not shared
     map<string, string> output_labels = 4;
+    // Outputs that are shared
+    map<string, string> shared_output_labels = 11;
 
     // Compares the inputs to determine if they overlap sufficiently.
     message IntersectAndValidateStep {

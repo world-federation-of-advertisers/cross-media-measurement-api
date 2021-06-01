@@ -16,7 +16,11 @@ steps {
 
   input {}
 
+  shared_input_labels {}
+
   output_labels { key: "input" value: "mp-commutative-deterministic-key" }
+
+  shared_output_labels {}
 }
 
 # Get the MP's unencrypted joinkeys as input.
@@ -26,7 +30,11 @@ steps {
 
   input {}
 
+  shared_input_labels {}
+
   output_labels { key: "input" value: "raw-joinkeys" }
+
+  shared_output_labels {}
 }
 
 # Get the EDP's private key as input.
@@ -36,17 +44,25 @@ steps {
 
   input {}
 
+  shared_input_labels {}
+
   output_labels { key: "input" value: "edp-commutative-deterministic-key" }
+
+  shared_output_labels {}
 }
 
-# Get the EDP's event data as input.
+# Get the EDP's encrypted event data as input.
 steps {
   step_id: "edp-input-event-data"
   party: DATA_PROVIDER
 
   input {}
 
-  output_labels { key: "input" value: "event-data" }
+  shared_input_labels {}
+
+  output_labels {}
+
+  shared_output_labels { key: "input" value: "encrypted-event-data" }
 }
 
 # Get the previous protocol execution's blinded joinkeys as input.
@@ -59,7 +75,11 @@ steps {
 
   input {}
 
+  shared_input_labels {}
+
   output_labels { key: "input" value: "previous-single-blinded-joinkeys" }
+
+  shared_output_labels {}
 }
 
 # MP wraps their panelist identifiers in a layer of deterministic commutative
@@ -76,6 +96,8 @@ steps {
   input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
 
   output_labels { key: "output" value: "single-blinded-joinkeys" }
+
+  shared_output_labels { key: "output" value: "single-blinded-joinkeys"}
 }
 
 # EDP validates that the single-encrypted panelist identifiers are sufficiently
@@ -91,14 +113,17 @@ steps {
     minimum_overlap: 0.99
   }
 
-  input_labels { key: "current-data" value: "single-blinded-joinkeys" }
   input_labels {
     key: "previous-data"
     value: "previous-single-blinded-joinkeys"
   }
 
+  shared_input_labels { key: "current-data" value: "single-blinded-joinkeys" }
+
   # Outputs "current-data" as a local copy for long-term auditing storage.
   output_labels { key: "output" value: "single-blinded-joinkeys-edp-copy" }
+
+  shared_output_labels {}
 }
 
 # EDP wraps the single-encrypted panelist identifiers in another layer of
@@ -115,6 +140,8 @@ steps {
   input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
 
   output_labels { key: "output" value: "double-blinded-joinkeys" }
+
+  shared_output_labels { key: "output" value: "double-blinded-joinkeys" }
 }
 
 # MP removes their layer of commutative, deterministic encryption.
@@ -124,10 +151,13 @@ steps {
 
   decrypt {}
 
-  input_labels { key: "data" value: "double-blinded-joinkeys" }
   input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
 
+  shared_input_labels { key: "data" value: "double-blinded-joinkeys" }
+
   output_labels { key: "output" value: "lookup-keys" }
+
+  shared_output_labels {}
 }
 
 # MP performs the lookup to get event-level data.
@@ -137,9 +167,11 @@ steps {
 
   table_query {}
 
-  input_labels { key: "table" value: "event-data" }
   input_labels { key: "keys" value: "lookup-keys" }
 
-  output_labels { key: "output" value: "encrypted-results" }
-}
+  shared_input_labels { key: "table" value: "encrypted-event-data" }
 
+  output_labels { key: "output" value: "encrypted-results" }
+
+  shared_output_labels {}
+}
