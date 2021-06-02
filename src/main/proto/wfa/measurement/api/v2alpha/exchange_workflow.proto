@@ -68,11 +68,12 @@ message ExchangeWorkflow {
     // Selects a subset of key-value pairs.
     message TableQueryStep {}
 
-    // Applies deterministic, commutative encryption to the input data.
-    message EncryptAndShareStep {}
+    // Applies deterministic, commutative encryption to the input plaintext data.
+    message EncryptStep {}
 
-    // Applies a second layer of deterministic, commutative encryption to the input data.
-    message ReEncryptAndShareStep {}
+    // Applies an additional layer of deterministic, commutative encryption to the input data.
+    // Requires ciphertexts as input.
+    message ReEncryptStep {}
 
     // Removes a layer of deterministic, commutative encryption from the input.
     message DecryptStep {}
@@ -87,8 +88,8 @@ message ExchangeWorkflow {
     oneof step {
       IntersectAndValidateStep intersect_and_validate = 5;
       TableQueryStep table_query = 6;
-      EncryptAndShareStep encrypt_and_share = 7;
-      ReEncryptAndShareStep reencrypt_and_share = 8;
+      EncryptStep encrypt = 7;
+      ReEncryptStep reencrypt = 8;
       DecryptStep decrypt = 9;
       InputStep input = 10;
     }
