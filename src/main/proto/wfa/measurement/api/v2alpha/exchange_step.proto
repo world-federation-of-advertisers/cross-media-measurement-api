@@ -56,7 +56,7 @@ message ExchangeStep {
   // the shared_outputs are (logically) aggregated into one map, and then
   // `shared_inputs` is the subset of that map consisting of labels from
   // `step.shared_input_labels`.
-  map<string, bytes> shared_inputs = 4`;`
+  map<string, bytes> shared_inputs = 4;
 
   enum State {
     STATE_UNSPECIFIED = 0;

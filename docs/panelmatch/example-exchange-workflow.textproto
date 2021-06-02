@@ -8,7 +8,6 @@
 # * Each step is run on hardware controlled by the `party` given in each step. #
 ################################################################################
 
-
 # MP provides private key as input.
 steps {
   step_id: "mp-input-commutative-deterministic-key"
@@ -16,7 +15,10 @@ steps {
 
   input_step {}
 
-  private_output_labels { key: "input" value: "mp-commutative-deterministic-key" }
+  private_output_labels {
+    key: "input"
+    value: "mp-commutative-deterministic-key"
+  }
 }
 
 # MP provides unencrypted joinkeys as input.
@@ -36,7 +38,10 @@ steps {
 
   input_step {}
 
-  private_output_labels { key: "input" value: "edp-commutative-deterministic-key" }
+  private_output_labels {
+    key: "input"
+    value: "edp-commutative-deterministic-key"
+  }
 }
 
 # EDP provides symmetrically encrypted event data as input.
@@ -59,7 +64,10 @@ steps {
 
   input_step {}
 
-  private_output_labels { key: "input" value: "previous-single-blinded-joinkeys" }
+  private_output_labels {
+    key: "input"
+    value: "previous-single-blinded-joinkeys"
+  }
 }
 
 # MP wraps their panelist identifiers in a layer of deterministic commutative
@@ -71,11 +79,14 @@ steps {
   encrypt_step {}
 
   private_input_labels { key: "data" value: "raw-joinkeys" }
-  private_input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
+  private_input_labels {
+    key: "crypto-key"
+    value: "mp-commutative-deterministic-key"
+  }
 
   private_output_labels { key: "output" value: "single-blinded-joinkeys" }
 
-  shared_output_labels { key: "output" value: "single-blinded-joinkeys"}
+  shared_output_labels { key: "output" value: "single-blinded-joinkeys" }
 }
 
 # EDP validates that the single-encrypted panelist identifiers are sufficiently
@@ -84,8 +95,8 @@ steps {
   step_id: "validate-single-blinded-joinkeys"
   party: DATA_PROVIDER
 
-  # Ensure there are are betweem 1000 and 10,000 panelists and 99% of them appeared
-  # in the previous protocol.
+  # Ensure there are are betweem 1000 and 10,000 panelists and 99% of them
+  # appeared in the previous protocol.
   intersect_and_validate_step {
     max_size: 10000
     min_size: 1000
@@ -100,7 +111,10 @@ steps {
   shared_input_labels { key: "current-data" value: "single-blinded-joinkeys" }
 
   # Outputs "current-data" as a local copy for long-term auditing storage.
-  private_output_labels { key: "output" value: "single-blinded-joinkeys-edp-copy" }
+  private_output_labels {
+    key: "output"
+    value: "single-blinded-joinkeys-edp-copy"
+  }
 }
 
 # EDP wraps the single-encrypted panelist identifiers in another layer of
@@ -112,7 +126,10 @@ steps {
   reencrypt_step {}
 
   private_input_labels { key: "data" value: "single-blinded-joinkeys-edp-copy" }
-  private_input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
+  private_input_labels {
+    key: "crypto-key"
+    value: "edp-commutative-deterministic-key"
+  }
 
   private_output_labels { key: "output" value: "double-blinded-joinkeys" }
 
@@ -126,7 +143,10 @@ steps {
 
   decrypt_step {}
 
-  private_input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
+  private_input_labels {
+    key: "crypto-key"
+    value: "mp-commutative-deterministic-key"
+  }
 
   shared_input_labels { key: "data" value: "double-blinded-joinkeys" }
 

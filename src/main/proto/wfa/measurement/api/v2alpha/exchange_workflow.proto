@@ -68,11 +68,12 @@ message ExchangeWorkflow {
     // Selects a subset of key-value pairs.
     message TableQueryStep {}
 
-    // Applies deterministic, commutative encryption to the input plaintext data.
+    // Applies deterministic, commutative encryption to the input plaintext
+    // data.
     message EncryptStep {}
 
-    // Applies an additional layer of deterministic, commutative encryption to the input data.
-    // Requires ciphertexts as input.
+    // Applies an additional layer of deterministic, commutative encryption to
+    // the input data. Requires ciphertexts as input.
     message ReEncryptStep {}
 
     // Removes a layer of deterministic, commutative encryption from the input.
