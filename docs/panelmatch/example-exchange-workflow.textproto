@@ -18,7 +18,7 @@ steps {
 
   shared_input_labels {}
 
-  output_labels { key: "input" value: "mp-commutative-deterministic-key" }
+  private_output_labels { key: "input" value: "mp-commutative-deterministic-key" }
 
   shared_output_labels {}
 }
@@ -32,7 +32,7 @@ steps {
 
   shared_input_labels {}
 
-  output_labels { key: "input" value: "raw-joinkeys" }
+  private_output_labels { key: "input" value: "raw-joinkeys" }
 
   shared_output_labels {}
 }
@@ -46,7 +46,7 @@ steps {
 
   shared_input_labels {}
 
-  output_labels { key: "input" value: "edp-commutative-deterministic-key" }
+  private_output_labels { key: "input" value: "edp-commutative-deterministic-key" }
 
   shared_output_labels {}
 }
@@ -60,7 +60,7 @@ steps {
 
   shared_input_labels {}
 
-  output_labels {}
+  private_output_labels {}
 
   shared_output_labels { key: "input" value: "encrypted-event-data" }
 }
@@ -77,7 +77,7 @@ steps {
 
   shared_input_labels {}
 
-  output_labels { key: "input" value: "previous-single-blinded-joinkeys" }
+  private_output_labels { key: "input" value: "previous-single-blinded-joinkeys" }
 
   shared_output_labels {}
 }
@@ -92,10 +92,10 @@ steps {
     input_format: PLAINTEXT
   }
 
-  input_labels { key: "data" value: "raw-joinkeys" }
-  input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
+  private_input_labels { key: "data" value: "raw-joinkeys" }
+  private_input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
 
-  output_labels { key: "output" value: "single-blinded-joinkeys" }
+  private_output_labels { key: "output" value: "single-blinded-joinkeys" }
 
   shared_output_labels { key: "output" value: "single-blinded-joinkeys"}
 }
@@ -113,7 +113,7 @@ steps {
     minimum_overlap: 0.99
   }
 
-  input_labels {
+  private_input_labels {
     key: "previous-data"
     value: "previous-single-blinded-joinkeys"
   }
@@ -121,7 +121,7 @@ steps {
   shared_input_labels { key: "current-data" value: "single-blinded-joinkeys" }
 
   # Outputs "current-data" as a local copy for long-term auditing storage.
-  output_labels { key: "output" value: "single-blinded-joinkeys-edp-copy" }
+  private_output_labels { key: "output" value: "single-blinded-joinkeys-edp-copy" }
 
   shared_output_labels {}
 }
@@ -136,10 +136,10 @@ steps {
     input_format: CIPHERTEXT
   }
 
-  input_labels { key: "data" value: "single-blinded-joinkeys-edp-copy" }
-  input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
+  private_input_labels { key: "data" value: "single-blinded-joinkeys-edp-copy" }
+  private_input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
 
-  output_labels { key: "output" value: "double-blinded-joinkeys" }
+  private_output_labels { key: "output" value: "double-blinded-joinkeys" }
 
   shared_output_labels { key: "output" value: "double-blinded-joinkeys" }
 }
@@ -151,11 +151,11 @@ steps {
 
   decrypt {}
 
-  input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
+  private_input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
 
   shared_input_labels { key: "data" value: "double-blinded-joinkeys" }
 
-  output_labels { key: "output" value: "lookup-keys" }
+  private_output_labels { key: "output" value: "lookup-keys" }
 
   shared_output_labels {}
 }
@@ -167,11 +167,11 @@ steps {
 
   table_query {}
 
-  input_labels { key: "keys" value: "lookup-keys" }
+  private_input_labels { key: "keys" value: "lookup-keys" }
 
   shared_input_labels { key: "table" value: "encrypted-event-data" }
 
-  output_labels { key: "output" value: "encrypted-results" }
+  private_output_labels { key: "output" value: "encrypted-results" }
 
   shared_output_labels {}
 }
