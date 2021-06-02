@@ -86,12 +86,12 @@ message ExchangeWorkflow {
     message InputStep {}
 
     oneof step {
-      IntersectAndValidateStep intersect_and_validate = 5;
-      TableQueryStep table_query = 6;
-      EncryptStep encrypt = 7;
-      ReEncryptStep reencrypt = 8;
-      DecryptStep decrypt = 9;
-      InputStep input = 10;
+      IntersectAndValidateStep intersect_and_validate_step = 5;
+      TableQueryStep table_query_step = 6;
+      EncryptStep encrypt_step = 7;
+      ReEncryptStep reencrypt_step = 8;
+      DecryptStep decrypt_step = 9;
+      InputStep input_step = 10;
     }
   }
   // Sequence of steps of the workflow.
