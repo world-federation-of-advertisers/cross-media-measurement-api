@@ -17,7 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
-import "wfa/measurement/api/v2alpha/exchange_workflow.proto";
+import "wfa/measurement/api/v2alpha/crypto.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -36,16 +36,11 @@ message ExchangeStep {
   // Output-only.
   State state = 2;
 
-  message SignedData {
-    // Denotes the grandparent RecurringExchange's ExchangeWorkflow
-    // that this ExchangeStep corresponds to.
-    ExchangeWorkflow exchange_workflow = 1;
+  // Serialized ExchangeWorkflow that this ExchangeStep corresponds to.
+  SignedData signed_exchange_workflow = 3;
 
-    // Current index of the step inside the exchange_workflow.
-    int32 step_index = 2;
-  }
-  // Output-only.
-  SignedData data = 3;
+  // Current index of the step inside the signed_exchange_workflow.
+  int32 step_index = 4;
 
   // Output-only.
   //
@@ -63,7 +58,7 @@ message ExchangeStep {
   // the shared_outputs are (logically) aggregated into one map, and then
   // `shared_inputs` is the subset of that map consisting of labels from
   // `step.input_labels`.
-  map<string, bytes> shared_inputs = 4;
+  map<string, bytes> shared_inputs = 5;
 
   enum State {
     STATE_UNSPECIFIED = 0;
