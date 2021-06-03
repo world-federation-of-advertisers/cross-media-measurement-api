@@ -36,9 +36,16 @@ message ExchangeStep {
   // Output-only.
   State state = 2;
 
-  // Denotes the step of the grandparent RecurringExchange's ExchangeWorkflow
-  // that this ExchangeStep corresponds to. Output-only.
-  ExchangeWorkflow.Step step = 3;
+  message SignedData {
+    // Denotes the grandparent RecurringExchange's ExchangeWorkflow
+    // that this ExchangeStep corresponds to.
+    ExchangeWorkflow exchange_workflow = 1;
+
+    // Current index of the step inside the exchange_workflow.
+    int32 step_index = 2;
+  }
+  // Output-only.
+  SignedData data = 3;
 
   // Output-only.
   //
