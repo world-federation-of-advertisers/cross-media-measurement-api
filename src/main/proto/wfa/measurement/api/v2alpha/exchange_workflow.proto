@@ -59,7 +59,7 @@ message ExchangeWorkflow {
     // Compares the inputs to determine if they overlap sufficiently.
     message IntersectAndValidateStep {
       // The maximum number of items in to allow.
-      int64 max_size = 3;
+      int32 max_size = 3;
 
       // The minimum fraction of items that must exist in both input data sets.
       float minimum_overlap = 4;
