@@ -95,7 +95,7 @@ steps {
   step_id: "validate-single-blinded-joinkeys"
   party: DATA_PROVIDER
 
-  # Ensure there are are betweem 1000 and 10,000 panelists and 99% of them
+  # Ensure there are are between 1000 and 10,000 panelists and 99% of them
   # appeared in the previous protocol.
   intersect_and_validate_step {
     max_size: 10000
