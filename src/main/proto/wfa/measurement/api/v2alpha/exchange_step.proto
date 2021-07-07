@@ -49,8 +49,9 @@ message ExchangeStep {
   //
   // The keys of this map are the values of the `step.shared_input_labels` map.
   //
-  // The values of this map are serialized SignedData. Each SignedData's payload
-  // is a byte string of concatenated encrypted values of uniform length.
+  // The values of this map are signed urls pointing to cloud-hosted SignedData.
+  // Each SignedData's payload is a consists of concatenated encrypted values of
+  // uniform length.
   //
   // When ExchangeStepAttempts are completed successfully,
   // `/ExchangeStepAttempts.FinishExchangeStepAttempt` is provided
@@ -58,7 +59,7 @@ message ExchangeStep {
   // the shared_outputs are (logically) aggregated into one map, and then
   // `shared_inputs` is the subset of that map consisting of labels from
   // `step.shared_input_labels`.
-  map<string, bytes> shared_inputs = 5;
+  map<string, string> shared_inputs = 5;
 
   enum State {
     STATE_UNSPECIFIED = 0;
