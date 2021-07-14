@@ -51,7 +51,12 @@ message ExchangeStep {
   //
   // The values of this map are signed urls pointing to cloud-hosted SignedData.
   // Each SignedData's payload is a consists of concatenated encrypted values of
-  // uniform length.
+  // uniform length. The urls themselves are signed and encrypted to prevent
+  // a malicious Kingdom operator from having access to the storage.
+  //
+  // In the case where the step's output is expected to be written to remote
+  // storage the urls wil point to a blob containing another signed url, in the
+  // same format described above, for the step's output to be written to.
   //
   // When ExchangeStepAttempts are completed successfully,
   // `/ExchangeStepAttempts.FinishExchangeStepAttempt` is provided
@@ -59,7 +64,7 @@ message ExchangeStep {
   // the shared_outputs are (logically) aggregated into one map, and then
   // `shared_inputs` is the subset of that map consisting of labels from
   // `step.shared_input_labels`.
-  map<string, string> shared_inputs = 5;
+  map<string, bytes> shared_inputs = 5;
 
   enum State {
     STATE_UNSPECIFIED = 0;

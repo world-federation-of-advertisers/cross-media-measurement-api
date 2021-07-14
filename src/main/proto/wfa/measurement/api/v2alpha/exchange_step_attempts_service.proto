@@ -119,5 +119,5 @@ message FinishExchangeStepAttemptRequest {
   // `shared_output_labels`.
   //
   // This field will be ignored if the `final_state` is `FAILED`.
-  map<string, string> shared_outputs = 4;
+  map<string, bytes> shared_outputs = 4;
 }
