@@ -108,7 +108,7 @@ message Measurement {
     // Completed with failure. Terminal state.
     FAILED = 4;
     // Cancelled by Measurement Consumer. Terminal state.
-    CANCELED = 5;
+    CANCELLED = 5;
   }
   State state = 8;
 

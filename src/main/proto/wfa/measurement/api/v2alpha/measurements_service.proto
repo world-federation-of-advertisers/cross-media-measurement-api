@@ -35,7 +35,7 @@ service Measurements {
   rpc ListMeasurements(ListMeasurementsRequest)
       returns (ListMeasurementsResponse) {}
 
-  // Transitions a `Measurement` to the `CANCELED` state. This is a terminal
+  // Transitions a `Measurement` to the `CANCELLED` state. This is a terminal
   // state for the `Measurement`.
   //
   // This is a state transition method (see https://aip.dev/216).
@@ -94,7 +94,7 @@ message ListMeasurementsResponse {
 
 // Request message for `CancelMeasurement` method.
 message CancelMeasurementRequest {
-  // Resource name of the `Measurement` to mark as `CANCELED`. Required.
+  // Resource name of the `Measurement` to mark as `CANCELLED`. Required.
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/Measurement"];
 }
