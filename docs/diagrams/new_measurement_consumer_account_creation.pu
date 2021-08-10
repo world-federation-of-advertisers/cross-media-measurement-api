@@ -1,0 +1,25 @@
+@startuml
+ 
+skinparam default {
+  fontName "Roboto"
+  fontSize 13
+  defaultMonospacedFontName "Roboto Mono"
+}
+ 
+autonumber
+actor User
+actor "CMMS Operator" as Operator
+database "Database" as DB
+ 
+activate Operator
+Operator->Operator: Generate activation token
+Operator->Operator: Generate measurement consumer creation token
+Operator->Operator: Build account
+Operator->DB: Create account
+activate DB
+autonumber stop
+return
+autonumber resume
+Operator->User: ""Unactivated account""
+ 
+@enduml
