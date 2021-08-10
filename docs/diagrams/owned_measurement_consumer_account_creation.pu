@@ -12,7 +12,12 @@ boundary "API Server" as Server
 database "Database" as DB
  
 User->Server: ""CreateAccount"" request
-activate Server 
+activate Server
+Server->DB: Check account credentials
+activate DB
+autonumber stop
+return
+autonumber resume
 Server->Server: Generate activation token
 Server->DB: Get existing measurement consumer token
 activate DB
