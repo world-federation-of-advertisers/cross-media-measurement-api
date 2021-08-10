@@ -18,6 +18,11 @@ activate DB
 autonumber stop
 return
 autonumber resume
+Server->DB: Get account
+activate DB
+autonumber stop
+return
+autonumber resume
 Server->Server: Activate account
 Server->Server: Set UserNameIdentity
 Server->DB: Update account
