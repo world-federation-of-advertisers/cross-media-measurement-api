@@ -24,7 +24,7 @@ option java_outer_classname = "ExchangeWorkflowProto";
 // the same ExchangeWorkflow.
 //
 // See docs/panelmatch/example-exchange-workflow.textproto for an example
-// ExchangeWorkflow.
+// ExchangeWorkflow.S
 message ExchangeWorkflow {
   // The type of participant that executes each step.
   enum Party {
