@@ -34,6 +34,9 @@ service ExchangeSteps {
   // If there are no ready ExchangeSteps, this will return an empty response.
   // Since this is expected, normal behavior, it does NOT return a NOT_FOUND
   // error.
+  //
+  // The caller must authenticate as either a DataProvider or a ModelProvider,
+  // and the returned ExchangeStep will belong to that party.
   rpc ClaimReadyExchangeStep(ClaimReadyExchangeStepRequest)
       returns (ClaimReadyExchangeStepResponse);
 }
@@ -47,14 +50,7 @@ message GetExchangeStepRequest {
 
 // Request message for `ClaimReadyExchangeStep` method.
 message ClaimReadyExchangeStepRequest {
-  // If an `ExchangeStep` is returned, it should be executed by this party.
-  // Required.
-  oneof party {
-    string data_provider = 1
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    string model_provider = 2 [(google.api.resource_reference).type =
-                                   "halo.wfanet.org/ModelProvider"];
-  }
+  // Deliberately empty.
 }
 
 // Response message for `ClaimReadyExchangeStep` method.
