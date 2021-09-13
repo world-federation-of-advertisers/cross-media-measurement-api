@@ -99,7 +99,6 @@ steps {
   # appeared in the previous protocol.
   intersect_and_validate_step {
     max_size: 10000
-    min_size: 1000
     minimum_overlap: 0.99
   }
 
@@ -153,16 +152,57 @@ steps {
   private_output_labels { key: "output" value: "lookup-keys" }
 }
 
-# MP performs the lookup to get event-level data.
 steps {
-  step_id: "lookup"
+  step_id: "prepare-lookup-keys"
   party: MODEL_PROVIDER
 
-  table_query_step {}
+  build_private_membership_queries_step {
+    parameters {
+      # Private Membership parameters here
+    }
+  }
 
-  private_input_labels { key: "keys" value: "lookup-keys" }
+  private_input_labels { key: "identifiers" value: "lookup-keys" }
 
-  shared_input_labels { key: "table" value: "encrypted-event-data" }
+  private_output_labels { key: "rlwe-private-key" value: "rlwe-private-key" }
+  private_output_labels { key: "raw-queries" value: "raw-queries" }
 
-  private_output_labels { key: "output" value: "encrypted-results" }
+  shared_output_labels { key: "encrypted-queries" value: "encrypted-queries" }
+}
+
+# EDP executes private membership queries
+steps {
+  step_id: "execute-private-membership-queries"
+  party: DATA_PROVIDER
+
+  execute_private_membership_queries_step {
+    parameters {
+      # Private Membership parameters here
+    }
+  }
+
+  private_input_labels { key: "event-data" value: "event-data" }
+
+  shared_input_labels { key: "encrypted-queries" value: "encrypted-queries" }
+
+  shared_output_labels { key: "encrypted-results" value: "encrypted-results" }
+}
+
+# MP decrypts the results
+steps {
+  step_id: "decrypt-private-membership-results"
+  party: MODEL_PROVIDER
+
+  decrypt_private_membership_query_results_step {
+    parameters {
+      # Private Membership parameters here
+    }
+  }
+
+  private_input_labels { key: "raw-queries" value: "raw-queries" }
+  private_input_labels { key: "rlwe-private-key" value: "rlwe-private-key" }
+
+  shared_input_labels { key: "encrypted-results" value: "encrypted-results" }
+
+  private_output_labels { key: "results" value: "results" }
 }

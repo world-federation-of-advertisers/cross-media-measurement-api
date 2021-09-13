@@ -36,3 +36,19 @@ switched_rules_by_language(
     name = "com_google_googleapis_imports",
     java = True,
 )
+
+http_archive(
+        name = "private_membership",
+        sha256 = "c47fb16e69c1c598f9efafdb642b99e1dd24caa27355ae1df8455e369e72908b",
+        strip_prefix = "private-membership-7d1b5ffbf4bf80d227a3a68e7b53786c6bb48601",
+        urls = ["https://github.com/google/private-membership/archive/7d1b5ffbf4bf80d227a3a68e7b53786c6bb48601.zip"],
+)
+
+load("@private_membership//build:private_membership_repositories.bzl", "private_membership_repositories")
+private_membership_repositories()
+
+load("@private_membership//build:private_membership_deps.bzl", "private_membership_deps")
+private_membership_deps()
+
+load("@private_membership//build:private_membership_extra_deps.bzl", "private_membership_extra_deps")
+private_membership_extra_deps()
