@@ -8,7 +8,7 @@
 # * Each step is run on hardware controlled by the `party` given in each step. #
 ################################################################################
 
-# EDP generates a pepper used in generating AES keys.
+# EDP provides a pepper used in generating AES keys.
 steps {
   step_id: "generate-hkdf-pepper"
   party: DATA_PROVIDER
@@ -18,7 +18,7 @@ steps {
   shared_output_labels { key: "input" value: "hkdf-pepper" }
 }
 
-# EDP generates a pepper used in hashing encrypted identifiers.
+# EDP provides a pepper used in hashing encrypted identifiers.
 steps {
   step_id: "generate-identifier-hash-pepper"
   party: DATA_PROVIDER
@@ -181,10 +181,11 @@ steps {
     serialized_parameters: "..."
   }
 
+  private_input_labels { key: "identifiers" value: "raw-joinkeys" }
   private_input_labels { key: "identifiers" value: "lookup-keys" }
 
   private_output_labels { key: "serialized-rlwe-private-key" value: "serialized-rlwe-private-key" }
-  private_output_labels { key: "raw-queries" value: "raw-queries" }
+  private_output_labels { key: "query-decryption-keys" value: "query-decryption-keys" }
 
   shared_output_labels { key: "encrypted-queries" value: "encrypted-queries" }
   shared_output_labels { key: "serialized-rlwe-public-key" value: "serialized-rlwe-public-key" }
@@ -216,10 +217,11 @@ steps {
     serialized_parameters: "..."
   }
 
-  private_input_labels { key: "raw-queries" value: "raw-queries" }
+  private_input_labels { key: "query-decryption-keys" value: "query-decryption-keys" }
   private_input_labels { key: "serialized-rlwe-private-key" value: "serialized-rlwe-private-key" }
 
   shared_input_labels { key: "encrypted-results" value: "encrypted-results" }
+  shared_input_labels { key: "serialized-rlwe-public-key" value: "serialized-rlwe-public-key" }
 
   private_output_labels { key: "results" value: "results" }
 }
