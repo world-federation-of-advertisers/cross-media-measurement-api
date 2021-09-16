@@ -27,9 +27,6 @@ option java_outer_classname = "ModelProvidersServiceProto";
 service ModelProviders {
   // Returns the `ModelProvider` with the specified resource key.
   rpc GetModelProvider(GetModelProviderRequest) returns (ModelProvider) {}
-
-  // Creates (registers) a `ModelProvider`.
-  rpc CreateModelProvider(CreateModelProviderRequest) returns (ModelProvider) {}
 }
 
 // Request message for `GetModelProvider` method.
@@ -37,11 +34,4 @@ message GetModelProviderRequest {
   // Resource name.
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelProvider"];
-}
-
-// Request message for `CreateModelProvider` method.
-message CreateModelProviderRequest {
-  // The `ModelProvider` to create. Required. The `key` field will be ignored,
-  // and the system will assign an ID.
-  ModelProvider model_provider = 1;
 }
