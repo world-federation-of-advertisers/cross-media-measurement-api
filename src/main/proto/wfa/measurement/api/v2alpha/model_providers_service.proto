@@ -36,7 +36,7 @@ service ModelProviders {
 message GetModelProviderRequest {
   // Resource name.
   string name = 1
-  [(google.api.resource_reference).type = "halo.wfanet.org/ModelProvider"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelProvider"];
 }
 
 // Request message for `CreateModelProvider` method.
