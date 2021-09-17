@@ -20,8 +20,8 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ExchangeWorkflowProto";
 
-// A generic panel matching workflow. Many different pairs of parties may use
-// the same ExchangeWorkflow.
+// The representation for the Panel Matching Workflow. These are unique per
+// recurring exchange as they contain the identities of each party.
 //
 // See docs/panelmatch/example-exchange-workflow.textproto for an example
 // ExchangeWorkflow.
@@ -121,4 +121,19 @@ message ExchangeWorkflow {
 
   // Sequence of steps of the workflow.
   repeated Step steps = 1;
+
+  message ExchangeIdentifiers {
+    // Resource key of the `Certificate` belonging to `data_provider` party.
+    string data_provider_certificate = 2;
+
+    // Resource key of the `Certificate` belonging to the `model_provider`
+    // party.
+    string model_provider_certificate = 3;
+
+    // Identifies which party encrypted the storage salt. Used to identify which
+    // key should be used to decrypt it.
+    Party shared_storage_owner = 4;
+  }
+
+  ExchangeIdentifiers exchange_identifiers = 2;
 }
