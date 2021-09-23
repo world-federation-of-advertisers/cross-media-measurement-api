@@ -53,8 +53,11 @@ message RecurringExchange {
   // Whether this exchange is still enabled.
   State state = 6;
 
-  // When to start new Exchanges.
-  google.type.Date next_exchange_date = 7;
+  // The date of the first Exchange.
+  google.type.Date first_exchange_date = 7;
+
+  // The date of the next Exchange.
+  google.type.Date next_exchange_date = 8;
 
   message Schedule {
     // Expects a valid CRON expression.
