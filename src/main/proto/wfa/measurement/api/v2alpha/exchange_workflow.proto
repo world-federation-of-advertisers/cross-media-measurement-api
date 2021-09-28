@@ -139,6 +139,11 @@ message ExchangeWorkflow {
       bytes serialized_parameters = 1;
     }
 
+    // Generates an X509 Certificate to use. This should take no inputs and
+    // produces a single output "certificate", which should be the
+    // serialization of the `Certificate` resource.
+    message GenerateCertificateStep {}
+
     oneof step {
       CopyFromSharedStorageStep copy_from_shared_storage_step = 5;
       CopyToSharedStorageStep copy_to_shared_storage_step = 6;
@@ -153,6 +158,7 @@ message ExchangeWorkflow {
           13;
       DecryptPrivateMembershipQueryResultsStep
           decrypt_private_membership_query_results_step = 14;
+      GenerateCertificateStep generate_certificate_step = 15;
     }
   }
 
