@@ -392,6 +392,7 @@ steps {
 
   input_labels { key: "serialized-rlwe-private-key" value: "mp-serialized-rlwe-private-key" }
   input_labels { key: "serialized-rlwe-public-key" value: "mp-serialized-rlwe-public-key" }
+  input_labels { key: "event-data-dictionary" value: "mp-event-data-dictionary" }
   input_labels { key: "query-decryption-keys" value: "mp-query-decryption-keys" }
   input_labels { key: "encrypted-results" value: "mp-encrypted-query-results" }
 

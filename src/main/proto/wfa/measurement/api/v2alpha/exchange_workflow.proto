@@ -146,7 +146,8 @@ message ExchangeWorkflow {
       int32 query_id_and_panelist_key_file_count = 3;
       int32 num_shards = 4;
       int32 num_buckets_per_shard = 5;
-      optional int32 num_queries_per_shard = 6;
+      // Consider making this optional once its not experimental
+      int32 num_queries_per_shard = 6;
     }
 
     // Decrypts results from Private Membership queries.
