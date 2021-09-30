@@ -43,12 +43,6 @@ message ExchangeWorkflow {
     AMAZON_S3 = 2;
   }
 
-  // Config needed by parties before certain exchange steps occur.
-  message ExchangeConfig {
-      int32 num_shards = 1;
-      int32 num_buckets_per_shard = 2;
-  }
-
   // Building blocks of the ExchangeWorkflow.
   message Step {
     // Identifier unique in the ExchangeWorkflow.
@@ -139,7 +133,9 @@ message ExchangeWorkflow {
       // This is a serialized instance of private_membership.batch.Parameters.
       bytes serialized_parameters = 1;
       int32 encrypted_query_result_file_count = 2;
-      int32 max_queries_per_shard = 3;
+      int32 num_shards = 3;
+      int32 num_buckets_per_shard = 4;
+      int32 max_queries_per_shard = 5;
     }
 
     // Builds Private Membership queries.
@@ -148,7 +144,9 @@ message ExchangeWorkflow {
       bytes serialized_parameters = 1;
       int32 encrypted_query_bundle_file_count = 2;
       int32 query_id_and_panelist_key_file_count = 3;
-      optional int32 num_queries_per_shard = 4;
+      int32 num_shards = 4;
+      int32 num_buckets_per_shard = 5;
+      optional int32 num_queries_per_shard = 6;
     }
 
     // Decrypts results from Private Membership queries.
@@ -166,7 +164,8 @@ message ExchangeWorkflow {
       ReEncryptStep reencrypt_step = 9;
       DecryptStep decrypt_step = 10;
       InputStep input_step = 11;
-      GenerateCommutativeDeterministicKeyStep generate_commutative_deterministic_key_step = 12;
+      GenerateCommutativeDeterministicKeyStep
+          generate_commutative_deterministic_key_step = 12;
       GenerateSerializedRlweKeysStep generate_serialized_rlwe_keys_step = 13;
       ExecutePrivateMembershipQueriesStep
           execute_private_membership_queries_step = 14;
@@ -199,8 +198,6 @@ message ExchangeWorkflow {
 
   ExchangeIdentifiers exchange_identifiers = 2;
 
-  ExchangeConfig exchange_config = 3;
-
   // The date of the first Exchange.
-  google.type.Date first_exchange_date = 4;
+  google.type.Date first_exchange_date = 3;
 }
