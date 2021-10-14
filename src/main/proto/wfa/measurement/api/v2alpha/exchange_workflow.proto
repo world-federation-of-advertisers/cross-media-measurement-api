@@ -27,7 +27,7 @@ option java_outer_classname = "ExchangeWorkflowProto";
 // recurring exchange as they contain the identities of each party.
 //
 // See docs/panelmatch/example-exchange-workflow.textproto for an example
-// ExchangeWorkflow.
+// ExchangeWorkflow.S
 message ExchangeWorkflow {
   // The type of participant that executes each step.
   enum Party {
