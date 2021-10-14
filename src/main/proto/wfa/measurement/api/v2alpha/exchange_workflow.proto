@@ -110,6 +110,12 @@ message ExchangeWorkflow {
       float minimum_overlap = 4;
     }
 
+    // Generates public ids for a list of hashed join keys
+    message GenerateJoinKeyIdsStep {}
+
+    // Combines generated public ids with previously generated public ids
+    message CombineGeneratedJoinKeyIdsStep {}
+
     // Applies deterministic, commutative encryption to the input plaintext
     // data.
     message EncryptStep {}
@@ -180,6 +186,8 @@ message ExchangeWorkflow {
       DecryptPrivateMembershipQueryResultsStep
           decrypt_private_membership_query_results_step = 16;
       GenerateCertificateStep generate_certificate_step = 17;
+      GenerateJoinKeyIds generate_join_key_ids_step = 18;
+      CombineGeneratedJoinKeyIdsStep combine_generated_join_key_ids_step = 19;
     }
   }
 
