@@ -19,6 +19,12 @@ proto_library(
 )
 
 proto_library(
+    name = "field_schema_proto",
+    srcs = ["field_schema.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+)
+
+proto_library(
     name = "certificate_proto",
     srcs = ["certificate.proto"],
     strip_import_prefix = IMPORT_PREFIX,
@@ -98,10 +104,40 @@ proto_library(
 )
 
 proto_library(
+    name = "event_field_proto",
+    srcs = ["event_field.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":field_schema_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "event_template_proto",
+    srcs = ["event_template.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
     name = "event_group_proto",
     srcs = ["event_group.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        ":field_schema_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "event_group_field_proto",
+    srcs = ["event_group_field.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":field_schema_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )

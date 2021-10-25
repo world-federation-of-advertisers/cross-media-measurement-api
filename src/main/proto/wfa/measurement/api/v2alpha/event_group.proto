@@ -17,6 +17,8 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/crypto.proto";
+import "wfa/measurement/api/v2alpha/field_schema.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -24,6 +26,8 @@ option java_outer_classname = "EventGroupProto";
 
 // A grouping of events defined by a `DataProvider`. For example, a single
 // campaign or creative defined in a publisher's ad system.
+//
+// Next ID: 10
 message EventGroup {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroup"
@@ -33,10 +37,22 @@ message EventGroup {
   // Resource name.
   string name = 1;
 
+  // Resource name of the `Certificate` belonging to the parent `DataProvider`.
+  string data_provider_certificate = 4 [(google.api.resource_reference).type =
+      "halo.wfanet.org/Certificate"];
+
   // Resource name of the `MeasurementConsumer` associated with this
   // `EventGroup`.
   string measurement_consumer = 2 [(google.api.resource_reference).type =
-                                       "halo.wfanet.org/MeasurementConsumer"];
+      "halo.wfanet.org/MeasurementConsumer"];
+
+  // Resource name of the `Certificate` belonging to `measurement_consumer`.
+  string measurement_consumer_certificate = 5 [(google.api.resource_reference).type =
+      "halo.wfanet.org/Certificate"];
+
+  // Pre-shared serialized `EncryptionPublicKey`, which can be verified using
+  // `measurement_consumer_certificate`.
+  SignedData measurement_consumer_public_key = 6;
 
   // ID referencing the `EventGroup` in an external system, provided by the
   // `DataProvider`.
@@ -44,4 +60,32 @@ message EventGroup {
   // If set, this value must be unique among `EventGroup`s for the parent
   // `DataProvider`.
   string event_group_reference_id = 3;
+
+  // The `EventTemplate`s that events associated with this `EventGroup` conform
+  // to.
+  repeated string event_templates = 7 [(google.api.resource_reference).type =
+      "halo.wfanet.org/EventTemplate"];
+
+  // The set of VID model lines used to label events in this `EventGroup`.
+  repeated string vid_model_lines = 8;
+
+  message Metadata {
+    message Entry {
+      // The key of this map entry. Resource name of an `EventGroupField` that
+      // provides the type schema for `value`.
+      string key = 1 [(google.api.resource_reference).type =
+          "halo.wfanet.org/EventGroupField"];
+
+      // The value of this map entry.
+      FieldValue value = 2;
+    }
+
+    // Map of `EventGroupField` name to the value of that field.
+    repeated Entry entries = 1;
+  }
+
+  // Encrypted `SignedData` containing the serialized `Metadata`, which can be
+  // verified using `data_provider_certificate`. The encryption uses
+  // `measurement_consumer_public_key` as the recipient public key.
+  bytes encrypted_metadata = 9;
 }
