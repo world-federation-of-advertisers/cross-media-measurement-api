@@ -158,5 +158,6 @@ message Measurement {
     // Cancelled by Measurement Consumer.
     MANUAL = 2;
   }
+  // Set when the state is set to CANCELLED. Output-only.
   CancellationCause cancellationCause = 12;
 }
