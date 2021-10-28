@@ -151,13 +151,17 @@ message Measurement {
   // `Measurement`.
   string measurement_reference_id = 11;
 
-  enum CancellationCause {
-    CANCELLATION_CAUSE_UNSPECIFIED = 0;
-    // Cancelled when the associated certificate was revoked.
-    CERTIFICATE_REVOKED = 1;
-    // Cancelled by Measurement Consumer.
-    MANUAL = 2;
+  message Failure {
+    enum Reason {
+      REASON_UNSPECIFIED = 0;
+      // An associated certificate was revoked.
+      CERTIFICATE_REVOKED = 1;
+    }
+    Reason reason = 1;
+    // Human-readable message. This should not contain any sensitive
+    // information.
+    string message = 2;
   }
-  // Set when the state is set to CANCELLED. Output-only.
-  CancellationCause cancellationCause = 12;
+  // Set when the state is set to FAILED. Output-only.
+  Failure failure = 12;
 }
