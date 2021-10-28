@@ -150,4 +150,13 @@ message Measurement {
   // `MeasurementConsumer`. This serves as an idempotency key for the
   // `Measurement`.
   string measurement_reference_id = 11;
+
+  enum CancellationCause {
+    CANCELLATION_CAUSE_UNSPECIFIED = 0;
+    // Cancelled when the associated certificate was revoked.
+    CERTIFICATE_REVOKED = 1;
+    // Cancelled by Measurement Consumer.
+    MANUAL = 2;
+  }
+  CancellationCause cancellationCause = 12;
 }
