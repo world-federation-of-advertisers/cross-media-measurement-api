@@ -156,6 +156,10 @@ message Measurement {
       REASON_UNSPECIFIED = 0;
       // An associated certificate was revoked.
       CERTIFICATE_REVOKED = 1;
+      // Requisition state was set to REFUSED.
+      REQUISITION_REFUSED = 2;
+      // ComputationParticipant state was set to FAILED.
+      COMPUTATION_PARTICIPANT_FAILED = 3;
     }
     Reason reason = 1;
     // Human-readable message. This should not contain any sensitive
