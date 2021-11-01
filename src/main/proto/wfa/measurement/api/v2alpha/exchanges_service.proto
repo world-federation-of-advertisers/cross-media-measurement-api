@@ -44,7 +44,7 @@ message GetExchangeRequest {
       [(google.api.resource_reference).type = "halo.wfanet.org/Exchange"];
   // Party name. Required.
   oneof party {
-    string data_provider = 3
+    string data_provider = 2
         [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
     string model_provider = 3 [(google.api.resource_reference).type =
                                    "halo.wfanet.org/ModelProvider"];
