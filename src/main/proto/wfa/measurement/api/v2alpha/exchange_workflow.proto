@@ -175,8 +175,8 @@ message ExchangeWorkflow {
     // Copies an input from a previous exchange into this one.
     message CopyFromPreviousExchangeStep {}
 
-    // Hashes a set of single encrypted join keys
-    message LookupKeys {}
+    // Hashes a set of decrypted join keys
+    message GenerateLookupKeys {}
 
     oneof step {
       CopyFromSharedStorageStep copy_from_shared_storage_step = 5;
