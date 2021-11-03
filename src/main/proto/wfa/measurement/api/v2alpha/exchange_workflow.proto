@@ -168,7 +168,7 @@ message ExchangeWorkflow {
     message GenerateCertificateStep {}
 
     // Generates a public/private key for encrypting/decrypting sensitive
-    // data in shared storage.
+    // data.
     message GenerateEncryptionKeysStep {}
 
     // Preprocesses data for later use by ExecutePrivateMembershipQueriesStep
@@ -176,6 +176,12 @@ message ExchangeWorkflow {
 
     // Copies an input from a previous exchange into this one.
     message CopyFromPreviousExchangeStep {}
+
+    // Generates an encrypted blob from a source blob
+    message EncryptBlobStep {}
+
+    // Generates an decrypted blob from a source encrypted blob
+    message DecryptBlobStep {}
 
     oneof step {
       CopyFromSharedStorageStep copy_from_shared_storage_step = 5;
@@ -199,6 +205,8 @@ message ExchangeWorkflow {
       GenerateEncryptionKeysStep generate_encryption_keys_step = 19;
       PreprocessEventsStep preprocess_events_step = 20;
       CopyFromPreviousExchangeStep copy_from_previous_exchange_step = 21;
+      EncryptBlobStep encrypt_blob_step = 22;
+      DecryptBlobStep decrypt_blob_step = 23;
     }
   }
 

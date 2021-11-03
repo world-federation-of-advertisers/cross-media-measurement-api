@@ -8,6 +8,39 @@
 # * Each step is run on hardware controlled by the `party` given in each step. #
 ################################################################################
 
+# MP generates a blob storage public/private key pair.
+steps {
+  step_id: "generate_blob_encryption_keys_step"
+  party: MODEL_PROVIDER
+
+  generate_encryption_keys_step {}
+
+  output_labels { key: "input" value: "mp-blob-encryption-private-key" }
+  output_labels { key: "input" value: "mp-blob-encryption-public-key" }
+}
+
+# MP exports its blob encryption public key.
+steps {
+  step_id: "export-blob-encryption-public-key"
+  party: MODEL_PROVIDER
+
+  copy_to_shared_storage_step {}
+
+  input_labels { key: "blob-encryption-public-key" value: "mp-blob-encryption-public-key" }
+  output_labels { key: "blob-encryption-public-key-for-mp" value: "blob-encryption-public-key-for-mp" }
+}
+
+# EDP imports MP's blob encryption public key.
+steps {
+  step_id: "import-blob-encryption-public-key-for-mp"
+  party: DATA_PROVIDER
+
+  copy_from_shared_storage_step {}
+
+  input_labels { key: "blob-encryption-public-key-for-mp" value: "blob-encryption-public-key-for-mp" }
+  output_labels { key: "blob-encryption-public-key-for-mp" value: "edp-blob-encryption-public-key-for-mp" }
+}
+
 # EDP provides a previously generated pepper used in generating AES keys.
 steps {
   step_id: "input-hkdf-pepper"
@@ -18,25 +51,49 @@ steps {
   output_labels { key: "input" value: "edp-hkdf-pepper" }
 }
 
-# EDP exports its hkdf pepper.
+# EDP encrypts its hkdf pepper using MP's public key.
 steps {
-  step_id: "export-hkdf-pepper"
+  step_id: "encrypt-hkdf-pepper"
+  party: DATA_PROVIDER
+
+  encrypt_blob_step {}
+
+  input_labels { key: "hkdf-pepper" value: "edp-hkdf-pepper" }
+  input_labels { key: "blob-encryption-public-key-for-mp" value: "edp-blob-encryption-public-key-for-mp" }
+  output_labels { key: "hkdf-pepper" value: "edp-encrypted-hkdf-pepper" }
+}
+
+# EDP exports its encrypted hkdf pepper.
+steps {
+  step_id: "export-encrypted-hkdf-pepper"
   party: DATA_PROVIDER
 
   copy_to_shared_storage_step {}
 
-  input_labels { key: "hkdf-pepper" value: "edp-hkdf-pepper" }
-  output_labels { key: "hkdf-pepper" value: "hkdf-pepper" }
+  input_labels { key: "encrypted-hkdf-pepper" value: "edp-encrypted-hkdf-pepper" }
+  output_labels { key: "encrypted-hkdf-pepper" value: "encrypted-hkdf-pepper" }
 }
 
-# MP imports EDP's hkdf pepper.
+# MP imports EDP's encrypted hkdf pepper.
 steps {
-  step_id: "import-hkdf-pepper"
+  step_id: "import-encrypted-hkdf-pepper"
   party: MODEL_PROVIDER
 
   copy_from_shared_storage_step {}
 
-  input_labels { key: "hkdf-pepper" value: "hkdf-pepper" }
+  input_labels { key: "encrypted-hkdf-pepper" value: "encrypted-hkdf-pepper" }
+  output_labels { key: "encrypted-hkdf-pepper" value: "mp-encrypted-hkdf-pepper" }
+}
+
+# MP decrypts its hkdf pepper with its private key.
+steps {
+  step_id: "decrypt-hkdf-pepper"
+  party: MODEL_PROVIDER
+
+  decrypt_blob_step {}
+
+  input_labels { key: "blob-encryption-private-key" value: "mp-blob-encryption-private-key" }
+  input_labels { key: "encrypted-hkdf-pepper" value: "mp-encrypted-hkdf-pepper" }
   output_labels { key: "hkdf-pepper" value: "mp-hkdf-pepper" }
 }
 
@@ -50,6 +107,18 @@ steps {
   output_labels { key: "input" value: "edp-identifier-hash-pepper" }
 }
 
+# EDP encrypts its identifier hash pepper using MP's public key.
+steps {
+  step_id: "encrypt-identifier-hash-pepper"
+  party: DATA_PROVIDER
+
+  encrypt_blob_step {}
+
+  input_labels { key: "identifier-hash-pepper" value: "edp-identifier-hash-pepper" }
+  input_labels { key: "blob-encryption-public-key-for-mp" value: "edp-blob-encryption-public-key-for-mp" }
+  output_labels { key: "encrypted-identifier-hash-pepper" value: "edp-encrypted-identifier-hash-pepper" }
+}
+
 # EDP exports its identifier hash pepper.
 steps {
   step_id: "export-identifier-hash-pepper"
@@ -57,18 +126,30 @@ steps {
 
   copy_to_shared_storage_step {}
 
-  input_labels { key: "identifier-hash-pepper" value: "edp-identifier-hash-pepper" }
-  output_labels { key: "identifier-hash-pepper" value: "identifier-hash-pepper" }
+  input_labels { key: "encrypted-identifier-hash-pepper" value: "edp-encrypted-identifier-hash-pepper" }
+  output_labels { key: "encrypted-identifier-hash-pepper" value: "encrypted-identifier-hash-pepper" }
 }
 
-# MP imports EDP's identifier hash pepper.
+# MP imports EDP's encrypted identifier hash pepper.
 steps {
-  step_id: "import-identifier-hash-pepper"
+  step_id: "import-encrypted-identifier-hash-pepper"
   party: MODEL_PROVIDER
 
   copy_from_shared_storage_step {}
 
-  input_labels { key: "identifier-hash-pepper" value: "identifier-hash-pepper" }
+  input_labels { key: "encrypted-identifier-hash-pepper" value: "encrypted-identifier-hash-pepper" }
+  output_labels { key: "encrypted-identifier-hash-pepper" value: "mp-encrypted-identifier-hash-pepper" }
+}
+
+# MP decrypts its identifier-hash pepper using its private key.
+steps {
+  step_id: "decrypt-identifier-hash-pepper"
+  party: MODEL_PROVIDER
+
+  decrypt_blob_step {}
+
+  input_labels { key: "blob-encryption-private-key" value: "mp-blob-encryption-private-key" }
+  input_labels { key: "encrypted-identifier-hash-pepper" value: "mp-encrypted-identifier-hash-pepper" }
   output_labels { key: "identifier-hash-pepper" value: "mp-identifier-hash-pepper" }
 }
 
