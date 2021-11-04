@@ -101,8 +101,8 @@ message ListExchangeStepsRequest {
 
     // Party name. Required.
     oneof party {
-      string data_provider = 3
-          [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+      string data_provider = 3 [(google.api.resource_reference).type =
+                                    "halo.wfanet.org/DataProvider"];
       string model_provider = 4 [(google.api.resource_reference).type =
                                      "halo.wfanet.org/ModelProvider"];
     }
