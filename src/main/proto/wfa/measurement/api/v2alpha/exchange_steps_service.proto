@@ -87,7 +87,7 @@ message ListExchangeStepsRequest {
   // The service may return fewer than this value.
   // If unspecified, at most 50 `ExchangeStep`s will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 4;
+  int32 page_size = 2;
 
   // A page token, received from a previous `ListExchangeStepsRequest` call.
   // Provide this to retrieve the subsequent page.
@@ -95,7 +95,7 @@ message ListExchangeStepsRequest {
   // When paginating, all other parameters provided to
   // `ListExchangeStepsRequest` must match the call that provided the
   // page token.
-  string page_token = 5;
+  string page_token = 3;
 
   // Filter criteria. Repeated fields are treated as logical ORs, and multiple
   // fields specified as logical ANDs.
@@ -116,7 +116,7 @@ message ListExchangeStepsRequest {
                                      "halo.wfanet.org/ModelProvider"];
     }
   }
-  Filter filter = 6;
+  Filter filter = 4;
 }
 
 message ListExchangeStepsResponse {
