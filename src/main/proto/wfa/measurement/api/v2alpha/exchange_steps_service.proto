@@ -75,11 +75,6 @@ message ClaimReadyExchangeStepResponse {
 
 // Request message for `ListExchangeSteps` method.
 message ListExchangeStepsRequest {
-  // This can take any of the following forms:
-  //
-  // recurringExchanges/{recurring_exchange}/exchanges/{exchange}
-  // dataProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}
-  // modelProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}
   string parent = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/Exchange"];
 
