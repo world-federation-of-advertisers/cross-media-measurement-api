@@ -176,7 +176,7 @@ message ExchangeWorkflow {
     message CopyFromPreviousExchangeStep {}
 
     // Hashes a set of decrypted join keys
-    message GenerateLookupKeys {}
+    message GenerateLookupKeysStep {}
 
     // Generates an encrypted blob from a source blob
     message EncryptBlobStep {}
