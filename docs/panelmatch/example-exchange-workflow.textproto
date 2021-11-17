@@ -259,7 +259,7 @@ steps {
 
   reencrypt_step {}
 
-  input_labels { key: "data" value: "edp-single-blinded-joinkeys-copy" }
+  input_labels { key: "data" value: "edp-single-blinded-joinkeys-audit-trail" }
   input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
 
   output_labels { key: "output" value: "edp-double-blinded-join-keys" }
