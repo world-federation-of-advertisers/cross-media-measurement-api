@@ -303,12 +303,12 @@ steps {
   step_id: "generate-lookup-keys-step"
   party: MODEL_PROVIDER
 
-  generate_join_keys_step {}
+  generate_lookup_keys_step {}
 
   input_labels { key: "decrypted-join-keys" value: "mp-decrypted-join-keys" }
   input_labels { key: "pepper" value: "mp-identifier-hash-pepper" }
 
-  output_labels { key: "join-keys" value: "mp-lookup-keys" }
+  output_labels { key: "lookup-keys" value: "mp-lookup-keys" }
 }
 
 # MP generates rlwe private and public keys.
