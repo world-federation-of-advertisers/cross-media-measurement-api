@@ -41,6 +41,7 @@ message ExchangeWorkflow {
     UNKNOWN_STORAGE_CLIENT = 0;
     GOOGLE_CLOUD_STORAGE = 1;
     AMAZON_S3 = 2;
+    FILE_SYSTEM = 3;
   }
 
   // Building blocks of the ExchangeWorkflow.
