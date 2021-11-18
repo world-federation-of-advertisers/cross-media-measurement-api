@@ -41,6 +41,7 @@ message ExchangeWorkflow {
     UNKNOWN_STORAGE_CLIENT = 0;
     GOOGLE_CLOUD_STORAGE = 1;
     AMAZON_S3 = 2;
+    // This is to support testing and likely should NOT be used in production.
     FILE_SYSTEM = 3;
   }
 
