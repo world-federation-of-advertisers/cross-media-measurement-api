@@ -188,13 +188,12 @@ steps {
 # These are used to validate that the new single-blinded joinkeys derived in
 # this protocol don't deviate too much.
 steps {
-  step_id: "input-previous-single-blinded-join-keys"
+  step_id: "input-previous-single-blinded-join-keys-audit-trail"
   party: DATA_PROVIDER
 
   copy_from_previous_exchange_step {}
 
-  input_labels { key: "input" value: "edp-single-blinded-join-keys-audit-trail" }
-  output_labels { key: "output" value: "edp-previous-single-blinded-join-keys" }
+  output_labels { key: "output" value: "edp-previous-single-blinded-join-keys-audit-trail" }
 }
 
 # MP wraps their hashed join keys in a layer of deterministic commutative
@@ -244,11 +243,11 @@ steps {
     maximum_new_items_allowed: 100
   }
 
-  input_labels { key: "previous-data" value: "edp-previous-single-blinded-join-keys" }
+  input_labels { key: "previous-data" value: "edp-previous-single-blinded-join-keys-audit-trail" }
   input_labels { key: "current-data" value: "edp-single-blinded-join-keys" }
 
   # Outputs "current-data" as a local copy for long-term auditing storage.
-  output_labels { key: "output" value: "edp-single-blinded-joinkeys-audit-trail" }
+  output_labels { key: "output" value: "edp-single-blinded-join-keys-audit-trail" }
 }
 
 # EDP wraps the single-encrypted join keys in another layer of
@@ -259,7 +258,7 @@ steps {
 
   reencrypt_step {}
 
-  input_labels { key: "data" value: "edp-single-blinded-joinkeys-audit-trail" }
+  input_labels { key: "data" value: "edp-single-blinded-join-keys-audit-trail" }
   input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
 
   output_labels { key: "output" value: "edp-double-blinded-join-keys" }
