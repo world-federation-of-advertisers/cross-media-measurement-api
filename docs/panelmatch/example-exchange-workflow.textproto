@@ -193,7 +193,6 @@ steps {
 
   copy_from_previous_exchange_step {}
 
-  input_labels { key: "input" value: "edp-previous-single-blinded-join-keys-audit-trail" }
   output_labels { key: "output" value: "edp-previous-single-blinded-join-keys-audit-trail" }
 }
 
