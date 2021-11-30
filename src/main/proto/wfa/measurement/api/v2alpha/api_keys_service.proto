@@ -40,8 +40,14 @@ service ApiKeys {
 
 // Request message for `CreateApiKey` method.
 message CreateApiKeyRequest {
-  // The `ApiKey` to create. Required. The system will assign an ID.
-  ApiKey apiKey = 1;
+  // Name of the parent resource. Required.
+  string parent = 1
+      [(google.api.resource_reference).child_type = "halo.wfanet.org/ApiKey"];
+
+  // The `ApiKey` to create. Required.
+  //
+  // The `name` field will be ignored, and the system will assign an ID.
+  ApiKey apiKey = 2;
 }
 
 message DeleteApiKeyRequest {
