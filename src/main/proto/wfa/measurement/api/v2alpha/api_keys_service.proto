@@ -31,11 +31,11 @@ service ApiKeys {
   // `MeasurementConsumer` the `ApiKey` is being created for.
   rpc CreateApiKey(CreateApiKeyRequest) returns (ApiKey) {}
 
-  // Deletes an `ApiKey`.
+  // Revokes an `ApiKey`.
   //
   // Results in PERMISSION_DENIED if the authenticated caller does not own the
   // `MeasurementConsumer` the `ApiKey` is being used for.
-  rpc DeleteApiKey(DeleteApiKeyRequest) returns (ApiKey) {}
+  rpc RevokeApiKey(RevokeApiKeyRequest) returns (ApiKey) {}
 }
 
 // Request message for `CreateApiKey` method.
@@ -50,8 +50,8 @@ message CreateApiKeyRequest {
   ApiKey apiKey = 2;
 }
 
-message DeleteApiKeyRequest {
-  // Resource name of the `ApiKey` to delete. Required.
+message RevokeApiKeyRequest {
+  // Resource name of the `ApiKey` to revoke. Required.
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/ApiKey"];
 }
