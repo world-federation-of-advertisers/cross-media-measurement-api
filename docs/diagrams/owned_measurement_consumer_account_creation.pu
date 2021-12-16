@@ -1,0 +1,30 @@
+@startuml
+ 
+skinparam default {
+  fontName "Roboto"
+  fontSize 13
+  defaultMonospacedFontName "Roboto Mono"
+}
+ 
+autonumber
+actor User
+boundary "API Server" as Server
+database "Database" as DB
+ 
+User->Server: ""CreateAccount"" request
+activate Server
+Server->DB: Check account credentials
+activate DB
+autonumber stop
+return
+autonumber resume
+Server->Server: Generate activation token
+Server->Server: Build account
+Server->DB: Persist account
+activate DB
+autonumber stop
+return
+autonumber resume
+return ""CreateAccount"" response
+ 
+@enduml

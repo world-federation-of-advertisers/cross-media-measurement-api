@@ -1,0 +1,37 @@
+@startuml
+ 
+skinparam default {
+  fontName "Roboto"
+  fontSize 13
+  defaultMonospacedFontName "Roboto Mono"
+}
+ 
+autonumber
+actor User
+boundary "API Server" as Server
+database "Database" as DB
+ 
+User->Server: ""ActivateAccount"" request
+activate Server
+Server->DB: Get Account
+activate DB
+autonumber stop
+return
+autonumber resume
+Server->Server: Check account is unactivated
+Server->Server: Activate account
+Server->Server: Set identity
+Server->DB: Update account
+activate DB
+autonumber stop
+return
+autonumber resume
+Server->Server: Check owned measurement consumer
+Server->DB: Add account as owner of owned measurement consumer
+activate DB
+autonumber stop
+return
+autonumber resume
+return ""ActivateAccount"" response
+ 
+@enduml

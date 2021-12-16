@@ -1,0 +1,35 @@
+@startuml
+ 
+skinparam default {
+  fontName "Roboto"
+  fontSize 13
+  defaultMonospacedFontName "Roboto Mono"
+}
+ 
+autonumber
+actor "CMMS Operator" as Operator
+boundary "Internal API Server" as Server
+database "Database" as DB
+ 
+Operator->Server: ""CreateAccount"" request
+activate Server
+Server->Server: Generate activation token
+Server->Server: Build account
+Server->DB: Persist account
+activate DB
+autonumber stop
+return
+autonumber resume
+Server->Operator: ""CreateAccount"" response
+ 
+Operator->Server: ""CreateMeasurementConsumerCreationToken"" request
+activate Server
+Server->Server: Generate measurement consumer creation token
+Server->DB: Persist measurement consumer creation token
+activate DB
+autonumber stop
+return
+autonumber resume
+Server->Operator: ""CreateMeasurementConsumerCreationToken"" response
+ 
+@enduml
