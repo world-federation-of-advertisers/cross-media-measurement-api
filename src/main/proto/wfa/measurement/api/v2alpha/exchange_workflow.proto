@@ -211,6 +211,7 @@ message ExchangeWorkflow {
       GenerateLookupKeysStep generate_lookup_keys_step = 21;
       EncryptBlobStep encrypt_blob_step = 22;
       DecryptBlobStep decrypt_blob_step = 23;
+      GenerateBlobEncryptionKeysStep generate_blob_encryption_keys_step = 24;
     }
   }
 
