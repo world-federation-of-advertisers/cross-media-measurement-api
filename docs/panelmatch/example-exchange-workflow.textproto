@@ -15,8 +15,8 @@ steps {
 
   generate_encryption_keys_step {}
 
-  output_labels { key: "input" value: "mp-blob-encryption-private-key" }
-  output_labels { key: "input" value: "mp-blob-encryption-public-key" }
+  output_labels { key: "private-key" value: "mp-blob-encryption-private-key" }
+  output_labels { key: "public-key" value: "mp-blob-encryption-public-key" }
 }
 
 # MP exports its blob encryption public key.
@@ -160,7 +160,7 @@ steps {
 
   generate_commutative_deterministic_key_step {}
 
-  output_labels { key: "symmetric-key" value: "mp-commutative-deterministic-key" }
+  output_labels { key: "symmetric-key" value: "mp-commutative-deterministic-key-audit-trail" }
 }
 
 # MP provides unencrypted join keys
@@ -205,10 +205,10 @@ steps {
 
   encrypt_step {}
 
-  input_labels { key: "data" value: "mp-plaintext-join-keys" }
-  input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
+  input_labels { key: "unencrypted-data" value: "mp-plaintext-join-keys" }
+  input_labels { key: "encryption-key" value: "mp-commutative-deterministic-key-audit-trail" }
 
-  output_labels { key: "output" value: "mp-single-blinded-join-keys" }
+  output_labels { key: "encrypted-data" value: "mp-single-blinded-join-keys" }
 }
 
 steps {
@@ -259,10 +259,10 @@ steps {
 
   reencrypt_step {}
 
-  input_labels { key: "data" value: "edp-single-blinded-join-keys-audit-trail" }
-  input_labels { key: "crypto-key" value: "edp-commutative-deterministic-key" }
+  input_labels { key: "encrypted-data" value: "edp-single-blinded-join-keys-audit-trail" }
+  input_labels { key: "encryption-key" value: "edp-commutative-deterministic-key" }
 
-  output_labels { key: "output" value: "edp-double-blinded-join-keys" }
+  output_labels { key: "reencrypted-data" value: "edp-double-blinded-join-keys" }
 }
 
 steps {
@@ -292,10 +292,10 @@ steps {
 
   decrypt_step {}
 
-  input_labels { key: "crypto-key" value: "mp-commutative-deterministic-key" }
-  input_labels { key: "data" value: "mp-double-blinded-join-keys" }
+  input_labels { key: "encryption-key" value: "mp-commutative-deterministic-key-audit-trail" }
+  input_labels { key: "encrypted-data" value: "mp-double-blinded-join-keys" }
 
-  output_labels { key: "output" value: "mp-decrypted-join-keys" }
+  output_labels { key: "unencrypted-data" value: "mp-decrypted-join-keys" }
 }
 
 # MP generates lookup keys from EDP's identifier hash pepper and decrypted join keys.
