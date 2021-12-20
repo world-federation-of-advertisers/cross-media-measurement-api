@@ -10,7 +10,7 @@
 
 # MP generates a blob storage public/private key pair.
 steps {
-  step_id: "generate_blob_encryption_keys_step"
+  step_id: "generate-blob-encryption-keys-step"
   party: MODEL_PROVIDER
 
   generate_encryption_keys_step {}
@@ -160,7 +160,7 @@ steps {
 
   generate_commutative_deterministic_key_step {}
 
-  output_labels { key: "input" value: "mp-commutative-deterministic-key" }
+  output_labels { key: "symmetric-key" value: "mp-commutative-deterministic-key" }
 }
 
 # MP provides unencrypted join keys
@@ -183,17 +183,18 @@ steps {
   output_labels { key: "input" value: "edp-commutative-deterministic-key" }
 }
 
-# EDP provides the previous protocol execution's single blinded joinkeys as input.
+# EDP provides the previous protocol execution's single blinded join keys as input.
 #
-# These are used to validate that the new single-blinded joinkeys derived in
+# These are used to validate that the new single-blinded join keys derived in
 # this protocol don't deviate too much.
 steps {
-  step_id: "input-previous-single-blinded-join-keys-audit-trail"
+  step_id: "input-previous-single-blinded-join-keys"
   party: DATA_PROVIDER
 
   copy_from_previous_exchange_step {}
 
-  output_labels { key: "output" value: "edp-previous-single-blinded-join-keys-audit-trail" }
+  input_labels { key: "input" value: "edp-single-blinded-join-keys-audit-trail" }
+  output_labels { key: "output" value: "edp-previous-single-blinded-join-keys" }
 }
 
 # MP wraps their hashed join keys in a layer of deterministic commutative
@@ -243,7 +244,7 @@ steps {
     maximum_new_items_allowed: 100
   }
 
-  input_labels { key: "previous-data" value: "edp-previous-single-blinded-join-keys-audit-trail" }
+  input_labels { key: "previous-data" value: "edp-previous-single-blinded-join-keys" }
   input_labels { key: "current-data" value: "edp-single-blinded-join-keys" }
 
   # Outputs "current-data" as a local copy for long-term auditing storage.
