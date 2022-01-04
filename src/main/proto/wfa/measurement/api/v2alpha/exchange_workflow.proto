@@ -187,13 +187,17 @@ message ExchangeWorkflow {
       CopyFromSharedStorageStep copy_from_shared_storage_step = 5;
       CopyToSharedStorageStep copy_to_shared_storage_step = 6;
       IntersectAndValidateStep intersect_and_validate_step = 7;
-      CommutativeDeterministicEncryptStep commutative_deterministic_encrypt_step = 8;
-      CommutativeDeterministicReEncryptStep commutative_deterministic_reencrypt_step = 9;
-      CommutativeDeterministicDecryptStep commutative_deterministic_decrypt_step = 10;
+      CommutativeDeterministicEncryptStep
+          commutative_deterministic_encrypt_step = 8;
+      CommutativeDeterministicReEncryptStep
+          commutative_deterministic_reencrypt_step = 9;
+      CommutativeDeterministicDecryptStep
+          commutative_deterministic_decrypt_step = 10;
       InputStep input_step = 11;
       GenerateCommutativeDeterministicKeyStep
           generate_commutative_deterministic_key_step = 12;
-      GenerateSerializedRlweKeyPairStep generate_serialized_rlwe_key_pair_step = 13;
+      GenerateSerializedRlweKeyPairStep generate_serialized_rlwe_key_pair_step =
+          13;
       ExecutePrivateMembershipQueriesStep
           execute_private_membership_queries_step = 14;
       BuildPrivateMembershipQueriesStep build_private_membership_queries_step =
@@ -206,7 +210,8 @@ message ExchangeWorkflow {
       GenerateLookupKeysStep generate_lookup_keys_step = 20;
       HybridEncryptStep hybrid_encrypt_step = 21;
       HybridDecryptStep hybrid_decrypt_step = 22;
-      GenerateHybridEncryptionKeyPairStep generate_hybrid_encryption_key_pair_step = 23;
+      GenerateHybridEncryptionKeyPairStep
+          generate_hybrid_encryption_key_pair_step = 23;
     }
   }
 
