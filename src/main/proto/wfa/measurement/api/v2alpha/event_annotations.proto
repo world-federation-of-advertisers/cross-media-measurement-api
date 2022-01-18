@@ -40,4 +40,3 @@ extend google.protobuf.MessageOptions {
   EventTemplateDescriptor event_template = 50000;
   EventFieldDescriptor event_field = 50001;
 }
-
