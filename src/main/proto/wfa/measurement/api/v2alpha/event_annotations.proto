@@ -14,29 +14,30 @@
 
 syntax = "proto3";
 
-package wfa.measurement.internal.kingdom;
+package wfa.measurement.api.v2alpha;
 
-option java_package = "org.wfanet.measurement.internal.kingdom";
+option java_package = "wfa.measurement.api.v2alpha";
 option java_multiple_files = true;
 
 // Metadata about an Event Field.
 message EventFieldDescriptor {
+  // Human-readable name of the Event Field, e.g. for display in a UI. Required.
   string display_name = 1;
+  // High-level description of the Event Field.
   string description = 2;
 }
 
 // Metadata about an Event Template.
 message EventTemplateDescriptor {
+  // Human-readable name of the Event Template. Required.
   string display_name = 1;
+  // High-level description of the Event Template.
   string description = 2;
 }
 
 // Custom options for messages.
 extend google.protobuf.MessageOptions {
   EventTemplateDescriptor event_template = 50000;
-}
-
-// Custom options for message fields.
-extend google.protobuf.FieldOptions {
   EventFieldDescriptor event_field = 50001;
 }
+
