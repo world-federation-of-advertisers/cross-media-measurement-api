@@ -102,7 +102,7 @@ proto_library(
     srcs = ["event_annotations.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
-        "@com_google_protobuf//:descriptor_proto"
+        "@com_google_protobuf//:descriptor_proto",
     ]
 )
 
