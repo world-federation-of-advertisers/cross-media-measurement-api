@@ -37,7 +37,7 @@ message EventTemplateDescriptor {
   string description = 2;
 }
 
-// Custom options for messages.
+// Custom options for messages. Numbering starts at 50000 which is the start of the range for internal use.
 extend google.protobuf.MessageOptions {
   EventTemplateDescriptor event_template = 50000;
   EventFieldDescriptor event_field = 50001;
