@@ -49,7 +49,7 @@ message Account {
   // Resource name of the `Account` that created this one. Output-only.
   // Immutable.
   string creator = 2
-  [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
 
   // Possible activation state of an `Account`.
   enum ActivationState {
@@ -69,8 +69,8 @@ message Account {
     //
     // This can only be a `MeasurementConsumer` that `creator` is an owner of.
     string owned_measurement_consumer = 1
-    [(google.api.resource_reference).type =
-        "halo.wfanet.org/MeasurementConsumer"];
+        [(google.api.resource_reference).type =
+             "halo.wfanet.org/MeasurementConsumer"];
 
     // Token that can be used to activate the account. Output-only.
     string activation_token = 2;
