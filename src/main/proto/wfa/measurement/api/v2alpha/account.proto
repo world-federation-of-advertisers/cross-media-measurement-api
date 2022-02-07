@@ -80,7 +80,7 @@ message Account {
   // Only set when `activation_state` is `UNACTIVATED` in `FULL` view.
   ActivationParams activation_params = 4;
 
-  // DEPRECATED: suppose not to owned by an Account
+  // DEPRECATED: suppose not to be owned by an Account
   string measurement_consumer_creation_token = 5 [deprecated = true];
 
   // OpenID Connect identity.
