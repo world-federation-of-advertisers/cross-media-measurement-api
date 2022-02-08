@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "google/protobuf/any.proto";
 import "google/type/date.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -80,8 +81,8 @@ message ExchangeWorkflow {
     message GenerateCommutativeDeterministicKeyStep {}
 
     message GenerateSerializedRlweKeyPairStep {
-      // This is a serialized instance of private_membership.batch.Parameters.
-      bytes serialized_parameters = 1;
+      // This is generally an instance of private_membership.batch.Parameters.
+      google.protobuf.Any parameters = 1;
     }
 
     message CopyOptions {
@@ -132,8 +133,8 @@ message ExchangeWorkflow {
 
     // Executes Private Membership queries.
     message ExecutePrivateMembershipQueriesStep {
-      // This is a serialized instance of private_membership.batch.Parameters.
-      bytes serialized_parameters = 1;
+      // This is generally an instance of private_membership.batch.Parameters.
+      google.protobuf.Any parameters = 1;
       int32 encrypted_query_result_file_count = 2;
       int32 num_shards = 3;
       int32 num_buckets_per_shard = 4;
@@ -142,8 +143,8 @@ message ExchangeWorkflow {
 
     // Builds Private Membership queries.
     message BuildPrivateMembershipQueriesStep {
-      // This is a serialized instance of private_membership.batch.Parameters.
-      bytes serialized_parameters = 1;
+      // This is generally an instance of private_membership.batch.Parameters.
+      google.protobuf.Any parameters = 1;
       int32 encrypted_query_bundle_file_count = 2;
       int32 query_id_to_ids_file_count = 3;
       int32 num_shards = 4;
@@ -155,8 +156,8 @@ message ExchangeWorkflow {
 
     // Decrypts results from Private Membership queries.
     message DecryptPrivateMembershipQueryResultsStep {
-      // This is a serialized instance of private_membership.batch.Parameters.
-      bytes serialized_parameters = 1;
+      // This is generally an instance of private_membership.batch.Parameters.
+      google.protobuf.Any parameters = 1;
       int32 decrypt_event_data_set_file_count = 2;
     }
 
