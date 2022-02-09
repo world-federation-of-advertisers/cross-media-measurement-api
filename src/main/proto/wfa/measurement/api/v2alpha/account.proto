@@ -80,11 +80,8 @@ message Account {
   // Only set when `activation_state` is `UNACTIVATED` in `FULL` view.
   ActivationParams activation_params = 4;
 
-  // Token that can be used to create a `MeasurementConsumer` resource.
-  // Output-only. Immutable.
-  //
-  // Only set in `FULL` view.
-  string measurement_consumer_creation_token = 5;
+  // DEPRECATED: suppose not to be owned by an Account
+  string measurement_consumer_creation_token = 5 [deprecated = true];
 
   // OpenID Connect identity.
   message OpenIdConnectIdentity {
