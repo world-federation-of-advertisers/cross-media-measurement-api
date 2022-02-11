@@ -16,7 +16,6 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
-import "google/api/expr/v1alpha1/syntax.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -29,12 +28,10 @@ option java_outer_classname = "RequisitionSpecProto";
 message RequisitionSpec {
   // Filter to apply to events.
   message EventFilter {
-    // Parsed CEL expression that contains non-PB and PB fields.
+    // Raw CEL expression that contains non-PB and PB fields.
     // PB fields : date, age, gender, vid.
     // Non-PB fields : watch_duration, ...
-    google.api.expr.v1alpha1.Expr filter_expression = 1;
-    // Raw CEL expression. Can be used for logging.
-    string unparsed_filter_expression = 2;
+    string unparsed_filter_expression = 1;
   }
   message EventGroupEntry {
     // Key of the map entry, which is an `EventGroup` resource name. Required.
