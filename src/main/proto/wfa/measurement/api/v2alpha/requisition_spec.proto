@@ -29,9 +29,11 @@ option java_outer_classname = "RequisitionSpecProto";
 message RequisitionSpec {
   // Filter to apply to events.
   message EventFilter {
-    // Parsed CEL expression.
+    // Parsed CEL expression that contains non-PB and PB fields.
+    // PB fields : date, age, gender, vid.
+    // Non-PB fields : watch_duration, ...
     google.api.expr.v1alpha1.Expr filter_expression = 1;
-    // Raw CEL expression.
+    // Raw CEL expression. Can be used for logging.
     string unparsed_filter_expression = 2;
   }
   message EventGroupEntry {
