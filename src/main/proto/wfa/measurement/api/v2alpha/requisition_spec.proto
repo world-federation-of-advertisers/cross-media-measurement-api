@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "google/api/expr/v1alpha1/syntax.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -28,34 +29,10 @@ option java_outer_classname = "RequisitionSpecProto";
 message RequisitionSpec {
   // Filter to apply to events.
   message EventFilter {
-    // Age, gender identity, viewable duration, etc.
-    // TODO: Design and add filter predicates.
-    message Predicate {}
-
-    // Filter term where all `Predicate`s and nested `Conjunction`s are
-    // logically ORed.
-    message Disjunction {
-      // `Predicates` which are logically ORed.
-      repeated Predicate predicates = 1;
-
-      // Nested `Conjunction`s.
-      repeated Conjunction and = 2;
-    }
-
-    // Filter term where all `Predicate`s and nested `Disjunction`s are
-    // logically ANDed.
-    message Conjunction {
-      // `Predicates` which are logically ANDed.
-      repeated Predicate predicates = 1;
-
-      // Nested `Disjunction`s.
-      repeated Disjunction or = 2;
-    }
-
-    oneof term {
-      Conjunction and = 1;
-      Disjunction or = 2;
-    }
+    // Parsed CEL expression.
+    google.api.expr.v1alpha1.Expr filter_expression  = 1;
+    // Raw CEL expression.
+    string unparsed_filter_expression = 2;
   }
   message EventGroupEntry {
     // Key of the map entry, which is an `EventGroup` resource name. Required.
