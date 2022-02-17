@@ -28,9 +28,8 @@ option java_outer_classname = "RequisitionSpecProto";
 message RequisitionSpec {
   // Filter to apply to events.
   message EventFilter {
-    // Raw CEL expression that is applied to events at the EDP.
-    // The fields in this expression references the fields in the event
-    // templates.
+    // Raw CEL expression that is applied to a message which has a field for
+    // each event template.
     string expression = 1;
   }
   message EventGroupEntry {
