@@ -28,10 +28,10 @@ option java_outer_classname = "RequisitionSpecProto";
 message RequisitionSpec {
   // Filter to apply to events.
   message EventFilter {
-    // Raw CEL expression that contains non-PB and PB fields.
-    // PB fields : date, age, gender, vid.
-    // Non-PB fields : watch_duration, ...
-    string unparsed_filter_expression = 1;
+    // Raw CEL expression that is applied to events at the EDP.
+    // The fields in this expression references the fields in the event
+    // templates.
+    string expression = 1;
   }
   message EventGroupEntry {
     // Key of the map entry, which is an `EventGroup` resource name. Required.
