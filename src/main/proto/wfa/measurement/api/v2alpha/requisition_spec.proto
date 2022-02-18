@@ -28,34 +28,9 @@ option java_outer_classname = "RequisitionSpecProto";
 message RequisitionSpec {
   // Filter to apply to events.
   message EventFilter {
-    // Age, gender identity, viewable duration, etc.
-    // TODO: Design and add filter predicates.
-    message Predicate {}
-
-    // Filter term where all `Predicate`s and nested `Conjunction`s are
-    // logically ORed.
-    message Disjunction {
-      // `Predicates` which are logically ORed.
-      repeated Predicate predicates = 1;
-
-      // Nested `Conjunction`s.
-      repeated Conjunction and = 2;
-    }
-
-    // Filter term where all `Predicate`s and nested `Disjunction`s are
-    // logically ANDed.
-    message Conjunction {
-      // `Predicates` which are logically ANDed.
-      repeated Predicate predicates = 1;
-
-      // Nested `Disjunction`s.
-      repeated Disjunction or = 2;
-    }
-
-    oneof term {
-      Conjunction and = 1;
-      Disjunction or = 2;
-    }
+    // Raw CEL expression that is applied to a message which has a field for
+    // each event template.
+    string expression = 1;
   }
   message EventGroupEntry {
     // Key of the map entry, which is an `EventGroup` resource name. Required.
