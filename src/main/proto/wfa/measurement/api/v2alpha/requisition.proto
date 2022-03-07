@@ -53,8 +53,7 @@ message Requisition {
   // Immutable.
   SignedData measurement_spec = 4;
 
-  // Denormalized `protocol_config` field from `measurement`. Required.
-  // Immutable.
+  // Denormalized `protocol_config` field from `measurement`. Immutable.
   ProtocolConfig protocol_config = 5;
 
   // Denormalized `data_provider_certificate` field from the corresponding
