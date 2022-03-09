@@ -37,6 +37,10 @@ service Requisitions {
   //
   // This is a state transition method (see https://aip.dev/216).
   rpc RefuseRequisition(RefuseRequisitionRequest) returns (Requisition);
+
+  // Fulfills a `Requisition` directly without calling a `Duchy`.
+  rpc FulfillDirectRequisition(FulfillDirectRequisitionRequest)
+      returns (FulfillDirectRequisitionResponse);
 }
 
 // Request message for `ListRequisitions` method.
@@ -89,4 +93,34 @@ message RefuseRequisitionRequest {
 
   // Details about the refusal. Required.
   Requisition.Refusal refusal = 2;
+}
+
+// Request message for `FulfillDirectRequisition` method.
+message FulfillDirectRequisitionRequest {
+  // Resource name of the `Requisition. Required.
+  string name = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
+
+  // Encrypted `SignedData` containing the data for fulfillment. Required.
+  //
+  // The encryption uses the measurement_public_key from measurement_spec as
+  // the recipient's public key.
+  bytes encrypted_data = 2;
+
+  // The fingerprint of the `Requisition`. Required.
+  //
+  // This is defined as the SHA256 hash of the concatenation of:
+  // 1. The `data` in `measurement_spec` from the `Requisition`.
+  // 2. The SHA256 hash of `encrypted_requisition_spec` from the
+  //    `Requisition`.
+  bytes requisition_fingerprint = 3;
+
+  // The `nonce` value from the `encrypted_requisition_spec`. Required.
+  fixed64 nonce = 4;
+}
+
+// Response message for `FulfillDirectRequisition` method.
+message FulfillDirectRequisitionResponse {
+  // Resulting state of the `Requisition`.
+  Requisition.State state = 1;
 }
