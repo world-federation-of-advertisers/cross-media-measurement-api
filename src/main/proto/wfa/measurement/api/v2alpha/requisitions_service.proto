@@ -95,7 +95,7 @@ message RefuseRequisitionRequest {
   Requisition.Refusal refusal = 2;
 }
 
-// Request message for `FulfillRequisition` method.
+// Request message for `FulfillDirectRequisition` method.
 message FulfillDirectRequisitionRequest {
   // Resource name of the `Requisition. Required.
   string name = 1
@@ -119,7 +119,7 @@ message FulfillDirectRequisitionRequest {
   fixed64 nonce = 4;
 }
 
-// Response message for `FulfillRequisition` method.
+// Response message for `FulfillDirectRequisition` method.
 message FulfillDirectRequisitionResponse {
   // Resulting state of the `Requisition`.
   Requisition.State state = 1;
