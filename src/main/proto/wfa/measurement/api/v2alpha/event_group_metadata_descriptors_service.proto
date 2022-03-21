@@ -25,42 +25,48 @@ option java_outer_classname = "EventGroupMetadataDescriptorsServiceProto";
 
 // Service for interacting with `EventGroupMetadataDescriptor` resources.
 service EventGroupMetadataDescriptors {
-    // Returns the `EventGroupMetadataDescriptor` with the specified resource key.
-    rpc GetEventGroupMetadataDescriptor(GetEventGroupMetadataDescriptorRequest) returns (EventGroupMetadataDescriptor) {}
+  // Returns the `EventGroupMetadataDescriptor` with the specified resource key.
+  rpc GetEventGroupMetadataDescriptor(GetEventGroupMetadataDescriptorRequest)
+      returns (EventGroupMetadataDescriptor) {}
 
-    // Creates (registers) a `EventGroupMetadataDescriptor` defined in the specified
-    // `DataProvider`'s system.
-    rpc CreateEventGroupMetadataDescriptor(CreateEventGroupMetadataDescriptorRequest) returns (EventGroupMetadataDescriptor) {}
+  // Creates (registers) a `EventGroupMetadataDescriptor` defined in the
+  // specified `DataProvider`'s system.
+  rpc CreateEventGroupMetadataDescriptor(
+      CreateEventGroupMetadataDescriptorRequest)
+      returns (EventGroupMetadataDescriptor) {}
 
-    // Updates an existing `EventGroupMetadataDescriptor`. Results in a `PERMISSION_DENIED` error if
-    // the authenticated user does not have access to the `EventGroupMetadataDescriptor`. Results in
-    // a `NOT_FOUND` error if the the specified `EventGroupMetadataDescriptor` does not exist.
-    rpc UpdateEventGroupMetadataDescriptor(UpdateEventGroupMetadataDescriptorRequest) returns (EventGroupMetadataDescriptor) {}
+  // Updates an existing `EventGroupMetadataDescriptor`. Results in a
+  // `PERMISSION_DENIED` error if the authenticated user does not have access to
+  // the `EventGroupMetadataDescriptor`. Results in a `NOT_FOUND` error if the
+  // the specified `EventGroupMetadataDescriptor` does not exist.
+  rpc UpdateEventGroupMetadataDescriptor(
+      UpdateEventGroupMetadataDescriptorRequest)
+      returns (EventGroupMetadataDescriptor) {}
 }
 
 // Request message for `GetEventGroupMetadataDescriptor` method.
 message GetEventGroupMetadataDescriptorRequest {
-    // Resource name.
-    string name = 1
-    [(google.api.resource_reference).type = "halo.wfanet.org/EventGroupMetadataDescriptor"];
+  // Resource name.
+  string name = 1 [(google.api.resource_reference).type =
+                       "halo.wfanet.org/EventGroupMetadataDescriptor"];
 }
 
 // Request message for `CreateEventGroupMetadataDescriptor` method.
 message CreateEventGroupMetadataDescriptorRequest {
-    // Resource name of the parent `DataProvider`. Required.
-    string parent = 1
-    [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource name of the parent `DataProvider`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
 
-    // The `EventGroupMetadataDescriptor` to create. Required.
-    //
-    // The `key` field will be ignored, and the system will assign an ID. Results
-    // in an `ALREADY_EXISTS` error if there is already a child `EventGroupMetadataDescriptor` with
-    // the same `event_group_reference_id`.
-    EventGroupMetadataDescriptor event_group_metadata_descriptor = 2;
+  // The `EventGroupMetadataDescriptor` to create. Required.
+  //
+  // The `key` field will be ignored, and the system will assign an ID. Results
+  // in an `ALREADY_EXISTS` error if there is already a child
+  // `EventGroupMetadataDescriptor` with the same `event_group_reference_id`.
+  EventGroupMetadataDescriptor event_group_metadata_descriptor = 2;
 }
 
 // Request message for `UpdateEventGroup` method.
 message UpdateEventGroupMetadataDescriptorRequest {
-    // The `EventGroupMetadataDescriptor` to update. Required.
-    EventGroupMetadataDescriptor event_group_metadata_descriptor = 1;
+  // The `EventGroupMetadataDescriptor` to update. Required.
+  EventGroupMetadataDescriptor event_group_metadata_descriptor = 1;
 }

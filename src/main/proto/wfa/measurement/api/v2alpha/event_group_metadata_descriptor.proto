@@ -23,21 +23,22 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "EventGroupMetadataDescriptorProto";
 
-// The metadata message descriptor of an `EventGroup`. This metadata is used to describe the
-// contents of an `EventGroup` without needing a direct dependency on it.
+// The metadata message descriptor of an `EventGroup`. This metadata is used to
+// describe the contents of an `EventGroup` without needing a direct dependency
+// on it.
 message EventGroupMetadataDescriptor {
-    option (google.api.resource) = {
-        type: "halo.wfanet.org/EventGroupMetadataDescriptor"
-        pattern: "dataProviders/{data_provider}/eventGroupMetadataDescriptors/{event_group_metadata_descriptor}"
-    };
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/EventGroupMetadataDescriptor"
+    pattern: "dataProviders/{data_provider}/eventGroupMetadataDescriptors/{event_group_metadata_descriptor}"
+  };
 
-    // FileDescriptorSet of the metadata proto message.
-    google.protobuf.FileDescriptorSet descriptor_set = 1;
+  // FileDescriptorSet of the metadata proto message.
+  google.protobuf.FileDescriptorSet descriptor_set = 1;
 
-    // ID referencing the `EventGroupMetadataDescriptor` in an external system, provided by the
-    // `DataProvider`.
-    //
-    // If set, this value must be unique among `EventGroupMetadataDescriptor`s for the parent
-    // `DataProvider`.
-    string external_reference_id = 2;
+  // ID referencing the `EventGroupMetadataDescriptor` in an external system,
+  // provided by the `DataProvider`.
+  //
+  // If set, this value must be unique among `EventGroupMetadataDescriptor`s for
+  // the parent `DataProvider`.
+  string external_reference_id = 2;
 }
