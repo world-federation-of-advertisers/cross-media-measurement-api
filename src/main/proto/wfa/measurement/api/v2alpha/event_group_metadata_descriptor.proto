@@ -1,0 +1,43 @@
+// Copyright 2021 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/resource.proto";
+import "google/protobuf/descriptor.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "EventGroupMetadataDescriptorProto";
+
+// The metadata message descriptor of an `EventGroup`. This metadata is used to describe the
+// contents of an `EventGroup` without needing a direct dependency on it.
+message EventGroupMetadataDescriptor {
+    option (google.api.resource) = {
+        type: "halo.wfanet.org/EventGroupMetadataDescriptor"
+        pattern: "dataProviders/{data_provider}/eventGroupMetadataDescriptors/{event_group_metadata_descriptor}"
+    };
+
+    // FileDescriptorSet of the metadata proto message.
+    google.protobuf.FileDescriptorSet descriptor_set = 1;
+
+    // ID referencing the `EventGroupMetadataDescriptor` in an external system, provided by the
+    // `DataProvider`.
+    //
+    // If set, this value must be unique among `EventGroupMetadataDescriptor`s for the parent
+    // `DataProvider`.
+    string external_reference_id = 2;
+}
