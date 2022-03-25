@@ -177,6 +177,6 @@ message Requisition {
   // set when `state` is `REFUSED`.
   Refusal refusal = 12;
 
-  // Denormalized `state` field from `measurement`. Immutable. Output-only.
+  // Denormalized `state` field from `measurement`. Output-only.
   Measurement.State measurement_state = 13;
 }
