@@ -75,9 +75,9 @@ message EventGroup {
   // TODO(robinsonsc): Complete design for metadata registration and update.
   message Metadata {
     // The resource name of the metadata descriptor.
-    string event_group_metadata_descriptor = 1;
-    [(google.api.resource_reference).type =
-         "halo.wfanet.org/EventGroupMetadataDescriptor"];
+    string event_group_metadata_descriptor = 1
+        [(google.api.resource_reference).type =
+             "halo.wfanet.org/EventGroupMetadataDescriptor"];
 
     // The serialized value of the metadata message.
     google.protobuf.Any metadata = 2;
