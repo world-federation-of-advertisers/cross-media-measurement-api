@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "google/protobuf/any.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -72,7 +73,13 @@ message EventGroup {
 
   // Wrapper for per-EDP Event Group metadata.
   // TODO(robinsonsc): Complete design for metadata registration and update.
-  message Metadata {}
+  message Metadata {
+    // The resource name of the metadata descriptor.
+    string descriptor_name = 1;
+
+    // The serialized value of the metadata message.
+    google.protobuf.Any metadata = 2;
+  }
 
   // Encrypted serialized `Metadata`. The encryption uses
   // `measurement_consumer_public_key` as the recipient public key.

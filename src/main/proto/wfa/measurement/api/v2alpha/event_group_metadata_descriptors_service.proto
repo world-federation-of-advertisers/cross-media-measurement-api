@@ -25,7 +25,8 @@ option java_outer_classname = "EventGroupMetadataDescriptorsServiceProto";
 
 // Service for interacting with `EventGroupMetadataDescriptor` resources.
 service EventGroupMetadataDescriptors {
-  // Returns the `EventGroupMetadataDescriptor` with the specified resource key.
+  // Returns the `EventGroupMetadataDescriptor` with the specified resource
+  // name.
   rpc GetEventGroupMetadataDescriptor(GetEventGroupMetadataDescriptorRequest)
       returns (EventGroupMetadataDescriptor) {}
 
@@ -59,7 +60,7 @@ message CreateEventGroupMetadataDescriptorRequest {
 
   // The `EventGroupMetadataDescriptor` to create. Required.
   //
-  // The `key` field will be ignored, and the system will assign an ID. Results
+  // The `name` field will be ignored, and the system will assign an ID. Results
   // in an `ALREADY_EXISTS` error if there is already a child
   // `EventGroupMetadataDescriptor` with the same `event_group_reference_id`.
   EventGroupMetadataDescriptor event_group_metadata_descriptor = 2;
