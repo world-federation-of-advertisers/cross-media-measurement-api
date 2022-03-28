@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -69,6 +70,7 @@ message ListRequisitionsRequest {
     repeated Requisition.State states = 1;
     string measurement = 2
         [(google.api.resource_reference).type = "halo.wfanet.org/Measurement"];
+    repeated Measurement.State measurement_states = 3;
   }
   // Result filter. If a page token is specified, then this will be ignored and
   // the filter for the first page will be applied.
