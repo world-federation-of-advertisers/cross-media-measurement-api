@@ -53,7 +53,7 @@ message Measurement {
         [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
 
     message Value {
-      // Resource key of the `Certificate` belonging to `data_provider`.
+      // Resource name of the `Certificate` belonging to `data_provider`.
       // Required.
       string data_provider_certificate = 1
           [(google.api.resource_reference).type =
@@ -119,10 +119,10 @@ message Measurement {
     Frequency frequency = 2;
   }
 
-  // X.509 certificate in DER format which can be verified using the
-  // Aggregator's root certificate. Output-only. Only set if `state` is
-  // `SUCCEEDED`.
-  bytes aggregator_certificate = 7;
+  // Resource name of a `Certificate` belonging to the aggregator `Duchy`.
+  // Output-only. Only set if `state` is `SUCCEEDED`.
+  string aggregator_certificate = 7
+      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
 
   // Encrypted `SignedData` containing the serialized `Result`, which can be
   // verified using `aggregator_certificate`. Output-only. Must be set if
