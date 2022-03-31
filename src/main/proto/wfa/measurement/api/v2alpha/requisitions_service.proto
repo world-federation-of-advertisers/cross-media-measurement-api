@@ -109,16 +109,8 @@ message FulfillDirectRequisitionRequest {
   // the recipient's public key.
   bytes encrypted_data = 2;
 
-  // The fingerprint of the `Requisition`. Required.
-  //
-  // This is defined as the SHA256 hash of the concatenation of:
-  // 1. The `data` in `measurement_spec` from the `Requisition`.
-  // 2. The SHA256 hash of `encrypted_requisition_spec` from the
-  //    `Requisition`.
-  bytes requisition_fingerprint = 3;
-
   // The `nonce` value from the `encrypted_requisition_spec`. Required.
-  fixed64 nonce = 4;
+  fixed64 nonce = 3;
 }
 
 // Response message for `FulfillDirectRequisition` method.
