@@ -102,7 +102,7 @@ message Measurement {
   State state = 6;
 
   // The result of a `Measurement` computation.
-  message Result {
+  message ReachAndFrequencyResult {
     message Reach {
       // Number of unique users exposed.
       int64 value = 1;
@@ -124,12 +124,37 @@ message Measurement {
   string aggregator_certificate = 7
       [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
 
-  // Encrypted `SignedData` containing the serialized `Result`, which can be
-  // verified using `aggregator_certificate`. Output-only. Must be set if
-  // `state` is `SUCCEEDED`.
+  // The result of an Impression or Duration Measurement request from one
+  // `DataProvider`.
+  message DirectResult {
+    // X.509 certificate in DER format.
+    bytes data_provider_certificate = 1;
+
+    // Encrypted `SignedData` representing the impression count or watch
+    // duration, which can be verified using `data_provider_certificate`.
+    bytes encrypted_data = 2;
+  }
+
+  // List of `DirectResult`.
+  message DirectResults {
+    repeated DirectResult directResults = 1;
+  }
+
+  // This can be one of multiple things.
   //
-  // The encryption uses the `measurement_public_key` from `measurement_spec` as
-  // the recipient public key.
+  // 1. Encrypted `SignedData` containing the serialized
+  // `ReachAndFrequencyResult`, which can be verified using
+  // `aggregator_certificate`. Set if `measurement_spec` `measurement_type` is
+  // ReachAndFrequency.
+  //
+  // 2. Encrypted `DirectResults`. Decrypt and verify the individual values
+  // then add them up to obtain the final result. Values can be verified using
+  // `data_provider_certificate` specific to each value. Set if
+  // `measurement_spec` `measurement_type` is Impression or Duration.
+  //
+  // Output-only. Must be set if `state` is `SUCCEEDED`. The encryption uses the
+  // `measurement_public_key` from `measurement_spec` as the recipient public
+  // key.
   bytes encrypted_result = 8;
 
   // ID referencing the `Measurement` in an external system, provided by the
