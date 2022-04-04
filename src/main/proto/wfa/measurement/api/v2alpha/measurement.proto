@@ -101,8 +101,7 @@ message Measurement {
   }
   State state = 6;
 
-  // The result of a `Measurement` computation.
-  message Result {
+  message ReachAndFrequencyResult {
     message Reach {
       // Number of unique users exposed.
       int64 value = 1;
@@ -119,18 +118,40 @@ message Measurement {
     Frequency frequency = 2;
   }
 
-  // Resource name of a `Certificate` belonging to the aggregator `Duchy`.
-  // Output-only. Only set if `state` is `SUCCEEDED`.
-  string aggregator_certificate = 7
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  message ImpressionResult {
+    message Impression {
+      // Number of impressions.
+      int64 value = 1;
+    }
+    Impression impression = 1;
+  }
 
-  // Encrypted `SignedData` containing the serialized `Result`, which can be
-  // verified using `aggregator_certificate`. Output-only. Must be set if
-  // `state` is `SUCCEEDED`.
-  //
-  // The encryption uses the `measurement_public_key` from `measurement_spec` as
-  // the recipient public key.
-  bytes encrypted_result = 8;
+  message DurationResult {
+    message Duration {
+      // Total duration in seconds.
+      int64 value = 1;
+    }
+    Duration duration = 1;
+  }
+
+  // The result of a `Measurement` computation.
+  message Result {
+    // Encrypted `SignedData` containing the serialized
+    // `ReachAndFrequencyResult`, `ImpressionResult`, or `DurationResult`
+    // which can be verified using `certificate`.
+    //
+    // The encryption uses the `measurement_public_key` from `measurement_spec`
+    // as the recipient public key.
+    bytes encryptedResult = 1;
+
+    // Resource name of a `Certificate` belonging to the entity that produced
+    // the result, which can be `Duchy` or `DataProvider`.
+    string certificate = 2
+        [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  }
+
+  // List of `Result`. Output-only. Only set if `state` is `SUCCEEDED`.
+  repeated Result results = 8;
 
   // ID referencing the `Measurement` in an external system, provided by the
   // Measurement Consumer.
