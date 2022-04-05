@@ -101,7 +101,8 @@ message Measurement {
   }
   State state = 6;
 
-  message ReachAndFrequencyResult {
+  // The result of a `Measurement`.
+  message Result {
     message Reach {
       // Number of unique users exposed.
       int64 value = 1;
@@ -116,33 +117,27 @@ message Measurement {
       map<int64, double> relative_frequency_distribution = 1;
     }
     Frequency frequency = 2;
-  }
 
-  message ImpressionResult {
     message Impression {
       // Number of impressions.
       int64 value = 1;
     }
-    Impression impression = 1;
-  }
+    Impression impression = 3;
 
-  message DurationResult {
     message Duration {
       // Total duration in seconds.
       int64 value = 1;
     }
-    Duration duration = 1;
+    Duration duration = 4;
   }
 
-  // The result of a `Measurement` computation.
-  message Result {
-    // Encrypted `SignedData` containing the serialized
-    // `ReachAndFrequencyResult`, `ImpressionResult`, or `DurationResult`
+  message ResultPair {
+    // Encrypted `SignedData` containing the serialized `Result`
     // which can be verified using `certificate`.
     //
     // The encryption uses the `measurement_public_key` from `measurement_spec`
     // as the recipient public key.
-    bytes encryptedResult = 1;
+    bytes encrypted_result = 1;
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
@@ -150,8 +145,8 @@ message Measurement {
         [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
   }
 
-  // List of `Result`. Output-only. Only set if `state` is `SUCCEEDED`.
-  repeated Result results = 8;
+  // List of `ResultPair`. Output-only. Only set if `state` is `SUCCEEDED`.
+  repeated ResultPair results = 8;
 
   // ID referencing the `Measurement` in an external system, provided by the
   // Measurement Consumer.
