@@ -169,8 +169,17 @@ message ExchangeWorkflow {
     // Preprocesses data for later use by ExecutePrivateMembershipQueriesStep
     message PreprocessEventsStep {}
 
-    // Copies an input from a previous exchange into this one.
-    message CopyFromPreviousExchangeStep {}
+    // Copies a blob from a previous exchange into this one. Requires a single
+    // output label "output".
+    //
+    // If this is the first exchange in a recurring exchange, this step is
+    // treated as an `InputStep` that awaits the existence of the indicated
+    // output blob key. For all subsequent exchanges, this step copies the blob
+    // named `previous_blob_key` from the previous exchange and writes it to
+    // the indicated output blob key.
+    message CopyFromPreviousExchangeStep {
+      string previous_blob_key = 1;
+    }
 
     // Hashes a set of decrypted join keys
     message GenerateLookupKeysStep {}
