@@ -33,20 +33,25 @@ message ModelProvider {
   // Resource name.
   string name = 1;
 
+  // DEPRECATED: no more hold by ModelProvider.
   // The X.509 certificate belonging to this `ModelProvider` in DER format which
   // can be used to verify `public_key`. Required.
-  bytes certificate_der = 2;
+  bytes certificate_der = 2 [deprecated = true];
 
+  // DEPRECATED: no more hold by ModelProvider.
   // Resource name of the `Certificate` belonging to this `ModelProvider` which
   // can be used to verify `public_key`. Output-only.
   //
   // The `x509_der` field of this resource matches `certificate_der`.
-  string certificate = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  string certificate = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    deprecated = true
+  ];
 
+  // DEPRECATED: no more hold by ModelProvider.
   // Serialized `EncryptionPublicKey` for this `ModelProvider`, which can be
   // verified using `certificate`. Required.
-  SignedData public_key = 4;
+  SignedData public_key = 4 [deprecated = true];
 
   // Display name of the `ModelProvider`.
   string display_name = 5;
