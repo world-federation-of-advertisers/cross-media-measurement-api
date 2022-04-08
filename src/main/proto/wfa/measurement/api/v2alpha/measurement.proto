@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
@@ -119,16 +120,16 @@ message Measurement {
     Frequency frequency = 2;
 
     message Impression {
-      // Number of impressions.
+      // Number of total impressions.
       int64 value = 1;
     }
     Impression impression = 3;
 
-    message Duration {
-      // Total duration in seconds.
-      int64 value = 1;
+    message WatchDuration {
+      // Total duration.
+      Duration value = 1;
     }
-    Duration duration = 4;
+    WatchDuration watchDuration = 4;
   }
 
   message ResultPair {
