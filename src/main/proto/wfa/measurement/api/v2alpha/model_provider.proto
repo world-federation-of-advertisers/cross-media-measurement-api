@@ -34,5 +34,5 @@ message ModelProvider {
   string name = 1;
 
   // Display name of the `ModelProvider`.
-  string display_name = 5;
+  string display_name = 2;
 }
