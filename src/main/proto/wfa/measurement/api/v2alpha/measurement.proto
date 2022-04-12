@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
@@ -101,7 +102,7 @@ message Measurement {
   }
   State state = 6;
 
-  // The result of a `Measurement` computation.
+  // The result of a `Measurement`.
   message Result {
     message Reach {
       // Number of unique users exposed.
@@ -117,20 +118,36 @@ message Measurement {
       map<int64, double> relative_frequency_distribution = 1;
     }
     Frequency frequency = 2;
+
+    message Impression {
+      // Number of total impressions.
+      int64 value = 1;
+    }
+    Impression impression = 3;
+
+    message WatchDuration {
+      // Total duration.
+      google.protobuf.Duration value = 1;
+    }
+    WatchDuration watchDuration = 4;
   }
 
-  // Resource name of a `Certificate` belonging to the aggregator `Duchy`.
-  // Output-only. Only set if `state` is `SUCCEEDED`.
-  string aggregator_certificate = 7
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  message ResultPair {
+    // Encrypted `SignedData` containing the serialized `Result`
+    // which can be verified using `certificate`.
+    //
+    // The encryption uses the `measurement_public_key` from `measurement_spec`
+    // as the recipient public key.
+    bytes encrypted_result = 1;
 
-  // Encrypted `SignedData` containing the serialized `Result`, which can be
-  // verified using `aggregator_certificate`. Output-only. Must be set if
-  // `state` is `SUCCEEDED`.
-  //
-  // The encryption uses the `measurement_public_key` from `measurement_spec` as
-  // the recipient public key.
-  bytes encrypted_result = 8;
+    // Resource name of a `Certificate` belonging to the entity that produced
+    // the result, which can be `Duchy` or `DataProvider`.
+    string certificate = 2
+        [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  }
+
+  // List of `ResultPair`. Output-only. Only set if `state` is `SUCCEEDED`.
+  repeated ResultPair results = 8;
 
   // ID referencing the `Measurement` in an external system, provided by the
   // Measurement Consumer.
