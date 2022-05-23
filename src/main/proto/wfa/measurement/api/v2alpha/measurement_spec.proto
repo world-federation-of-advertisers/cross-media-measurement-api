@@ -58,6 +58,9 @@ message MeasurementSpec {
 
     // Maximum frequency per user that will be included in this measurement.
     int32 maximum_frequency_per_user = 2;
+
+    // Range of VIDs that will be included in this measurement
+    VidSamplingInterval vid_sampling_interval = 4;
   }
 
   message Duration {
@@ -66,6 +69,9 @@ message MeasurementSpec {
     // Maximum watch duration per user that will be included in this
     // measurement.
     int32 maximum_watch_duration_per_user = 2;
+
+    // Range of VIDs that will be included in this measurement
+    VidSamplingInterval vid_sampling_interval = 4;
   }
 
   // Fields specific to the type of measurement.
