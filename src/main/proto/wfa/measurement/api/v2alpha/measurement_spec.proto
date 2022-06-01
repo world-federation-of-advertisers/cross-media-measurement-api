@@ -79,5 +79,6 @@ message MeasurementSpec {
     ReachAndFrequency reach_and_frequency = 4;
     Impression impression = 5;
     Duration duration = 6;
+    ReachAndFrequency direct_reach_and_frequency = 7;
   }
 }
