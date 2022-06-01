@@ -42,15 +42,15 @@ message MeasurementSpec {
     float width = 2;
   }
 
+  // Range of VIDs that will be included in this measurement
+  VidSamplingInterval vid_sampling_interval = 3;
+
   message ReachAndFrequency {
     // Differential privacy parameters for reach.
     DifferentialPrivacyParams reach_privacy_params = 1;
 
     // Differential privacy parameters for frequency.
     DifferentialPrivacyParams frequency_privacy_params = 2;
-
-    // Range of VIDs that will be included in this measurement
-    VidSamplingInterval vid_sampling_interval = 4;
   }
 
   message Impression {
@@ -70,8 +70,8 @@ message MeasurementSpec {
 
   // Fields specific to the type of measurement.
   oneof measurement_type {
-    ReachAndFrequency reach_and_frequency = 3;
-    Impression impression = 4;
-    Duration duration = 5;
+    ReachAndFrequency reach_and_frequency = 4;
+    Impression impression = 5;
+    Duration duration = 6;
   }
 }
