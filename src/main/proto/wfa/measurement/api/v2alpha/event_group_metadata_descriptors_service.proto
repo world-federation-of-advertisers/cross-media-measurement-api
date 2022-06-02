@@ -89,3 +89,8 @@ message BatchGetEventGroupMetadataDescriptorsRequest {
   // Result filter.
   Filter filter = 1;
 }
+
+message BatchGetEventGroupMetadataDescriptorsResponse {
+  // The `EventGroupMetadataDescriptor` resources.
+  repeated EventGroupMetadataDescriptor event_group_metadata_descriptors = 1;
+}
