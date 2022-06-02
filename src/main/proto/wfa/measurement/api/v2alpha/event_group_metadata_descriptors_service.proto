@@ -43,6 +43,11 @@ service EventGroupMetadataDescriptors {
   rpc UpdateEventGroupMetadataDescriptor(
       UpdateEventGroupMetadataDescriptorRequest)
       returns (EventGroupMetadataDescriptor) {}
+
+  // Batch gets `EventGroupMetadataDescriptors`s. Results in a `NOT_FOUND` error if any of the
+  // specified `EventGroupMetadataDescriptor`s does not exist.
+  rpc BatchGetEventGroupMetadataDescriptors(BatchGetEventGroupMetadataDescriptorsRequest)
+      returns (BatchGetEventGroupMetadataDescriptorsResponse) {}
 }
 
 // Request message for `GetEventGroupMetadataDescriptor` method.
@@ -70,4 +75,15 @@ message CreateEventGroupMetadataDescriptorRequest {
 message UpdateEventGroupMetadataDescriptorRequest {
   // The `EventGroupMetadataDescriptor` to update. Required.
   EventGroupMetadataDescriptor event_group_metadata_descriptor = 1;
+}
+
+message BatchGetEventGroupMetadataDescriptorsRequest {
+  // Filter criteria. Repeated fields are treated as logical ORs, and multiple
+  // fields specified as logical ANDs.
+  message Filter {
+    repeated string name = 1 [(google.api.resource_reference).type =
+        "halo.wfanet.org/EventGroupMetadataDescriptor"];
+  }
+  // Result filter.
+  Filter filter = 1;
 }
