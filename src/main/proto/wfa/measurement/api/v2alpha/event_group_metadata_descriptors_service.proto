@@ -79,8 +79,12 @@ message UpdateEventGroupMetadataDescriptorRequest {
 }
 
 message BatchGetEventGroupMetadataDescriptorsRequest {
+  // Resource name of the parent `DataProvider`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+
   // The names of `EventGroupMetadataDescriptor`s to retrieve.
-  repeated string names = 1
+  repeated string names = 2
       [(google.api.resource_reference).type =
            "halo.wfanet.org/EventGroupMetadataDescriptor"];
 }
