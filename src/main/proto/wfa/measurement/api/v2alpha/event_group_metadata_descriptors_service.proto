@@ -79,15 +79,10 @@ message UpdateEventGroupMetadataDescriptorRequest {
 }
 
 message BatchGetEventGroupMetadataDescriptorsRequest {
-  // Filter criteria. Repeated fields are treated as logical ORs, and multiple
-  // fields specified as logical ANDs.
-  message Filter {
-    repeated string name = 1
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/EventGroupMetadataDescriptor"];
-  }
-  // Result filter.
-  Filter filter = 1;
+  // The names of `EventGroupMetadataDescriptor`s to retrieve.
+  repeated string names = 1
+      [(google.api.resource_reference).type =
+           "halo.wfanet.org/EventGroupMetadataDescriptor"];
 }
 
 message BatchGetEventGroupMetadataDescriptorsResponse {
