@@ -36,14 +36,14 @@ message MeasurementSpec {
   repeated bytes nonce_hashes = 2;
 
   // Specifies a range of VIDs to be sampled.
-  // If start + width <= 1, then the sampled vids are those
-  // satisfying 0.0 <= start < vid < start + width.
-  // If start + width > 1, then the sampled vids are those
-  // that satisfy (start <= vid) or (vid < start + width - 1)
+  // start + width cannot be larger than 1
   message VidSamplingInterval {
     float start = 1;
     float width = 2;
   }
+
+  // Range of VIDs that will be included in this measurement
+  VidSamplingInterval vid_sampling_interval = 3;
 
   message ReachAndFrequency {
     // Differential privacy parameters for reach.
@@ -51,9 +51,6 @@ message MeasurementSpec {
 
     // Differential privacy parameters for frequency.
     DifferentialPrivacyParams frequency_privacy_params = 2;
-
-    // Range of VIDs that will be included in this measurement
-    VidSamplingInterval vid_sampling_interval = 4;
   }
 
   message Impression {
@@ -73,8 +70,8 @@ message MeasurementSpec {
 
   // Fields specific to the type of measurement.
   oneof measurement_type {
-    ReachAndFrequency reach_and_frequency = 3;
-    Impression impression = 4;
-    Duration duration = 5;
+    ReachAndFrequency reach_and_frequency = 4;
+    Impression impression = 5;
+    Duration duration = 6;
   }
 }
