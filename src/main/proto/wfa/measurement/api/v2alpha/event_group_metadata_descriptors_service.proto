@@ -43,6 +43,12 @@ service EventGroupMetadataDescriptors {
   rpc UpdateEventGroupMetadataDescriptor(
       UpdateEventGroupMetadataDescriptorRequest)
       returns (EventGroupMetadataDescriptor) {}
+
+  // Batch gets `EventGroupMetadataDescriptors`s. Results in a `NOT_FOUND` error
+  // if any of the specified `EventGroupMetadataDescriptor`s does not exist.
+  rpc BatchGetEventGroupMetadataDescriptors(
+      BatchGetEventGroupMetadataDescriptorsRequest)
+      returns (BatchGetEventGroupMetadataDescriptorsResponse) {}
 }
 
 // Request message for `GetEventGroupMetadataDescriptor` method.
@@ -70,4 +76,20 @@ message CreateEventGroupMetadataDescriptorRequest {
 message UpdateEventGroupMetadataDescriptorRequest {
   // The `EventGroupMetadataDescriptor` to update. Required.
   EventGroupMetadataDescriptor event_group_metadata_descriptor = 1;
+}
+
+message BatchGetEventGroupMetadataDescriptorsRequest {
+  // Resource name of the parent `DataProvider`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+
+  // The names of `EventGroupMetadataDescriptor`s to retrieve.
+  repeated string names = 2
+      [(google.api.resource_reference).type =
+           "halo.wfanet.org/EventGroupMetadataDescriptor"];
+}
+
+message BatchGetEventGroupMetadataDescriptorsResponse {
+  // The `EventGroupMetadataDescriptor` resources.
+  repeated EventGroupMetadataDescriptor event_group_metadata_descriptors = 1;
 }
