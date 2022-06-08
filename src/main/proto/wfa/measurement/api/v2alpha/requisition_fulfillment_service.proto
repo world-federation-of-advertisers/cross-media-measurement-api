@@ -86,7 +86,7 @@ message FulfillRequisitionRequest {
 // Request message for `FulfillRequisition` method without streaming.
 message FulfillUnaryRequisitionRequest {
   string name = 1
-  [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
   bytes requisition_fingerprint = 2;
   fixed64 nonce = 3;
   bytes data = 4;
