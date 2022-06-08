@@ -28,6 +28,10 @@ service RequisitionFulfillment {
   // Fulfills a `Requisition`.
   rpc FulfillRequisition(stream FulfillRequisitionRequest)
       returns (FulfillRequisitionResponse) {}
+
+  // Fulfills a `Requisition` without streaming.
+  rpc FulfillUnaryRequisition(FulfillUnaryRequisitionRequest)
+      returns (FulfillRequisitionResponse) {}
 }
 
 // Request message for `FulfillRequisition` method.
@@ -36,7 +40,7 @@ message FulfillRequisitionRequest {
   message Header {
     // Resource name of the `Requisition`. Required.
     string name = 1
-        [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
+    [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
 
     // The fingerprint of the `Requisition`. Required.
     //
@@ -77,6 +81,15 @@ message FulfillRequisitionRequest {
     // request messages to the first one containing the header.
     BodyChunk body_chunk = 2;
   }
+}
+
+// Request message for `FulfillRequisition` method without streaming.
+message FulfillUnaryRequisitionRequest {
+  string name = 1
+  [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
+  bytes requisition_fingerprint = 2;
+  fixed64 nonce = 3;
+  bytes data = 4;
 }
 
 // Response message for `FulfillRequisition` method.
