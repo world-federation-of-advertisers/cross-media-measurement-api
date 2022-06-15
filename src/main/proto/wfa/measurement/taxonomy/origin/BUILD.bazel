@@ -1,0 +1,25 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+IMPORT_PREFIX = "/src/main/proto"
+
+proto_library(
+    name = "event_types_proto",
+    srcs = ["event_types.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:event_annotations_proto",
+    ],
+)
+
+proto_library(
+    name = "event_templates_proto",
+    srcs = ["event_templates.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":event_types_proto",
+        "//src/main/proto/wfa/measurement/api/v2alpha:event_annotations_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)

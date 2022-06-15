@@ -1,0 +1,95 @@
+// Copyright 2022 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.taxonomy.origin;
+
+import "wfa/measurement/api/v2alpha/event_annotations.proto";
+
+option java_package = "org.wfanet.measurement.taxonomy.origin";
+option java_multiple_files = true;
+
+// For illustrative purposes only. No age splits were given for alpha.
+enum Age {
+  option (wfa.measurement.api.v2alpha.enum_type) = {
+    display_name: "Age"
+    description: "Age bucket of a virtual person."
+  };
+
+  AGE_UNSPECIFIED = 0;
+}
+
+enum Gender {
+  option (wfa.measurement.api.v2alpha.enum_type) = {
+    display_name: "Gender"
+    description: "Gender of a virtual person."
+  };
+
+  GENDER_UNSPECIFIED = 0;
+  MALE = 1;
+  FEMALE = 2;
+}
+
+// For illustrative purposes only. No geo splits were given for alpha.
+enum Geo {
+  option (wfa.measurement.api.v2alpha.enum_type) = {
+    display_name: "Geography"
+    description: "Geographic region where a virtual person resides."
+  };
+
+  GEO_UNSPECIFIED = 0;
+}
+
+enum SocialGrade {
+  option (wfa.measurement.api.v2alpha.enum_type) = {
+    display_name: "Social Grade"
+    description: "UK socio-economic classification."
+  };
+
+  SOCIAL_GRADE_UNSPECIFIED = 0;
+  A = 1;
+  B = 2;
+  C1 = 3;
+  C2 = 4;
+  D = 5;
+  E = 6;
+}
+
+enum Viewability {
+  option (wfa.measurement.api.v2alpha.enum_type) = {
+    display_name: "Viewability"
+    description: "The area of an ad that was viewable."
+  };
+
+  VIEWABILITY_UNSPECIFIED = 0;
+  ONE_HUNDRED_PERCENT_VIEWABLE = 1;
+  MRC_FIFTY_PERCENT_VIEWABLE = 2;
+  ZERO_PERCENT_VIEWABLE = 3;
+}
+
+enum ViewingCompletion {
+  option (wfa.measurement.api.v2alpha.enum_type) = {
+    display_name: "Viewing Completion"
+    description: "The duration of a video ad that was viewed."
+  };
+
+  VIEWING_COMPLETION_UNSPECIFIED = 0;
+  ONE_HUNDRED_PERCENT_COMPLETE = 1;
+  SEVENTY_FIVE_PERCENT = 2;
+  FIFTY_PERCENT_COMPLETE = 3;
+  TWENTY_FIVE_PERCENT_COMPLETE = 4;
+  MRC_TWO_SECONDS = 5;
+  ZERO_PERCENT_COMPLETE = 6;
+}
