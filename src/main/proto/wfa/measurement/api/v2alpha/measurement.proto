@@ -129,7 +129,7 @@ message Measurement {
       // Total duration.
       google.protobuf.Duration value = 1;
     }
-    WatchDuration watchDuration = 4;
+    WatchDuration watch_duration = 4;
   }
 
   message ResultPair {
