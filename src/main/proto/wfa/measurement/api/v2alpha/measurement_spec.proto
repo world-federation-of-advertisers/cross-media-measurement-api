@@ -51,6 +51,9 @@ message MeasurementSpec {
 
     // Differential privacy parameters for frequency.
     DifferentialPrivacyParams frequency_privacy_params = 2;
+
+    // Maximum frequency per user that will be included in this measurement.
+    int32 maximum_frequency_per_user = 3;
   }
 
   message Impression {
@@ -63,9 +66,12 @@ message MeasurementSpec {
   message Duration {
     DifferentialPrivacyParams privacy_params = 1;
 
-    // Maximum watch duration per user that will be included in this
+    // Maximum watch duration in seconds per user that will be included in this
     // measurement.
     int32 maximum_watch_duration_per_user = 2;
+
+    // Maximum frequency per user that will be included in this measurement.
+    int32 maximum_frequency_per_user = 3;
   }
 
   // Fields specific to the type of measurement.
