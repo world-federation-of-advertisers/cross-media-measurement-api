@@ -55,6 +55,12 @@ message Requisition {
   SignedData measurement_spec = 4;
 
   // Denormalized `protocol_config` field from `measurement`. Immutable.
+  //
+  // May not be set when `measurement_type` is `REACH_AND_FREQUENCY` and it only
+  // has single EDP(1 DataProvider which is direct reach and frequency
+  // measurement).
+  // May not be set for volumetric measurement(`measurement_type` is
+  // `IMPRESSION` or `DURATION`).
   ProtocolConfig protocol_config = 5;
 
   // Denormalized `data_provider_certificate` field from the corresponding
