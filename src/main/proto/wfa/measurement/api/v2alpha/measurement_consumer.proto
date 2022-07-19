@@ -54,4 +54,7 @@ message MeasurementConsumer {
   // Resource names of owner `Account`s. Output-only.
   repeated string owners = 6
       [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+
+  // Token to create a `MeasurementConsumer` resource. Required. Input-only.
+  string measurement_consumer_creation_token = 7;
 }
