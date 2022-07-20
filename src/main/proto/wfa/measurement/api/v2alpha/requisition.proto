@@ -55,6 +55,16 @@ message Requisition {
   SignedData measurement_spec = 4;
 
   // Denormalized `protocol_config` field from `measurement`. Immutable.
+  //
+  // If this is set, the requisition can be fulfilled by calling
+  // RequisitionFulfillment/FulfillRequisition(`measurement_type` is
+  // `REACH_AND_FREQUENCY` and it has multiple DataProviders)
+  //
+  // Otherwise the Requisition is considered "direct" and can be fulfilled by
+  // calling Requisitions/FulfillDirectRequisition
+  // (volumetric measurement - `measurement_type` is `IMPRESSION`/`DURATION`
+  // or direct reach and frequency measurement - measurement_type` is
+  // `REACH_AND_FREQUENCY` and it only has single DataProvider)
   ProtocolConfig protocol_config = 5;
 
   // Denormalized `data_provider_certificate` field from the corresponding
