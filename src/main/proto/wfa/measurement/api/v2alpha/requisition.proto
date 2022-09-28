@@ -56,7 +56,8 @@ message Requisition {
 
   // Denormalized `protocol_config` field from `measurement`. Immutable.
   //
-  // If this is set, the requisition can be fulfilled by calling
+  // If this is set and is_direct_RF_measurement flag is false, the requisition
+  // can be fulfilled by calling
   // RequisitionFulfillment/FulfillRequisition(`measurement_type` is
   // `REACH_AND_FREQUENCY` and it has multiple DataProviders)
   //
@@ -64,7 +65,8 @@ message Requisition {
   // calling Requisitions/FulfillDirectRequisition
   // (volumetric measurement - `measurement_type` is `IMPRESSION`/`DURATION`
   // or direct reach and frequency measurement - measurement_type` is
-  // `REACH_AND_FREQUENCY` and it only has single DataProvider)
+  // `REACH_AND_FREQUENCY` and is_direct_RF_measurement flag is set to true that
+  // it only has single DataProvider)
   ProtocolConfig protocol_config = 5;
 
   // Denormalized `data_provider_certificate` field from the corresponding
