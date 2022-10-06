@@ -63,13 +63,30 @@ message ProtocolConfig {
     // The maximum frequency to reveal in the histogram.
     int32 maximum_frequency = 4;
   }
+
+  message Direct {}
+
+  message Protocol {
+    // Configuration for the specific protocol.
+    oneof protocol {
+      // Liquid Legions v2 config.
+      //
+      // May only be set when the measurement type is REACH_AND_FREQUENCY.
+      LiquidLegionsV2 liquid_legions_v2 = 1;
+
+      Direct direct = 2;
+    }
+  }
+
   // Configuration for the specific protocol. Required. Immutable.
   oneof protocol {
     // Liquid Legions v2 config.
     //
     // May only be set when `measurement_type` is `REACH_AND_FREQUENCY`.
-    LiquidLegionsV2 liquid_legions_v2 = 3;
+    LiquidLegionsV2 liquid_legions_v2 = 3 [deprecated = true];
   }
+
+  repeated Protocol protocols = 4;
 }
 
 // Parameters for a Liquid Legions sketch.
