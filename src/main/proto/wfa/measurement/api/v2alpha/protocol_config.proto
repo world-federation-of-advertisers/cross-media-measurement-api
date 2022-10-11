@@ -64,6 +64,7 @@ message ProtocolConfig {
     int32 maximum_frequency = 4;
   }
 
+  // Protocol for direct measurement
   message Direct {}
 
   message Protocol {
@@ -86,6 +87,7 @@ message ProtocolConfig {
     LiquidLegionsV2 liquid_legions_v2 = 3 [deprecated = true];
   }
 
+  // List of protocols the EDP may use
   repeated Protocol protocols = 4;
 }
 
