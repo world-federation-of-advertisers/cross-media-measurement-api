@@ -66,7 +66,7 @@ message ProtocolConfig {
     int32 maximum_frequency = 4;
   }
 
-  // Protocol for direct measurement
+  // Protocol for direct measurement.
   message Direct {}
 
   message Protocol {
@@ -76,14 +76,13 @@ message ProtocolConfig {
       //
       // May only be set when the measurement type is REACH_AND_FREQUENCY.
       // Requisition can be fulfilled by calling
-      // RequisitionFulfillment/FulfillRequisition with an encrypted sketch
+      // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
       LiquidLegionsV2 liquid_legions_v2 = 1;
 
-      // direct can be fulfilled by calling
-      // Requisitions/FulfillDirectRequisition
-      // (volumetric measurement - `measurement_type` is `IMPRESSION`/`DURATION`
-      // or direct reach and frequency measurement - measurement_type` is
-      // `REACH_AND_FREQUENCY` and it only has single DataProvider)
+      // Direct protocol.
+      //
+      // The Requisition can be fulfilled by calling
+      // Requisitions/FulfillDirectRequisition.
       Direct direct = 2;
     }
   }
@@ -96,7 +95,7 @@ message ProtocolConfig {
     LiquidLegionsV2 liquid_legions_v2 = 3 [deprecated = true];
   }
 
-  // List of protocols the EDP may use
+  // List of protocols the EDP may use.
   repeated Protocol protocols = 4;
 }
 
