@@ -75,8 +75,15 @@ message ProtocolConfig {
       // Liquid Legions v2 config.
       //
       // May only be set when the measurement type is REACH_AND_FREQUENCY.
+      // Requisition can be fulfilled by calling
+      // RequisitionFulfillment/FulfillRequisition with an encrypted sketch
       LiquidLegionsV2 liquid_legions_v2 = 1;
 
+      // direct can be fulfilled by calling
+      // Requisitions/FulfillDirectRequisition
+      // (volumetric measurement - `measurement_type` is `IMPRESSION`/`DURATION`
+      // or direct reach and frequency measurement - measurement_type` is
+      // `REACH_AND_FREQUENCY` and it only has single DataProvider)
       Direct direct = 2;
     }
   }
