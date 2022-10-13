@@ -103,7 +103,7 @@ message FulfillDirectRequisitionRequest {
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/Requisition"];
 
-  // Encrypted `SignedData` containing the data(serialized Measurement.Result
+  // Encrypted `SignedData` containing the data (serialized Measurement.Result
   // message) for fulfillment. Required.
   //
   // The encryption uses the measurement_public_key from measurement_spec as
