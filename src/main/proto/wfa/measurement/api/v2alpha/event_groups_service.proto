@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
+import "google/protobuf/empty.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -36,6 +37,11 @@ service EventGroups {
   // the authenticated user does not have access to the `EventGroup`. Results in
   // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
   rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {}
+
+  // Deletes an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
+  // the authenticated user does not have access to the `EventGroup`. Results in
+  // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
+  rpc DeleteEventGroup(DeleteEventGroupRequest) returns (google.protobuf.Empty) {}
 
   // Lists `EventGroup`s. Results in a `PERMISSION_DENIED` error if attempting
   // to list `EventGroup`s that the authenticated user does not have access to.
@@ -67,6 +73,12 @@ message CreateEventGroupRequest {
 // Request message for `UpdateEventGroup` method.
 message UpdateEventGroupRequest {
   // The `EventGroup` to update. Required.
+  EventGroup event_group = 1;
+}
+
+// Request message for `DeleteEventGroup` method.
+message DeleteEventGroupRequest {
+  // The `EventGroup` to delete. Required.
   EventGroup event_group = 1;
 }
 
