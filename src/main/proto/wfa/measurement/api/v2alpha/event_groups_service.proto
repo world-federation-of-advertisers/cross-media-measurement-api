@@ -18,7 +18,6 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/protobuf/empty.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -42,8 +41,7 @@ service EventGroups {
   // Deletes an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
   // the authenticated user does not have access to the `EventGroup`. Results in
   // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
-  rpc DeleteEventGroup(DeleteEventGroupRequest)
-      returns (google.protobuf.Empty) {}
+  rpc DeleteEventGroup(DeleteEventGroupRequest) returns (EventGroup) {}
 
   // Lists `EventGroup`s. Results in a `PERMISSION_DENIED` error if attempting
   // to list `EventGroup`s that the authenticated user does not have access to.
