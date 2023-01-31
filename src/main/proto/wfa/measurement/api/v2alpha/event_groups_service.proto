@@ -38,9 +38,11 @@ service EventGroups {
   // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
   rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {}
 
-  // Deletes an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
-  // the authenticated user does not have access to the `EventGroup`. Results in
-  // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
+  // Deletes an existing `EventGroup`. `EventGroup` will transition to a DELETED
+  // state and will have all of its mutable optional fields cleared. This action
+  // is irreversible. Results in a `PERMISSION_DENIED` error if the
+  // authenticated user does not have access to the `EventGroup`. Results in a
+  // `NOT_FOUND` error if the the specified `EventGroup` does not exist.
   rpc DeleteEventGroup(DeleteEventGroupRequest) returns (EventGroup) {}
 
   // Lists `EventGroup`s. Results in a `PERMISSION_DENIED` error if attempting
@@ -54,6 +56,9 @@ message GetEventGroupRequest {
   // Resource name.
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+
+  // Option to include deleted Event Groups.
+  bool show_deleted = 5;
 }
 
 // Request message for `CreateEventGroup` method.
@@ -107,6 +112,9 @@ message ListEventGroupsRequest {
   }
   // Result filter.
   Filter filter = 4;
+
+  // Option to include deleted Event Groups.
+  bool show_deleted = 5;
 }
 
 message ListEventGroupsResponse {
