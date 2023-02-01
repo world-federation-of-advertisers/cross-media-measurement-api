@@ -57,7 +57,7 @@ message GetEventGroupRequest {
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
 
-  // Option to include deleted Event Groups.
+  // Whether to include `EventGroup` in the DELETED state.
   bool show_deleted = 5;
 }
 
@@ -113,7 +113,7 @@ message ListEventGroupsRequest {
   // Result filter.
   Filter filter = 4;
 
-  // Option to include deleted Event Groups.
+  // Whether to include EventGroups in the DELETED state.
   bool show_deleted = 5;
 }
 
