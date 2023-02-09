@@ -71,15 +71,15 @@ message EventGroup {
   // to.
   repeated EventTemplate event_templates = 7;
 
-  // Wrapper for per-EDP Event Group metadata.
-  // TODO(robinsonsc): Complete design for metadata registration and update.
+  // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
     // The resource name of the metadata descriptor.
     string event_group_metadata_descriptor = 1
         [(google.api.resource_reference).type =
              "halo.wfanet.org/EventGroupMetadataDescriptor"];
 
-    // The serialized value of the metadata message.
+    // A message of a type described by the descriptor along with its type URL,
+    // encoded as an `Any` message.
     google.protobuf.Any metadata = 2;
   }
 

@@ -26,6 +26,9 @@ option java_outer_classname = "EventGroupMetadataDescriptorProto";
 // The metadata message descriptor of an `EventGroup.Metadata`. This metadata is
 // used to describe the contents of an `EventGroup` without needing a direct
 // dependency on it.
+//
+// See Self-describing Messages:
+// https://protobuf.dev/programming-guides/techniques/#self-description
 message EventGroupMetadataDescriptor {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroupMetadataDescriptor"
@@ -35,7 +38,10 @@ message EventGroupMetadataDescriptor {
   // Resource name.
   string name = 1;
 
-  // FileDescriptorSet of the metadata proto message, as well as transitive
-  // closure of imported proto files.
+  // `FileDescriptorSet` including the `FileDescriptorProto` of the metadata
+  // message and the transitive closure of its dependencies.
+  //
+  // This may exclude `FileDescriptorProto`s for protobuf well-known types (see
+  // https://protobuf.dev/reference/protobuf/google.protobuf/).
   google.protobuf.FileDescriptorSet descriptor_set = 2;
 }
