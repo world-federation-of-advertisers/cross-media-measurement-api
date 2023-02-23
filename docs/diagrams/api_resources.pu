@@ -33,8 +33,6 @@ resource(MeasurementConsumer) {
   owners
   Get()
 }
-resource(ProtocolConfig) {
-}
 resource(Measurement) {
   measurement_spec
   requisition_specs
@@ -54,9 +52,6 @@ together {
   }
   collection(dataProviders, DataProvider) {
     Create(data_provider)
-  }
-  collection(protocolConfigs, ProtocolConfig) {
-    List()
   }
   collection(accounts, Account) {
     Create(account)
@@ -120,7 +115,6 @@ Duchy "many" <. "many" Requisition
 MeasurementConsumer *-- measurements
 MeasurementConsumer *-- certificates
 MeasurementConsumer *-- PublicKey
-Measurement "many" ..> "1" ProtocolConfig
 
 Account *-- apiKeys
 MeasurementConsumer "many" .> " many" Account
