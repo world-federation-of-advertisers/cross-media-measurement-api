@@ -23,15 +23,12 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ProtocolConfigProto";
 
-// Resource message for a multi-party computation (MPC) protocol. Immutable.
+// Configuration for computation protocols.
 message ProtocolConfig {
-  option (google.api.resource) = {
-    type: "halo.wfanet.org/ProtocolConfig"
-    pattern: "protocolConfigs/{protocol_config}"
-  };
-
   // Resource name.
-  string name = 1;
+  //
+  // Deprecated: This is not a resource message type.
+  string name = 1 [deprecated = true];
 
   // Type of measurement.
   //
