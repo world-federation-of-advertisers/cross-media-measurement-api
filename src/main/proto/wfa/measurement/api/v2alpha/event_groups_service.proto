@@ -56,9 +56,6 @@ message GetEventGroupRequest {
   // Resource name.
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
-
-  // Whether to include `EventGroup` in the DELETED state.
-  bool show_deleted = 5;
 }
 
 // Request message for `CreateEventGroup` method.
