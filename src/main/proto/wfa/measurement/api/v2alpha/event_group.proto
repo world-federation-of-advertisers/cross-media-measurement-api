@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
@@ -86,4 +87,17 @@ message EventGroup {
   // Encrypted serialized `Metadata`. The encryption uses
   // `measurement_consumer_public_key` as the recipient public key.
   bytes encrypted_metadata = 8;
+
+  // Possible states of Event Group.
+  enum State {
+    // The default value if state is omitted. Should not be used
+    STATE_UNSPECIFIED = 0;
+    // The Event Group has been created
+    ACTIVE = 1;
+    // The Event Group has been deleted. An Event Group in a DELETED state will
+    // have all mutable optional fields cleared. This state is terminal.
+    DELETED = 2;
+  }
+  // Event Group state. Output-only.
+  State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
