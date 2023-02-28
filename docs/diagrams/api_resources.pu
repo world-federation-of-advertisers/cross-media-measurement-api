@@ -26,7 +26,6 @@ resource(PublicKey) {
 resource(Duchy) {
 }
 resource(DataProvider) {
-  owners
   Get()
 }
 resource(MeasurementConsumer) {
@@ -47,11 +46,11 @@ resource(Account) {
 together {
   collection(duchies, Duchy) {
   }
-  collection(measurementConsumers, MeasurementConsumer) {
-    Create(measurementConsumer)
-  }
   collection(dataProviders, DataProvider) {
     Create(data_provider)
+  }
+  collection(measurementConsumers, MeasurementConsumer) {
+    Create(measurementConsumer)
   }
   collection(accounts, Account) {
     Create(account)
@@ -104,9 +103,9 @@ DataProvider *-- eventGroups
 DataProvider *-- requisitions
 DataProvider *-- certificates
 DataProvider *-- PublicKey
-EventGroup "many" .> "1" MeasurementConsumer
 
-'DataProviderPublicKey -[hidden]-> requisitions
+EventGroup "many" .> "1" MeasurementConsumer
+EventGroup .> Certificate
 
 Requisition "many" .> "many" EventGroup
 Requisition "many" .> "1" Measurement
@@ -115,9 +114,9 @@ Duchy "many" <. "many" Requisition
 MeasurementConsumer *-- measurements
 MeasurementConsumer *-- certificates
 MeasurementConsumer *-- PublicKey
-
-Account *-- apiKeys
+MeasurementConsumer *-- apiKeys
 MeasurementConsumer "many" .> " many" Account
-DataProvider "many" .> "many" Account
+
+Certificate "many" <. "many" Measurement
 
 @enduml
