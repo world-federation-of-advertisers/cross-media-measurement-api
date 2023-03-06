@@ -4,7 +4,7 @@
   class $type << (R, SandyBrown) >>
 !endprocedure
 !unquoted procedure collection($name, $type)
-  $name "1" *-- "many" $type
+  $name *-- $type
   object $name
 !endprocedure
 
@@ -12,6 +12,7 @@ skinparam default {
   fontName "Roboto Mono"
   fontSize 12
 }
+skinparam linetype ortho
 
 resource(Certificate) {
   [revocation_state]
@@ -26,7 +27,6 @@ resource(PublicKey) {
 resource(Duchy) {
 }
 resource(DataProvider) {
-  owners
   Get()
 }
 resource(MeasurementConsumer) {
@@ -47,11 +47,11 @@ resource(Account) {
 together {
   collection(duchies, Duchy) {
   }
-  collection(measurementConsumers, MeasurementConsumer) {
-    Create(measurementConsumer)
-  }
   collection(dataProviders, DataProvider) {
     Create(data_provider)
+  }
+  collection(measurementConsumers, MeasurementConsumer) {
+    Create(measurementConsumer)
   }
   collection(accounts, Account) {
     Create(account)
@@ -67,6 +67,10 @@ collection(requisitions, Requisition) {
 collection(eventGroups, EventGroup) {
   Create(event_group)
   List([measurement_consumers])
+}
+collection(eventGroupMetadataDescriptors, EventGroupMetadataDescriptor) {
+  Create(event_group_metadata_descriptor)
+  Update(event_group_metadata_descriptor)
 }
 collection(measurements, Measurement) {
   Create(measurement)
@@ -87,7 +91,13 @@ resource(Requisition) {
 }
 resource(EventGroup) {
   measurement_consumer
+  metadata
+  metadata_descriptor
+  event_templates
   Get()
+}
+resource(EventGroupMetadataDescriptor) {
+  descriptor_set
 }
 resource(ApiKey) {
   nickname
@@ -96,28 +106,30 @@ resource(ApiKey) {
   Delete()
 }
 
-Certificate "1" <.. "many" PublicKey
+Certificate <.. PublicKey
 
 Duchy *-- certificates
 
 DataProvider *-- eventGroups
 DataProvider *-- requisitions
 DataProvider *-- certificates
+DataProvider *-- eventGroupMetadataDescriptors
 DataProvider *-- PublicKey
-EventGroup "many" .> "1" MeasurementConsumer
 
-'DataProviderPublicKey -[hidden]-> requisitions
+EventGroup .> MeasurementConsumer
+EventGroup .> Certificate
+EventGroup .> EventGroupMetadataDescriptor
 
-Requisition "many" .> "many" EventGroup
-Requisition "many" .> "1" Measurement
-Duchy "many" <. "many" Requisition
+Requisition .> EventGroup
+Requisition .> Measurement
+Duchy <. Requisition
 
 MeasurementConsumer *-- measurements
 MeasurementConsumer *-- certificates
 MeasurementConsumer *-- PublicKey
+MeasurementConsumer *-- apiKeys
+MeasurementConsumer .> Account
 
-Account *-- apiKeys
-MeasurementConsumer "many" .> " many" Account
-DataProvider "many" .> "many" Account
+Certificate <. Measurement
 
 @enduml
