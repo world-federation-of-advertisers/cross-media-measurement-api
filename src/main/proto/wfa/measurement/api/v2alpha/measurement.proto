@@ -20,6 +20,7 @@ import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "google/protobuf/timestamp.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -172,6 +173,22 @@ message Measurement {
     // information.
     string message = 2;
   }
+  // DEPRECATED: failure information are available in the ErrorDetails message.
   // Set when the state is set to FAILED. Output-only.
-  Failure failure = 10;
+  Failure failure = 10 [deprecated = true];
+
+  message ErrorDetails {
+    enum Type {
+      TYPE_UNSPECIFIED = 0;
+      TRANSIENT = 1;
+      PERMANENT = 2;
+    }
+    Type type = 1;
+
+    // Time that the error occurred.
+    google.protobuf.Timestamp error_time = 2;
+  }
+
+  // Set when the state is set to FAILED. Output-only.
+  ErrorDetails error = 11;
 }
