@@ -81,9 +81,9 @@ message MeasurementSpec {
 
   // Fields specific to the type of measurement.
   oneof measurement_type {
-    Reach reach = 7;
     ReachAndFrequency reach_and_frequency = 4;
     Impression impression = 5;
     Duration duration = 6;
+    Reach reach = 7;
   }
 }
