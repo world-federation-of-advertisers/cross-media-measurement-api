@@ -1,18 +1,23 @@
 @startuml
 
 !unquoted procedure resource($type)
-  class $type << (R, SandyBrown) >>
+  class $type <<(R, SandyBrown)>>
 !endprocedure
 !unquoted procedure collection($name, $type)
   $name *-- $type
-  object $name
+  object $name <<collection>>
 !endprocedure
+
+hide <<collection>> circle
+hide <<collection>> stereotype
+hide empty members
 
 skinparam default {
   fontName "Roboto Mono"
   fontSize 12
 }
-skinparam linetype ortho
+'skinparam linetype ortho
+'skinparam linetype polyline
 
 resource(Certificate) {
   [revocation_state]
@@ -32,12 +37,6 @@ resource(DataProvider) {
 resource(MeasurementConsumer) {
   owners
   Get()
-}
-resource(Measurement) {
-  measurement_spec
-  requisition_specs
-  state
-  result
 }
 resource(Account) {
   identity
@@ -80,6 +79,12 @@ collection(apiKeys, ApiKey) {
   Create(api_key)
 }
 
+resource(Measurement) {
+  measurement_spec
+  requisition_specs
+  state
+  result
+}
 resource(Requisition) {
   measurement
   requisition_spec
@@ -106,9 +111,13 @@ resource(ApiKey) {
   Delete()
 }
 
-Certificate <.. PublicKey
-
 Duchy *-- certificates
+
+MeasurementConsumer *-- measurements
+MeasurementConsumer *-- certificates
+MeasurementConsumer *-- PublicKey
+MeasurementConsumer *-- apiKeys
+MeasurementConsumer .[norank].> Account
 
 DataProvider *-- eventGroups
 DataProvider *-- requisitions
@@ -116,20 +125,17 @@ DataProvider *-- certificates
 DataProvider *-- eventGroupMetadataDescriptors
 DataProvider *-- PublicKey
 
-EventGroup .> MeasurementConsumer
-EventGroup .> Certificate
-EventGroup .> EventGroupMetadataDescriptor
+PublicKey .[norank].> Certificate
 
-Requisition .> EventGroup
-Requisition .> Measurement
-Duchy <. Requisition
+EventGroup .[norank].> MeasurementConsumer
+EventGroup .[norank].> Certificate
+EventGroup .[norank].> EventGroupMetadataDescriptor
 
-MeasurementConsumer *-- measurements
-MeasurementConsumer *-- certificates
-MeasurementConsumer *-- PublicKey
-MeasurementConsumer *-- apiKeys
-MeasurementConsumer .> Account
+Measurement .[norank].> Certificate
+Measurement -[hidden]d-> requisitions
 
-Certificate <. Measurement
+Requisition .[norank].> EventGroup
+Requisition .up.> Measurement
+Requisition .[norank].> Duchy
 
 @enduml
