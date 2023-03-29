@@ -45,6 +45,11 @@ message MeasurementSpec {
   // Range of VIDs that will be included in this measurement
   VidSamplingInterval vid_sampling_interval = 3;
 
+  message Reach {
+    // Differential privacy parameters for reach.
+    DifferentialPrivacyParams privacy_params = 1;
+  }
+
   message ReachAndFrequency {
     // Differential privacy parameters for reach.
     DifferentialPrivacyParams reach_privacy_params = 1;
@@ -79,5 +84,6 @@ message MeasurementSpec {
     ReachAndFrequency reach_and_frequency = 4;
     Impression impression = 5;
     Duration duration = 6;
+    Reach reach = 7;
   }
 }
