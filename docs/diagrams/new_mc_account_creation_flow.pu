@@ -1,0 +1,24 @@
+@startuml
+
+skinparam default {
+  fontName "Roboto"
+  fontSize 13
+  defaultMonospacedFontName "Roboto Mono"
+}
+
+autonumber
+actor "Kingdom Operator" as Operator
+boundary "Internal API Server" as InternalServer
+database DB
+
+Operator->InternalServer: ""CreateAccount"" request
+activate InternalServer
+InternalServer->InternalServer: Generate activation token
+InternalServer->DB: Persist ""Account"" in UNACTIVATED state
+activate DB
+autonumber stop
+return
+autonumber resume
+return ""Account"" with activation token
+
+@enduml
