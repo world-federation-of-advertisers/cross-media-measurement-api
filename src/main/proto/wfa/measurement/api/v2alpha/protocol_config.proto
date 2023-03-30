@@ -39,6 +39,7 @@ message ProtocolConfig {
     REACH_AND_FREQUENCY = 1;
     IMPRESSION = 2;
     DURATION = 3;
+    REACH = 4;
   }
   // The type of measurement that this protocol computes. Required. Immutable.
   MeasurementType measurement_type = 2;

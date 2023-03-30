@@ -1,0 +1,56 @@
+@startuml
+
+skinparam default {
+  fontName "Roboto"
+  fontSize 13
+  defaultMonospacedFontName "Roboto Mono"
+}
+
+autonumber
+actor "MeasurementConsumer Owner" as MC
+actor "Kingdom Operator" as Operator
+boundary "Public API Server" as PublicServer
+boundary "Internal API Server" as InternalServer
+database DB
+
+group Generating a MeasurementConsumer creation token
+MC->Operator: Request MC registration
+activate Operator
+Operator->InternalServer: ""CreateMeasurementConsumerCreationToken"" request
+activate InternalServer
+InternalServer->InternalServer: Generate MC creation token
+InternalServer->InternalServer: Hash MC creation token
+InternalServer->DB: Persist MC creation token hash
+activate DB
+autonumber stop
+return
+autonumber resume
+return ""CreateMeasurementConsumerCreationToken"" response
+return MC creation token
+
+autonumber stop
+end
+...
+
+group Creating a MeasurementConsumer
+'''
+rnote over MC: Using Account credentials
+'''
+autonumber 1
+MC->PublicServer: ""CreateMeasurementConsumer"" request
+activate PublicServer
+PublicServer->PublicServer: Hash MC creation token
+PublicServer->InternalServer: Internal ""CreateMeasurementConsumer"" request
+activate InternalServer
+InternalServer->DB: Read MC creation token hash
+activate DB
+autonumber stop
+return
+autonumber resume
+InternalServer->InternalServer: Validate token is unused
+InternalServer->DB: Persist MeasurementConsumer
+return Internal ""MeasurementConsumer""
+return ""MeasurementConsumer""
+end
+
+@enduml

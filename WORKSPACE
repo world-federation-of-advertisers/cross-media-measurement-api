@@ -18,8 +18,8 @@ rules_proto_toolchains()
 http_file(
     name = "plantuml",
     downloaded_file_path = "plantuml.jar",
-    sha256 = "112b9c44ea069a9b24f237dfb6cb7a6cfb9cd918e507e9bee2ebb9c3797f6051",
-    urls = ["https://downloads.sourceforge.net/project/plantuml/1.2020.19/plantuml.1.2020.19.jar"],
+    sha256 = "3a659c3d87ea5ebac7aadb645233176c51d0290777ebc28285dd2a35dc947752",
+    urls = ["https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar"],
 )
 
 http_archive(
