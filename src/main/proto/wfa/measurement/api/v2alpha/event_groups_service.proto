@@ -66,10 +66,14 @@ message CreateEventGroupRequest {
 
   // The `EventGroup` to create. Required.
   //
-  // The `key` field will be ignored, and the system will assign an ID. Results
-  // in an `ALREADY_EXISTS` error if there is already a child `EventGroup` with
-  // the same `event_group_reference_id`.
+  // The `name` field will be ignored, and the system will assign an ID.
   EventGroup event_group = 2;
+
+  // Unique identifier for this request.
+  //
+  // If specified, the request will be idempotent. See
+  // https://google.aip.dev/155.
+  string request_id = 3;
 }
 
 // Request message for `UpdateEventGroup` method.
