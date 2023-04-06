@@ -1,0 +1,50 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelLineProto";
+
+message ModelLine {
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/ModelLine"
+    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}"
+  };
+  string name = 1;
+
+  // Indicates the time this model line becomes active and so available for labeling. Must be in the future. Required. Immutable.
+  google.protobuf.Timestamp active_start_time = 2;
+
+  // Indicates the time this model line becomes inactive and so no longer entitled for labeling. It must be at least one week in the future. If not set, the ModelLine remains always active. This field is mutable.
+  google.protobuf.Timestamp active_end_time = 3;
+
+  enum Type {
+    DEV = 0;
+    PROD = 1;
+    HOLDBACK = 2;
+  }
+
+  // Defines the type of the ModelLine. Only model lines with type equals either to PROD or HOLDBACK are available to Measurement Consumers at report generation time. Immutable.
+  Type type = 4;
+
+  // The holdback model line that can be referenced if this model line is stopped. Optional.
+  string holdback_model_line = 5 [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+}
