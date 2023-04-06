@@ -43,7 +43,6 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:resource_proto",
-        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 
@@ -386,6 +385,16 @@ proto_library(
     srcs = ["exchange_step_attempts_service.proto"],
     deps = [
         ":exchange_step_attempt_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "time_interval_proto",
+    srcs = ["time_interval.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
