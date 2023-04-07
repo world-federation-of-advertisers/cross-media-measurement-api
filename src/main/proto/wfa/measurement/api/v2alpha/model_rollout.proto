@@ -27,23 +27,35 @@ option java_outer_classname = "ModelRolloutProto";
 message ModelRollout {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelRollout"
-    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}/modelRollout/{model_rollout}"
+    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}/modelRollouts/{model_rollout}"
   };
   string name = 1;
 
-  // The time the rollout must begin. It must be at least a week in the future. Required. Immutable.
+  // The time the rollout must begin. It must be at least a week in the future.
+  // Required. Immutable.
   google.protobuf.Timestamp rollout_start_time = 2;
 
-  // The time the rollout must end. Must be after rollout_start_time.
-  google.protobuf.Timestamp rollout_finish_time = 3;
+  // The time the rollout of the new model release must end. It cannot precede
+  // 'rollout_start_time'. If it is equal to 'rollout_start_time', then there is
+  // no gradual rollout, and the new release instantly replaces the previous
+  // one. Required. Immutable.
+  google.protobuf.Timestamp rollout_end_time = 3;
 
-  // The time that a rollout must stop rolling out. Immutable.
+  // Indicates the time the rollout must stop expanding its release percentage.
+  // It must be within 'rollout_start_time' and 'rollout_end_time'. Optional.
+  // Immutable.
   google.protobuf.Timestamp rollout_freeze_time = 4;
 
-  // The previous model rollout this model rollout transitions from. Optional. If not provided, the system will automatically set this field to the ModelRollout with the most recent rollout_start_time. Not set if rollout_start_time == rollout_completion_time.
-  string previous_model_rollout = 5 [(google.api.resource_reference).type = "halo.wfanet.org/ModelRollout"];
+  // The previous model rollout this model rollout transitions from. Optional.
+  // If not provided, the system will automatically set this field to the
+  // ModelRollout with the most recent rollout_start_time. Not set if
+  // rollout_start_time == rollout_end_time. Optional. Immutable.
+  string previous_model_rollout = 5
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRollout"];
 
-  // The ModelRelease this model rollout refers to. Both this ModelRelease and the ModelRollout needs to be parented by the same ModelSuite. Required. Immutable.
+  // The ModelRelease this model rollout refers to. Both the ModelRelease and
+  // the ModelRollout need to be parented by the same ModelSuite. Required.
+  // Immutable.
   string model_release = 6
-    [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
 }

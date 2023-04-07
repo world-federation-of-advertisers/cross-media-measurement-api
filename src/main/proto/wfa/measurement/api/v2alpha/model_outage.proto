@@ -30,7 +30,10 @@ message ModelOutage {
   };
   string name = 1;
 
-  // TimeInterval in which the ModelLine cannot be used to generate sketches. Holback model line should be used instead. If a report spans across one or more ModelOutage, the whole report must use the holdback model line. Required. Immutable.
+  // TimeInterval in which the corresponding ModelLine cannot be used to
+  // generate sketches. Holback model line should be used instead. If a report
+  // spans across one or more model outages, the whole report must be generated
+  // using the holdback model line. Required. Immutable.
   TimeInterval time_interval = 2;
 
   enum State {
@@ -44,5 +47,4 @@ message ModelOutage {
 
   // ModelOutage state. Output-only.
   State state = 3;
-
 }

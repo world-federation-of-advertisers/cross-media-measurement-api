@@ -22,6 +22,7 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelSuiteProto";
 
+// A ModelSuite defined by a ModelProvider.
 message ModelSuite {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelSuite"

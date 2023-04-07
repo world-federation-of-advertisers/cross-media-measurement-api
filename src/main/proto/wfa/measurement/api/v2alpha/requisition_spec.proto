@@ -63,4 +63,3 @@ message RequisitionSpec {
   // Non-zero cryptographic nonce for this `RequisitionSpec`. Required.
   fixed64 nonce = 3;
 }
-
