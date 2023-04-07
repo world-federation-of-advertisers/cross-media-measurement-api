@@ -33,6 +33,16 @@ service DataProviders {
   rpc CreateDataProvider(CreateDataProviderRequest) returns (DataProvider) {
     option deprecated = true;
   }
+
+  // Replaces Duchy List
+  rpc ReplaceDataProviderRequiredDuchies(
+      ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider);
+}
+
+// Request message for ReplaceDataProviderDuchyList
+message ReplaceDataProviderRequiredDuchiesRequest {
+  fixed64 external_data_provider_id = 1;
+  repeated string required_external_duchy_ids = 2;
 }
 
 // Request message for `GetDataProvider` method.
