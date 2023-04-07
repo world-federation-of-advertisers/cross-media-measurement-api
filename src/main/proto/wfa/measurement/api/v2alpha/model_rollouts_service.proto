@@ -1,0 +1,85 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/model_rollout.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelRolloutsServiceProto";
+
+service ModelRollouts {
+  // Creates a new `ModelRollout`. Rollout_start_time must be set at least one
+  // week in the future. An exception is thrown otherwise.
+  rpc CreateModelRollout(CreateModelRolloutRequest) returns (ModelRollout);
+
+  // Lists `ModelRollout`s for a given ModelLine. It returns an ordered list by
+  // rollout_start_time.
+  rpc ListModelRollouts(ListModelRolloutsRequest)
+      returns (ListModelRolloutsResponse);
+
+  // Used by Model Providers to freeze a ModelRollout. Frozen model rollouts are
+  // still used by EDPs to label events.
+  rpc SetFreezeTime(SetFreezeTimeRequest) returns (ModelRollout);
+}
+
+message CreateModelRolloutRequest {
+  // Resource name of the parent `ModelSuite`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+  // The `ModelRollout` to create. Required. The `key` field will be
+  // ignored, and the system will assign an ID.
+  ModelRollout model_rollout = 2;
+}
+
+message ListModelRolloutsRequest {
+  // Resource name of the parent `ModelLine`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+
+  // The maximum number of `ModelRollout`s to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 `ModelRollout`s will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // A page token, received from a previous `ListModelRolloutsRequest` call.
+  // Provide this to retrieve the subsequent page.
+  //
+  // When paginating, all other parameters provided to
+  // `ListModelRolloutsRequest` must match the call that provided the page
+  // token.
+  string page_token = 3;
+}
+
+message ListModelRolloutsResponse {
+  // List of `ModelRollout`s.
+  repeated ModelRollout model_rollout = 1;
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+}
+
+message SetFreezeTimeRequest {
+  // Resource name. Required.
+  string name = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRollout"];
+  // The rollout_freeze_time value to be set.
+  google.protobuf.Timestamp rollout_freeze_time = 2;
+}

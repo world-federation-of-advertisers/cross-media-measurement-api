@@ -1,0 +1,86 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/model_outage.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelOutagesServiceProto";
+
+service ModelOutages {
+  // Creates a new `ModelOutage`.
+  rpc CreateModelOutage(CreateModelOutageRequest) returns (ModelOutage);
+
+  // Lists `ModelOutage`s.
+  rpc ListModelOutages(ListModelOutagesRequest)
+      returns (ListModelOutagesResponse);
+
+  // Deletes an existing `ModelOutage`. `ModelOutage` will transition to a
+  // DELETED state. This action is irreversible. Results in a `NOT_FOUND` error
+  // if the specified `ModelOutage` does not exist.
+  rpc DeleteModelOutage(DeleteModelOutageRequest) returns (ModelOutage);
+}
+
+message CreateModelOutageRequest {
+  // Resource name of the parent `ModelLine`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+  // The `ModelOutage` to create. Required. The `key` field will be
+  // ignored, and the system will assign an ID.
+  ModelOutage model_outage = 2;
+}
+
+message ListModelOutagesRequest {
+  // Resource name of the parent `ModelOutage`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelOutage"];
+
+  // The maximum number of `ModelOutage`s to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 `ModelOutage`s will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // A page token, received from a previous `ListModelOutagesRequest` call.
+  // Provide this to retrieve the subsequent page.
+  //
+  // When paginating, all other parameters provided to `ListModelOutageRequest`
+  // must match the call that provided the page token.
+  string page_token = 3;
+}
+
+message ListModelOutagesResponse {
+  // List of `ModelOutage`s.
+  repeated ModelOutage model_outage = 1;
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+  // Whether to include ModelOutage in the DELETED state or not.
+  bool show_deleted = 3;
+}
+
+message DeleteModelOutageRequest {
+  // The name of `ModelOutage` to delete. Required.
+  // Format: modelLines/{model_line}/modelOutages/{model_outage}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelOutage"
+  ];
+}

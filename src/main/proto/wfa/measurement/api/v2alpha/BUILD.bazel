@@ -205,10 +205,31 @@ proto_library(
 )
 
 proto_library(
+    name = "model_suites_service_proto",
+    srcs = ["model_suites_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_suite_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
     name = "model_line_proto",
     srcs = ["model_line.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_lines_service_proto",
+    srcs = ["model_lines_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_line_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -225,10 +246,31 @@ proto_library(
 )
 
 proto_library(
+    name = "model_rollouts_service_proto",
+    srcs = ["model_rollouts_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_rollout_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
     name = "model_release_proto",
     srcs = ["model_release.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "model_releases_service_proto",
+    srcs = ["model_releases_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_release_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -243,11 +285,34 @@ proto_library(
 )
 
 proto_library(
+    name = "model_shards_service_proto",
+    srcs = ["model_shards_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_shard_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
+    ],
+)
+
+proto_library(
     name = "model_outage_proto",
     srcs = ["model_outage.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":time_interval_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "model_outages_service_proto",
+    srcs = ["model_outages_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_outage_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )

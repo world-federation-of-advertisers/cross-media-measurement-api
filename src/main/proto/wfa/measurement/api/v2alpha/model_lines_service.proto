@@ -1,0 +1,102 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/model_line.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelLinesServiceProto";
+
+service ModelLines {
+  // Creates a new `ModelLine`.
+  rpc CreateModelLine(CreateModelLineRequest) returns (ModelLine);
+
+  // Lists `ModelLine`s. for the parent `ModelSuite`.
+  rpc ListModelLines(ListModelLinesRequest) returns (ListModelLinesResponse);
+
+  // Specifies the HOLDBACK `ModelLine` for a given PROD ModelLine.
+  rpc SetHoldbackModelLine(SetHoldbackModelLineRequest) returns (ModelLine);
+
+  // Set active_end_time for a given `ModelLine`. This value must be at least a
+  // week in the future.
+  rpc SetActiveEndTime(SetActiveEndTimeRequest) returns (ModelLine);
+}
+
+// Request message for `CreateModelLine` method.
+message CreateModelLineRequest {
+  // Resource name of the parent `ModelSuite`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelSuite"];
+
+  // The `ModelLine` to create. Required. The `key` field will be
+  // ignored, and the system will assign an ID.
+  ModelLine model_line = 2;
+}
+
+message ListModelLinesRequest {
+  // Resource name of the parent `ModelSuite`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelSuite"];
+
+  // The maximum number of `ModelLine`s to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 `ModelLine`s will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // A page token, received from a previous `ListModelLinesRequest` call.
+  // Provide this to retrieve the subsequent page.
+  //
+  // When paginating, all other parameters provided to `ListModelLinesRequest`
+  // must match the call that provided the page token.
+  string page_token = 3;
+
+  // Filter criteria. Repeated fields are treated as logical ORs, and multiple
+  // fields specified as logical ANDs.
+  message Filter {
+    repeated ModelLine.Type type = 1;
+  }
+  Filter filter = 4;
+}
+
+message ListModelLinesResponse {
+  // List of `ModelLine`s.
+  repeated ModelLine model_line = 1;
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+}
+
+message SetHoldbackModelLineRequest {
+  // Resource name. Required.
+  string name = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+  // Holdback ModelLine resource name. Required.
+  string holdback_model_line = 2
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+}
+
+message SetActiveEndTimeRequest {
+  // Resource name. Required.
+  string name = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+  // The active_end_time value to be set.
+  google.protobuf.Timestamp active_end_time = 2;
+}
