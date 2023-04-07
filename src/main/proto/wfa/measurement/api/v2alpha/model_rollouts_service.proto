@@ -29,18 +29,17 @@ service ModelRollouts {
   // week in the future. An exception is thrown otherwise.
   rpc CreateModelRollout(CreateModelRolloutRequest) returns (ModelRollout);
 
-  // Lists `ModelRollout`s for a given ModelLine. It returns an ordered list by
-  // rollout_start_time.
+  // Lists `ModelRollout`s for a given ModelLine. It returns an sorted list by
+  // rollout_start_time ASC.
   rpc ListModelRollouts(ListModelRolloutsRequest)
       returns (ListModelRolloutsResponse);
 
-  // Used by Model Providers to freeze a ModelRollout. Frozen model rollouts are
-  // still used by EDPs to label events.
+  // Used by Model Providers to freeze a ModelRollout.
   rpc SetFreezeTime(SetFreezeTimeRequest) returns (ModelRollout);
 }
 
 message CreateModelRolloutRequest {
-  // Resource name of the parent `ModelSuite`. Required.
+  // Resource name of the parent `ModelLine`. Required.
   string parent = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
   // The `ModelRollout` to create. Required. The `key` field will be

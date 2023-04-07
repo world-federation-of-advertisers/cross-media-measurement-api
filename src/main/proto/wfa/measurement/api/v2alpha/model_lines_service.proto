@@ -31,11 +31,12 @@ service ModelLines {
   // Lists `ModelLine`s. for the parent `ModelSuite`.
   rpc ListModelLines(ListModelLinesRequest) returns (ListModelLinesResponse);
 
-  // Specifies the HOLDBACK `ModelLine` for a given PROD ModelLine.
+  // Used by model providers to specify the holdback `ModelLine` for a given
+  // PROD `ModelLine`.
   rpc SetHoldbackModelLine(SetHoldbackModelLineRequest) returns (ModelLine);
 
-  // Set active_end_time for a given `ModelLine`. This value must be at least a
-  // week in the future.
+  // Used by model providers to set active_end_time for a given `ModelLine`.
+  // This value must be at least a week in the future.
   rpc SetActiveEndTime(SetActiveEndTimeRequest) returns (ModelLine);
 }
 

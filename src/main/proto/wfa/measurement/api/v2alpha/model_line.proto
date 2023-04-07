@@ -30,11 +30,11 @@ message ModelLine {
   };
   string name = 1;
 
-  // Indicates the time this model line becomes active and therefore available
+  // Indicates the time this `ModelLine` becomes active and therefore available
   // for labeling. Must be in the future. Required. Immutable.
   google.protobuf.Timestamp active_start_time = 2;
 
-  // Indicates the time this model line becomes inactive and so no longer
+  // Indicates the time this `ModelLine` becomes inactive and so no longer
   // entitled for labeling. It must be at least one week in the future. If not
   // set, the ModelLine remains always active. This field is mutable. Optional.
   google.protobuf.Timestamp active_end_time = 3;
@@ -45,14 +45,14 @@ message ModelLine {
     HOLDBACK = 2;
   }
 
-  // Defines the type of the ModelLine. EDPs must label events using all
-  // available model lines independently by their type. DEV model lines are only
-  // meant for testing new model releases. They are not available to Measurement
-  // Consumers at report generation time. Required. Immutable.
+  // Defines the type of the `ModelLine`. EDPs must label events using all
+  // available `ModelLine`s independently by their type. DEV model lines are
+  // only meant for testing new model releases and are not available to
+  // `MeasurementConsumer`s at report generation time. Required. Immutable.
   Type type = 4;
 
   // The holdback model line that must be used to generate reports in case this
-  // model line is set as frozen. It is recommended to set this field only to
+  // `ModelLine` is set as frozen. It is recommended to set this field only to
   // PROD model lines. Optional.
   string holdback_model_line = 5
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];

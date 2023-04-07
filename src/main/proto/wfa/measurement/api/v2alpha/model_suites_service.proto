@@ -34,7 +34,7 @@ service ModelSuites {
 
 message CreateModelSuiteRequest {
   // The `ModelSuite` to create. Required. The `key` field will be
-  //  // ignored, and the system will assign an ID.
+  // ignored, and the system will assign an ID.
   ModelSuite model_suite = 1;
 }
 

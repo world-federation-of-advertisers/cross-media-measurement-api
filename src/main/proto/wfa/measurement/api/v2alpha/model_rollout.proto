@@ -23,7 +23,6 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelRolloutProto";
 
-// Model rollouts are ordered by rollout_start_time ASC.
 message ModelRollout {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelRollout"
@@ -48,14 +47,14 @@ message ModelRollout {
 
   // The previous model rollout this model rollout transitions from. Optional.
   // If not provided, the system will automatically set this field to the
-  // ModelRollout with the most recent rollout_start_time. Not set if
+  // `ModelRollout` with the most recent rollout_start_time. Not set if
   // rollout_start_time == rollout_end_time. Optional. Immutable.
   string previous_model_rollout = 5
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelRollout"];
 
-  // The ModelRelease this model rollout refers to. Both the ModelRelease and
-  // the ModelRollout need to be parented by the same ModelSuite. Required.
-  // Immutable.
+  // The `ModelRelease` this model rollout refers to. Both the `ModelRelease`
+  // and the `ModelRollout` need to be parented by the same `ModelSuite`.
+  // Required. Immutable.
   string model_release = 6
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
 }
