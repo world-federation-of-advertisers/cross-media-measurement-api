@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/model_release.proto";
 
@@ -32,16 +33,20 @@ service ModelReleases {
 }
 
 message CreateModelReleaseRequest {
-  // Resource name of the parent `ModelSuite`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelSuite"];
-  // The `ModelRelease` to create. Required. The `key` field will be
+  // Resource name of the parent `ModelSuite`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The `ModelRelease` to create. The `name` field will be
   // ignored, and the system will assign an ID.
-  ModelRelease model_release = 2;
+  ModelRelease model_release = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetModelReleaseRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRelease",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,18 +39,22 @@ service ModelOutages {
 }
 
 message CreateModelOutageRequest {
-  // Resource name of the parent `ModelLine`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
-  // The `ModelOutage` to create. Required. The `key` field will be
+  // Resource name of the parent `ModelLine`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The `ModelOutage` to create. The `name` field will be
   // ignored, and the system will assign an ID.
-  ModelOutage model_outage = 2;
+  ModelOutage model_outage = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ListModelOutagesRequest {
-  // Resource name of the parent `ModelOutage`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelOutage"];
+  // Resource name of the parent `ModelOutage`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelOutage",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `ModelOutage`s to return.
   // The service may return fewer than this value.
@@ -77,7 +81,7 @@ message ListModelOutagesResponse {
 }
 
 message DeleteModelOutageRequest {
-  // The name of `ModelOutage` to delete. Required.
+  // The name of `ModelOutage` to delete.
   // Format: modelLines/{model_line}/modelOutages/{model_outage}
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,

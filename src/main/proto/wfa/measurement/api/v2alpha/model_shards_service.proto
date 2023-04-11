@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,18 +37,22 @@ service ModelShards {
 }
 
 message CreateModelShardRequest {
-  // Resource name of the parent `DataProvider`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-  // The `ModelShard` to create. Required. The `key` field will be
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The `ModelShard` to create. The `name` field will be
   // ignored, and the system will assign an ID.
-  ModelShard model_rollout = 2;
+  ModelShard model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ListModelShardsRequest {
-  // Resource name of the parent `DataProvider`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `ModelShard`s to return.
   // The service may return fewer than this value.
@@ -73,7 +77,7 @@ message ListModelShardsResponse {
 }
 
 message DeleteModelShardRequest {
-  // The name of `ModelShard` to delete. Required.
+  // The name of `ModelShard` to delete.
   // Format: dataProviders/{data_provider}/modelShards/{model_shard}
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,

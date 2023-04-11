@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "wfa/measurement/api/v2alpha/model_rollout.proto";
 import "google/protobuf/timestamp.proto";
+import "wfa/measurement/api/v2alpha/model_rollout.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -34,23 +35,27 @@ service ModelRollouts {
   rpc ListModelRollouts(ListModelRolloutsRequest)
       returns (ListModelRolloutsResponse);
 
-  // Used by Model Providers to freeze a ModelRollout.
+  // Freezes a ModelRollout.
   rpc SetFreezeTime(SetFreezeTimeRequest) returns (ModelRollout);
 }
 
 message CreateModelRolloutRequest {
-  // Resource name of the parent `ModelLine`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
-  // The `ModelRollout` to create. Required. The `key` field will be
+  // Resource name of the parent `ModelLine`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  // The `ModelRollout` to create. The `name` field will be
   // ignored, and the system will assign an ID.
-  ModelRollout model_rollout = 2;
+  ModelRollout model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ListModelRolloutsRequest {
-  // Resource name of the parent `ModelLine`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+  // Resource name of the parent `ModelLine`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `ModelRollout`s to return.
   // The service may return fewer than this value.
@@ -76,9 +81,11 @@ message ListModelRolloutsResponse {
 }
 
 message SetFreezeTimeRequest {
-  // Resource name. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRollout"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRollout",
+    (google.api.field_behavior) = REQUIRED
+  ];
   // The rollout_freeze_time value to be set.
   google.protobuf.Timestamp rollout_freeze_time = 2;
 }

@@ -200,6 +200,7 @@ proto_library(
     srcs = ["model_suite.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -210,6 +211,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":model_suite_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -219,6 +221,7 @@ proto_library(
     srcs = ["model_line.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -230,6 +233,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":model_line_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -240,6 +244,7 @@ proto_library(
     srcs = ["model_rollout.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -251,6 +256,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":model_rollout_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -271,6 +277,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":model_release_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -280,6 +287,7 @@ proto_library(
     srcs = ["model_shard.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -302,6 +310,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -518,7 +527,7 @@ proto_library(
     srcs = ["time_interval.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
-        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )

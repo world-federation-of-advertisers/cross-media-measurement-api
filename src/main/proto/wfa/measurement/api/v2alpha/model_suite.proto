@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,14 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelSuiteProto";
 
-// A ModelSuite defined by a ModelProvider.
+// A suite of model lines provided by a `ModelProvider`.
 message ModelSuite {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelSuite"
@@ -30,9 +31,9 @@ message ModelSuite {
   };
   string name = 1;
 
-  // Human-readable nickname for this ModelSuite. Required.
-  string display_name = 2;
+  // Human-readable nickname for this ModelSuite.
+  string display_name = 2 [(google.api.field_behavior) = REQUIRED];
 
-  // Optional human-readable string to describe the usage of this model suite.
+  // Human-readable string to describe the usage of this model suite.
   string description = 3;
 }

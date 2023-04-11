@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -30,30 +31,42 @@ message ModelLine {
   };
   string name = 1;
 
-  // Indicates the time this `ModelLine` becomes active and therefore available
-  // for labeling. Must be in the future. Required. Immutable.
-  google.protobuf.Timestamp active_start_time = 2;
+  // The start of the time range when this `ModelLine` is active (available for
+  // labeling), inclusive. When specified in a request message, this must be in
+  // the future.
+  google.protobuf.Timestamp active_start_time = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
-  // Indicates the time this `ModelLine` becomes inactive and so no longer
-  // entitled for labeling. It must be at least one week in the future. If not
-  // set, the ModelLine remains always active. This field is mutable. Optional.
+  // The end of the time range when this `ModelLine` is active (available for
+  // labeling), exclusive. When specified in a request message, this must be
+  // sufficiently in the future to allow for EDPs to sync with the Kingdom. If
+  // not specified, there is no end to the active time range.
   google.protobuf.Timestamp active_end_time = 3;
 
   enum Type {
+    // DEV `ModelLine`s are used to test new `ModelRelease`s. They are not
+    // available to `MeasurementConsumer`s when generating reports.
     DEV = 0;
+    // Default 'ModelLine' that must be used to generate reports for
+    // `MeasurementConsumer`s.
     PROD = 1;
+    // Used to generate reports in case of PROD 'ModelLine' outages. Holdback
+    // 'ModelLine' should only includes stable and bug-free 'ModelRelease's.
     HOLDBACK = 2;
   }
 
   // Defines the type of the `ModelLine`. EDPs must label events using all
-  // available `ModelLine`s independently by their type. DEV model lines are
-  // only meant for testing new model releases and are not available to
-  // `MeasurementConsumer`s at report generation time. Required. Immutable.
-  Type type = 4;
+  // available `ModelLine`s independently by their type.
+  Type type = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
-  // The holdback model line that must be used to generate reports in case this
-  // `ModelLine` is set as frozen. It is recommended to set this field only to
-  // PROD model lines. Optional.
+  // The holdback 'ModelLine' that must be used to generate reports in case this
+  // `ModelLine` presents outages. It is recommended to set this field only to
+  // PROD 'ModelLine's.
   string holdback_model_line = 5
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
 }

@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -29,11 +30,16 @@ message ModelShard {
   };
   string name = 1;
 
-  // The ModelRelease resource this ModelShard references to. Required.
-  // Immutable.
-  string model_release = 2
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
+  // The ModelRelease resource this ModelShard references to.
+  string model_release = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRelease",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
-  // The path the model blob can be downloaded from. Required. Immutable.
-  string model_blob_path = 3;
+  // The path the model blob can be downloaded from.
+  string model_blob_path = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 }

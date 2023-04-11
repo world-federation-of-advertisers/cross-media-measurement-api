@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -31,30 +32,39 @@ message ModelRollout {
   string name = 1;
 
   // The time the rollout must begin. It must be at least a week in the future.
-  // Required. Immutable.
-  google.protobuf.Timestamp rollout_start_time = 2;
+  google.protobuf.Timestamp rollout_start_time = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The time the rollout of the new model release must end. It cannot precede
   // 'rollout_start_time'. If it is equal to 'rollout_start_time', then there is
   // no gradual rollout, and the new release instantly replaces the previous
-  // one. Required. Immutable.
-  google.protobuf.Timestamp rollout_end_time = 3;
+  // one
+  google.protobuf.Timestamp rollout_end_time = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // Indicates the time the rollout must stop expanding its release percentage.
-  // It must be within 'rollout_start_time' and 'rollout_end_time'. Optional.
-  // Immutable.
-  google.protobuf.Timestamp rollout_freeze_time = 4;
+  // It must be within 'rollout_start_time' and 'rollout_end_time'
+  google.protobuf.Timestamp rollout_freeze_time = 4
+      [(google.api.field_behavior) = IMMUTABLE];
 
   // The previous model rollout this model rollout transitions from. Optional.
   // If not provided, the system will automatically set this field to the
   // `ModelRollout` with the most recent rollout_start_time. Not set if
-  // rollout_start_time == rollout_end_time. Optional. Immutable.
-  string previous_model_rollout = 5
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRollout"];
+  // rollout_start_time == rollout_end_time.
+  string previous_model_rollout = 5 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRollout",
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The `ModelRelease` this model rollout refers to. Both the `ModelRelease`
   // and the `ModelRollout` need to be parented by the same `ModelSuite`.
-  // Required. Immutable.
-  string model_release = 6
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
+  string model_release = 6 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRelease",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 }
