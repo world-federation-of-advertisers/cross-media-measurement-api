@@ -34,7 +34,7 @@ service DataProviders {
     option deprecated = true;
   }
 
-  // Replaces Duchy List
+  // Replaces the `required_duchies` field in a `DataProvider` resource.
   rpc ReplaceDataProviderRequiredDuchies(
       ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider);
 }
