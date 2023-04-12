@@ -51,6 +51,11 @@ message DataProvider {
 
   // Display name of the data provider.
   string display_name = 5;
+
+  // The list of duchies that must be included in all computations involving
+  // this `DataProvider`
+  repeated string required_external_duchy_ids = 6;
+
 }
 
 // Wrapper for a list of `DataProvider` resource names.
