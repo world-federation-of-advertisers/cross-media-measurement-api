@@ -33,6 +33,19 @@ service DataProviders {
   rpc CreateDataProvider(CreateDataProviderRequest) returns (DataProvider) {
     option deprecated = true;
   }
+
+  // Replaces the `required_duchies` field in a `DataProvider` resource.
+  rpc ReplaceDataProviderRequiredDuchies(
+      ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider);
+}
+
+// Request message for ReplaceDataProviderDuchyList
+message ReplaceDataProviderRequiredDuchiesRequest {
+  string name = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+
+  repeated string required_external_duchies = 2
+      [(google.api.resource_reference).type = "halo.wfanet.org/Duchy"];
 }
 
 // Request message for `GetDataProvider` method.
