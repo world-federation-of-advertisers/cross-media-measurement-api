@@ -47,9 +47,9 @@ message ModelRollout {
   ];
 
   // Indicates the time the rollout must stop expanding its release percentage.
-  // It must be within 'rollout_start_time' and 'rollout_end_time'
-  google.protobuf.Timestamp rollout_freeze_time = 4
-      [(google.api.field_behavior) = IMMUTABLE];
+  // It must be within 'rollout_start_time' and 'rollout_end_time'.
+  // Once set, this value can no longer be changed.
+  google.protobuf.Timestamp rollout_freeze_time = 4;
 
   // The previous model rollout this model rollout transitions from. Optional.
   // If not provided, the system will automatically set this field to the

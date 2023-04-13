@@ -58,15 +58,15 @@ message ModelLine {
   }
 
   // Defines the type of the `ModelLine`. EDPs must label events using all
-  // available `ModelLine`s independently by their type.
+  // available `ModelLine`s independently of their type.
   Type type = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
   // The holdback 'ModelLine' that must be used to generate reports in case this
-  // `ModelLine` presents outages. It is recommended to set this field only to
-  // PROD 'ModelLine's.
+  // `ModelLine` presents outages. It is recommended to set this field only when
+  // `type` is `PROD`.
   string holdback_model_line = 5
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
 }

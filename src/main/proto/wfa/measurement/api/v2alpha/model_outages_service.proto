@@ -34,7 +34,10 @@ service ModelOutages {
 
   // Deletes an existing `ModelOutage`. `ModelOutage` will transition to a
   // DELETED state. This action is irreversible. Results in a `NOT_FOUND` error
-  // if the specified `ModelOutage` does not exist.
+  // if the specified `ModelOutage` does not exist or it has been already
+  // deleted.
+  //
+  // This is a soft delete as defined by https://google.aip.dev/216.
   rpc DeleteModelOutage(DeleteModelOutageRequest) returns (ModelOutage);
 }
 
@@ -68,6 +71,9 @@ message ListModelOutagesRequest {
   // When paginating, all other parameters provided to `ListModelOutageRequest`
   // must match the call that provided the page token.
   string page_token = 3;
+
+  // Whether to include ModelOutage in the DELETED state or not.
+  bool show_deleted = 4;
 }
 
 message ListModelOutagesResponse {
@@ -76,13 +82,12 @@ message ListModelOutagesResponse {
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
-  // Whether to include ModelOutage in the DELETED state or not.
-  bool show_deleted = 3;
 }
 
 message DeleteModelOutageRequest {
   // The name of `ModelOutage` to delete.
-  // Format: modelLines/{model_line}/modelOutages/{model_outage}
+  // Format:
+  // modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}/modelOutages/{model_outage}
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/ModelOutage"
