@@ -42,12 +42,11 @@ service DataProviders {
 // Request message for ReplaceDataProviderDuchyList
 message ReplaceDataProviderRequiredDuchiesRequest {
   string data_provider = 1
-    [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
 
   repeated string required_external_duchies = 2
-    [(google.api.resource_reference).type = "halo.wfanet.org/Duchy"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/Duchy"];
 }
-
 
 // Request message for `GetDataProvider` method.
 message GetDataProviderRequest {
