@@ -35,7 +35,7 @@ service ModelRollouts {
   rpc ListModelRollouts(ListModelRolloutsRequest)
       returns (ListModelRolloutsResponse);
 
-  // Freezes a ModelRollout.
+  // Sets the `rollout_freeze_time` of a `ModelRollout`.
   rpc SetFreezeTime(SetFreezeTimeRequest) returns (ModelRollout);
 }
 
@@ -45,6 +45,7 @@ message CreateModelRolloutRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = REQUIRED
   ];
+
   // The `ModelRollout` to create. The `name` field will be
   // ignored, and the system will assign an ID.
   ModelRollout model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
@@ -75,6 +76,7 @@ message ListModelRolloutsRequest {
 message ListModelRolloutsResponse {
   // List of `ModelRollout`s.
   repeated ModelRollout model_rollout = 1;
+
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
@@ -86,6 +88,8 @@ message SetFreezeTimeRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/ModelRollout",
     (google.api.field_behavior) = REQUIRED
   ];
-  // The rollout_freeze_time value to be set.
+
+  // The rollout_freeze_time value to be set. This must be sufficiently in the
+  // future to allow for EDPs to sync with the Kingdom.
   google.protobuf.Timestamp rollout_freeze_time = 2;
 }

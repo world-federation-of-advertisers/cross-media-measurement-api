@@ -42,6 +42,7 @@ message CreateModelShardRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
+
   // The `ModelShard` to create. The `name` field will be
   // ignored, and the system will assign an ID.
   ModelShard model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
@@ -71,6 +72,7 @@ message ListModelShardsRequest {
 message ListModelShardsResponse {
   // List of `ModelShard`s.
   repeated ModelShard model_shard = 1;
+
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;

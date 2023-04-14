@@ -47,6 +47,7 @@ message CreateModelOutageRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = REQUIRED
   ];
+
   // The `ModelOutage` to create. The `name` field will be
   // ignored, and the system will assign an ID.
   ModelOutage model_outage = 2 [(google.api.field_behavior) = REQUIRED];
@@ -79,6 +80,7 @@ message ListModelOutagesRequest {
 message ListModelOutagesResponse {
   // List of `ModelOutage`s.
   repeated ModelOutage model_outage = 1;
+
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
