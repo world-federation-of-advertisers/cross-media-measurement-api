@@ -31,10 +31,16 @@ message ModelLine {
   };
   string name = 1;
 
+  // Human-readable nickname for this 'ModelLine'.
+  string display_name = 2;
+
+  // Human-readable string to describe the usage of this model line.
+  string description = 3;
+
   // The start of the time range when this `ModelLine` is active (available for
   // labeling), inclusive. When specified in a request message, this must be in
   // the future.
-  google.protobuf.Timestamp active_start_time = 2 [
+  google.protobuf.Timestamp active_start_time = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -43,23 +49,25 @@ message ModelLine {
   // labeling), exclusive. When specified in a request message, this must be
   // sufficiently in the future to allow for EDPs to sync with the Kingdom. If
   // not specified, there is no end to the active time range.
-  google.protobuf.Timestamp active_end_time = 3;
+  google.protobuf.Timestamp active_end_time = 5;
 
   enum Type {
+    // The default value if 'Type' is omitted. Should not be used.
+    TYPE_UNSPECIFIED = 0;
     // DEV `ModelLine`s are used to test new `ModelRelease`s. They are not
     // available to `MeasurementConsumer`s when generating reports.
-    DEV = 0;
+    DEV = 1;
     // Default 'ModelLine' that must be used to generate reports for
     // `MeasurementConsumer`s.
-    PROD = 1;
+    PROD = 2;
     // Used to generate reports in case of PROD 'ModelLine' outages. Holdback
     // 'ModelLine' should only includes stable and bug-free 'ModelRelease's.
-    HOLDBACK = 2;
+    HOLDBACK = 3;
   }
 
   // Defines the type of the `ModelLine`. EDPs must label events using all
   // available `ModelLine`s independently of their type.
-  Type type = 4 [
+  Type type = 6 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -67,6 +75,14 @@ message ModelLine {
   // The holdback 'ModelLine' that must be used to generate reports in case this
   // `ModelLine` presents outages. It is recommended to set this field only when
   // `type` is `PROD`.
-  string holdback_model_line = 5
+  string holdback_model_line = 7
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+
+  // When the 'ModelLine' was created.
+  google.protobuf.Timestamp create_time = 8
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'ModelLine' was last updated.
+  google.protobuf.Timestamp update_time = 9
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

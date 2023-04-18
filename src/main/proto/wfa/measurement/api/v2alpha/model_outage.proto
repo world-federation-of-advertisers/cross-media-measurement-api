@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -35,7 +36,7 @@ message ModelOutage {
   // generate sketches. The parent `ModelLine`'s `holdback_model_line` must be
   // used instead. If a report spans across one or more `ModelOutage`s, the
   // whole report must be generated using the holdback model line.
-  TimeInterval time_interval = 2 [
+  TimeInterval outage_interval = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -45,10 +46,16 @@ message ModelOutage {
     STATE_UNSPECIFIED = 0;
     // The `ModelOutage` has been created.
     ACTIVE = 1;
-    // The `ModelOutage` has been deleted. The state is terminal.
+    // The `ModelOutage` has been deleted. The state is terminal. 'ModelOutage's
+    // with 'state' equal to DELETED must not be considered to determine what
+    // 'ModelLine' must be used to generate reports.
     DELETED = 2;
   }
 
   // `ModelOutage` state.
   State state = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'ModelOutage' was created.
+  google.protobuf.Timestamp create_time = 4
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

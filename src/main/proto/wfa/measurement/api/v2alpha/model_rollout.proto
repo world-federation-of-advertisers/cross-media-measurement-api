@@ -36,7 +36,7 @@ message ModelRollout {
   // at least one week in the future. 'end_time' cannot precede 'start_time'. If
   // 'start_time' is equal to 'end_time', then there is no gradual rollout, and
   // the new release instantly replaces the previous one
-  TimeInterval time_interval = 2 [
+  TimeInterval rollout_schedule = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -62,4 +62,12 @@ message ModelRollout {
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  // When the 'ModelRollout' was created.
+  google.protobuf.Timestamp create_time = 6
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'ModelRollout' was last updated.
+  google.protobuf.Timestamp update_time = 7
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

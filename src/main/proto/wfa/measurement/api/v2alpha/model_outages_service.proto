@@ -19,13 +19,16 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/model_outage.proto";
+import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelOutagesServiceProto";
 
 service ModelOutages {
-  // Creates a new `ModelOutage`.
+  // Creates a new `ModelOutage`. A 'ModelOutage' can be created only for
+  // 'ModelLine' with type equal to 'PROD'. Furthermore the
+  // 'ModelLine'.'holdback_model_line' needs to be already specified.
   rpc CreateModelOutage(CreateModelOutageRequest) returns (ModelOutage);
 
   // Lists `ModelOutage`s.
@@ -69,12 +72,19 @@ message ListModelOutagesRequest {
   // A page token, received from a previous `ListModelOutagesRequest` call.
   // Provide this to retrieve the subsequent page.
   //
-  // When paginating, all other parameters provided to `ListModelOutageRequest`
+  // When paginating, all other parameters provided to `ListModelOutagesRequest`
   // must match the call that provided the page token.
   string page_token = 3;
 
   // Whether to include ModelOutage in the DELETED state or not.
   bool show_deleted = 4;
+
+  // Filter criteria. Only 'ModelOutage's having 'outage_interval' included in
+  // 'time_interval' are returned. Inclusive.
+  message Filter {
+    TimeInterval time_interval = 1;
+  }
+  Filter filter = 5;
 }
 
 message ListModelOutagesResponse {

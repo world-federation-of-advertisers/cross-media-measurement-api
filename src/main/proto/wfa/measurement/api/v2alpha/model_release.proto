@@ -16,7 +16,9 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -28,4 +30,8 @@ message ModelRelease {
     pattern: "modelSuites/{model_suite}/modelReleases/{model_release}"
   };
   string name = 1;
+
+  // When the 'ModelRelease' was created.
+  google.protobuf.Timestamp create_time = 2
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
