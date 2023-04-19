@@ -33,9 +33,10 @@ message ModelOutage {
   string name = 1;
 
   // TimeInterval in which the parent `ModelLine` cannot be used to
-  // generate sketches. The parent `ModelLine`'s `holdback_model_line` must be
+  // generate sketches. The parent `ModelLine`'s `fallback_model_line` must be
   // used instead. If a report spans across one or more `ModelOutage`s, the
-  // whole report must be generated using the holdback model line.
+  // whole report must be generated using the `ModelLine` with type equal to
+  // `HOLDBACK`.
   TimeInterval outage_interval = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE

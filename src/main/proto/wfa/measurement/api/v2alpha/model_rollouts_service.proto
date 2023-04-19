@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/model_rollout.proto";
+import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -36,7 +37,8 @@ service ModelRollouts {
       returns (ListModelRolloutsResponse);
 
   // Sets the `rollout_freeze_time` of a `ModelRollout`.
-  rpc SetFreezeTime(SetFreezeTimeRequest) returns (ModelRollout);
+  rpc ScheduleModelRolloutFreeze(ScheduleModelRolloutFreezeRequest)
+      returns (ModelRollout);
 }
 
 message CreateModelRolloutRequest {
@@ -71,6 +73,13 @@ message ListModelRolloutsRequest {
   // `ListModelRolloutsRequest` must match the call that provided the page
   // token.
   string page_token = 3;
+
+  // Filter criteria. Only 'ModelRollout's having 'rollout_period' overlapping
+  // 'time_interval' are returned. Inclusive.
+  message Filter {
+    TimeInterval time_interval = 1;
+  }
+  Filter filter = 5;
 }
 
 message ListModelRolloutsResponse {
@@ -82,7 +91,7 @@ message ListModelRolloutsResponse {
   string next_page_token = 2;
 }
 
-message SetFreezeTimeRequest {
+message ScheduleModelRolloutFreezeRequest {
   // Resource name.
   string name = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelRollout",

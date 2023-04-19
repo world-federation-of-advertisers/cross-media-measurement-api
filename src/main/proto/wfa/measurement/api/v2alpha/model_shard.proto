@@ -38,11 +38,36 @@ message ModelShard {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  enum ModelType {
+    // The default value if 'ModelType' is omitted. Should not be used.
+    TYPE_UNSPECIFIED = 0;
+    TEXTPROTO = 1;
+    RIEGELI = 2;
+  }
+
+  // Metadata about a model blob.
+  message ModelBlobDescriptor {
+    // Human-readable name of the model blob.
+    string display_name = 1;
+    // High-level description of the model blob.
+    string description = 2;
+  }
+
+  message ModelBlob {
+    // The path the model blob can be downloaded from.
+    string model_blob_path = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+
+    // The model type for this `model_release`.
+    ModelType model_type = 2 [(google.api.field_behavior) = IMMUTABLE];
+
+    ModelBlobDescriptor model_blob_descriptor = 3;
+  }
+
   // The path the model blob can be downloaded from.
-  string model_blob_path = 3 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+  ModelBlob model_blob = 3;
 
   // When the 'ModelShard' was created.
   google.protobuf.Timestamp create_time = 4

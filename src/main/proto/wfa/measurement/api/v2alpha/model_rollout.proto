@@ -33,10 +33,11 @@ message ModelRollout {
   string name = 1;
 
   // Time interval over which the rollout must be deployed. 'start_time' must be
-  // at least one week in the future. 'end_time' cannot precede 'start_time'. If
-  // 'start_time' is equal to 'end_time', then there is no gradual rollout, and
-  // the new release instantly replaces the previous one
-  TimeInterval rollout_schedule = 2 [
+  // sufficiently in the future to allow for EDPs to sync with the Kingdom.
+  // 'end_time' cannot precede 'start_time'. If 'start_time' is equal to
+  // 'end_time', then there is no gradual rollout, and the new release instantly
+  // replaces the previous one.
+  TimeInterval rollout_period = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -46,13 +47,14 @@ message ModelRollout {
   // Once set, this value can no longer be changed.
   google.protobuf.Timestamp rollout_freeze_time = 3;
 
-  // The previous model rollout this model rollout transitions from. Optional.
-  // If not provided, the system will automatically set this field to the
-  // `ModelRollout` with the most recent rollout_start_time. Not set if
-  // rollout_start_time == rollout_end_time.
+  // The previous model rollout this model rollout transitions from.
+  // The system will automatically set this field to the `ModelRollout` with the
+  // most recent rollout_start_time. Not set if rollout_start_time ==
+  // rollout_end_time.
   string previous_model_rollout = 4 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelRollout",
-    (google.api.field_behavior) = IMMUTABLE
+    (google.api.field_behavior) = IMMUTABLE,
+    (google.api.field_behavior) = OUTPUT_ONLY
   ];
 
   // The `ModelRelease` this model rollout refers to. Both the `ModelRelease`
