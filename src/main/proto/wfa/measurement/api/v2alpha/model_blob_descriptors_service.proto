@@ -1,0 +1,76 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/model_blob_descriptor.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelBlobDescriptorsServiceProto";
+
+// Service for interacting with `ModelBlobDescriptor` resources.
+service ModelBlobDescriptors {
+  // Returns the `ModelBlobDescriptor` with the specified resource
+  // name.
+  rpc GetModelBlobDescriptor(GetModelBlobDescriptorRequest)
+      returns (ModelBlobDescriptor) {}
+
+  // Creates a `ModelBlobDescriptor`.
+  rpc CreateModelBlobDescriptor(CreateModelBlobDescriptorRequest)
+      returns (ModelBlobDescriptor) {}
+
+  // Updates an existing `ModelBlobDescriptor`. Results in a
+  // `PERMISSION_DENIED` error if the authenticated user does not have access to
+  // the `ModelBlobDescriptor`. Results in a `NOT_FOUND` error if the
+  // the specified `ModelBlobDescriptor` does not exist.
+  rpc UpdateModelBlobDescriptor(UpdateModelBlobDescriptorRequest)
+      returns (ModelBlobDescriptor) {}
+}
+
+// Request message for `GetModelBlobDescriptor` method.
+message GetModelBlobDescriptorRequest {
+  // Resource name.
+  string name = 1 [(google.api.resource_reference).type =
+                       "halo.wfanet.org/ModelBlobDescriptor"];
+}
+
+// Request message for `CreateModelBlobDescriptor` method.
+message CreateModelBlobDescriptorRequest {
+  // Resource name of the parent `DataProvider`. Required.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+
+  // The `ModelBlobDescriptor` to create. Required.
+  //
+  // The `name` field will be ignored, and the system will assign an ID.
+  ModelBlobDescriptor model_blob_descriptor = 2;
+
+  // Unique identifier for this request.
+  //
+  // Using the protobuf type URL is recommended.
+  //
+  // If specified, the request will be idempotent. See
+  // https://google.aip.dev/155.
+  string request_id = 3;
+}
+
+// Request message for `UpdateModelBlobDescriptor` method.
+message UpdateModelBlobDescriptorRequest {
+  // The `ModelBlobDescriptor` to update. Required.
+  ModelBlobDescriptor model_blob_descriptor = 1;
+}

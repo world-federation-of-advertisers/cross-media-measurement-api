@@ -69,10 +69,10 @@ message ListModelShardsRequest {
   // must match the call that provided the page token.
   string page_token = 3;
 
-  // Filter criteria. Only 'ModelShard's whose corresponding
-  // `ModelRollout.rollout_period' overlaps to `rollout_period_overlapping` are
-  // returned. Inclusive.
+  // Filter criteria.
   message Filter {
+    // Only 'ModelShard's whose corresponding `ModelRollout.rollout_period'
+    // overlaps to `rollout_period_overlapping` are returned. Inclusive.
     TimeInterval rollout_period_overlapping = 1;
   }
   Filter filter = 4;

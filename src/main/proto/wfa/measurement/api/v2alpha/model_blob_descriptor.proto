@@ -21,24 +21,24 @@ import "google/protobuf/descriptor.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "ModelMetadataDescriptorProto";
+option java_outer_classname = "ModelBlobDescriptorProto";
 
-// The metadata message descriptor of an `Model.Metadata`. This metadata is
+// The Blob message descriptor of an `Model.Blob`. This Blob is
 // used to describe the contents of a `Model` without needing a direct
 // dependency on it.
 //
 // See Self-describing Messages:
 // https://protobuf.dev/programming-guides/techniques/#self-description
-message ModelMetadataDescriptor {
+message ModelBlobDescriptor {
   option (google.api.resource) = {
-    type: "halo.wfanet.org/ModelMetadataDescriptor"
-    pattern: "dataProviders/{data_provider}/modelMetadataDescriptors/{model_metadata_descriptor}"
+    type: "halo.wfanet.org/ModelBlobDescriptor"
+    pattern: "dataProviders/{data_provider}/modelBlobDescriptors/{model_blob_descriptor}"
   };
 
   // Resource name.
   string name = 1;
 
-  // `FileDescriptorSet` including the `FileDescriptorProto` of the metadata
+  // `FileDescriptorSet` including the `FileDescriptorProto` of the Blob
   // message and the transitive closure of its dependencies.
   //
   // This may exclude `FileDescriptorProto`s for protobuf well-known types (see

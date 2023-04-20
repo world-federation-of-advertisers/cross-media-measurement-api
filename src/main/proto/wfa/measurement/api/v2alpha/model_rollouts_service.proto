@@ -41,8 +41,8 @@ service ModelRollouts {
   rpc ScheduleModelRolloutFreeze(ScheduleModelRolloutFreezeRequest)
       returns (ModelRollout);
 
-  // Deletes an `ModelRollout`. Results in FORBIDDEN if the request is received
-  // after 'ModelRollout.rollout_period.start_time`.
+  // Deletes a `ModelRollout`. Results in FAILED_PRECONDITION if the request is
+  // received after 'ModelRollout.rollout_period.start_time`.
   rpc DeleteModelRollout(DeleteModelRolloutRequest)
       returns (google.protobuf.Empty) {}
 }
@@ -80,9 +80,10 @@ message ListModelRolloutsRequest {
   // token.
   string page_token = 3;
 
-  // Filter criteria. Only 'ModelRollout's having 'rollout_period' overlapping
-  // 'time_interval' are returned. Inclusive.
+  // Filter criteria.
   message Filter {
+    // Only 'ModelRollout's having 'rollout_period' overlapping
+    // 'rollout_period_overlapping' are returned. Inclusive.
     TimeInterval rollout_period_overlapping = 1;
   }
   Filter filter = 4;

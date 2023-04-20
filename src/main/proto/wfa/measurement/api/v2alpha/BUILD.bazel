@@ -315,8 +315,8 @@ proto_library(
 )
 
 proto_library(
-    name = "model_metadata_descriptor_proto",
-    srcs = ["model_metadata_descriptor.proto"],
+    name = "model_blob_descriptor_proto",
+    srcs = ["model_blob_descriptor.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:resource_proto",
@@ -325,11 +325,11 @@ proto_library(
 )
 
 proto_library(
-    name = "model_metadata_descriptor_service_proto",
-    srcs = ["model_metadata_descriptors_service.proto"],
+    name = "model_blob_descriptor_service_proto",
+    srcs = ["model_blob_descriptors_service.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
-        ":model_metadata_descriptor_proto",
+        ":model_blob_descriptor_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )

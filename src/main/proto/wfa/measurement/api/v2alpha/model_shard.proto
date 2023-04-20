@@ -47,16 +47,6 @@ message ModelShard {
     RIEGELI = 2;
   }
 
-  message Metadata {
-    // The resource name of the metadata descriptor.
-    string model_metadata_descriptor = 1
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/ModelMetadataDescriptor"];
-
-    // The message and its type, encoded as an Any message.
-    google.protobuf.Any metadata = 2;
-  }
-
   message ModelBlob {
     // The path the model blob can be downloaded from.
     string model_blob_path = 1 [
@@ -67,7 +57,10 @@ message ModelShard {
     // The model type for this `model_release`.
     ModelType model_type = 2 [(google.api.field_behavior) = IMMUTABLE];
 
-    Metadata model_metadata = 3;
+    // The resource name of the model blob descriptor.
+    string model_blob_descriptor = 3
+        [(google.api.resource_reference).type =
+             "halo.wfanet.org/ModelBlobDescriptor"];
   }
 
   ModelBlob model_blob = 3;
