@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
 import "wfa/measurement/api/v2alpha/model_shard.proto";
+import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -67,6 +68,14 @@ message ListModelShardsRequest {
   // When paginating, all other parameters provided to `ListModelShardRequest`
   // must match the call that provided the page token.
   string page_token = 3;
+
+  // Filter criteria. Only 'ModelShard's whose corresponding
+  // `ModelRollout.rollout_period' overlaps to `rollout_period_overlapping` are
+  // returned. Inclusive.
+  message Filter {
+    TimeInterval rollout_period_overlapping = 1;
+  }
+  Filter filter = 4;
 }
 
 message ListModelShardsResponse {
