@@ -20,7 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
+import "wfa/measurement/api/v2alpha/common/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -40,34 +40,17 @@ message ModelShard {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  enum ModelType {
-    // The default value if 'ModelType' is omitted. Should not be used.
-    TYPE_UNSPECIFIED = 0;
-    TEXTPROTO = 1;
-    RIEGELI = 2;
-  }
-
   message ModelBlob {
     // The path the model blob can be downloaded from.
+    // See CompileNode proto message:
+    // https://github.com/world-federation-of-advertisers/virtual-people-common/blob/main/src/main/proto/wfa/virtual_people/common/model.proto#L29
     string model_blob_path = 1 [
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE
     ];
-
-    // The model type for this `model_release`.
-    ModelType model_type = 2 [(google.api.field_behavior) = IMMUTABLE];
-
-    // The resource name of the model blob descriptor.
-    string model_blob_descriptor = 3
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/ModelBlobDescriptor"];
   }
 
   ModelBlob model_blob = 3;
-
-  // The `ModelRollout.rollout_period` associated to this `ModelShard`. Used to
-  // filter resources through the `ListModelShards` method.
-  TimeInterval rollout_period = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // When the 'ModelShard' was created.
   google.protobuf.Timestamp create_time = 5

@@ -72,12 +72,12 @@ message ModelLine {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  // The fallback 'ModelLine' that must be used to generate reports in case this
+  // The holdback 'ModelLine' that must be used to generate reports in case this
   // `ModelLine` presents outages. Only 'ModelLine's having `type` equal to
-  // `PROD` can have a fallback model line set. Any attempt of setting a
-  // fallback model line to a 'ModelLine' that does not have type equals to
+  // `PROD` can have a holdback model line set. Any attempt of setting a
+  // holdback model line to a 'ModelLine' that does not have type equals to
   // 'PROD' will result in an error.
-  string fallback_model_line = 7
+  string holdback_model_line = 7
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
 
   // When the 'ModelLine' was created.

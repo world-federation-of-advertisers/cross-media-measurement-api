@@ -21,7 +21,7 @@ import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/model_rollout.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
+import "wfa/measurement/api/v2alpha/common/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
