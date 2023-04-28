@@ -27,7 +27,7 @@ option java_outer_classname = "ModelReleaseProto";
 message ModelRelease {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelRelease"
-    pattern: "modelSuites/{model_suite}/modelReleases/{model_release}"
+    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelReleases/{model_release}"
   };
   string name = 1;
 
