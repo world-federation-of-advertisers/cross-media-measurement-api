@@ -29,14 +29,14 @@ service ModelLines {
   // Creates a new `ModelLine`.
   rpc CreateModelLine(CreateModelLineRequest) returns (ModelLine);
 
-  // Lists `ModelLine`s. for the parent `ModelSuite`.
+  // Lists `ModelLine`s for the parent `ModelSuite`.
   rpc ListModelLines(ListModelLinesRequest) returns (ListModelLinesResponse);
 
   // Sets the `holdback_model_line` for a `ModelLine`.
   rpc SetModelLineHoldbackModelLine(SetModelLineHoldbackModelLineRequest)
       returns (ModelLine);
 
-  // Sets the active_end_time for this `ModelLine`.
+  // Sets the active_end_time for a `ModelLine`.
   rpc SetActiveEndTime(SetActiveEndTimeRequest) returns (ModelLine);
 }
 
@@ -73,8 +73,7 @@ message ListModelLinesRequest {
   // must match the call that provided the page token.
   string page_token = 3;
 
-  // Filter criteria. Repeated fields are treated as logical ORs, and multiple
-  // fields specified as logical ANDs.
+  // Filter criteria. Repeated fields are treated as logical ORs.
   message Filter {
     repeated ModelLine.Type type = 1;
   }

@@ -28,8 +28,7 @@ message TimeInterval {
   // Start of the time interval, inclusive.
   google.protobuf.Timestamp start_time = 1
       [(google.api.field_behavior) = REQUIRED];
-  // End of the time interval, exclusive. This must be later than
-  // the start time.
+  // End of the time interval, exclusive.
   google.protobuf.Timestamp end_time = 2
       [(google.api.field_behavior) = REQUIRED];
 }
