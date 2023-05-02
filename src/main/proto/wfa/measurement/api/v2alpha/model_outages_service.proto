@@ -80,7 +80,7 @@ message ListModelOutagesRequest {
   bool show_deleted = 4;
 
   // Filter criteria. Only 'ModelOutage's having 'outage_interval' overlapping
-  // 'time_interval' are returned. Inclusive.
+  // 'time_interval' are returned.
   message Filter {
     TimeInterval time_interval = 1;
   }

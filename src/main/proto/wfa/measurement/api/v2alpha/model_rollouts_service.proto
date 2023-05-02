@@ -28,8 +28,8 @@ option java_multiple_files = true;
 option java_outer_classname = "ModelRolloutsServiceProto";
 
 service ModelRollouts {
-  // Creates a new `ModelRollout`. Rollout_start_time must be set at least one
-  // week in the future. An exception is thrown otherwise.
+  // Creates a new `ModelRollout`. 'rollout_start_time' must be sufficiently in
+  // the future to allow for EDPs to sync with the Kingdom.
   rpc CreateModelRollout(CreateModelRolloutRequest) returns (ModelRollout);
 
   // Lists `ModelRollout`s for a given ModelLine. It returns an sorted list by
