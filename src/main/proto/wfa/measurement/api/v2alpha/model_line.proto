@@ -1,0 +1,90 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelLineProto";
+
+message ModelLine {
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/ModelLine"
+    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}"
+  };
+  string name = 1;
+
+  // Human-readable display name for this 'ModelLine'.
+  string display_name = 2;
+
+  // Human-readable string to describe the usage of this model line.
+  string description = 3;
+
+  // The start of the time range when this `ModelLine` is active (available for
+  // labeling), inclusive. When specified in a request message, this must be in
+  // the future.
+  google.protobuf.Timestamp active_start_time = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The end of the time range when this `ModelLine` is active (available for
+  // labeling), exclusive. When specified in a request message, this must be
+  // sufficiently in the future to allow for EDPs to sync with the Kingdom. If
+  // not specified, there is no end to the active time range.
+  google.protobuf.Timestamp active_end_time = 5;
+
+  enum Type {
+    // The default value if 'Type' is omitted. Should not be used.
+    TYPE_UNSPECIFIED = 0;
+    // DEV `ModelLine`s are used to test new `ModelRelease`s. They are not
+    // available to `MeasurementConsumer`s when generating reports.
+    DEV = 1;
+    // Default 'ModelLine' that must be used to generate reports for
+    // `MeasurementConsumer`s.
+    PROD = 2;
+    // Used to generate reports in case of PROD 'ModelLine' outages. Holdback
+    // 'ModelLine' should only includes stable and bug-free 'ModelRelease's.
+    HOLDBACK = 3;
+  }
+
+  // Defines the type of the `ModelLine`. EDPs must label events using all
+  // available `ModelLine`s independently of their type.
+  Type type = 6 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The holdback 'ModelLine' that must be used to generate reports in case this
+  // `ModelLine` presents outages. Only 'ModelLine's having `type` equal to
+  // `PROD` can have a holdback model line set. Any attempt of setting a
+  // holdback model line to a 'ModelLine' that does not have type equals to
+  // 'PROD' will result in an error.
+  string holdback_model_line = 7
+      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+
+  // When the 'ModelLine' was created.
+  google.protobuf.Timestamp create_time = 8
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'ModelLine' was last updated.
+  google.protobuf.Timestamp update_time = 9
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+}

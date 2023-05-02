@@ -42,8 +42,8 @@ proto_library(
     srcs = ["requisition_spec.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
         "@com_google_googleapis//google/api:resource_proto",
-        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 
@@ -191,6 +191,149 @@ proto_library(
     srcs = ["model_provider.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "model_suite_proto",
+    srcs = ["model_suite.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_suites_service_proto",
+    srcs = ["model_suites_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_suite_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "model_line_proto",
+    srcs = ["model_line.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_lines_service_proto",
+    srcs = ["model_lines_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_line_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_rollout_proto",
+    srcs = ["model_rollout.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_rollouts_service_proto",
+    srcs = ["model_rollouts_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_rollout_proto",
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_release_proto",
+    srcs = ["model_release.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_releases_service_proto",
+    srcs = ["model_releases_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_release_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "model_shard_proto",
+    srcs = ["model_shard.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_shards_service_proto",
+    srcs = ["model_shards_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_shard_proto",
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
+    ],
+)
+
+proto_library(
+    name = "model_outage_proto",
+    srcs = ["model_outage.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "model_outages_service_proto",
+    srcs = ["model_outages_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_outage_proto",
+        "//src/main/proto/wfa/measurement/api/v2alpha:time_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
@@ -387,6 +530,16 @@ proto_library(
     deps = [
         ":exchange_step_attempt_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "time_interval_proto",
+    srcs = ["time_interval.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
