@@ -53,7 +53,8 @@ service EventGroupMetadataDescriptors {
   // Lists `EventGroupMetadataDescriptor`s. Results in a `PERMISSION_DENIED`
   // error if attempting to list `EventGroupMetadataDescriptor`s that the
   // authenticated user does not have access to.
-  rpc ListEventGroupMetadataDescriptors(ListEventGroupMetadataDescriptorsRequest)
+  rpc ListEventGroupMetadataDescriptors(
+      ListEventGroupMetadataDescriptorsRequest)
       returns (ListEventGroupMetadataDescriptorsResponse);
 }
 
@@ -114,10 +115,10 @@ message ListEventGroupMetadataDescriptorsRequest {
   string parent = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
 
-  // The maximum number of `EventGroupMetadataDescriptor`s to return. The service
-  // may return fewer than this value. If unspecified, at most 50
-  // `EventGroupMetadataDescriptor`s will be returned. The maximum value is 1000;
-  // values above 1000 will be coerced to 1000.
+  // The maximum number of `EventGroupMetadataDescriptor`s to return. The
+  // service may return fewer than this value. If unspecified, at most 50
+  // `EventGroupMetadataDescriptor`s will be returned. The maximum value is
+  // 1000; values above 1000 will be coerced to 1000.
   int32 page_size = 2;
 
   // A token from a previous call, specified to retrieve the next page. See
