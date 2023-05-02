@@ -1,0 +1,89 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
+import "wfa/measurement/api/v2alpha/model_shard.proto";
+import "wfa/measurement/api/v2alpha/time_interval.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelShardsServiceProto";
+
+service ModelShards {
+  // Creates a new `ModelShard`.
+  rpc CreateModelShard(CreateModelShardRequest) returns (ModelShard);
+
+  // Lists `ModelShard`s.
+  rpc ListModelShards(ListModelShardsRequest) returns (ListModelShardsResponse);
+
+  // Deletes an existing `ModelShard`.
+  rpc DeleteModelShard(DeleteModelShardRequest) returns (google.protobuf.Empty);
+}
+
+message CreateModelShardRequest {
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The `ModelShard` to create. The `name` field will be
+  // ignored, and the system will assign an ID.
+  ModelShard model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+message ListModelShardsRequest {
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The maximum number of `ModelShard`s to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 `ModelShard`s will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // A page token, received from a previous `ListModelShardsRequest` call.
+  // Provide this to retrieve the subsequent page.
+  //
+  // When paginating, all other parameters provided to `ListModelShardRequest`
+  // must match the call that provided the page token.
+  string page_token = 3;
+}
+
+message ListModelShardsResponse {
+  // List of `ModelShard`s.
+  repeated ModelShard model_shard = 1;
+
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
+}
+
+message DeleteModelShardRequest {
+  // The name of `ModelShard` to delete.
+  // Format: dataProviders/{data_provider}/modelShards/{model_shard}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelShard"
+  ];
+}

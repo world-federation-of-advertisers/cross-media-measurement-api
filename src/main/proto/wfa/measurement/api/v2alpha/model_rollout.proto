@@ -1,0 +1,74 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+import "wfa/measurement/api/v2alpha/time_interval.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ModelRolloutProto";
+
+message ModelRollout {
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/ModelRollout"
+    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}/modelRollouts/{model_rollout}"
+  };
+  string name = 1;
+
+  // Time interval over which the rollout must be deployed. 'start_time' must be
+  // sufficiently in the future to allow for EDPs to sync with the Kingdom.
+  // 'end_time' cannot precede 'start_time'. If 'start_time' is equal to
+  // 'end_time', then there is no gradual rollout, and the new release instantly
+  // replaces the previous one.
+  TimeInterval rollout_period = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // Indicates the time the rollout must stop expanding its release percentage.
+  // It must be within 'rollout_start_time' and 'rollout_end_time'.
+  // Once set, this value can no longer be changed.
+  google.protobuf.Timestamp rollout_freeze_time = 3;
+
+  // The previous model rollout this model rollout transitions from.
+  // The system will automatically set this field to the `ModelRollout` with the
+  // most recent rollout_start_time. Not set if rollout_start_time ==
+  // rollout_end_time.
+  string previous_model_rollout = 4 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRollout",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+
+  // The `ModelRelease` this model rollout refers to. Both the `ModelRelease`
+  // and the `ModelRollout` need to be parented by the same `ModelSuite`.
+  string model_release = 5 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelRelease",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // When the 'ModelRollout' was created.
+  google.protobuf.Timestamp create_time = 6
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'ModelRollout' was last updated.
+  google.protobuf.Timestamp update_time = 7
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+}
