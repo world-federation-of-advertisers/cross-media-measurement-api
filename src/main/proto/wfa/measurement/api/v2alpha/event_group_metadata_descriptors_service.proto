@@ -49,6 +49,13 @@ service EventGroupMetadataDescriptors {
   rpc BatchGetEventGroupMetadataDescriptors(
       BatchGetEventGroupMetadataDescriptorsRequest)
       returns (BatchGetEventGroupMetadataDescriptorsResponse) {}
+
+  // Lists `EventGroupMetadataDescriptor`s. Results in a `PERMISSION_DENIED`
+  // error if attempting to list `EventGroupMetadataDescriptor`s that the
+  // authenticated user does not have access to.
+  rpc ListEventGroupMetadataDescriptors(
+      ListEventGroupMetadataDescriptorsRequest)
+      returns (ListEventGroupMetadataDescriptorsResponse);
 }
 
 // Request message for `GetEventGroupMetadataDescriptor` method.
@@ -100,4 +107,30 @@ message BatchGetEventGroupMetadataDescriptorsRequest {
 message BatchGetEventGroupMetadataDescriptorsResponse {
   // The `EventGroupMetadataDescriptor` resources.
   repeated EventGroupMetadataDescriptor event_group_metadata_descriptors = 1;
+}
+
+message ListEventGroupMetadataDescriptorsRequest {
+  // Resource name of the parent `DataProvider`. The wildcard ID (`-`) may be
+  // used in place of the `DataProvider` ID to list across `DataProvider`s.
+  string parent = 1
+      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+
+  // The maximum number of `EventGroupMetadataDescriptor`s to return. The
+  // service may return fewer than this value. If unspecified, at most 50
+  // `EventGroupMetadataDescriptor`s will be returned. The maximum value is
+  // 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2;
+
+  // A token from a previous call, specified to retrieve the next page. See
+  // https://aip.dev/158.
+  string page_token = 3;
+}
+
+message ListEventGroupMetadataDescriptorsResponse {
+  // The `EventGroupMetadataDescriptor` resources.
+  repeated EventGroupMetadataDescriptor event_group_metadata_descriptors = 1;
+
+  // A token that can be specified in a subsequent call to retrieve the next
+  // page. See https://aip.dev/158.
+  string next_page_token = 2;
 }
