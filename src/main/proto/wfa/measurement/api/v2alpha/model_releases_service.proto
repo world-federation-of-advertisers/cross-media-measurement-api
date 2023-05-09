@@ -42,10 +42,6 @@ message CreateModelReleaseRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
     (google.api.field_behavior) = REQUIRED
   ];
-
-  // The `ModelRelease` to create. The `name` field will be
-  // ignored, and the system will assign an ID.
-  ModelRelease model_release = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetModelReleaseRequest {
