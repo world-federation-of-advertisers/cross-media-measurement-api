@@ -53,9 +53,6 @@ message EventGroup {
 
   // ID referencing the `EventGroup` in an external system, provided by the
   // `DataProvider`.
-  //
-  // If set, this value must be unique among `EventGroup`s for the parent
-  // `DataProvider`.
   string event_group_reference_id = 5;
 
   // The set of VID model lines used to label events in this `EventGroup`.

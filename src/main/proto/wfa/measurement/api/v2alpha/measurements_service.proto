@@ -51,9 +51,15 @@ message GetMeasurementRequest {
 
 // Request message for `CreateMeasurement` method.
 message CreateMeasurementRequest {
-  // The `Measurement` to create. Required. The `key` field will be
-  // ignored, and the system will assign an ID.
+  // The `Measurement` to create. Required. The `name` field will be ignored,
+  // and the system will assign an ID.
   Measurement measurement = 1;
+
+  // Unique identifier for this request.
+  //
+  // If specified, the request will be idempotent. See
+  // https://google.aip.dev/155.
+  string request_id = 2;
 }
 
 // Request message for `ListMeasurements` method.
