@@ -21,21 +21,22 @@ import "google/protobuf/descriptor.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 
-// Metadata about an Event Field.
+// Descriptor for a field inside of an event template message.
 message EventFieldDescriptor {
-  // Human-readable name of the Event Field, e.g. for display in a UI. Required.
+  // Human-readable name of the field, e.g. for display in a UI. Required.
   string display_name = 1;
-  // High-level description of the Event Field.
+  // High-level description of the field.
   string description = 2;
 }
 
-// Metadata about an Event Template.
+// Descriptor for an event template message type.
 message EventTemplateDescriptor {
-  // Name used to reference this Event Template. Required, Immutable.
-  // Must follow the naming convention for protocol buffers fields.
-  // See https://developers.google.com/protocol-buffers/docs/style
-  // Must be unique among all event template message types within
-  // a given template library.
+  // Name of the field in an event message that uses this template. Required.
+  // Immutable.
+  //
+  // This must follow the naming convention for protocol buffers fields (see
+  // https://developers.google.com/protocol-buffers/docs/style). It must be
+  // unique across all events in which this template may be used.
   string name = 1;
   // Human-readable name of the Event Template. Required.
   string display_name = 2;
@@ -47,5 +48,11 @@ message EventTemplateDescriptor {
 // the range for internal use.
 extend google.protobuf.MessageOptions {
   EventTemplateDescriptor event_template = 50000;
-  EventFieldDescriptor event_field = 50001;
+  EventFieldDescriptor event_field = 50001 [deprecated = true];
+}
+
+// Custom options for fields. Numbering starts at 50000 which is the start of
+// the range for internal use.
+extend google.protobuf.FieldOptions {
+  EventFieldDescriptor template_field = 50000;
 }
