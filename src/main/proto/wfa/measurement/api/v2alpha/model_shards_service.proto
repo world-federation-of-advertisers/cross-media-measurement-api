@@ -46,7 +46,7 @@ message CreateModelShardRequest {
 
   // The `ModelShard` to create. The `name` field will be
   // ignored, and the system will assign an ID.
-  ModelShard model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
+  ModelShard model_shard = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ListModelShardsRequest {
