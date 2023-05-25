@@ -51,6 +51,10 @@ message GetMeasurementRequest {
 
 // Request message for `CreateMeasurement` method.
 message CreateMeasurementRequest {
+  // Resource name of the parent `MeasurementConsumer`. Required.
+  string parent = 3 [(google.api.resource_reference).type =
+                         "halo.wfanet.org/MeasurementConsumer"];
+
   // The `Measurement` to create. Required. The `name` field will be ignored,
   // and the system will assign an ID.
   Measurement measurement = 1;
