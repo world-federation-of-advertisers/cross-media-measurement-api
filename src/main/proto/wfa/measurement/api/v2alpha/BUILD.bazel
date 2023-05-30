@@ -519,6 +519,8 @@ proto_library(
     srcs = ["exchange_steps_service.proto"],
     deps = [
         ":exchange_step_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
     ],

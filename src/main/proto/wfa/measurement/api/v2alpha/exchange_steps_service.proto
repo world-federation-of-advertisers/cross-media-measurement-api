@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/exchange_step.proto";
@@ -29,14 +31,14 @@ service ExchangeSteps {
   // Returns the `ExchangeStep` with the specified resource key.
   rpc GetExchangeStep(GetExchangeStepRequest) returns (ExchangeStep);
 
-  // Claims a single ExchangeStep that is ready to be worked on and creates an
-  // initial ExchangeStepAttempt for it.
+  // Claims an `ExchangeStep` and creates an initial ExchangeStepAttempt for it.
   //
-  // If there are no ready ExchangeSteps, this will return an empty response.
-  // Since this is expected, normal behavior, it does NOT return a NOT_FOUND
-  // error.
-  rpc ClaimReadyExchangeStep(ClaimReadyExchangeStepRequest)
-      returns (ClaimReadyExchangeStepResponse);
+  // Results in a FAILED_PRECONDITION error if the `ExchangeStep` is not ready
+  // to be worked on.
+  rpc ClaimExchangeStep(ClaimExchangeStepRequest)
+      returns (ClaimExchangeStepResponse) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Lists `ExchangeStep`s.
   rpc ListExchangeSteps(ListExchangeStepsRequest)
@@ -50,21 +52,19 @@ message GetExchangeStepRequest {
       [(google.api.resource_reference).type = "halo.wfanet.org/ExchangeStep"];
 }
 
-// Request message for `ClaimReadyExchangeStep` method.
-message ClaimReadyExchangeStepRequest {
-  // If an `ExchangeStep` is returned, it should be executed by this party.
-  // Required.
-  oneof party {
-    string data_provider = 1
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    string model_provider = 2 [(google.api.resource_reference).type =
-                                   "halo.wfanet.org/ModelProvider"];
-  }
+// Request message for `ClaimExchangeStep` method.
+message ClaimExchangeStepRequest {
+  reserved 1, 2;
+
+  // Resource name of the `ExchangeStep`.
+  string name = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ExchangeStep",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
-// Response message for `ClaimReadyExchangeStep` method.
-// If there are no ready `ExchangeSteps`, all fields will be unset.
-message ClaimReadyExchangeStepResponse {
+// Response message for `ClaimExchangeStep` method.
+message ClaimExchangeStepResponse {
   // The `ExchangeStep`.
   ExchangeStep exchange_step = 1;
 
