@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/exchange_step.proto";
@@ -29,12 +30,11 @@ service ExchangeSteps {
   // Returns the `ExchangeStep` with the specified resource key.
   rpc GetExchangeStep(GetExchangeStepRequest) returns (ExchangeStep);
 
-  // Claims a single ExchangeStep that is ready to be worked on and creates an
-  // initial ExchangeStepAttempt for it.
+  // Find and claims an `ExchangeStep` that is ready to be worked on, creating
+  // an initial `ExchangeStepAttempt` for it.
   //
-  // If there are no ready ExchangeSteps, this will return an empty response.
-  // Since this is expected, normal behavior, it does NOT return a NOT_FOUND
-  // error.
+  // This method operates on the recurringExchanges resource collection. If
+  // there are no ready `ExchangeStep`s, this will return an empty response.
   rpc ClaimReadyExchangeStep(ClaimReadyExchangeStepRequest)
       returns (ClaimReadyExchangeStepResponse);
 
@@ -52,14 +52,14 @@ message GetExchangeStepRequest {
 
 // Request message for `ClaimReadyExchangeStep` method.
 message ClaimReadyExchangeStepRequest {
-  // If an `ExchangeStep` is returned, it should be executed by this party.
-  // Required.
-  oneof party {
-    string data_provider = 1
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    string model_provider = 2 [(google.api.resource_reference).type =
-                                   "halo.wfanet.org/ModelProvider"];
-  }
+  reserved 1, 2;
+
+  // Resource name of the parent of the `RecurringExchange`.
+  string parent = 3 [
+    (google.api.resource_reference).child_type =
+        "halo.wfanet.org/RecurringExchange",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Response message for `ClaimReadyExchangeStep` method.
