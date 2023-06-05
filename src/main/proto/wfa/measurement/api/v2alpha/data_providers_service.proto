@@ -28,15 +28,9 @@ service DataProviders {
   // Returns the `DataProvider` with the specified resource key.
   rpc GetDataProvider(GetDataProviderRequest) returns (DataProvider) {}
 
-  // DEPRECATED: DataProvider can only be created from internal call
-  // Creates (registers) a `DataProvider`.
-  rpc CreateDataProvider(CreateDataProviderRequest) returns (DataProvider) {
-    option deprecated = true;
-  }
-
   // Replaces the `required_duchies` field in a `DataProvider` resource.
   rpc ReplaceDataProviderRequiredDuchies(
-      ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider);
+      ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider) {}
 }
 
 // Request message for ReplaceDataProviderDuchyList
@@ -53,14 +47,4 @@ message GetDataProviderRequest {
   // Resource name.
   string name = 1
       [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-}
-
-// DEPRECATED: DataProvider can only be created from internal call
-// Request message for `CreateDataProvider` method.
-message CreateDataProviderRequest {
-  option deprecated = true;
-
-  // The `DataProvider` to create. Required. The `key` field will be ignored,
-  // and the system will assign an ID.
-  DataProvider data_provider = 1;
 }
