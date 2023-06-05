@@ -17,7 +17,6 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/resource.proto";
-import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/exchange_step_attempt.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -29,14 +28,6 @@ option java_outer_classname = "ExchangeStepAttemptsServiceProto";
 // The only way to create an ExchangeStepAttempt is through the
 // /ExchangeSteps.ClaimReadyExchangeStep method.
 service ExchangeStepAttempts {
-  // Returns the `ExchangeStepAttempt` with the specified resource key.
-  rpc GetExchangeStepAttempt(GetExchangeStepAttemptRequest)
-      returns (ExchangeStepAttempt);
-
-  // Lists `ExchangeStepAttempts`.
-  rpc ListExchangeStepAttempts(ListExchangeStepAttemptsRequest)
-      returns (ListExchangeStepAttemptsResponse);
-
   // Adds a log entry to an `ExchangeStepAttempt`.
   rpc AppendLogEntry(AppendLogEntryRequest) returns (ExchangeStepAttempt);
 
@@ -46,58 +37,6 @@ service ExchangeStepAttempts {
   // any given `ExchangeStep`.
   rpc FinishExchangeStepAttempt(FinishExchangeStepAttemptRequest)
       returns (ExchangeStepAttempt);
-}
-
-// Request message for `GetExchangeStepAttempt` method.
-message GetExchangeStepAttemptRequest {
-  // Resource name.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/ExchangeStepAttempt"];
-}
-
-// Request message for `ListExchangeStepAttempts` method.
-message ListExchangeStepAttemptsRequest {
-  // The parent `ExchangeStep`. If blank, `ListExchangeSteps` will consider all
-  // ExchangeStepAttempts belonging to the caller.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Exchange"];
-
-  // The maximum number of `ExchangeStepAttempt`s to return.
-  // The service may return fewer than this value.
-  // If unspecified, at most 50 `ExchangeStepAttempt`s will be returned.
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  //
-  // Typically, an ExchangeStep will only have 0 or 1 ExchangeStepAttempts, so
-  // most of the time this can be omitted and all results will fit in a single
-  // response.
-  int32 page_size = 2;
-
-  // A page token, received from a previous `ListExchangeStepAttemptsRequest`
-  // call. Provide this to retrieve the subsequent page.
-  //
-  // When paginating, all other parameters provided to
-  // `ListExchangeStepAttemptsRequest` must match the call that provided the
-  // page token.
-  string page_token = 3;
-
-  // Filter criteria. Repeated fields are treated as logical ORs, and multiple
-  // fields specified as logical ANDs.
-  message Filter {
-    repeated ExchangeStepAttempt.State state = 1;
-    google.protobuf.Timestamp created_before = 2;
-    google.protobuf.Timestamp created_on_or_after = 3;
-  }
-  Filter filter = 4;
-}
-
-// Response message for `ListExchangeStepAttempts` method.
-message ListExchangeStepAttemptsResponse {
-  // Page of `ExchangeStepAttempt`s.
-  repeated ExchangeStepAttempt exchange_step_attempts = 1;
-
-  // A token, which can be sent as `page_token` to retrieve the next page.
-  // If this field is omitted, there are no subsequent pages.
-  string next_page_token = 2;
 }
 
 // Request message for `AppendLogEntry` method.

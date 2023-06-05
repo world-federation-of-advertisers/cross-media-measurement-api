@@ -26,9 +26,6 @@ option java_outer_classname = "ExchangeStepsServiceProto";
 
 // Service for interacting with `ExchangeStep` resources.
 service ExchangeSteps {
-  // Returns the `ExchangeStep` with the specified resource key.
-  rpc GetExchangeStep(GetExchangeStepRequest) returns (ExchangeStep);
-
   // Claims a single ExchangeStep that is ready to be worked on and creates an
   // initial ExchangeStepAttempt for it.
   //
@@ -41,13 +38,6 @@ service ExchangeSteps {
   // Lists `ExchangeStep`s.
   rpc ListExchangeSteps(ListExchangeStepsRequest)
       returns (ListExchangeStepsResponse);
-}
-
-// Request message for `GetExchangeStep` method.
-message GetExchangeStepRequest {
-  // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ExchangeStep"];
 }
 
 // Request message for `ClaimReadyExchangeStep` method.
