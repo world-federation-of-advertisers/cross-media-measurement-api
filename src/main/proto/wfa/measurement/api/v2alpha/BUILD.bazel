@@ -497,15 +497,6 @@ proto_library(
 )
 
 proto_library(
-    name = "recurring_exchanges_service_proto",
-    srcs = ["recurring_exchanges_service.proto"],
-    deps = [
-        ":recurring_exchange_proto",
-        "@com_google_googleapis//google/api:resource_proto",
-    ],
-)
-
-proto_library(
     name = "exchanges_service_proto",
     srcs = ["exchanges_service.proto"],
     deps = [
@@ -530,7 +521,6 @@ proto_library(
     deps = [
         ":exchange_step_attempt_proto",
         "@com_google_googleapis//google/api:resource_proto",
-        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 
