@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/exchange_step_attempt.proto";
 
@@ -29,7 +30,8 @@ option java_outer_classname = "ExchangeStepAttemptsServiceProto";
 // /ExchangeSteps.ClaimReadyExchangeStep method.
 service ExchangeStepAttempts {
   // Adds a log entry to an `ExchangeStepAttempt`.
-  rpc AppendLogEntry(AppendLogEntryRequest) returns (ExchangeStepAttempt);
+  rpc AppendExchangeStepAttemptLogEntry(
+      AppendExchangeStepAttemptLogEntryRequest) returns (ExchangeStepAttempt);
 
   // Marks an `ExchangeStepAttempt` as finished (either successfully or not).
   //
@@ -39,26 +41,37 @@ service ExchangeStepAttempts {
       returns (ExchangeStepAttempt);
 }
 
-// Request message for `AppendLogEntry` method.
-message AppendLogEntryRequest {
+// Request message for `AppendExchangeStepLogEntry` method.
+message AppendExchangeStepAttemptLogEntryRequest {
   // The `ExchangeStepAttempt` to append the entry to. It must be in a valid,
   // non-terminal state.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/ExchangeStepAttempt"];
+  string name = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/ExchangeStepAttempt",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The messages to append. Do NOT include sensitive information in this field.
-  repeated ExchangeStepAttempt.DebugLog log_entries = 2;
+  repeated ExchangeStepAttempt.DebugLogEntry log_entries = 2
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `FinishExchangeStepAttempt` method.
 message FinishExchangeStepAttemptRequest {
   // The `ExchangeStep` to finish. It must be in a valid, non-terminal state.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/ExchangeStepAttempt"];
+  string name = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/ExchangeStepAttempt",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The ultimate state of the `ExchangeStepAttempt`. Must be a terminal state.
-  ExchangeStepAttempt.State final_state = 2;
+  // (-- api-linter: core::0216::state-field-output-only=disabled
+  //     api-linter: core::0203::output-only=disabled
+  //     aip.dev/not-precedent: This is not a resource state field. --)
+  ExchangeStepAttempt.State final_state = 2
+      [(google.api.field_behavior) = REQUIRED];
 
   // Final debug log entries to append concurrently with the state transition.
-  repeated ExchangeStepAttempt.DebugLog log_entries = 3;
+  repeated ExchangeStepAttempt.DebugLogEntry log_entries = 3;
 }

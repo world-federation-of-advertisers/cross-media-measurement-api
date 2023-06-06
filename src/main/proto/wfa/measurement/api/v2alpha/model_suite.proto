@@ -29,7 +29,11 @@ message ModelSuite {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelSuite"
     pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}"
+    singular: "modelSuite"
+    plural: "modelSuites"
   };
+
+  // Resource name.
   string name = 1;
 
   // Human-readable nickname for this ModelSuite.

@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/measurement_consumer.proto";
 
@@ -27,11 +29,15 @@ option java_outer_classname = "MeasurementConsumersServiceProto";
 service MeasurementConsumers {
   // Returns the `MeasurementConsumer` with the specified resource key.
   rpc GetMeasurementConsumer(GetMeasurementConsumerRequest)
-      returns (MeasurementConsumer) {}
+      returns (MeasurementConsumer) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Creates (registers) a `MeasurementConsumer`.
   rpc CreateMeasurementConsumer(CreateMeasurementConsumerRequest)
-      returns (MeasurementConsumer) {}
+      returns (MeasurementConsumer) {
+    option (google.api.method_signature) = "measurement_consumer";
+  }
 
   // Adds an owner to the specified `MeasurementConsumer`.
   rpc AddMeasurementConsumerOwner(AddMeasurementConsumerOwnerRequest)
@@ -45,37 +51,52 @@ service MeasurementConsumers {
 // Request message for `GetMeasurementConsumer` method.
 message GetMeasurementConsumerRequest {
   // Resource name.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/MeasurementConsumer"];
+  string name = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `CreateMeasurementConsumer` method.
 message CreateMeasurementConsumerRequest {
-  // The `MeasurementConsumer` to create. Required. The `name` field will be
-  // ignored, and the system will assign an ID.
-  MeasurementConsumer measurement_consumer = 1;
+  // The `MeasurementConsumer` to create.
+  //
+  // The `name` field will be ignored, and the system will assign an ID.
+  MeasurementConsumer measurement_consumer = 1
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `AddMeasurementConsumerOwner` method.
 message AddMeasurementConsumerOwnerRequest {
   // Resource name.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/MeasurementConsumer"];
+  string name = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // Resource name of the `Account` to add as an owner of this
-  // `MeasurementConsumer`. Required.
-  string account = 2
-      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+  // `MeasurementConsumer`.
+  string account = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Account",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `RemoveMeasurementConsumerOwner` method.
 message RemoveMeasurementConsumerOwnerRequest {
   // Resource name.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/MeasurementConsumer"];
+  string name = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // Resource name of the `Account` to remove as an owner of this
-  // `MeasurementConsumer`. Required.
-  string account = 2
-      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+  // `MeasurementConsumer`.
+  string account = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Account",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

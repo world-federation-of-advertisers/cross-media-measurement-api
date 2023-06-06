@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 
@@ -29,19 +30,22 @@ message PublicKey {
     type: "halo.wfanet.org/PublicKey"
     pattern: "dataProviders/{data_provider}/publicKey"
     pattern: "measurementConsumers/{measurement_consumer}/publicKey"
+    singular: "publicKey"
+    plural: "publicKeys"
   };
 
   // Resource name.
   string name = 1;
 
   // Serialized `EncryptionPublicKey` for the parent resource, which can be
-  // verified using `certificate`. Required.
-  SignedData public_key = 2;
+  // verified using `certificate`.
+  SignedData public_key = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Resource name of the `Certificate` that can be used to verify `public_key`.
-  // Required.
   //
   // This must have the same parent as the `PublicKey`.
-  string certificate = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  string certificate = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

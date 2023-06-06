@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/account.proto";
 
@@ -32,7 +34,9 @@ service Accounts {
   // `owned_measurement_consumer` in `activation_params`.
   //
   // Returns the `FULL` view of the created `Account`.
-  rpc CreateAccount(CreateAccountRequest) returns (Account) {}
+  rpc CreateAccount(CreateAccountRequest) returns (Account) {
+    option (google.api.method_signature) = "account";
+  }
 
   // Activates an account by transitioning its `account_state` to `ACTIVATED`.
   //
@@ -46,35 +50,43 @@ service Accounts {
   rpc ReplaceAccountIdentity(ReplaceAccountIdentityRequest) returns (Account) {}
 
   // Authenticates the user using an OpenID Connect (OIDC) provider.
+  //
+  // (-- api-linter: core::0136::verb-noun=disabled
+  //     aip.dev/not-precedent: This isn't strictly acting on a resource. --)
   rpc Authenticate(AuthenticateRequest) returns (AuthenticateResponse) {}
 }
 
 // Request message for `CreateAccount` method.
 message CreateAccountRequest {
-  // The `Account` to create. Required. The `name` field will be ignored, and
+  // The `Account` to create. The `name` field will be ignored, and
   // the system will assign an ID.
-  Account account = 1;
+  Account account = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `ActivateAccount` method.
 message ActivateAccountRequest {
-  // Resource name. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Account",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // Activation token. Required.
-  string activation_token = 2;
+  // Activation token.
+  string activation_token = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `ReplaceAccountIdentity` method.
 message ReplaceAccountIdentityRequest {
-  // Resource name. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Account",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
+  // Credentials for an `OpenIdConnectIdentity`.
   message OpenIdConnectCredentials {
     // Encoded JSON Web Token (JWT). Required.
-    string identity_bearer_token = 1;
+    string identity_bearer_token = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Replacement credentials for an identity. Required.
@@ -86,12 +98,13 @@ message ReplaceAccountIdentityRequest {
 
 // Request message for `Authenticate` method.
 message AuthenticateRequest {
-  // OpenID Connect issuer identifier. Required.
+  // OpenID Connect issuer identifier.
   //
   // For Self-Issued OpenID Providers, this will be `https://self-issued.me`.
-  string issuer = 1;
+  string issuer = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Response message for `Authenticate` method.
 message AuthenticateResponse {
   // URI for id_token authentication request to OpenID Provider.
   string authentication_request_uri = 1;

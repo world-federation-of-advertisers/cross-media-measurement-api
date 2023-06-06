@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
 
@@ -30,13 +31,15 @@ message ExchangeStep {
     pattern: "recurringExchanges/{recurring_exchange}/exchanges/{exchange}/steps/{exchange_step}"
     pattern: "dataProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}/steps/{exchange_step}"
     pattern: "modelProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}/steps/{exchange_step}"
+    singular: "exchangeStep"
+    plural: "exchangeSteps"
   };
 
   // Resource name.
   string name = 1;
 
-  // Output-only.
-  State state = 2;
+  // State of this `ExchangeStep`.
+  State state = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Serialized ExchangeWorkflow that this ExchangeStep corresponds to.
   bytes serialized_exchange_workflow = 3;
@@ -48,7 +51,9 @@ message ExchangeStep {
   // Current index of the step inside the serialized_exchange_workflow.
   int32 step_index = 5;
 
+  // State of an `ExchangeStep`.
   enum State {
+    // Default value used if the state is omitted.
     STATE_UNSPECIFIED = 0;
 
     // Some predecessor ExchangeStep is not in state SUCCEEDED.
@@ -56,6 +61,7 @@ message ExchangeStep {
 
     // All predecessor ExchangeSteps are in state `SUCCEEDED` and there are no
     // associated ExchangeStepAttempts.
+    // (-- api-linter: core::0216::value-synonyms=disabled --)
     READY = 2;
 
     // All predecessor ExchangeSteps are in state `SUCCEEDED` and there is at

@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 
@@ -26,14 +28,20 @@ option java_outer_classname = "MeasurementsServiceProto";
 // Service for interacting with `Measurement` resources.
 service Measurements {
   // Returns the `Measurement` with the specified resource key.
-  rpc GetMeasurement(GetMeasurementRequest) returns (Measurement) {}
+  rpc GetMeasurement(GetMeasurementRequest) returns (Measurement) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Creates (registers) a `Measurement`.
-  rpc CreateMeasurement(CreateMeasurementRequest) returns (Measurement) {}
+  rpc CreateMeasurement(CreateMeasurementRequest) returns (Measurement) {
+    option (google.api.method_signature) = "parent,measurement";
+  }
 
   // Lists `Measurement`s for the parent `MeasurementConsumer`.
   rpc ListMeasurements(ListMeasurementsRequest)
-      returns (ListMeasurementsResponse) {}
+      returns (ListMeasurementsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 
   // Transitions a `Measurement` to the `CANCELLED` state. This is a terminal
   // state for the `Measurement`.
@@ -44,20 +52,25 @@ service Measurements {
 
 // Request message for `GetMeasurement` method.
 message GetMeasurementRequest {
-  // Resource name. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Measurement"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Measurement",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `CreateMeasurement` method.
 message CreateMeasurementRequest {
-  // Resource name of the parent `MeasurementConsumer`. Required.
-  string parent = 3 [(google.api.resource_reference).type =
-                         "halo.wfanet.org/MeasurementConsumer"];
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 3 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // The `Measurement` to create. Required. The `name` field will be ignored,
-  // and the system will assign an ID.
-  Measurement measurement = 1;
+  // The `Measurement` to create. The `name` field will be ignored, and the
+  // system will assign an ID.
+  Measurement measurement = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Unique identifier for this request.
   //
@@ -68,9 +81,12 @@ message CreateMeasurementRequest {
 
 // Request message for `ListMeasurements` method.
 message ListMeasurementsRequest {
-  // Resource name of the parent `MeasurementConsumer`. Required.
-  string parent = 1 [(google.api.resource_reference).type =
-                         "halo.wfanet.org/MeasurementConsumer"];
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `Measurement`s to return.
   // The service may return fewer than this value.
@@ -88,15 +104,25 @@ message ListMeasurementsRequest {
   // Filter criteria. Repeated fields are treated as logical ORs, and multiple
   // fields specified as logical ANDs.
   message Filter {
+    // Matches against the `state` field.
+    //
+    // (-- api-linter: core::0216::state-field-output-only=disabled
+    //     api-linter: core::0203::output-only=disabled
+    //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Measurement.State states = 1;
   }
+  // Filter criteria.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 4;
 }
 
+// Response message for `ListMeasurements` method.
 message ListMeasurementsResponse {
   // List of `Measurement`s that has all of the tags in the
   // ListMeasurementsRequest
-  repeated Measurement measurement = 1;
+  repeated Measurement measurements = 1;
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
@@ -104,7 +130,9 @@ message ListMeasurementsResponse {
 
 // Request message for `CancelMeasurement` method.
 message CancelMeasurementRequest {
-  // Resource name of the `Measurement` to mark as `CANCELLED`. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Measurement"];
+  // Resource name of the `Measurement` to mark as `CANCELLED`.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Measurement",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

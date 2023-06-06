@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/model_outage.proto";
@@ -25,15 +26,20 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelOutagesServiceProto";
 
+// Service for interacting with `ModelOutage` resources.
 service ModelOutages {
   // Creates a new `ModelOutage`. A 'ModelOutage' can be created only for
   // 'ModelLine' with type equal to 'PROD'. Furthermore the
   // 'ModelLine'.'holdback_model_line' needs to be already specified.
-  rpc CreateModelOutage(CreateModelOutageRequest) returns (ModelOutage);
+  rpc CreateModelOutage(CreateModelOutageRequest) returns (ModelOutage) {
+    option (google.api.method_signature) = "parent,model_outage";
+  }
 
   // Lists `ModelOutage`s.
   rpc ListModelOutages(ListModelOutagesRequest)
-      returns (ListModelOutagesResponse);
+      returns (ListModelOutagesResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 
   // Deletes an existing `ModelOutage`. `ModelOutage` will transition to a
   // DELETED state. This action is irreversible. Results in a `NOT_FOUND` error
@@ -41,9 +47,12 @@ service ModelOutages {
   // deleted.
   //
   // This is a soft delete as defined by https://google.aip.dev/216.
-  rpc DeleteModelOutage(DeleteModelOutageRequest) returns (ModelOutage);
+  rpc DeleteModelOutage(DeleteModelOutageRequest) returns (ModelOutage) {
+    option (google.api.method_signature) = "name";
+  }
 }
 
+// Request message for `CreateModelOutage` method.
 message CreateModelOutageRequest {
   // Resource name of the parent `ModelLine`.
   string parent = 1 [
@@ -56,10 +65,11 @@ message CreateModelOutageRequest {
   ModelOutage model_outage = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `ListModelOutages` method.
 message ListModelOutagesRequest {
   // Resource name of the parent `ModelOutage`.
   string parent = 1 [
-    (google.api.resource_reference).type = "halo.wfanet.org/ModelOutage",
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -79,23 +89,28 @@ message ListModelOutagesRequest {
   // Whether to include ModelOutage in the DELETED state or not.
   bool show_deleted = 4;
 
-  // Filter criteria. Only 'ModelOutage's having 'outage_interval' overlapping
-  // 'time_interval' are returned.
+  // Filter criteria for a `ListModelOutages` request.
   message Filter {
-    TimeInterval time_interval = 1;
+    // Matches against the `outage_interval` of the `ModelOutage`.
+    TimeInterval outage_interval_overlapping = 1;
   }
+  // Filter criteria for this request.
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 5;
 }
 
+// Response message for `ListModelOutages` method.
 message ListModelOutagesResponse {
-  // List of `ModelOutage`s.
-  repeated ModelOutage model_outage = 1;
+  // Resources.
+  repeated ModelOutage model_outages = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
 }
 
+// Request message for `DeleteModelOutage` method.
 message DeleteModelOutageRequest {
   // The name of `ModelOutage` to delete.
   // Format:

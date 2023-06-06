@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/certificate.proto";
 
@@ -26,10 +28,14 @@ option java_outer_classname = "CertificatesServiceProto";
 // Service for interacting with `Certificate` resources.
 service Certificates {
   // Returns the `Certificate` with the specified resource name.
-  rpc GetCertificate(GetCertificateRequest) returns (Certificate) {}
+  rpc GetCertificate(GetCertificateRequest) returns (Certificate) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Creates (adds) a `Certificate`.
-  rpc CreateCertificate(CreateCertificateRequest) returns (Certificate) {}
+  rpc CreateCertificate(CreateCertificateRequest) returns (Certificate) {
+    option (google.api.method_signature) = "parent,certificate";
+  }
 
   // Revokes a `Certificate` by setting its revocation state.
   rpc RevokeCertificate(RevokeCertificateRequest) returns (Certificate) {}
@@ -43,35 +49,48 @@ service Certificates {
 // Request message for `GetCertificate` method.
 message GetCertificateRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `CreateCertificate` method.
 message CreateCertificateRequest {
-  // Name of the parent resource. Required.
-  string parent = 1 [(google.api.resource_reference).child_type =
-                         "halo.wfanet.org/Certificate"];
+  // Name of the parent resource.
+  string parent = 1 [
+    (google.api.resource_reference).child_type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // The `Certificate` to create. Required.
+  // The `Certificate` to create.
   //
   // The `name` field will be ignored, and the system will assign an ID.
-  Certificate certificate = 2;
+  Certificate certificate = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `RevokeCertificate` method.
 message RevokeCertificateRequest {
-  // Resource name. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // Revocation state to set. Required.
-  Certificate.RevocationState revocation_state = 2;
+  // Revocation state to set.
+  //
+  // (-- api-linter: core::0216::state-field-output-only=disabled
+  //     api-linter: core::0203::output-only=disabled
+  //     aip.dev/not-precedent: This is not a resource state field. --)
+  Certificate.RevocationState revocation_state = 2
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `ReleaseCertificateHold` method.
 message ReleaseCertificateHoldRequest {
-  // Resource name. Required.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

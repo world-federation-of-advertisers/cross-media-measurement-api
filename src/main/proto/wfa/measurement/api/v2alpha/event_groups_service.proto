@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
@@ -27,47 +28,63 @@ option java_outer_classname = "EventGroupsServiceProto";
 // Service for interacting with `EventGroup` resources.
 service EventGroups {
   // Returns the `EventGroup` with the specified resource key.
-  rpc GetEventGroup(GetEventGroupRequest) returns (EventGroup) {}
+  rpc GetEventGroup(GetEventGroupRequest) returns (EventGroup) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Creates (registers) a `EventGroup` defined in the specified
   // `DataProvider`'s system.
-  rpc CreateEventGroup(CreateEventGroupRequest) returns (EventGroup) {}
+  rpc CreateEventGroup(CreateEventGroupRequest) returns (EventGroup) {
+    option (google.api.method_signature) = "parent,event_group";
+  }
 
   // Updates an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
   // the authenticated user does not have access to the `EventGroup`. Results in
   // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
-  rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {}
+  // (-- api-linter: core::0134::method-signature=disabled
+  //     aip.dev/not-precedent: Partial update not supported. --)
+  rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {
+    option (google.api.method_signature) = "event_group";
+  }
 
   // Deletes an existing `EventGroup`. `EventGroup` will transition to a DELETED
   // state and will have all of its mutable optional fields cleared. This action
   // is irreversible. Results in a `PERMISSION_DENIED` error if the
   // authenticated user does not have access to the `EventGroup`. Results in a
   // `NOT_FOUND` error if the the specified `EventGroup` does not exist.
-  rpc DeleteEventGroup(DeleteEventGroupRequest) returns (EventGroup) {}
+  rpc DeleteEventGroup(DeleteEventGroupRequest) returns (EventGroup) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Lists `EventGroup`s. Results in a `PERMISSION_DENIED` error if attempting
   // to list `EventGroup`s that the authenticated user does not have access to.
   rpc ListEventGroups(ListEventGroupsRequest)
-      returns (ListEventGroupsResponse) {}
+      returns (ListEventGroupsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 }
 
 // Request message for `GetEventGroup` method.
 message GetEventGroupRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/EventGroup",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `CreateEventGroup` method.
 message CreateEventGroupRequest {
-  // Resource name of the parent `DataProvider`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // The `EventGroup` to create. Required.
+  // The `EventGroup` to create.
   //
   // The `name` field will be ignored, and the system will assign an ID.
-  EventGroup event_group = 2;
+  EventGroup event_group = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Unique identifier for this request.
   //
@@ -77,26 +94,31 @@ message CreateEventGroupRequest {
 }
 
 // Request message for `UpdateEventGroup` method.
+// (-- api-linter: core::0134::request-mask-required=disabled
+//     aip.dev/not-precedent: Partial update not supported. --)
 message UpdateEventGroupRequest {
-  // The `EventGroup` to update. Required.
-  EventGroup event_group = 1;
+  // Resource.
+  EventGroup event_group = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `DeleteEventGroup` method.
 message DeleteEventGroupRequest {
-  // The name of `EventGroup` to delete. Required.
-  // Format: dataProviders/{dataProvider}/eventGroups/{eventGroup}
+  // Resource name.
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
   ];
 }
 
+// Request message for `ListEventGroups` method.
 message ListEventGroupsRequest {
-  // Resource key of the parent `DataProvider`. The wildcard ID (`-`) may be
+  // Resource name of the parent `DataProvider`. The wildcard ID (`-`) may be
   // used in place of the `DataProvider` ID to list across `DataProvider`s, in
   // which case a filter should be specified.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `EventGroup`s to return. The service may return fewer
   // than this value. If unspecified, at most 50 `EventGroup`s will be returned.
@@ -106,20 +128,27 @@ message ListEventGroupsRequest {
   // https://aip.dev/158.
   string page_token = 3;
 
-  // Filter criteria. Repeated fields are treated as logical ORs, and multiple
-  // fields specified as logical ANDs.
+  // Filter criteria for a `ListEventGroups` request.
+  //
+  // Repeated fields are treated as logical ORs, and multiple fields specified
+  // as logical ANDs.
   message Filter {
+    // Matches against the `measurement_consumer` field.
     repeated string measurement_consumers = 1
         [(google.api.resource_reference).type =
              "halo.wfanet.org/MeasurementConsumer"];
   }
-  // Result filter.
+  // Filter criteria for this request.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 4;
 
   // Whether to include EventGroups in the DELETED state.
   bool show_deleted = 5;
 }
 
+// Response message for `ListEventGroups` method.
 message ListEventGroupsResponse {
   // The `EventGroup` resources.
   repeated EventGroup event_groups = 1;

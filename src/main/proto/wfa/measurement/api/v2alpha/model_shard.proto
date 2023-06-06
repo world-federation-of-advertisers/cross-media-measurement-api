@@ -18,28 +18,32 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelShardProto";
 
+// Resource representing a shard of a model for a `DataProvider`.
 message ModelShard {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelShard"
     pattern: "dataProviders/{data_provider}/modelShards/{model_shard}"
+    singular: "modelShard"
+    plural: "modelShards"
   };
+
+  // Resource name.
   string name = 1;
 
-  // The ModelRelease resource this ModelShard references to.
+  // Resource name of the `ModelRelease` that this is a shard of.
   string model_release = 2 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelRelease",
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // A reference to a model blob.
   message ModelBlob {
     // The path the model blob can be downloaded from.
     // See CompileNode proto message:
@@ -50,7 +54,11 @@ message ModelShard {
     ];
   }
 
-  ModelBlob model_blob = 3;
+  // The blob for this model shard.
+  ModelBlob model_blob = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // When the 'ModelShard' was created.
   google.protobuf.Timestamp create_time = 5

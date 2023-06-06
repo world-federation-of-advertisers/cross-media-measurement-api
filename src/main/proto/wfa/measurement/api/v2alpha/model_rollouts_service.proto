@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
@@ -27,15 +28,20 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelRolloutsServiceProto";
 
+// Service for interacting with `ModelRollout` resources.
 service ModelRollouts {
   // Creates a new `ModelRollout`. 'rollout_start_time' must be sufficiently in
   // the future to allow for EDPs to sync with the Kingdom.
-  rpc CreateModelRollout(CreateModelRolloutRequest) returns (ModelRollout);
+  rpc CreateModelRollout(CreateModelRolloutRequest) returns (ModelRollout) {
+    option (google.api.method_signature) = "parent,model_rollout";
+  }
 
   // Lists `ModelRollout`s for a given ModelLine. It returns an sorted list by
   // rollout_start_time ASC.
   rpc ListModelRollouts(ListModelRolloutsRequest)
-      returns (ListModelRolloutsResponse);
+      returns (ListModelRolloutsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 
   // Sets the `rollout_freeze_time` of a `ModelRollout`.
   rpc ScheduleModelRolloutFreeze(ScheduleModelRolloutFreezeRequest)
@@ -44,9 +50,12 @@ service ModelRollouts {
   // Deletes a `ModelRollout`. Results in FAILED_PRECONDITION if the request is
   // received after 'ModelRollout.rollout_period.start_time`.
   rpc DeleteModelRollout(DeleteModelRolloutRequest)
-      returns (google.protobuf.Empty) {}
+      returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
+  }
 }
 
+// Request message for `CreateModelRollout` method.
 message CreateModelRolloutRequest {
   // Resource name of the parent `ModelLine`.
   string parent = 1 [
@@ -59,6 +68,7 @@ message CreateModelRolloutRequest {
   ModelRollout model_rollout = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `ListModelRollouts` method.
 message ListModelRolloutsRequest {
   // Resource name of the parent `ModelLine`.
   string parent = 1 [
@@ -80,24 +90,29 @@ message ListModelRolloutsRequest {
   // token.
   string page_token = 3;
 
-  // Filter criteria.
+  // Filter criteria for a `ListModelRolloutsRequest`.
   message Filter {
     // Only 'ModelRollout's having 'rollout_period' overlapping
     // 'rollout_period_overlapping' are returned.
     TimeInterval rollout_period_overlapping = 1;
   }
+  // Filter criteria for this request.
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 4;
 }
 
+// Response message for `ListModelRollouts` method.
 message ListModelRolloutsResponse {
-  // List of `ModelRollout`s.
-  repeated ModelRollout model_rollout = 1;
+  // Resources.
+  repeated ModelRollout model_rollouts = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
 }
 
+// Request message for `ScheduleModelRolloutFreeze` method.
 message ScheduleModelRolloutFreezeRequest {
   // Resource name.
   string name = 1 [
@@ -110,6 +125,7 @@ message ScheduleModelRolloutFreezeRequest {
   google.protobuf.Timestamp rollout_freeze_time = 2;
 }
 
+// Request message for `DeleteModelRollout` method.
 message DeleteModelRolloutRequest {
   // The name of `ModelRollout` to delete.
   // Format:
