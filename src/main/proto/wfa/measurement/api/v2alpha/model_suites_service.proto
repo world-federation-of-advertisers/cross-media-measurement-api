@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/model_suite.proto";
@@ -27,15 +28,23 @@ option java_outer_classname = "ModelSuitesServiceProto";
 // Service for interacting with `ModelSuite` resources.
 service ModelSuites {
   // Creates a new `ModelSuite`
-  rpc CreateModelSuite(CreateModelSuiteRequest) returns (ModelSuite);
+  rpc CreateModelSuite(CreateModelSuiteRequest) returns (ModelSuite) {
+    option (google.api.method_signature) = "parent,model_suite";
+  }
 
   // Returns the `ModelSuite` with the specified resource key.
-  rpc GetModelSuite(GetModelSuiteRequest) returns (ModelSuite);
+  rpc GetModelSuite(GetModelSuiteRequest) returns (ModelSuite) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Lists `ModelSuite`s.
-  rpc ListModelSuites(ListModelSuitesRequest) returns (ListModelSuitesResponse);
+  rpc ListModelSuites(ListModelSuitesRequest)
+      returns (ListModelSuitesResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 }
 
+// Request message for `CreateModelSuite` method.
 message CreateModelSuiteRequest {
   // Resource name of the parent `ModelProvider`.
   string parent = 1 [
@@ -48,18 +57,23 @@ message CreateModelSuiteRequest {
   ModelSuite model_suite = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `GetModelSuite` method.
 message GetModelSuiteRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelSuite"];
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+// Request message for `ListModelSuites` method.
 message ListModelSuitesRequest {
   // Resource name of the parent `ModelProvider`.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelProvider",
     (google.api.field_behavior) = REQUIRED
   ];
+
   // The maximum number of `ModelSuite`s to return.
   // The service may return fewer than this value.
   // If unspecified, at most 50 `ModelSuite`s will be returned.
@@ -75,9 +89,10 @@ message ListModelSuitesRequest {
   string page_token = 3;
 }
 
+// Response message for `ListModelSuites` method.
 message ListModelSuitesResponse {
-  // List of `ModelSuite`s.
-  repeated ModelSuite model_suite = 1;
+  // Resources.
+  repeated ModelSuite model_suites = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.

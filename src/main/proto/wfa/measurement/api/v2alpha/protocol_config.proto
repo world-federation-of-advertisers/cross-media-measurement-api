@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
-import "google/api/resource.proto";
+import "google/api/field_behavior.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -24,6 +24,9 @@ option java_multiple_files = true;
 option java_outer_classname = "ProtocolConfigProto";
 
 // Configuration for computation protocols.
+//
+// (-- api-linter: core::0123::resource-annotation=disabled
+//     aip.dev/not-precedent: This is not a resource message. --)
 message ProtocolConfig {
   // Resource name.
   //
@@ -35,38 +38,50 @@ message ProtocolConfig {
   // The values should correspond to the fields in the `measurement_type` Oneof
   // in `MeasurementSpec`.
   enum MeasurementType {
+    // Default value used if the type is omitted.
     MEASUREMENT_TYPE_UNSPECIFIED = 0;
+    // Reach and frequency.
     REACH_AND_FREQUENCY = 1;
+    // Number of impressions.
     IMPRESSION = 2;
+    // Watch duration.
     DURATION = 3;
+    // Reach only (no frequency).
     REACH = 4;
   }
-  // The type of measurement that this protocol computes. Required. Immutable.
-  MeasurementType measurement_type = 2;
+  // The type of measurement that this protocol computes.
+  MeasurementType measurement_type = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The mechanism used to generate noise in computations.
   enum NoiseMechanism {
+    // Default value used if the mechanism is omitted.
     NOISE_MECHANISM_UNSPECIFIED = 0;
 
+    // Geometric.
     GEOMETRIC = 1;
+    // Discrete Gaussian.
     DISCRETE_GAUSSIAN = 2;
   }
 
   // Configuration for the Liquid Legions v2 R/F protocol.
   message LiquidLegionsV2 {
-    // Parameters for sketch. Required.  Immutable.
-    LiquidLegionsSketchParams sketch_params = 1;
+    // Parameters for sketch.
+    LiquidLegionsSketchParams sketch_params = 1
+        [(google.api.field_behavior) = REQUIRED];
 
     // Differential privacy parameters for data provider noise registers.
-    // Required. Immutable.
     //
     // Each of these registers contains a well-known constant register ID, and
     // arbitrary key and count values.
-    DifferentialPrivacyParams data_provider_noise = 2;
+    DifferentialPrivacyParams data_provider_noise = 2
+        [(google.api.field_behavior) = REQUIRED];
 
     // ID of the OpenSSL built-in elliptic curve. For example, 415 for the
-    // prime256v1 curve. Required. Immutable.
-    int32 elliptic_curve_id = 3;
+    // prime256v1 curve.
+    int32 elliptic_curve_id = 3 [(google.api.field_behavior) = REQUIRED];
 
     // The maximum frequency to reveal in the histogram.
     int32 maximum_frequency = 4;
@@ -75,22 +90,23 @@ message ProtocolConfig {
     NoiseMechanism noise_mechanism = 5;
   }
 
-  // Protocol for direct measurement.
+  // Configuration for the Direct protocol.
   message Direct {}
 
+  // Configuration for a specific protocol.
   message Protocol {
     // Configuration for the specific protocol.
     oneof protocol {
-      // Liquid Legions v2 config.
+      // Liquid Legions v2 protocol.
       //
-      // May only be set when the measurement type is REACH_AND_FREQUENCY.
-      // Requisition can be fulfilled by calling
+      // May only be set when the measurement type is REACH_AND_FREQUENCY or
+      // REACH. `Requisition`s using this protocol can be fulfilled by calling
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
       LiquidLegionsV2 liquid_legions_v2 = 1;
 
       // Direct protocol.
       //
-      // The Requisition can be fulfilled by calling
+      // `Requisition`s using this protocol can be fulfilled by calling
       // Requisitions/FulfillDirectRequisition.
       Direct direct = 2;
     }
@@ -106,18 +122,21 @@ message ProtocolConfig {
     LiquidLegionsV2 liquid_legions_v2 = 3 [deprecated = true];
   }
 
-  // List of protocols the EDP may use.
-  repeated Protocol protocols = 4;
+  // Set of protocols that may be used for this `Measurement`.
+  repeated Protocol protocols = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 }
 
 // Parameters for a Liquid Legions sketch.
 message LiquidLegionsSketchParams {
-  // The decay rate of the Liquid Legions sketch. Required.
-  double decay_rate = 1;
+  // The decay rate of the Liquid Legions sketch.
+  double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
 
-  // The maximum size of the Liquid Legions sketch.  Required.
-  int64 max_size = 2;
+  // The maximum size of the Liquid Legions sketch.
+  int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
 
-  // The size of the distribution of the sampling indicator value. Required.
-  int64 sampling_indicator_size = 3;
+  // The size of the distribution of the sampling indicator value.
+  int64 sampling_indicator_size = 3 [(google.api.field_behavior) = REQUIRED];
 }

@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 
@@ -28,33 +29,44 @@ message MeasurementConsumer {
   option (google.api.resource) = {
     type: "halo.wfanet.org/MeasurementConsumer"
     pattern: "measurementConsumers/{measurement_consumer}"
+    singular: "measurementConsumer"
+    plural: "measurementConsumers"
   };
 
   // Resource name.
   string name = 1;
 
   // The X.509 certificate belonging to this `MeasurementConsumer` in DER format
-  // which can be used to verify `public_key`. Required.
-  bytes certificate_der = 2;
+  // which can be used to verify `public_key`.
+  bytes certificate_der = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Resource name of the `Certificate` belonging to this `MeasurementConsumer`
-  // which can be used to verify `public_key`. Output-only.
+  // which can be used to verify `public_key`.
   //
   // The `x509_der` field of this resource matches `certificate_der`.
-  string certificate = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  string certificate = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
 
   // Serialized `EncryptionPublicKey` for this `MeasurementConsumer`, which can
-  // be verified using `certificate`. Required.
-  SignedData public_key = 4;
+  // be verified using `certificate`.
+  SignedData public_key = 4 [(google.api.field_behavior) = REQUIRED];
 
   // Display name of the `MeasurementConsumer`.
   string display_name = 5;
 
-  // Resource names of owner `Account`s. Output-only.
-  repeated string owners = 6
-      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+  // Resource names of owner `Account`s.
+  repeated string owners = 6 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Account",
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
 
-  // Token to create a `MeasurementConsumer` resource. Required. Input-only.
-  string measurement_consumer_creation_token = 7;
+  // Token to create a `MeasurementConsumer` resource.
+  string measurement_consumer_creation_token = 7 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE,
+    (google.api.field_behavior) = INPUT_ONLY
+  ];
 }

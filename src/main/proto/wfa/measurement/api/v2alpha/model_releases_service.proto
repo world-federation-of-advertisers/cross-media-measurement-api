@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/model_release.proto";
@@ -24,18 +25,26 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelReleasesServiceProto";
 
+// Service for interacting with `ModelRelease` resources.
 service ModelReleases {
   // Creates a new `ModelRelease`.
-  rpc CreateModelRelease(CreateModelReleaseRequest) returns (ModelRelease);
+  rpc CreateModelRelease(CreateModelReleaseRequest) returns (ModelRelease) {
+    option (google.api.method_signature) = "parent,model_release";
+  }
 
   // Returns a single `ModelRelease`.
-  rpc GetModelRelease(GetModelReleaseRequest) returns (ModelRelease);
+  rpc GetModelRelease(GetModelReleaseRequest) returns (ModelRelease) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Lists `ModelRelease`s.
   rpc ListModelReleases(ListModelReleasesRequest)
-      returns (ListModelReleasesResponse);
+      returns (ListModelReleasesResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 }
 
+// Request message for `CreateModelRelease` method.
 message CreateModelReleaseRequest {
   // Resource name of the parent `ModelSuite`.
   string parent = 1 [
@@ -48,6 +57,7 @@ message CreateModelReleaseRequest {
   ModelRelease model_release = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `GetModelRelease` method.
 message GetModelReleaseRequest {
   // Resource name.
   string name = 1 [
@@ -56,6 +66,7 @@ message GetModelReleaseRequest {
   ];
 }
 
+// Request message for `ListModelReleases` method.
 message ListModelReleasesRequest {
   // Resource name of the parent `ModelSuite`.
   string parent = 1 [
@@ -78,9 +89,10 @@ message ListModelReleasesRequest {
   string page_token = 3;
 }
 
+// Response message for `ListModelReleases` method.
 message ListModelReleasesResponse {
-  // List of `ModelRelease`s.
-  repeated ModelRelease model_release = 1;
+  // Resources.
+  repeated ModelRelease model_releases = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.

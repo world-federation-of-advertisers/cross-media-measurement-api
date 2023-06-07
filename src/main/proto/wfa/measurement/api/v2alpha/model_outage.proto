@@ -25,11 +25,16 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelOutageProto";
 
+// Resource representing an outage of a model line.
 message ModelOutage {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelOutage"
     pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}/modelOutages/{model_outage}"
+    singular: "modelOutage"
+    plural: "modelOutages"
   };
+
+  // Resource name.
   string name = 1;
 
   // TimeInterval in which the parent `ModelLine` cannot be used to generate
@@ -41,6 +46,7 @@ message ModelOutage {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // State of a `ModelOutage`,
   enum State {
     // The default value if state is omitted. Should never be used.
     STATE_UNSPECIFIED = 0;
@@ -52,7 +58,7 @@ message ModelOutage {
     DELETED = 2;
   }
 
-  // `ModelOutage` state.
+  // State of this `ModelOutage`.
   State state = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // When the 'ModelOutage' was created.

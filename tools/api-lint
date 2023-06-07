@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+readonly BAZEL="${BAZEL:-bazel}"
+readonly PROTO_PATH='src/main/proto'
+
+declare bazel_bin
+bazel_bin="$("$BAZEL" info bazel-bin)"
+
+"$BAZEL" query "kind(proto_library, $PROTO_PATH/...)" | xargs "$BAZEL" build
+
+find "$PROTO_PATH" -name '*.proto' -printf '%P\0' |
+  xargs -0 api-linter --proto-path "$PROTO_PATH" \
+  --config "$PROTO_PATH/api-linter.yaml" \
+  --descriptor-set-in "${bazel_bin}/external/com_github_protocolbuffers_protobuf/descriptor_proto-descriptor-set.proto.bin" \
+  --descriptor-set-in "${bazel_bin}/external/com_google_googleapis/google/type/date_proto-descriptor-set.proto.bin" \
+  --descriptor-set-in "${bazel_bin}/external/com_google_googleapis/google/api/resource_proto-descriptor-set.proto.bin" \
+  --descriptor-set-in "${bazel_bin}/external/com_google_googleapis/google/api/field_behavior_proto-descriptor-set.proto.bin" \
+  --descriptor-set-in "${bazel_bin}/external/com_google_googleapis/google/api/client_proto-descriptor-set.proto.bin" \
+  "$@"

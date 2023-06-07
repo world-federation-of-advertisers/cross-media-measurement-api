@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata_descriptor.proto";
 
@@ -28,21 +30,30 @@ service EventGroupMetadataDescriptors {
   // Returns the `EventGroupMetadataDescriptor` with the specified resource
   // name.
   rpc GetEventGroupMetadataDescriptor(GetEventGroupMetadataDescriptorRequest)
-      returns (EventGroupMetadataDescriptor) {}
+      returns (EventGroupMetadataDescriptor) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Creates (registers) a `EventGroupMetadataDescriptor` defined in the
   // specified `DataProvider`'s system.
   rpc CreateEventGroupMetadataDescriptor(
       CreateEventGroupMetadataDescriptorRequest)
-      returns (EventGroupMetadataDescriptor) {}
+      returns (EventGroupMetadataDescriptor) {
+    option (google.api.method_signature) =
+        "parent,event_group_metadata_descriptor";
+  }
 
   // Updates an existing `EventGroupMetadataDescriptor`. Results in a
   // `PERMISSION_DENIED` error if the authenticated user does not have access to
   // the `EventGroupMetadataDescriptor`. Results in a `NOT_FOUND` error if the
   // the specified `EventGroupMetadataDescriptor` does not exist.
+  // (-- api-linter: core::0134::method-signature=disabled
+  //     aip.dev/not-precedent: Partial update not supported. --)
   rpc UpdateEventGroupMetadataDescriptor(
       UpdateEventGroupMetadataDescriptorRequest)
-      returns (EventGroupMetadataDescriptor) {}
+      returns (EventGroupMetadataDescriptor) {
+    option (google.api.method_signature) = "event_group_metadata_descriptor";
+  }
 
   // Batch gets `EventGroupMetadataDescriptors`s. Results in a `NOT_FOUND` error
   // if any of the specified `EventGroupMetadataDescriptor`s does not exist.
@@ -55,28 +66,34 @@ service EventGroupMetadataDescriptors {
   // authenticated user does not have access to.
   rpc ListEventGroupMetadataDescriptors(
       ListEventGroupMetadataDescriptorsRequest)
-      returns (ListEventGroupMetadataDescriptorsResponse);
+      returns (ListEventGroupMetadataDescriptorsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 }
 
 // Request message for `GetEventGroupMetadataDescriptor` method.
 message GetEventGroupMetadataDescriptorRequest {
   // Resource name.
-  string name = 1 [(google.api.resource_reference).type =
-                       "halo.wfanet.org/EventGroupMetadataDescriptor"];
+  string name = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/EventGroupMetadataDescriptor",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `CreateEventGroupMetadataDescriptor` method.
 message CreateEventGroupMetadataDescriptorRequest {
-  // Resource name of the parent `DataProvider`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // The `EventGroupMetadataDescriptor` to create. Required.
+  // The `EventGroupMetadataDescriptor` to create.
   //
-  // The `name` field will be ignored, and the system will assign an ID. Results
-  // in an `ALREADY_EXISTS` error if there is already a child
-  // `EventGroupMetadataDescriptor` with the same `event_group_reference_id`.
-  EventGroupMetadataDescriptor event_group_metadata_descriptor = 2;
+  // The `name` field will be ignored, and the system will assign an ID.
+  EventGroupMetadataDescriptor event_group_metadata_descriptor = 2
+      [(google.api.field_behavior) = REQUIRED];
 
   // Unique identifier for this request.
   //
@@ -88,32 +105,45 @@ message CreateEventGroupMetadataDescriptorRequest {
 }
 
 // Request message for `UpdateEventGroup` method.
+//
+// (-- api-linter: core::0134::request-mask-required=disabled
+//     aip.dev/not-precedent: Partial update not supported. --)
 message UpdateEventGroupMetadataDescriptorRequest {
-  // The `EventGroupMetadataDescriptor` to update. Required.
-  EventGroupMetadataDescriptor event_group_metadata_descriptor = 1;
+  // The `EventGroupMetadataDescriptor` to update.
+  EventGroupMetadataDescriptor event_group_metadata_descriptor = 1
+      [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `BatchGetEventGroupMetadataDescriptors` method.
 message BatchGetEventGroupMetadataDescriptorsRequest {
-  // Resource name of the parent `DataProvider`. Required.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  // The names of `EventGroupMetadataDescriptor`s to retrieve.
-  repeated string names = 2
-      [(google.api.resource_reference).type =
-           "halo.wfanet.org/EventGroupMetadataDescriptor"];
+  // The resource names of `EventGroupMetadataDescriptor`s to retrieve.
+  repeated string names = 2 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/EventGroupMetadataDescriptor",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+// Response message for `BatchGetEventGroupMetadataDescriptors` method.
 message BatchGetEventGroupMetadataDescriptorsResponse {
   // The `EventGroupMetadataDescriptor` resources.
   repeated EventGroupMetadataDescriptor event_group_metadata_descriptors = 1;
 }
 
+// Request message for `ListEventGroupMetadataDescriptors` method.
 message ListEventGroupMetadataDescriptorsRequest {
   // Resource name of the parent `DataProvider`. The wildcard ID (`-`) may be
   // used in place of the `DataProvider` ID to list across `DataProvider`s.
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `EventGroupMetadataDescriptor`s to return. The
   // service may return fewer than this value. If unspecified, at most 50
@@ -126,6 +156,7 @@ message ListEventGroupMetadataDescriptorsRequest {
   string page_token = 3;
 }
 
+// Response message for `ListEventGroupMetadataDescriptors` method.
 message ListEventGroupMetadataDescriptorsResponse {
   // The `EventGroupMetadataDescriptor` resources.
   repeated EventGroupMetadataDescriptor event_group_metadata_descriptors = 1;

@@ -24,11 +24,16 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelLineProto";
 
+// Resource representing a series of models within a model suite.
 message ModelLine {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelLine"
     pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}"
+    singular: "modelLine"
+    plural: "modelLines"
   };
+
+  // Resource name.
   string name = 1;
 
   // Human-readable display name for this 'ModelLine'.
@@ -51,6 +56,7 @@ message ModelLine {
   // not specified, there is no end to the active time range.
   google.protobuf.Timestamp active_end_time = 5;
 
+  // Type of a `ModelLine`.
   enum Type {
     // The default value if 'Type' is omitted. Should not be used.
     TYPE_UNSPECIFIED = 0;
@@ -65,8 +71,10 @@ message ModelLine {
     HOLDBACK = 3;
   }
 
-  // Defines the type of the `ModelLine`. EDPs must label events using all
-  // available `ModelLine`s independently of their type.
+  // Type of this `ModelLine`.
+  //
+  // `DataProvider`s must label events using all available `ModelLine`s
+  // independently of their type.
   Type type = 6 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE

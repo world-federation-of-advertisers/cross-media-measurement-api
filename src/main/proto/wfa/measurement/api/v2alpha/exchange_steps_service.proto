@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/exchange_step.proto";
@@ -37,7 +39,9 @@ service ExchangeSteps {
 
   // Lists `ExchangeStep`s.
   rpc ListExchangeSteps(ListExchangeStepsRequest)
-      returns (ListExchangeStepsResponse);
+      returns (ListExchangeStepsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 }
 
 // Request message for `ClaimReadyExchangeStep` method.
@@ -45,8 +49,10 @@ message ClaimReadyExchangeStepRequest {
   // If an `ExchangeStep` is returned, it should be executed by this party.
   // Required.
   oneof party {
+    // Resource name of parent `DataProvider`.
     string data_provider = 1
         [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    // Resource name of parent `ModelProvider`.
     string model_provider = 2 [(google.api.resource_reference).type =
                                    "halo.wfanet.org/ModelProvider"];
   }
@@ -65,8 +71,11 @@ message ClaimReadyExchangeStepResponse {
 
 // Request message for `ListExchangeSteps` method.
 message ListExchangeStepsRequest {
-  string parent = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Exchange"];
+  // Resource name of the parent `Exchange`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Exchange",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // The maximum number of `ExchangeStep`s to return.
   // The service may return fewer than this value.
@@ -85,29 +94,47 @@ message ListExchangeStepsRequest {
   // Filter criteria. Repeated fields are treated as logical ORs, and multiple
   // fields specified as logical ANDs.
   message Filter {
+    // Matches against the `exchange_date` field.
     repeated google.type.Date exchange_dates = 1;
+    // Matches against the `state` field.
+    //
+    // (-- api-linter: core::0216::state-field-output-only=disabled
+    //     api-linter: core::0203::output-only=disabled
+    //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated ExchangeStep.State states = 2;
+    // Matches against the `event_data_provider` field of the ancestor
+    // `RecurringExchange`.
     repeated string recurring_exchange_data_providers = 3
         [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    // Matches against the `model_provider` field of the ancestor
+    // `RecurringExchange`.
     repeated string recurring_exchange_model_providers = 4
         [(google.api.resource_reference).type =
              "halo.wfanet.org/ModelProvider"];
 
     // Party name.
     oneof party {
+      // Matches against the `event_data_provider` field of the ancestor
+      // `RecurringExchange`.
       string data_provider = 5 [(google.api.resource_reference).type =
                                     "halo.wfanet.org/DataProvider"];
+      // Matches against the `model_provider` field of the ancestor
+      // `RecurringExchange`.
       string model_provider = 6 [(google.api.resource_reference).type =
                                      "halo.wfanet.org/ModelProvider"];
     }
   }
+  // Filter criteria for this request.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 4;
 }
 
+// Response message for `ListExchangeSteps` method.
 message ListExchangeStepsResponse {
-  // List of `ExchangeStep`s that has all of the tags in the
-  // ListExchangeStepsRequest
-  repeated ExchangeStep exchange_step = 1;
+  // Resources.
+  repeated ExchangeStep exchange_steps = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.

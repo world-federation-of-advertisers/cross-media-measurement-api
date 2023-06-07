@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -28,8 +29,8 @@ message ExchangeStepAttempt {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ExchangeStepAttempt"
     pattern: "recurringExchanges/{recurring_exchange}/exchanges/{exchange}/steps/{exchange_step}/attempts/{exchange_step_attempt}"
-    pattern: "dataProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}/steps/{exchange_step}/attempts/{exchange_step_attempt}"
-    pattern: "modelProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}/steps/{exchange_step}/attempts/{exchange_step_attempt}"
+    singular: "exchangeStepAttempt"
+    plural: "exchangeStepAttempts"
   };
 
   // Resource name.
@@ -37,10 +38,11 @@ message ExchangeStepAttempt {
 
   // An ExchangeStep can have multiple ExchangeStepAttempts. When sorted by
   // `start_time`, these form a contiguous sequence of integers starting at 1.
-  // Output-only.
-  int32 attempt_number = 2;
+  int32 attempt_number = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 
+  // State of an `ExchangeStepAttempt`.
   enum State {
+    // The default value if the state is omitted.
     STATE_UNSPECIFIED = 0;
 
     // The attempt is has not yet reached a terminal state.
@@ -59,22 +61,25 @@ message ExchangeStepAttempt {
     FAILED_STEP = 4;
   }
 
-  // State of the ExchangeStepAttempt. Output-only.
-  State state = 3;
+  // State of this `ExchangeStepAttempt`.
+  State state = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  message DebugLog {
-    // When the log entry was made.
-    google.protobuf.Timestamp time = 1;
+  // Entry of debug log.
+  message DebugLogEntry {
+    // Time of the log entry from the caller.
+    google.protobuf.Timestamp entry_time = 1;
 
     // Human-readable debug message. This should NOT include any user data.
     string message = 2;
   }
   // Warnings, errors, and other messages for debugging purposes. Append-only.
-  repeated DebugLog debug_log_entries = 4;
+  repeated DebugLogEntry debug_log_entries = 4;
 
-  // When the ExchangeStepAttempt was created. Output-only.
-  google.protobuf.Timestamp start_time = 5;
+  // When the ExchangeStepAttempt was created.
+  google.protobuf.Timestamp start_time = 5
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // When the ExchangeStepAttempt was last updated. Output-only.
-  google.protobuf.Timestamp update_time = 6;
+  // When the ExchangeStepAttempt was last updated.
+  google.protobuf.Timestamp update_time = 6
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

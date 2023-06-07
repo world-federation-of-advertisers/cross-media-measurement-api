@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 
@@ -29,36 +30,37 @@ message DataProvider {
   option (google.api.resource) = {
     type: "halo.wfanet.org/DataProvider"
     pattern: "dataProviders/{data_provider}"
+    singular: "dataProvider"
+    plural: "dataProviders"
   };
 
   // Resource name.
   string name = 1;
 
   // The X.509 certificate belonging to this `DataProvider` in DER format which
-  // can be used to verify `public_key`. Required.
-  bytes certificate_der = 2;
+  // can be used to verify `public_key`.
+  bytes certificate_der = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Resource name of the `Certificate` belonging to this `DataProvider` which
-  // can be used to verify `public_key`. Output-only.
+  // can be used to verify `public_key`.
   //
   // The `x509_der` field of this resource matches `certificate_der`.
-  string certificate = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  string certificate = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
 
   // Serialized `EncryptionPublicKey` for this `DataProvider`, which can be
-  // verified using `certificate`. Required.
-  SignedData public_key = 4;
+  // verified using `certificate`.
+  SignedData public_key = 4 [(google.api.field_behavior) = REQUIRED];
 
   // Display name of the data provider.
   string display_name = 5;
 
-  // The list of duchies that must be included in all computations involving
-  // this `DataProvider`
-  repeated string required_external_duchy_ids = 6;
-}
-
-// Wrapper for a list of `DataProvider` resource names.
-message DataProviderList {
-  repeated string data_provider = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource names of every `Duchy` that must be included in all computations
+  // involving this `DataProvider`.
+  repeated string required_duchies = 6 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Duchy",
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
 }

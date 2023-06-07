@@ -24,11 +24,16 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelReleaseProto";
 
+// Resource representing a release of a model.
 message ModelRelease {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelRelease"
     pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelReleases/{model_release}"
+    singular: "modelRelease"
+    plural: "modelReleases"
   };
+
+  // Resource name.
   string name = 1;
 
   // When the 'ModelRelease' was created.

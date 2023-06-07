@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/exchange.proto";
 
@@ -26,20 +28,16 @@ option java_outer_classname = "ExchangesServiceProto";
 // Service for interacting with `Exchange` resources.
 service Exchanges {
   // Returns the `Exchange` with the specified resource key.
-  rpc GetExchange(GetExchangeRequest) returns (Exchange);
+  rpc GetExchange(GetExchangeRequest) returns (Exchange) {
+    option (google.api.method_signature) = "name";
+  }
 }
 
 // Request message for `GetExchange` method.
 message GetExchangeRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/Exchange"];
-
-  // Party name. Required.
-  oneof party {
-    string data_provider = 2
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    string model_provider = 3 [(google.api.resource_reference).type =
-                                   "halo.wfanet.org/ModelProvider"];
-  }
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Exchange",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

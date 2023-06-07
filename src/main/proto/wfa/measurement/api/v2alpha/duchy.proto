@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -27,19 +28,21 @@ message Duchy {
   option (google.api.resource) = {
     type: "halo.wfanet.org/Duchy"
     pattern: "duchies/{duchy}"
+    singular: "duchy"
+    plural: "duchies"
   };
 
   // Resource name.
   string name = 1;
 
   // The *preferred* X.509 certificate belonging to this `Duchy` in DER format.
-  // Required.
-  bytes preferred_certificate_der = 2;
+  bytes preferred_certificate_der = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Resource name of the *preferred* `Certificate` belonging to this `Duchy`.
-  // Output-only.
   //
   // The `x509_der` field of this resource matches `preferred_certificate_der`.
-  string preferred_certificate = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  string preferred_certificate = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
 }

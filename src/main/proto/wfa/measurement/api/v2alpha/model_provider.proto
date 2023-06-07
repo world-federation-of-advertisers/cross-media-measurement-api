@@ -27,6 +27,8 @@ message ModelProvider {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelProvider"
     pattern: "modelProviders/{model_provider}"
+    singular: "modelProvider"
+    plural: "modelProviders"
   };
 
   // Resource name.
