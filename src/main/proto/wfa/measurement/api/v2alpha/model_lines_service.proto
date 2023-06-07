@@ -75,7 +75,7 @@ message ListModelLinesRequest {
 
   // Filter criteria. Repeated fields are treated as logical ORs.
   message Filter {
-    repeated ModelLine.Type type = 1;
+    repeated ModelLine.Type types = 1;
   }
   Filter filter = 4;
 }
