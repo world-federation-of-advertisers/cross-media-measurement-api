@@ -29,9 +29,17 @@ option java_outer_classname = "ExchangeWorkflowProto";
 //
 // See docs/panelmatch/example-exchange-workflow.textproto for an example
 // ExchangeWorkflow.
+//
+// (-- TODO(@stevenwarejones): Add documentation as mandated by AIP-192. --)
+// (-- api-linter: core::0192::has-comments=disabled
+//     aip.dev/not-precedent: TODO --)
+//
+// (-- api-linter: core::0140::prepositions=disabled
+//     aip.dev/not-precedent: These are used to describe actions. --)
 message ExchangeWorkflow {
   // The type of participant that executes each step.
   enum Party {
+    // Default value used if the party is omitted.
     PARTY_UNSPECIFIED = 0;
     MODEL_PROVIDER = 1;
     DATA_PROVIDER = 2;
@@ -39,7 +47,8 @@ message ExchangeWorkflow {
 
   // The type of storage used for shared storage in a workflow.
   enum StorageType {
-    UNKNOWN_STORAGE_CLIENT = 0;
+    // Default value used if the storage type is omitted.
+    STORAGE_TYPE_UNSPECIFIED = 0;
     GOOGLE_CLOUD_STORAGE = 1;
     AMAZON_S3 = 2;
   }
@@ -57,6 +66,7 @@ message ExchangeWorkflow {
     // when, for each input label, there is a completed step with the same
     // output label.
     map<string, string> input_labels = 3;
+    // Map from the step-specific name to a label for the output.
     map<string, string> output_labels = 4;
 
     // Copies blobs from private to shared storage.
@@ -87,7 +97,8 @@ message ExchangeWorkflow {
 
     message CopyOptions {
       enum LabelType {
-        BLOB_TYPE_UNKNOWN = 0;
+        // Default value used if the label type is omitted.
+        LABEL_TYPE_UNSPECIFIED = 0;
 
         // Indicates the blob should be treated as an opaque blob.
         BLOB = 1;
@@ -136,8 +147,8 @@ message ExchangeWorkflow {
       // This is generally an instance of private_membership.batch.Parameters.
       google.protobuf.Any parameters = 1;
       int32 encrypted_query_result_file_count = 2;
-      int32 num_shards = 3;
-      int32 num_buckets_per_shard = 4;
+      int32 shard_count = 3;
+      int32 buckets_per_shard = 4;
       int32 max_queries_per_shard = 5;
     }
 
@@ -147,10 +158,12 @@ message ExchangeWorkflow {
       google.protobuf.Any parameters = 1;
       int32 encrypted_query_bundle_file_count = 2;
       int32 query_id_to_ids_file_count = 3;
-      int32 num_shards = 4;
-      int32 num_buckets_per_shard = 5;
-      // Consider making this optional once its not experimental
-      int32 num_queries_per_shard = 6;
+      int32 shard_count = 4;
+      int32 buckets_per_shard = 5;
+      // (-- TODO: Consider making this optional once its not experimental. --)
+      // (-- api-linter: core::0203::optional=disabled
+      //     aip.dev/not-precedent: Linter incorrectly identifies this. --)
+      int32 queries_per_shard = 6;
       bool add_padding_queries = 7;
     }
 
@@ -195,7 +208,7 @@ message ExchangeWorkflow {
 
     // Generates random bytes
     message GenerateRandomBytesStep {
-      int32 num_bytes = 1;
+      int32 byte_count = 1;
     }
 
     oneof step {
@@ -234,6 +247,7 @@ message ExchangeWorkflow {
   // Sequence of steps of the workflow.
   repeated Step steps = 1;
 
+  // Identifiers for an `Exchange`.
   message ExchangeIdentifiers {
     // Resource key of the Data Provider for the recurring exchange.
     string data_provider = 2
@@ -251,6 +265,7 @@ message ExchangeWorkflow {
     StorageType storage = 5;
   }
 
+  // Identifiers for the `Exchange`.
   ExchangeIdentifiers exchange_identifiers = 2;
 
   // The date of the first Exchange.

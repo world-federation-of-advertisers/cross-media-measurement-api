@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -25,31 +26,35 @@ option java_outer_classname = "MeasurementSpecProto";
 // Specification for a `Measurement`. Immutable.
 message MeasurementSpec {
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
-  // `MeasurementSpec` is associated with. Required.
+  // `MeasurementSpec` is associated with.
   //
   // This is serialized so it can be easily compared with the same field in
   // `RequisitionSpec`.
-  bytes measurement_public_key = 1;
+  bytes measurement_public_key = 1 [(google.api.field_behavior) = REQUIRED];
 
   // List of `nonce_hash` values from `data_providers` of the corresponding
-  // `Measurement`. Required.
-  repeated bytes nonce_hashes = 2;
+  // `Measurement`.
+  repeated bytes nonce_hashes = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Specifies a range of VIDs to be sampled.
   // start + width cannot be larger than 1
   message VidSamplingInterval {
+    // Start of the sampling interval.
     float start = 1;
+    // Width of the sampling interval.
     float width = 2;
   }
 
   // Range of VIDs that will be included in this measurement
   VidSamplingInterval vid_sampling_interval = 3;
 
+  // Parameters for a reach-only measurement.
   message Reach {
     // Differential privacy parameters for reach.
     DifferentialPrivacyParams privacy_params = 1;
   }
 
+  // Parameters for a reach and frequency measurement.
   message ReachAndFrequency {
     // Differential privacy parameters for reach.
     DifferentialPrivacyParams reach_privacy_params = 1;
@@ -61,14 +66,18 @@ message MeasurementSpec {
     int32 maximum_frequency_per_user = 3;
   }
 
+  // Parameters for an impression measurement.
   message Impression {
+    // Differential privacy parameters.
     DifferentialPrivacyParams privacy_params = 1;
 
     // Maximum frequency per user that will be included in this measurement.
     int32 maximum_frequency_per_user = 2;
   }
 
+  // Parameters for a duration measurement.
   message Duration {
+    // Differential privacy parameters.
     DifferentialPrivacyParams privacy_params = 1;
 
     // Maximum watch duration in seconds per user that will be included in this
@@ -81,9 +90,13 @@ message MeasurementSpec {
 
   // Fields specific to the type of measurement.
   oneof measurement_type {
+    // Parameters for a reach and frequency measurement.
     ReachAndFrequency reach_and_frequency = 4;
+    // Parameters for an impression measurement.
     Impression impression = 5;
+    // Parameters for a duration measurement.
     Duration duration = 6;
+    // Parameters for a reach-only measurement.
     Reach reach = 7;
   }
 }

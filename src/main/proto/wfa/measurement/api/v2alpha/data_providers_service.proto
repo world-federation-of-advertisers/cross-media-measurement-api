@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/data_provider.proto";
 
@@ -26,25 +28,36 @@ option java_outer_classname = "DataProvidersServiceProto";
 // Service for interacting with `DataProvider` resources.
 service DataProviders {
   // Returns the `DataProvider` with the specified resource key.
-  rpc GetDataProvider(GetDataProviderRequest) returns (DataProvider) {}
+  rpc GetDataProvider(GetDataProviderRequest) returns (DataProvider) {
+    option (google.api.method_signature) = "name";
+  }
 
   // Replaces the `required_duchies` field in a `DataProvider` resource.
   rpc ReplaceDataProviderRequiredDuchies(
       ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider) {}
 }
 
-// Request message for ReplaceDataProviderDuchyList
+// Request message for the `ReplaceDataProviderRequiredDuchies` method.
 message ReplaceDataProviderRequiredDuchiesRequest {
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
-  repeated string required_external_duchies = 2
+  // Replacement for the `required_duchies` field.
+  //
+  // (-- api-linter: core::0203::required=disabled
+  //     aip.dev/not-precedent: api-linter incorrectly identifies this. --)
+  repeated string required_duchies = 2
       [(google.api.resource_reference).type = "halo.wfanet.org/Duchy"];
 }
 
 // Request message for `GetDataProvider` method.
 message GetDataProviderRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

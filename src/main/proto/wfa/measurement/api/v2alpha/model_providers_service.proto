@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/model_provider.proto";
 
@@ -26,12 +28,16 @@ option java_outer_classname = "ModelProvidersServiceProto";
 // Service for interacting with `ModelProvider` resources.
 service ModelProviders {
   // Returns the `ModelProvider` with the specified resource key.
-  rpc GetModelProvider(GetModelProviderRequest) returns (ModelProvider) {}
+  rpc GetModelProvider(GetModelProviderRequest) returns (ModelProvider) {
+    option (google.api.method_signature) = "name";
+  }
 }
 
 // Request message for `GetModelProvider` method.
 message GetModelProviderRequest {
   // Resource name.
-  string name = 1
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelProvider"];
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }

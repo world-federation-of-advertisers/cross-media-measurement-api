@@ -16,6 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
+
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "CryptoProto";
@@ -24,27 +26,30 @@ option java_outer_classname = "CryptoProto";
 message ElGamalPublicKey {
   // ID of the OpenSSL built-in elliptic curve. For example, 415 for the
   // prime256v1 curve.
-  int32 elliptic_curve_id = 1;
+  int32 elliptic_curve_id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Public key generator `g`.
-  bytes generator = 2;
+  bytes generator = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Public key element `y = g^x`, where `g` is the generator and `x` is the
   // secret key.
-  bytes element = 3;
+  bytes element = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Data with an accompanying digital signature.
 message SignedData {
   // Arbitrary data to sign.
-  bytes data = 1;
+  bytes data = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Cryptographic digital signature of `data`.
-  bytes signature = 2;
+  bytes signature = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // A public key for asymmetric encryption.
 message EncryptionPublicKey {
+  // Format of data for a public key.
   enum Format {
+    // Default value used if the format is omitted.
     FORMAT_UNSPECIFIED = 0;
 
     // Tink Keyset format.
@@ -56,12 +61,12 @@ message EncryptionPublicKey {
     // https://github.com/google/tink/blob/master/proto/tink.proto.
     TINK_KEYSET = 1;
   }
-  // Encryption key format. Required.
-  Format format = 1;
+  // Format of data for this public key.
+  Format format = 1 [(google.api.field_behavior) = REQUIRED];
 
-  // The format-specific key data. Required.
+  // The format-specific key data.
   //
   // `format` and `data` together must specify all necessary information to
   // decrypt messages given a private key.
-  bytes data = 2;
+  bytes data = 2 [(google.api.field_behavior) = REQUIRED];
 }

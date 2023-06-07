@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
@@ -25,69 +26,85 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "MeasurementProto";
 
+// A measurement from a set of `DataProvider`s requested by a
+// `MeasurementConsumer`.
 message Measurement {
   option (google.api.resource) = {
     type: "halo.wfanet.org/Measurement"
     pattern: "measurementConsumers/{measurement_consumer}/measurements/{measurement}"
+    singular: "measurement"
+    plural: "measurements"
   };
 
   // Resource name.
   string name = 1;
 
   // Resource name of the `Certificate` belonging to the parent
-  // `MeasurementConsumer`. Required. Immutable.
-  string measurement_consumer_certificate = 2
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+  // `MeasurementConsumer`.
+  string measurement_consumer_certificate = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // Serialized `MeasurementSpec` for requisitions, which can be verified using
-  // `measurement_consumer_certificate`. Required. Immutable.
-  SignedData measurement_spec = 3;
+  // `measurement_consumer_certificate`.
+  SignedData measurement_spec = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
-  // TODO(b/175707034): Consider adding a field to hold the private keys which
-  // is encrypted with some private/symmetric key belonging to the
-  // `MeasurementConsumer`. This way the `MeasurementConsumer` need not store
-  // the private keys for each `Measurement`.
-
+  // Entry for `data_providers` map.
   message DataProviderEntry {
-    // Key of the map entry, which is a `DataProvider` resource name. Required.
-    string key = 1
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    // Key of the map entry, which is a `DataProvider` resource name.
+    string key = 1 [
+      (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+      (google.api.field_behavior) = REQUIRED
+    ];
 
+    // Value of a map entry.
     message Value {
       // Resource name of the `Certificate` belonging to `data_provider`.
-      // Required.
-      string data_provider_certificate = 1
-          [(google.api.resource_reference).type =
-               "halo.wfanet.org/Certificate"];
+      string data_provider_certificate = 1 [
+        (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+        (google.api.field_behavior) = REQUIRED
+      ];
 
       // Pre-shared serialized `EncryptionPublicKey`, which can be verified
-      // using `data_provider_certificate`. Required.
-      SignedData data_provider_public_key = 2;
+      // using `data_provider_certificate`.
+      SignedData data_provider_public_key = 2
+          [(google.api.field_behavior) = REQUIRED];
 
       // Encrypted `SignedData` containing the serialized `RequisitionSpec` for
       // this entry, which can be verified using
-      // `measurement_consumer_certificate`. Required.
+      // `measurement_consumer_certificate`.
       //
       // The encryption uses `data_provider_public_key` as the recipient public
       // key.
-      bytes encrypted_requisition_spec = 3;
+      bytes encrypted_requisition_spec = 3
+          [(google.api.field_behavior) = REQUIRED];
 
       // SHA256 hash of the `nonce` from `encrypted_requisition_spec`, where the
       // nonce value has big-endian byte ordering.
-      bytes nonce_hash = 4;
+      bytes nonce_hash = 4 [(google.api.field_behavior) = REQUIRED];
     }
-    // Value of the map entry. Required.
-    Value value = 2;
+    // Value of the map entry.
+    Value value = 2 [(google.api.field_behavior) = REQUIRED];
   }
-  // Map of `DataProvider` name to parameters for that `DataProvider`. Required.
-  // Immutable.
-  repeated DataProviderEntry data_providers = 4;
+  // Map of `DataProvider` name to parameters for that `DataProvider`.
+  repeated DataProviderEntry data_providers = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The `ProtocolConfig` selected for this measurement according to the
-  // `measurement_spec`. Output-only. Immutable.
-  ProtocolConfig protocol_config = 5;
+  // `measurement_spec`.
+  ProtocolConfig protocol_config = 5
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 
+  // State for a `Measurement`.
   enum State {
+    // Default value used if the state is omitted.
     STATE_UNSPECIFIED = 0;
     // Waiting for all linked `Requisition`s to be fulfilled.
     AWAITING_REQUISITION_FULFILLMENT = 1;
@@ -100,16 +117,20 @@ message Measurement {
     // Cancelled by Measurement Consumer. Terminal state.
     CANCELLED = 5;
   }
-  State state = 6;
+  // State of this `Measurement`.
+  State state = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // The result of a `Measurement`.
   message Result {
+    // A reach result.
     message Reach {
       // Number of unique users exposed.
       int64 value = 1;
     }
+    // The reach result.
     Reach reach = 1;
 
+    // A frequency result.
     message Frequency {
       // Map of frequency to reach ratio. For example, an entry
       // {key: 4 value: 0.333} means that 33.3% of users were exposed exactly 4
@@ -117,21 +138,27 @@ message Measurement {
       // means that 33.3% of users were exposed at least 4 times.
       map<int64, double> relative_frequency_distribution = 1;
     }
+    // The frequency result.
     Frequency frequency = 2;
 
+    // An impression result.
     message Impression {
       // Number of total impressions.
       int64 value = 1;
     }
+    // The impressio result.
     Impression impression = 3;
 
+    // A watch duration result.
     message WatchDuration {
       // Total duration.
       google.protobuf.Duration value = 1;
     }
+    // The watch duration result.
     WatchDuration watch_duration = 4;
   }
 
+  // Pair of `Result` to `Certificate`.
   message ResultPair {
     // Encrypted `SignedData` containing the serialized `Result`
     // which can be verified using `certificate`.
@@ -146,15 +173,21 @@ message Measurement {
         [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
   }
 
-  // List of `ResultPair`. Output-only. Only set if `state` is `SUCCEEDED`.
-  repeated ResultPair results = 8;
+  // Results of this `Measurement`. Only set if `state` is `SUCCEEDED`.
+  repeated ResultPair results = 8 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
 
   // ID referencing the `Measurement` in an external system, provided by the
-  // Measurement Consumer.
-  string measurement_reference_id = 9;
+  // `MeasurementConsumer`.
+  string measurement_reference_id = 9 [(google.api.field_behavior) = IMMUTABLE];
 
+  // Information about a failure.
   message Failure {
+    // Reason for a `Failure`.
     enum Reason {
+      // Default value used if the reason is omitted.
       REASON_UNSPECIFIED = 0;
       // An associated certificate was revoked.
       CERTIFICATE_REVOKED = 1;
@@ -163,11 +196,13 @@ message Measurement {
       // ComputationParticipant state was set to FAILED.
       COMPUTATION_PARTICIPANT_FAILED = 3;
     }
-    Reason reason = 1;
+    // Reason for this `Failure`.
+    Reason reason = 1 [(google.api.field_behavior) = REQUIRED];
     // Human-readable message. This should not contain any sensitive
     // information.
     string message = 2;
   }
-  // Set when the state is set to FAILED. Output-only.
-  Failure failure = 10;
+  // Information about the failure of this `Measurement`. Set when the `state`
+  // is set to `FAILED`.
+  Failure failure = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
 }

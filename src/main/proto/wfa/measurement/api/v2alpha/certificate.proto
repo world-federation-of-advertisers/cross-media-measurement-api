@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -30,6 +31,8 @@ message Certificate {
     pattern: "duchies/{duchy}/certificates/{certificate}"
     pattern: "measurementConsumers/{measurement_consumer}/certificates/{certificate}"
     pattern: "modelProviders/{model_provider}/certificates/{certificate}"
+    singular: "certificate"
+    plural: "certificates"
   };
 
   // Resource name.
@@ -39,12 +42,16 @@ message Certificate {
   string name = 1;
 
   // X.509 certificate in DER format. Required. Immutable.
-  bytes x509_der = 2;
+  bytes x509_der = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // RFC 5280 revocation state.
   //
   // This is *not* a resource state as defined by https://google.aip.dev/216.
   enum RevocationState {
+    // Default value used if the revocation state is omitted.
     REVOCATION_STATE_UNSPECIFIED = 0;
 
     // Certificate is on hold and therefore invalid, possibly temporarily.
@@ -53,11 +60,12 @@ message Certificate {
     // Certificate has been revoked. Terminal state.
     REVOKED = 2;
   }
-  // Revocation state of the certificate reported by an API caller. Output-only.
+  // Revocation state of the certificate reported by an API caller.
   //
   // If specified, it means that the certificate is not currently valid.
   //
   // Note that this is not guaranteed to reflect the actual revocation state
   // determined by the issuing certificate authority.
-  RevocationState revocation_state = 3;
+  RevocationState revocation_state = 3
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

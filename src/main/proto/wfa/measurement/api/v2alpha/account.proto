@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -27,8 +28,13 @@ message Account {
   option (google.api.resource) = {
     type: "halo.wfanet.org/Account"
     pattern: "accounts/{account}"
+    singular: "account"
+    plural: "accounts"
   };
 
+  reserved 5;
+
+  // View of an `Account`.
   enum View {
     // The default/unset value.
     //
@@ -46,13 +52,16 @@ message Account {
   // Resource name.
   string name = 1;
 
-  // Resource name of the `Account` that created this one. Output-only.
-  // Immutable.
-  string creator = 2
-      [(google.api.resource_reference).type = "halo.wfanet.org/Account"];
+  // Resource name of the `Account` that created this one.
+  string creator = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Account",
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // Possible activation state of an `Account`.
   enum ActivationState {
+    // Default value used if the state is omitted.
     ACTIVATION_STATE_UNSPECIFIED = 0;
     // The `Account` has not yet been activated.
     UNACTIVATED = 1;
@@ -60,7 +69,8 @@ message Account {
     ACTIVATED = 2;
   }
   // Activation state of this `Account`. Output-only.
-  ActivationState activation_state = 3;
+  ActivationState activation_state = 3
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Parameters for activation of an `Account`.
   message ActivationParams {
@@ -68,28 +78,27 @@ message Account {
     // owner of upon activation. Immutable.
     //
     // This can only be a `MeasurementConsumer` that `creator` is an owner of.
-    string owned_measurement_consumer = 1
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/MeasurementConsumer"];
+    string owned_measurement_consumer = 1 [
+      (google.api.resource_reference).type =
+          "halo.wfanet.org/MeasurementConsumer",
+      (google.api.field_behavior) = IMMUTABLE
+    ];
 
-    // Token that can be used to activate the account. Output-only.
-    string activation_token = 2;
+    // Token that can be used to activate the account.
+    string activation_token = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
   }
   // Parameters for activation of this `Account`.
   //
   // Only set when `activation_state` is `UNACTIVATED` in `FULL` view.
   ActivationParams activation_params = 4;
 
-  // DEPRECATED: suppose not to be owned by an Account
-  string measurement_consumer_creation_token = 5 [deprecated = true];
-
   // OpenID Connect identity.
   message OpenIdConnectIdentity {
-    // Issuer (`iss` claim value). Required.
-    string issuer = 1;
+    // Issuer (`iss` claim value).
+    string issuer = 1 [(google.api.field_behavior) = REQUIRED];
 
-    // Subject Identifier (`subj` claim value). Required.
-    string subject = 2;
+    // Subject Identifier (`subj` claim value).
+    string subject = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Identity of the user for this `Account`. Output-only.
@@ -97,6 +106,8 @@ message Account {
   // This must be set when `activation_state` is `ACTIVATED`. The specified
   // value is unique across all `Account` resources.
   oneof identity {
-    OpenIdConnectIdentity open_id = 6;
+    // OpenID Connect identity.
+    OpenIdConnectIdentity open_id = 6
+        [(google.api.field_behavior) = OUTPUT_ONLY];
   }
 }

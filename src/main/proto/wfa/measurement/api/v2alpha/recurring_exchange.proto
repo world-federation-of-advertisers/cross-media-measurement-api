@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/exchange_workflow.proto";
@@ -32,30 +33,44 @@ message RecurringExchange {
     type: "halo.wfanet.org/RecurringExchange"
     pattern: "recurringExchanges/{recurring_exchange}"
     pattern: "dataProviders/{data_provider}/recurringExchanges/{recurring_exchange}"
-    pattern: "modelProviders/{data_provider}/recurringExchanges/{recurring_exchange}"
+    pattern: "modelProviders/{model_provider}/recurringExchanges/{recurring_exchange}"
+    singular: "recurringExchange"
+    plural: "recurringExchanges"
   };
 
   // Resource name.
   string name = 1;
 
-  // The ExchangeWorkflow for this recurring exchange. Immutable.
-  ExchangeWorkflow exchange_workflow = 2;
+  // The ExchangeWorkflow for this recurring exchange.
+  ExchangeWorkflow exchange_workflow = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The DataProvider party.
-  string event_data_provider = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+  string event_data_provider = 3 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The ModelProvider party.
-  string model_provider = 4
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelProvider"];
+  string model_provider = 4 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelProvider",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
-  // Whether this exchange is still enabled.
-  State state = 5;
+  // State of this `RecurringExchange`.
+  State state = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // The date of the next Exchange.
-  google.type.Date next_exchange_date = 6;
+  google.type.Date next_exchange_date = 6
+      [(google.api.field_behavior) = REQUIRED];
 
+  // State of a `RecurringExchange`.
   enum State {
+    // Default value used if the state is omitted.
     STATE_UNSPECIFIED = 0;
 
     // New Exchanges should be started according to the schedule.

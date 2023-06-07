@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
@@ -25,19 +26,29 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelLinesServiceProto";
 
+// Service for interacting with `ModelLine` resources.
 service ModelLines {
   // Creates a new `ModelLine`.
-  rpc CreateModelLine(CreateModelLineRequest) returns (ModelLine);
+  rpc CreateModelLine(CreateModelLineRequest) returns (ModelLine) {
+    option (google.api.method_signature) = "parent,model_line";
+  }
 
   // Lists `ModelLine`s for the parent `ModelSuite`.
-  rpc ListModelLines(ListModelLinesRequest) returns (ListModelLinesResponse);
+  rpc ListModelLines(ListModelLinesRequest) returns (ListModelLinesResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 
   // Sets the `holdback_model_line` for a `ModelLine`.
+  // (-- api-linter: core::0134::synonyms=disabled
+  //     aip.dev/not-precedent: This is not a standard Update method. --)
   rpc SetModelLineHoldbackModelLine(SetModelLineHoldbackModelLineRequest)
       returns (ModelLine);
 
-  // Sets the active_end_time for a `ModelLine`.
-  rpc SetActiveEndTime(SetActiveEndTimeRequest) returns (ModelLine);
+  // Sets the `active_end_time` for a `ModelLine`.
+  // (-- api-linter: core::0134::synonyms=disabled
+  //     aip.dev/not-precedent: This is not a standard Update method. --)
+  rpc SetModelLineActiveEndTime(SetModelLineActiveEndTimeRequest)
+      returns (ModelLine);
 }
 
 // Request message for `CreateModelLine` method.
@@ -53,6 +64,7 @@ message CreateModelLineRequest {
   ModelLine model_line = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `ListModelLines` method.
 message ListModelLinesRequest {
   // Resource name of the parent `ModelSuite`.
   string parent = 1 [
@@ -73,22 +85,31 @@ message ListModelLinesRequest {
   // must match the call that provided the page token.
   string page_token = 3;
 
-  // Filter criteria. Repeated fields are treated as logical ORs.
+  // Filter criteria for a `ListModelLines` request.
+  //
+  // Repeated fields are treated as logical ORs, and multiple
+  // fields specified as logical ANDs.
   message Filter {
-    repeated ModelLine.Type type = 1;
+    // Matches against the `type` of the `ModelLine`.
+    repeated ModelLine.Type types = 1;
   }
+  // Filter criteria for this request.
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 4;
 }
 
+// Response message for `ListModelLines` method.
 message ListModelLinesResponse {
   // List of `ModelLine`s.
-  repeated ModelLine model_line = 1;
+  repeated ModelLine model_lines = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
 }
 
+// Request message for `SetModelLineHoldbackModelLine` method.
 message SetModelLineHoldbackModelLineRequest {
   // Resource name.
   string name = 1 [
@@ -103,7 +124,8 @@ message SetModelLineHoldbackModelLineRequest {
   ];
 }
 
-message SetActiveEndTimeRequest {
+// Request message for `SetModelLineActiveEndTime` method.
+message SetModelLineActiveEndTimeRequest {
   // Resource name.
   string name = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",

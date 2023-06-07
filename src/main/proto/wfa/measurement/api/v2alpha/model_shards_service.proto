@@ -16,27 +16,37 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
 import "wfa/measurement/api/v2alpha/model_shard.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelShardsServiceProto";
 
+// Service for interacting with `ModelShard` resources.
 service ModelShards {
   // Creates a new `ModelShard`.
-  rpc CreateModelShard(CreateModelShardRequest) returns (ModelShard);
+  rpc CreateModelShard(CreateModelShardRequest) returns (ModelShard) {
+    option (google.api.method_signature) = "parent,model_shard";
+  }
 
   // Lists `ModelShard`s.
-  rpc ListModelShards(ListModelShardsRequest) returns (ListModelShardsResponse);
+  rpc ListModelShards(ListModelShardsRequest)
+      returns (ListModelShardsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
 
   // Deletes an existing `ModelShard`.
-  rpc DeleteModelShard(DeleteModelShardRequest) returns (google.protobuf.Empty);
+  rpc DeleteModelShard(DeleteModelShardRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
+  }
 }
 
+// Request message for `CreateModelShard` method.
 message CreateModelShardRequest {
   // Resource name of the parent `DataProvider`.
   string parent = 1 [
@@ -49,6 +59,7 @@ message CreateModelShardRequest {
   ModelShard model_shard = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for `ListModelShards` method.
 message ListModelShardsRequest {
   // Resource name of the parent `DataProvider`.
   string parent = 1 [
@@ -70,15 +81,17 @@ message ListModelShardsRequest {
   string page_token = 3;
 }
 
+// Response message for `ListModelShards` method.
 message ListModelShardsResponse {
-  // List of `ModelShard`s.
-  repeated ModelShard model_shard = 1;
+  // Resources.
+  repeated ModelShard model_shards = 1;
 
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
 }
 
+// Request message for `DeleteModelShard` method.
 message DeleteModelShardRequest {
   // The name of `ModelShard` to delete.
   // Format: dataProviders/{data_provider}/modelShards/{model_shard}

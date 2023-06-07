@@ -26,6 +26,8 @@ option java_outer_classname = "DifferentialPrivacyProto";
 // foundations of differential privacy. Foundations and Trends in Theoretical
 // Computer Science, 9(3-4), pp.211-407."
 message DifferentialPrivacyParams {
+  // ε. The privacy budget.
   double epsilon = 1;
+  // δ. The probability of information accidentally being leaked.
   double delta = 2;
 }

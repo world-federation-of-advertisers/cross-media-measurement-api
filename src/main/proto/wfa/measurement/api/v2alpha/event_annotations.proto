@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// (--
+//    api-linter: core::0123::resource-annotation=disabled
+//    api-linter: core::0203::required=disabled
+//    api-linter: core::0203::immutable=disabled
+//    aip.dev/not-precedent: These are protobuf annotations, not API messages.
+//  --)
+
 syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
@@ -20,6 +27,7 @@ import "google/protobuf/descriptor.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
+option java_outer_classname = "EventAnnotationsProto";
 
 // Descriptor for a field inside of an event template message.
 message EventFieldDescriptor {

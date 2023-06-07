@@ -33,6 +33,8 @@ message EventGroupMetadataDescriptor {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroupMetadataDescriptor"
     pattern: "dataProviders/{data_provider}/eventGroupMetadataDescriptors/{event_group_metadata_descriptor}"
+    singular: "eventGroupMetadataDescriptor"
+    plural: "eventGroupMetadataDescriptors"
   };
 
   // Resource name.

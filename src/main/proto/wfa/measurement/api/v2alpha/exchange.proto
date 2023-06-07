@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
 
@@ -30,6 +31,8 @@ message Exchange {
     pattern: "recurringExchanges/{recurring_exchange}/exchanges/{exchange}"
     pattern: "dataProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}"
     pattern: "modelProviders/{data_provider}/recurringExchanges/{recurring_exchange}/exchanges/{exchange}"
+    singular: "exchange"
+    plural: "exchanges"
   };
 
   // Resource name.
@@ -38,7 +41,9 @@ message Exchange {
   // Must be a complete date (no field can be unset/zero).
   google.type.Date date = 2;
 
+  // State of an `Exchange`.
   enum State {
+    // Default value used if the state is omitted.
     STATE_UNSPECIFIED = 0;
 
     // The exchange is has not yet reached a terminal state.
@@ -50,9 +55,8 @@ message Exchange {
     // The exchange has failed.
     FAILED = 3;
   }
-
-  // State of the Exchange. Output-only.
-  State state = 3;
+  // State of this `Exchange`.
+  State state = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // SHA256 hash of the audit trail, if uploaded.
   bytes audit_trail_hash = 4;
@@ -61,7 +65,6 @@ message Exchange {
   // relationship between all steps.
   //
   // See https://graphviz.org/doc/info/lang.html for the language specification.
-  //
-  // Output only.
-  string graphviz_representation = 5;
+  string graphviz_representation = 5
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }

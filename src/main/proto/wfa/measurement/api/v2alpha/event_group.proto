@@ -31,15 +31,21 @@ message EventGroup {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroup"
     pattern: "dataProviders/{data_provider}/eventGroups/{event_group}"
+    singular: "eventGroup"
+    plural: "eventGroups"
   };
 
   // Resource name.
   string name = 1;
 
   // Resource name of the `MeasurementConsumer` associated with this
-  // `EventGroup`. Required. Immutable.
-  string measurement_consumer = 2 [(google.api.resource_reference).type =
-                                       "halo.wfanet.org/MeasurementConsumer"];
+  // `EventGroup`.
+  string measurement_consumer = 2 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // Resource name of the `Certificate` belonging to `measurement_consumer`.
   // Must be set if `measurement_consumer_public_key` is set.
@@ -56,29 +62,36 @@ message EventGroup {
   string event_group_reference_id = 5;
 
   // The set of VID model lines used to label events in this `EventGroup`.
-  // Required.
-  repeated string vid_model_lines = 6;
+  repeated string vid_model_lines = 6 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
 
+  // Template for an event message.
   message EventTemplate {
     // The type of the Event Template. A fully-qualified protobuf message type.
-    // Required.
-    string type = 1;
+    string type = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
   // The `EventTemplate`s that events associated with this `EventGroup` conform
   // to.
-  repeated EventTemplate event_templates = 7;
+  repeated EventTemplate event_templates = 7
+      [(google.api.field_behavior) = UNORDERED_LIST];
 
   // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
     // The resource name of the metadata descriptor.
-    string event_group_metadata_descriptor = 1
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/EventGroupMetadataDescriptor"];
+    string event_group_metadata_descriptor = 1 [
+      (google.api.resource_reference).type =
+          "halo.wfanet.org/EventGroupMetadataDescriptor",
+      (google.api.field_behavior) = REQUIRED
+    ];
 
     // A message of a type described by the descriptor along with its type URL,
     // encoded as an `Any` message.
-    google.protobuf.Any metadata = 2;
+    //
+    // See https://protobuf.dev/programming-guides/techniques/#self-description
+    google.protobuf.Any metadata = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Encrypted serialized `Metadata`. The encryption uses
@@ -95,6 +108,6 @@ message EventGroup {
     // have all mutable optional fields cleared. This state is terminal.
     DELETED = 2;
   }
-  // Event Group state. Output-only.
+  // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
