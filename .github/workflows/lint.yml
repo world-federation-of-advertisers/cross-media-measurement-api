@@ -13,23 +13,26 @@ jobs:
       run:
         shell: bash
     steps:
-    - name: Check out revision
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: '11.0.10'
-        java-package: jdk
-        architecture: x64
-
-    - name: Set up linters
-      uses: world-federation-of-advertisers/actions/setup-linters@v1
+    - name: Build proto libraries
+      run: >
+        bazelisk query 'kind(proto_library, //src/main/proto/...)' | xargs bazelisk build
 
     - name: Lint
-      uses: world-federation-of-advertisers/actions/lint@v1
+      uses: world-federation-of-advertisers/actions/lint@34207ce88fe947070873f30f4793e1381a50e829
       with:
         license-type: apache
         copyright-holder: The Cross-Media Measurement Authors
+        api-linter-paths: |
+          src/main/proto
+        api-linter-options: |
+          --config=src/main/proto/api-linter.yaml
+          --proto-path=src/main/proto
+          --descriptor-set-in=bazel-bin/external/com_github_protocolbuffers_protobuf/descriptor_proto-descriptor-set.proto.bin
+          --descriptor-set-in=bazel-bin/external/com_google_googleapis/google/type/date_proto-descriptor-set.proto.bin
+          --descriptor-set-in=bazel-bin/external/com_google_googleapis/google/api/resource_proto-descriptor-set.proto.bin
+          --descriptor-set-in=bazel-bin/external/com_google_googleapis/google/api/field_behavior_proto-descriptor-set.proto.bin
+          --descriptor-set-in=bazel-bin/external/com_google_googleapis/google/api/client_proto-descriptor-set.proto.bin

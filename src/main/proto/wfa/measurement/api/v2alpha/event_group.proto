@@ -31,6 +31,7 @@ message EventGroup {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroup"
     pattern: "dataProviders/{data_provider}/eventGroups/{event_group}"
+    pattern: "measurementConsumers/{measurement_consumer}/eventGroups/{event_group}"
     singular: "eventGroup"
     plural: "eventGroups"
   };
