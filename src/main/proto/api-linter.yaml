@@ -21,3 +21,4 @@
   - 'core::0146::any'
   - 'core::0133::request-id-field'
   - 'core::0121::resource-must-support-get'
+  - 'core::0203::field-behavior-required'

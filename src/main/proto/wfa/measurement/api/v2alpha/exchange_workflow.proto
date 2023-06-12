@@ -161,8 +161,6 @@ message ExchangeWorkflow {
       int32 shard_count = 4;
       int32 buckets_per_shard = 5;
       // (-- TODO: Consider making this optional once its not experimental. --)
-      // (-- api-linter: core::0203::optional=disabled
-      //     aip.dev/not-precedent: Linter incorrectly identifies this. --)
       int32 queries_per_shard = 6;
       bool add_padding_queries = 7;
     }
