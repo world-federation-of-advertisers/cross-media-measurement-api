@@ -36,11 +36,14 @@ message Requisition {
   option (google.api.resource) = {
     type: "halo.wfanet.org/Requisition"
     pattern: "dataProviders/{data_provider}/requisitions/{requisition}"
+    pattern: "measurementConsumers/{measurement_consumer}/measurements/{measurement}/requisitions/{requisition}"
     singular: "requisition"
     plural: "requisitions"
   };
 
   // Resource name.
+  //
+  // Canonical format: dataProviders/{data_provider}/requisitions/{requisition}
   string name = 1;
 
   // Resource name of `Measurement` that this `Requisition` is associated with.

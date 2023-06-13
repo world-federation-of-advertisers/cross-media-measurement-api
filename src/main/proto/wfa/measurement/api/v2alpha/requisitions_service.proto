@@ -50,16 +50,14 @@ service Requisitions {
 
 // Request message for `ListRequisitions` method.
 message ListRequisitionsRequest {
-  // Resource key of the parent `DataProvider`. The wildcard ID (`-`) may be
-  // used in place of the `DataProvider` ID to list across all `DataProvider`s,
-  // but in this case `measurement` must be specified in `filter`.
+  // Resource key of the parent `DataProvider` or `Measurement`.
   //
   // Results in a `PERMISSION_DENIED` error if any key segment does not match
   // for the authenticated user. For example, attempting to list
   // `Requisition`s for other `DataProvider`s or for `Measurements`s
   // belonging to other `MeasurementConsumer`s.
   string parent = 1 [
-    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.resource_reference).child_type = "halo.wfanet.org/Requisition",
     (google.api.field_behavior) = REQUIRED
   ];
 
