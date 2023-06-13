@@ -78,7 +78,6 @@ message ListRequisitionsRequest {
     // Matches against the `state` field.
     //
     // (-- api-linter: core::0216::state-field-output-only=disabled
-    //     api-linter: core::0203::output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Requisition.State states = 1;
     // Matches against the `measurement` field.
@@ -87,7 +86,6 @@ message ListRequisitionsRequest {
     // Matches against the `measurement_state` field.
     //
     // (-- api-linter: core::0216::state-field-output-only=disabled
-    //     api-linter: core::0203::output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Measurement.State measurement_states = 3;
   }

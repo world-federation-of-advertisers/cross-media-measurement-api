@@ -34,7 +34,7 @@ jobs:
     
     - name: Set up api-linter
       env:
-        VERSION: 1.48.0
+        VERSION: 1.52.0
       run: |
         cd ~
         curl -L "https://github.com/googleapis/api-linter/releases/download/v${VERSION}/api-linter-${VERSION}-linux-amd64.tar.gz" -o api-linter.tar.gz

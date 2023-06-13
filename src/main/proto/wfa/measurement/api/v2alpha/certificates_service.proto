@@ -80,7 +80,6 @@ message RevokeCertificateRequest {
   // Revocation state to set.
   //
   // (-- api-linter: core::0216::state-field-output-only=disabled
-  //     api-linter: core::0203::output-only=disabled
   //     aip.dev/not-precedent: This is not a resource state field. --)
   Certificate.RevocationState revocation_state = 2
       [(google.api.field_behavior) = REQUIRED];
