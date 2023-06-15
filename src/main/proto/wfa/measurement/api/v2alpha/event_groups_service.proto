@@ -112,11 +112,9 @@ message DeleteEventGroupRequest {
 
 // Request message for `ListEventGroups` method.
 message ListEventGroupsRequest {
-  // Resource name of the parent `DataProvider`. The wildcard ID (`-`) may be
-  // used in place of the `DataProvider` ID to list across `DataProvider`s, in
-  // which case a filter should be specified.
+  // Resource name of the parent.
   string parent = 1 [
-    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.resource_reference).child_type = "halo.wfanet.org/EventGroup",
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -137,6 +135,9 @@ message ListEventGroupsRequest {
     repeated string measurement_consumers = 1
         [(google.api.resource_reference).type =
              "halo.wfanet.org/MeasurementConsumer"];
+    // Matches against the parent `DataProvider`.
+    repeated string data_providers = 6
+        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
   }
   // Filter criteria for this request.
   //

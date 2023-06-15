@@ -31,11 +31,14 @@ message EventGroup {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroup"
     pattern: "dataProviders/{data_provider}/eventGroups/{event_group}"
+    pattern: "measurementConsumers/{measurement_consumer}/eventGroups/{event_group}"
     singular: "eventGroup"
     plural: "eventGroups"
   };
 
   // Resource name.
+  //
+  // Canonical format: dataProviders/{data_provider}/eventGroups/{event_group}
   string name = 1;
 
   // Resource name of the `MeasurementConsumer` associated with this
