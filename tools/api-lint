@@ -12,7 +12,7 @@ bazel_bin="$("$BAZEL" info bazel-bin)"
 
 find "$PROTO_PATH" -name '*.proto' -printf '%P\0' |
   xargs -0 api-linter --proto-path "$PROTO_PATH" \
-  --config "$PROTO_PATH/api-linter.yaml" \
+  --config "$PROTO_PATH/api-linter.yaml" --set-exit-status \
   --descriptor-set-in "${bazel_bin}/external/com_github_protocolbuffers_protobuf/descriptor_proto-descriptor-set.proto.bin" \
   --descriptor-set-in "${bazel_bin}/external/com_google_googleapis/google/type/date_proto-descriptor-set.proto.bin" \
   --descriptor-set-in "${bazel_bin}/external/com_google_googleapis/google/api/resource_proto-descriptor-set.proto.bin" \
