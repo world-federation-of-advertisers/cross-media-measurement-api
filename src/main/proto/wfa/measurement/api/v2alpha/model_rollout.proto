@@ -39,18 +39,18 @@ message ModelRollout {
   // Resource name.
   string name = 1;
 
+  // Determine the type of rollout for this ModelRollout. Required.
   oneof rollout_deploy_period {
     // Time interval over which the rollout must be deployed. 'start_time' must
     // be sufficiently in the future to allow for EDPs to sync with the Kingdom.
     // 'end_time' cannot precede 'start_time'.
-    TimeInterval gradual_rollout_period = 8 [
-      (google.api.field_behavior) = REQUIRED,
-      (google.api.field_behavior) = IMMUTABLE
-    ];
+    TimeInterval gradual_rollout_period = 8
+        [(google.api.field_behavior) = IMMUTABLE];
 
     // In case of a rollout instantly deployed, instant_rollout_time must be
     // specified instead.
-    google.protobuf.Timestamp instant_rollout_time = 9;
+    google.protobuf.Timestamp instant_rollout_time = 9
+        [(google.api.field_behavior) = IMMUTABLE];
   }
 
   // Indicates the time the rollout must stop expanding its release percentage.
