@@ -19,8 +19,8 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/model_outage.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -92,7 +92,7 @@ message ListModelOutagesRequest {
   // Filter criteria for a `ListModelOutages` request.
   message Filter {
     // Matches against the `outage_interval` of the `ModelOutage`.
-    TimeInterval outage_interval_overlapping = 1;
+    google.type.Interval outage_interval_overlapping = 1;
   }
   // Filter criteria for this request.
   // (-- api-linter: core::0132::request-field-types=disabled

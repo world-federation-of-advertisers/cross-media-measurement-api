@@ -19,7 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
+import "google/type/interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -37,11 +37,11 @@ message ModelOutage {
   // Resource name.
   string name = 1;
 
-  // TimeInterval in which the parent `ModelLine` cannot be used to generate
-  // sketches. If a report spans across one or more `ModelOutage`s, the whole
-  // report must be generated using the parent `ModelLine`'s
+  // google.type.Interval in which the parent `ModelLine` cannot be used to
+  // generate sketches. If a report spans across one or more `ModelOutage`s, the
+  // whole report must be generated using the parent `ModelLine`'s
   // `holdback_model_line`.
-  TimeInterval outage_interval = 2 [
+  google.type.Interval outage_interval = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
