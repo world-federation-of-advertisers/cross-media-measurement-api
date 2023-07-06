@@ -94,14 +94,14 @@ message ProtocolConfig {
   message ReachOnlyLiquidLegionsV2 {
     // Parameters for sketch.
     LiquidLegionsSketchParams sketch_params = 1
-    [(google.api.field_behavior) = REQUIRED];
+        [(google.api.field_behavior) = REQUIRED];
 
     // Differential privacy parameters for data provider noise registers.
     //
     // Each of these registers contains a well-known constant register ID, and
     // arbitrary key and count values.
     DifferentialPrivacyParams data_provider_noise = 2
-    [(google.api.field_behavior) = REQUIRED];
+        [(google.api.field_behavior) = REQUIRED];
 
     // ID of the OpenSSL built-in elliptic curve. For example, 415 for the
     // prime256v1 curve.
