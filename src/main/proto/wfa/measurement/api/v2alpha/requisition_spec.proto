@@ -18,7 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
+import "google/type/interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -44,7 +44,9 @@ message RequisitionSpec {
     // Value of an `EventGroupEntry`.
     message Value {
       // Time interval over which the event data should be collected.
-      TimeInterval collection_interval = 1
+      //
+      // Both `start_time` and `end_time` must be specified.
+      google.type.Interval collection_interval = 1
           [(google.api.field_behavior) = REQUIRED];
 
       // Filter to apply to events. If not specified then all events will be

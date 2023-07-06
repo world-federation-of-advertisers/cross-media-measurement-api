@@ -183,7 +183,7 @@ message Requisition {
       // The specification/configuration for the `Requisition` is invalid.
       //
       // For example, `encrypted_requisition_spec` includes an invalid
-      // `TimeInterval` (with `end_time` before `start_time`) or some
+      // `google.type.Interval` (with `end_time` before `start_time`) or some
       // configuration that the `DataProvider` does not support.
       SPEC_INVALID = 2;
 
