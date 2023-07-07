@@ -40,4 +40,4 @@ jobs:
 
     - env:
         BAZEL: bazelisk
-      run: tools/api-lint
+      run: tools/api-lint wfa
