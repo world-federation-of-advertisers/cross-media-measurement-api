@@ -33,14 +33,11 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Set up api-linter
-      env:
-        VERSION: 1.52.0
-      run: |
-        cd ~
-        curl -L "https://github.com/googleapis/api-linter/releases/download/v${VERSION}/api-linter-${VERSION}-linux-amd64.tar.gz" -o api-linter.tar.gz
-        mkdir -p ~/.local/bin
-        tar -xf api-linter.tar.gz -C ~/.local/bin
+      uses: world-federation-of-advertisers/actions/setup-api-linter@v2
+      with:
+        version: 1.52.0
+        sha256: 89ec88aa07974e4476f1d5a1bb626b05a65cdc76b64c7e73e15ebb77ebdb9aaf
 
     - env:
         BAZEL: bazelisk
-      run: tools/api-lint
+      run: tools/api-lint wfa
