@@ -28,7 +28,10 @@ option java_outer_classname = "ProtocolConfigProto";
 // (-- api-linter: core::0123::resource-annotation=disabled
 //     aip.dev/not-precedent: This is not a resource message. --)
 message ProtocolConfig {
-  reserved 1, 3;
+  // Resource name.
+  //
+  // Deprecated: This is not a resource message type.
+  string name = 1 [deprecated = true];
 
   // Type of measurement.
   //
@@ -135,6 +138,16 @@ message ProtocolConfig {
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
       ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
     }
+  }
+
+  // Configuration for the specific protocol. Required. Immutable.
+  oneof protocol {
+    // Liquid Legions v2 config.
+    //
+    // May only be set when `measurement_type` is `REACH_AND_FREQUENCY`.
+    //
+    // Deprecated and replace with protocols.
+    LiquidLegionsV2 liquid_legions_v2 = 3 [deprecated = true];
   }
 
   // Set of protocols that may be used for this `Measurement`.
