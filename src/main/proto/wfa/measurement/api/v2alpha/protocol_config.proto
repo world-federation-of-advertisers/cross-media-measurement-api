@@ -93,7 +93,7 @@ message ProtocolConfig {
   // Configuration for the Reach-Only Liquid Legions v2 protocol.
   message ReachOnlyLiquidLegionsV2 {
     // Parameters for sketch.
-    LiquidLegionsSketchParams sketch_params = 1
+    ReachOnlyLiquidLegionsSketchParams sketch_params = 1
         [(google.api.field_behavior) = REQUIRED];
 
     // Differential privacy parameters for data provider noise registers.
@@ -154,4 +154,13 @@ message LiquidLegionsSketchParams {
 
   // The size of the distribution of the sampling indicator value.
   int64 sampling_indicator_size = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Parameters for a Reach-Only Liquid Legions sketch.
+message ReachOnlyLiquidLegionsSketchParams {
+  // The decay rate of the Liquid Legions sketch.
+  double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The maximum size of the Liquid Legions sketch.
+  int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
 }
