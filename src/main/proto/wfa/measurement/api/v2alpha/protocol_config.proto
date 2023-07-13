@@ -93,6 +93,27 @@ message ProtocolConfig {
   // Configuration for the Direct protocol.
   message Direct {}
 
+  // Configuration for the Reach-Only Liquid Legions v2 protocol.
+  message ReachOnlyLiquidLegionsV2 {
+    // Parameters for sketch.
+    ReachOnlyLiquidLegionsSketchParams sketch_params = 1
+        [(google.api.field_behavior) = REQUIRED];
+
+    // Differential privacy parameters for data provider noise registers.
+    //
+    // Each of these registers contains a well-known constant register ID, and
+    // arbitrary key and count values.
+    DifferentialPrivacyParams data_provider_noise = 2
+        [(google.api.field_behavior) = REQUIRED];
+
+    // ID of the OpenSSL built-in elliptic curve. For example, 415 for the
+    // prime256v1 curve.
+    int32 elliptic_curve_id = 3 [(google.api.field_behavior) = REQUIRED];
+
+    // The mechanism to generate noise during computation.
+    NoiseMechanism noise_mechanism = 4;
+  }
+
   // Configuration for a specific protocol.
   message Protocol {
     // Configuration for the specific protocol.
@@ -109,6 +130,13 @@ message ProtocolConfig {
       // `Requisition`s using this protocol can be fulfilled by calling
       // Requisitions/FulfillDirectRequisition.
       Direct direct = 2;
+
+      // Reach-Only Liquid Legions v2 protocol.
+      //
+      // Must only be set when the measurement type is REACH. `Requisition`s
+      // using this protocol can be fulfilled by calling
+      // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
+      ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
     }
   }
 
@@ -139,4 +167,13 @@ message LiquidLegionsSketchParams {
 
   // The size of the distribution of the sampling indicator value.
   int64 sampling_indicator_size = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Parameters for a Reach-Only Liquid Legions sketch.
+message ReachOnlyLiquidLegionsSketchParams {
+  // The decay rate of the Liquid Legions sketch.
+  double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The maximum size of the Liquid Legions sketch.
+  int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
 }
