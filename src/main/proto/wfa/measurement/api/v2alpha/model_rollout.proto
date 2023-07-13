@@ -19,7 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
-import "wfa/measurement/api/v2alpha/time_interval.proto";
+import "google/type/interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -34,18 +34,24 @@ message ModelRollout {
     plural: "modelRollouts"
   };
 
+  reserved 2;
+
   // Resource name.
   string name = 1;
 
-  // Time interval over which the rollout must be deployed. 'start_time' must be
-  // sufficiently in the future to allow for EDPs to sync with the Kingdom.
-  // 'end_time' cannot precede 'start_time'. If 'start_time' is equal to
-  // 'end_time', then there is no gradual rollout, and the new release instantly
-  // replaces the previous one.
-  TimeInterval rollout_period = 2 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+  // Determine the type of rollout for this ModelRollout. Required.
+  oneof rollout_deploy_period {
+    // Time interval over which the rollout must be deployed. 'start_time' must
+    // be sufficiently in the future to allow for EDPs to sync with the Kingdom.
+    // 'end_time' cannot precede 'start_time'.
+    google.type.Interval gradual_rollout_period = 8
+        [(google.api.field_behavior) = IMMUTABLE];
+
+    // In case of a rollout instantly deployed, instant_rollout_time must be
+    // specified instead.
+    google.protobuf.Timestamp instant_rollout_time = 9
+        [(google.api.field_behavior) = IMMUTABLE];
+  }
 
   // Indicates the time the rollout must stop expanding its release percentage.
   // It must be within 'rollout_start_time' and 'rollout_end_time'.
