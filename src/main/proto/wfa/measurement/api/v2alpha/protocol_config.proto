@@ -18,6 +18,8 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
+import "wfa/measurement/api/v2alpha/direct_computation.proto";
+import "wfa/measurement/api/v2alpha/sketch_params.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -59,11 +61,12 @@ message ProtocolConfig {
   enum NoiseMechanism {
     // Default value used if the mechanism is omitted.
     NOISE_MECHANISM_UNSPECIFIED = 0;
-
+    // No noise is added.
+    NONE = 1;
     // Geometric.
-    GEOMETRIC = 1;
+    GEOMETRIC = 2;
     // Discrete Gaussian.
-    DISCRETE_GAUSSIAN = 2;
+    DISCRETE_GAUSSIAN = 3;
   }
 
   // Configuration for the Liquid Legions v2 R/F protocol.
@@ -91,7 +94,34 @@ message ProtocolConfig {
   }
 
   // Configuration for the Direct protocol.
-  message Direct {}
+  //
+  // The recommended computation options to data provider. Data provider may
+  // choose different computation methodology.
+  message Direct {
+    // The set of mechanisms that can be used to generate noise during
+    // computation.
+    repeated NoiseMechanism noise_mechanisms = 1;
+
+    // Deterministic count methodology.
+    //
+    // Can be used in reach, frequency, or impression computations.
+    DeterministicCount deterministic_count = 2;
+
+    // Deterministic sum methodology.
+    //
+    // Can be used in watch duration computations.
+    DeterministicSum deterministic_sum = 3;
+
+    // Liquid Legions v2 methodology.
+    //
+    // Can be used in reach or frequency computations.
+    DirectLiquidLegionsV2 direct_liquid_legions_v2 = 4;
+
+    // Reach-only Liquid Legions v2 methodology.
+    //
+    // Can be used in reach computations.
+    DirectReachOnlyLiquidLegionsV2 direct_reach_only_liquid_legions_v2 = 5;
+  }
 
   // Configuration for the Reach-Only Liquid Legions v2 protocol.
   message ReachOnlyLiquidLegionsV2 {
@@ -155,25 +185,4 @@ message ProtocolConfig {
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
-}
-
-// Parameters for a Liquid Legions sketch.
-message LiquidLegionsSketchParams {
-  // The decay rate of the Liquid Legions sketch.
-  double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The maximum size of the Liquid Legions sketch.
-  int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
-
-  // The size of the distribution of the sampling indicator value.
-  int64 sampling_indicator_size = 3 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Parameters for a Reach-Only Liquid Legions sketch.
-message ReachOnlyLiquidLegionsSketchParams {
-  // The decay rate of the Liquid Legions sketch.
-  double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The maximum size of the Liquid Legions sketch.
-  int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
 }
