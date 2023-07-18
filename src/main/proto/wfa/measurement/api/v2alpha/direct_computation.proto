@@ -1,0 +1,54 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "DirectComputationProto";
+
+// Configuration for the deterministic count distinct computation.
+message DeterministicCountDistinct {}
+
+// Configuration for the direct computation of Liquid Legions v2 R/F.
+//
+// May only be set when the measurement type is REACH_AND_FREQUENCY or
+// REACH. `Requisition`s using this protocol can be fulfilled by calling
+// RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
+message DirectLiquidLegionsV2 {
+  // Parameters for the direct Liquid Legions sketch.
+  message DirectLiquidLegionsSketchParams {
+    // The decay rate of the Liquid Legions sketch.
+    double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // The maximum size of the Liquid Legions sketch.
+    int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
+
+    // The size of the distribution of the sampling indicator value.
+    int64 sampling_indicator_size = 3 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // Parameters for sketch.
+  DirectLiquidLegionsSketchParams sketch_params = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The maximum frequency to reveal in the histogram.
+  int32 maximum_frequency = 2;
+}
