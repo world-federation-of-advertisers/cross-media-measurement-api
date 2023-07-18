@@ -90,8 +90,34 @@ message ProtocolConfig {
     NoiseMechanism noise_mechanism = 5;
   }
 
+  // Configuration for deterministic count distinct computation.
+  message DeterministicCountDistinct {
+    // The mechanism to generate noise during computation.
+    NoiseMechanism noise_mechanism = 1;
+  }
+
+  // Contains different options for EDP computation.
+  message EdpComputation {
+    // Options for EDP computation
+    oneof options {
+      // Deterministic count distinct option
+      DeterministicCountDistinct deterministic_count_distinct = 1;
+
+      // Liquid Legions v2 option.
+      //
+      // May only be set when the measurement type is REACH_AND_FREQUENCY or
+      // REACH. `Requisition`s using this protocol can be fulfilled by calling
+      // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
+      LiquidLegionsV2 liquid_legions_v2 = 2;
+    }
+  }
+
   // Configuration for the Direct protocol.
-  message Direct {}
+  message Direct {
+    // The recommended computation to EDP. EDP may choose different computation
+    // method.
+    EdpComputation edp_computation = 1;
+  }
 
   // Configuration for the Reach-Only Liquid Legions v2 protocol.
   message ReachOnlyLiquidLegionsV2 {

@@ -156,6 +156,11 @@ message Measurement {
     }
     // The watch duration result.
     WatchDuration watch_duration = 4;
+
+    // The details of a direct measurement computation done by an EDP.
+    //
+    // Only set when the measurement is Direct.
+    ProtocolConfig.EdpComputation edp_direct_computation = 5;
   }
 
   // Pair of `Result` to `Certificate`.
