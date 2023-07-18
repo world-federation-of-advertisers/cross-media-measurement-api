@@ -21,6 +21,7 @@ import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "wfa/measurement/api/v2alpha/direct_computation.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -156,6 +157,11 @@ message Measurement {
     }
     // The watch duration result.
     WatchDuration watch_duration = 4;
+
+    // The computation details of a direct measurement done by data provider.
+    //
+    // Only set when the measurement is Direct.
+    DirectComputation direct_computation = 5;
   }
 
   // Pair of `Result` to `Certificate`.

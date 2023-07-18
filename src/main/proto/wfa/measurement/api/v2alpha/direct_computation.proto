@@ -1,0 +1,95 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "DirectComputationProto";
+
+// Configuration for the deterministic count distinct computation.
+message DeterministicCountDistinct {}
+
+// Parameters for the direct Liquid Legions sketch.
+message DirectLiquidLegionsSketchParams {
+  // The decay rate of the Liquid Legions sketch.
+  double decay_rate = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The maximum size of the Liquid Legions sketch.
+  int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // The size of the distribution of the sampling indicator value.
+  int64 sampling_indicator_size = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Configuration for the direct computation of Liquid Legions v2 R/F.
+//
+// May only be set when the measurement type is REACH_AND_FREQUENCY or
+// REACH. `Requisition`s using this protocol can be fulfilled by calling
+// RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
+message DirectLiquidLegionsV2 {
+  // Parameters for sketch.
+  DirectLiquidLegionsSketchParams sketch_params = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The maximum frequency to reveal in the histogram.
+  int32 maximum_frequency = 2;
+}
+
+// The methodology of computing direct reach-only measurements.
+message DirectReachOnlyMethodology {
+  // Option of computing direct reach-only measurements. Required. Immutable.
+  oneof option {
+    // Deterministic count distinct option
+    DeterministicCountDistinct deterministic_count_distinct = 1;
+
+    // Liquid Legions v2 option.
+    DirectLiquidLegionsV2 direct_liquid_legions_v2 = 2;
+  }
+}
+
+// The methodology of computing direct R/F measurements.
+message DirectReachFrequencyMethodology {
+  // Option of computing direct R/F measurements. Required. Immutable.
+  oneof option {
+    // Liquid Legions v2 option.
+    DirectLiquidLegionsV2 direct_liquid_legions_v2 = 1;
+  }
+}
+
+// The methodology of computing direct impression measurements.
+message DirectImpressionMethodology {}
+// The methodology of computing direct watch duration measurements.
+message DirectWatchDurationMethodology {}
+
+// Contains an option for a direct measurement computation.
+message DirectComputation {
+  // The measurement type of a direct computation. Required. Immutable.
+  oneof measurement_type {
+    // Indicates which computation methodology to use for reach-only.
+    DirectReachOnlyMethodology reach_only = 1;
+    // Indicates which computation methodology to use for R/F.
+    DirectReachFrequencyMethodology reach_frequency = 2;
+    // Indicates which computation methodology to use for impression.
+    DirectImpressionMethodology impression = 3;
+    // Indicates which computation methodology to use for watch duration.
+    DirectWatchDurationMethodology watch_duration = 4;
+  }
+}

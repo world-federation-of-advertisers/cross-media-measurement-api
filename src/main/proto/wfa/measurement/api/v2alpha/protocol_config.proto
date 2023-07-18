@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
+import "wfa/measurement/api/v2alpha/direct_computation.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -91,7 +92,14 @@ message ProtocolConfig {
   }
 
   // Configuration for the Direct protocol.
-  message Direct {}
+  message Direct {
+    // The recommended computation methodology to data provider. Data provider
+    // may choose different computation methodology.
+    DirectComputation computation = 1;
+
+    // The mechanism to generate noise during computation.
+    NoiseMechanism noise_mechanism = 2;
+  }
 
   // Configuration for the Reach-Only Liquid Legions v2 protocol.
   message ReachOnlyLiquidLegionsV2 {
