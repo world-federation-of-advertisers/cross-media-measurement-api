@@ -56,10 +56,13 @@ message ProtocolConfig {
   ];
 
   // The mechanism used to generate noise in computations.
+  //
+  // TODO(@riemanli): Move the noise mechanism to its own file.
   enum NoiseMechanism {
     // Default value used if the mechanism is omitted.
     NOISE_MECHANISM_UNSPECIFIED = 0;
-
+    // No noise is added.
+    NONE = 3;
     // Geometric.
     GEOMETRIC = 1;
     // Discrete Gaussian.
@@ -90,8 +93,90 @@ message ProtocolConfig {
     NoiseMechanism noise_mechanism = 5;
   }
 
+  // Configuration parameters for the deterministic count distinct methodology.
+  message DeterministicCountDistinct {}
+  // Configuration parameters for the deterministic histogram methodology.
+  message DeterministicHistogram {
+    // The maximum frequency to reveal in the histogram.
+    int32 maximum_frequency = 1;
+  }
+  // Configuration parameters for the deterministic count methodology.
+  message DeterministicCount {}
+  // Configuration parameters for the deterministic sum methodology.
+  message DeterministicSum {}
+  // Configuration parameters for the direct Liquid Legions v2 methodology.
+  //
+  // TODO(@riemanli): Add recommended parameter values.
+  message DirectLiquidLegionsV2 {
+    // The maximum frequency to reveal in the histogram.
+    int32 maximum_frequency = 1;
+  }
+  // Configuration parameters for the direct reach-only Liquid Legions v2
+  // methodology.
+  //
+  // TODO(@riemanli): Add recommended parameter values.
+  message DirectReachOnlyLiquidLegionsV2 {}
+  // Configuration parameters for the direct impression Liquid Legions v2
+  // methodology.
+  //
+  // TODO(@riemanli): Add recommended parameter values.
+  message DirectImpressionLiquidLegionsV2 {}
+  // Configuration parameters for the direct watch duration Liquid Legions v2
+  // methodology.
+  //
+  // TODO(@riemanli): Add recommended parameter values.
+  message DirectWatchDurationLiquidLegionsV2 {}
+
   // Configuration for the Direct protocol.
-  message Direct {}
+  //
+  // The `DataProvider` may choose from the specified noise mechanisms and
+  // methodologies.
+  message Direct {
+    // The set of mechanisms that can be used to generate noise during
+    // computation.
+    repeated NoiseMechanism noise_mechanisms = 1;
+
+    // Deterministic count distinct methodology.
+    //
+    // Can be used in reach computations.
+    DeterministicCountDistinct deterministic_count_distinct = 2;
+
+    // Deterministic histogram methodology.
+    //
+    // Can be used in frequency computations.
+    DeterministicHistogram deterministic_histogram = 3;
+
+    // Deterministic count methodology.
+    //
+    // Can be used in impression computations.
+    DeterministicCount deterministic_count = 4;
+
+    // Deterministic sum methodology.
+    //
+    // Can be used in watch duration computations.
+    DeterministicSum deterministic_sum = 5;
+
+    // Liquid Legions v2 methodology.
+    //
+    // Can be used in reach or frequency computations.
+    DirectLiquidLegionsV2 direct_liquid_legions_v2 = 6;
+
+    // Reach-only Liquid Legions v2 methodology.
+    //
+    // Can be used in reach computations.
+    DirectReachOnlyLiquidLegionsV2 direct_reach_only_liquid_legions_v2 = 7;
+
+    // Impression Liquid Legions v2 methodology.
+    //
+    // Can be used in impression computations.
+    DirectImpressionLiquidLegionsV2 direct_impression_liquid_legions_v2 = 8;
+
+    // Watch duration Liquid Legions v2 methodology.
+    //
+    // Can be used in watch duration computations.
+    DirectWatchDurationLiquidLegionsV2 direct_watch_duration_liquid_legions_v2 =
+        9;
+  }
 
   // Configuration for the Reach-Only Liquid Legions v2 protocol.
   message ReachOnlyLiquidLegionsV2 {
