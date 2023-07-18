@@ -1,0 +1,56 @@
+// Copyright 2023 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "wfa/measurement/api/v2alpha/sketch_params.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "DirectComputationProto";
+
+// Configuration for the deterministic count distinct computation.
+message DeterministicCountDistinct {}
+
+// Configuration for the deterministic count computation.
+message DeterministicCount {}
+
+// Configuration for the deterministic sum computation.
+message DeterministicSum {}
+
+// Configuration for the direct computation of Liquid Legions v2 R/F.
+//
+// May only be set when the measurement type is REACH_AND_FREQUENCY or
+// REACH. `Requisition`s using this protocol can be fulfilled by calling
+// RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
+message DirectLiquidLegionsV2 {
+  // Parameters for sketch.
+  LiquidLegionsSketchParams sketch_params = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The maximum frequency to reveal in the histogram.
+  int32 maximum_frequency = 2;
+}
+
+// Configuration for the direct computation of Reach-Only Liquid Legions v2.
+message DirectReachOnlyLiquidLegionsV2 {
+  // Parameters for sketch.
+  ReachOnlyLiquidLegionsSketchParams sketch_params = 1
+      [(google.api.field_behavior) = REQUIRED];
+}
