@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/date.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -47,16 +48,16 @@ message ModelRollout {
     DateInterval gradual_rollout_period = 8
         [(google.api.field_behavior) = IMMUTABLE];
 
-    // In case of a rollout instantly deployed, instant_rollout_time must be
+    // In case of a rollout instantly deployed, instant_rollout_date must be
     // specified instead.
-    google.type.Date instant_rollout_time = 9
+    google.type.Date instant_rollout_date = 9
         [(google.api.field_behavior) = IMMUTABLE];
   }
 
   // Indicates the date the rollout must stop expanding its release percentage.
-  // It must be within 'rollout_start_time' and 'rollout_end_time'.
+  // It must be within 'rollout_start_date' and 'rollout_end_date'.
   // Once set, this value can no longer be changed.
-  google.type.Date rollout_freeze_time = 3;
+  google.type.Date rollout_freeze_date = 3;
 
   // The previous model rollout this model rollout transitions from.
   // The system will automatically set this field to the `ModelRollout` with the
