@@ -21,6 +21,7 @@ import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "wfa/measurement/api/v2alpha/direct_computation.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -126,6 +127,18 @@ message Measurement {
     message Reach {
       // Number of unique users exposed.
       int64 value = 1;
+
+      // The mechanism used to generate noise during computation.
+      ProtocolConfig.NoiseMechanism noise_mechanism = 2;
+
+      // The computation methodology done by data provider.
+      oneof methodology {
+        // Deterministic count distinct option.
+        DeterministicCountDistinct deterministic_count_distinct = 3;
+
+        // Liquid Legions v2 option.
+        DirectLiquidLegionsV2 direct_liquid_legions_v2 = 4;
+      }
     }
     // The reach result.
     Reach reach = 1;
@@ -137,6 +150,18 @@ message Measurement {
       // times, unless 4 is the largest key (maximum frequency) in which case it
       // means that 33.3% of users were exposed at least 4 times.
       map<int64, double> relative_frequency_distribution = 1;
+
+      // The mechanism used to generate noise during computation.
+      ProtocolConfig.NoiseMechanism noise_mechanism = 2;
+
+      // The computation methodology done by data provider.
+      oneof methodology {
+        // Deterministic count distinct option.
+        DeterministicCountDistinct deterministic_count_distinct = 3;
+
+        // Liquid Legions v2 option.
+        DirectLiquidLegionsV2 direct_liquid_legions_v2 = 4;
+      }
     }
     // The frequency result.
     Frequency frequency = 2;
@@ -145,14 +170,32 @@ message Measurement {
     message Impression {
       // Number of total impressions.
       int64 value = 1;
+
+      // The mechanism used to generate noise during computation.
+      ProtocolConfig.NoiseMechanism noise_mechanism = 2;
+
+      // The computation methodology done by data provider.
+      oneof methodology {
+        // Deterministic count distinct option.
+        DeterministicCountDistinct deterministic_count_distinct = 3;
+      }
     }
-    // The impressio result.
+    // The impression result.
     Impression impression = 3;
 
     // A watch duration result.
     message WatchDuration {
       // Total duration.
       google.protobuf.Duration value = 1;
+
+      // The mechanism used to generate noise during computation.
+      ProtocolConfig.NoiseMechanism noise_mechanism = 2;
+
+      // The computation methodology done by data provider.
+      oneof methodology {
+        // Deterministic count distinct option.
+        DeterministicCountDistinct deterministic_count_distinct = 3;
+      }
     }
     // The watch duration result.
     WatchDuration watch_duration = 4;
