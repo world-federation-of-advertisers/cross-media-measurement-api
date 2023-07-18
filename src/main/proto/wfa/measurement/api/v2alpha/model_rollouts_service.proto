@@ -43,7 +43,7 @@ service ModelRollouts {
     option (google.api.method_signature) = "parent";
   }
 
-  // Sets the `rollout_freeze_time` of a `ModelRollout`.
+  // Sets the `rollout_freeze_time` of a `ModelRollout`. Any attempt to schedule the `rollout_freeze_time` for an instant rollout will result in an exception.
   rpc ScheduleModelRolloutFreeze(ScheduleModelRolloutFreezeRequest)
       returns (ModelRollout);
 

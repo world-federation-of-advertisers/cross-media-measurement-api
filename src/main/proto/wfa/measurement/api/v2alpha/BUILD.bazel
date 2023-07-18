@@ -259,10 +259,10 @@ proto_library(
     srcs = ["model_rollout.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:date_interval_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
-        "@com_google_googleapis//google/type:interval_proto",
-        "@com_google_protobuf//:timestamp_proto",
+        "@com_google_googleapis//google/type:date_proto",
     ],
 )
 
@@ -571,5 +571,15 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
+
+proto_library(
+    name = "date_interval_proto",
+    srcs = ["date_interval.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/type:date_proto",
     ],
 )
