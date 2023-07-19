@@ -23,12 +23,14 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "DateIntervalProto";
 
-// A date interval.
+// A date interval. This is intended for mirroring the existing
+// `google.type.Interval` proto message, replacing google.protobuf.Timestamp
+// fields type with google.type.Data
 message DateInterval {
   // Start of the date interval, inclusive.
-  google.type.Date start_date = 1 [(google.api.field_behavior) = REQUIRED];
+  google.type.Date start_date = 1;
   // End of the date interval, exclusive. 'end_date' must be
   // later than 'start_date'. When the start equals the end, the interval is
   // empty (matches no time).
-  google.type.Date end_date = 2 [(google.api.field_behavior) = REQUIRED];
+  google.type.Date end_date = 2;
 }

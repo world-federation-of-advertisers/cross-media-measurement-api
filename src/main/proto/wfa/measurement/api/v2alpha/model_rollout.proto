@@ -42,14 +42,14 @@ message ModelRollout {
 
   // Determine the type of rollout for this ModelRollout. Required.
   oneof rollout_deploy_period {
-    // Date interval over which the rollout must be deployed. 'start_date' must
-    // be sufficiently in the future to allow for EDPs to sync with the Kingdom.
-    // 'end_date' cannot precede 'start_date'.
+    // Date interval in UTC format over which the rollout must be deployed.
+    // 'start_date' must be sufficiently in the future to allow for EDPs to sync
+    // with the Kingdom. 'end_date' cannot precede 'start_date'.
     DateInterval gradual_rollout_period = 8
         [(google.api.field_behavior) = IMMUTABLE];
 
     // In case of a rollout instantly deployed, instant_rollout_date must be
-    // specified instead.
+    // specified instead. instant_rollout_date is expressed in UTC format.
     google.type.Date instant_rollout_date = 9
         [(google.api.field_behavior) = IMMUTABLE];
   }
