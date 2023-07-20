@@ -20,8 +20,8 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
-import "google/protobuf/timestamp.proto";
-import "google/type/interval.proto";
+import "google/type/date.proto";
+import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/model_rollout.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -43,7 +43,9 @@ service ModelRollouts {
     option (google.api.method_signature) = "parent";
   }
 
-  // Sets the `rollout_freeze_time` of a `ModelRollout`.
+  // Sets the `rollout_freeze_date` of a `ModelRollout`. Any attempt to schedule
+  // the `rollout_freeze_date` for an instant rollout will result in an
+  // exception.
   rpc ScheduleModelRolloutFreeze(ScheduleModelRolloutFreezeRequest)
       returns (ModelRollout);
 
@@ -92,9 +94,9 @@ message ListModelRolloutsRequest {
 
   // Filter criteria for a `ListModelRolloutsRequest`.
   message Filter {
-    // Only 'ModelRollout's having 'rollout_period' overlapping
+    // Only 'ModelRollout's having 'rollout_deploy_period' overlapping
     // 'rollout_period_overlapping' are returned.
-    google.type.Interval rollout_period_overlapping = 1;
+    DateInterval rollout_period_overlapping = 1;
   }
   // Filter criteria for this request.
   // (-- api-linter: core::0132::request-field-types=disabled
@@ -120,9 +122,9 @@ message ScheduleModelRolloutFreezeRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // The rollout_freeze_time value to be set. This must be sufficiently in the
+  // The rollout_freeze_date value to be set. This must be sufficiently in the
   // future to allow for EDPs to sync with the Kingdom.
-  google.protobuf.Timestamp rollout_freeze_time = 2;
+  google.type.Date rollout_freeze_date = 2;
 }
 
 // Request message for `DeleteModelRollout` method.
