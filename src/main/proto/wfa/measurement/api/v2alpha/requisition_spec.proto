@@ -1,4 +1,4 @@
-// Copyright 2020 The Cross-Media Measurement Authors
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -60,10 +60,7 @@ message RequisitionSpec {
   //
   // All of the `EventGroup`s must belong to the same parent `DataProvider`
   // as this `Requisition`.
-  repeated EventGroupEntry event_groups = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+  repeated EventGroupEntry event_groups = 1 [deprecated = true];
 
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
   // `RequisitionSpec` is associated with.
@@ -82,4 +79,25 @@ message RequisitionSpec {
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  message Events {
+    repeated EventGroupEntry event_groups = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+  }
+
+  message Population {
+    // Filter to apply to populations. If not specified then all populations
+    // will be matched. Required if measurement type is population. Optional.
+    EventFilter filter = 1;
+    // Time interval over which the event data should be collected. Optional.
+    // Both `start_time` and `end_time` must be specified.
+    google.type.Interval interval = 2;
+  }
+
+  oneof requisition_type {
+    Events events = 4;
+    Population population = 5;
+  }
 }

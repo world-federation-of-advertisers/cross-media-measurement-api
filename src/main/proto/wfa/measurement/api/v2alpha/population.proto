@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,30 +19,44 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
+import "wfa/measurement/api/v2alpha/event_template.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "ModelReleaseProto";
+option java_outer_classname = "PopulationProto";
 
-// Resource representing a release of a model.
-message ModelRelease {
+// A population provided by a `DataProvider`.
+message Population {
   option (google.api.resource) = {
-    type: "halo.wfanet.org/ModelRelease"
-    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelReleases/{model_release}"
-    singular: "modelRelease"
-    plural: "modelReleases"
+    type: "halo.wfanet.org/Population"
+    pattern: "dataProviders/{data_provider}/populations/{population}"
+    singular: "population"
+    plural: "populations"
   };
 
   // Resource name.
   string name = 1;
 
-  // When the 'ModelRelease' was created.
-  google.protobuf.Timestamp create_time = 2
+  string description = 2;
+
+  // When the 'Population' was created.
+  google.protobuf.Timestamp create_time = 3
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // The Population resource this ModelRelease references to.
-  string population = 3 [
-    (google.api.resource_reference).type = "halo.wfanet.org/Population",
+  // A reference to a population blob.
+  message PopulationBlob {
+    // The path the model blob can be downloaded from.
+    string population_blob_path = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+  }
+
+  // The blob for the population. Optional.
+  PopulationBlob population_blob = 4 [(google.api.field_behavior) = IMMUTABLE];
+
+  // The EventTemplate that this population conforms to.
+  EventTemplate event_template = 5 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];

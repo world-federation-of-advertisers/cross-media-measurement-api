@@ -1,4 +1,4 @@
-// Copyright 2021 The Cross-Media Measurement Authors
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -88,6 +88,9 @@ message MeasurementSpec {
     int32 maximum_frequency_per_user = 3;
   }
 
+  // Parameters for a population measurement.
+  message Population {}
+
   // Fields specific to the type of measurement.
   oneof measurement_type {
     // Parameters for a reach and frequency measurement.
@@ -98,5 +101,7 @@ message MeasurementSpec {
     Duration duration = 6;
     // Parameters for a reach-only measurement.
     Reach reach = 7;
+    // Parameters for a population-only measurement.
+    Population population = 8;
   }
 }
