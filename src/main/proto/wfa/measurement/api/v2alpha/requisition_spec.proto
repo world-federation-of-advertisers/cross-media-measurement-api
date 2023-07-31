@@ -56,10 +56,8 @@ message RequisitionSpec {
     // Value of this `EventGroupEntry`.
     Value value = 2 [(google.api.field_behavior) = REQUIRED];
   }
-  // Map of `EventGroup` name to parameters for that `EventGroup`.
-  //
-  // All of the `EventGroup`s must belong to the same parent `DataProvider`
-  // as this `Requisition`.
+
+  // Deprecated list of `EventGroupEntry`s for a measurement
   repeated EventGroupEntry event_groups = 1 [deprecated = true];
 
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
@@ -80,13 +78,19 @@ message RequisitionSpec {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // The details of the events to be measured.
   message Events {
+    // Map of `EventGroup` name to parameters for that `EventGroup`.
+    //
+    // All of the `EventGroup`s must belong to the same parent `DataProvider`
+    // as this `Requisition`.
     repeated EventGroupEntry event_groups = 1 [
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE
     ];
   }
 
+  // The details of the population to be measured.
   message Population {
     // Filter to apply to populations. If not specified then all populations
     // will be matched. Required if measurement type is population. Optional.
@@ -97,7 +101,9 @@ message RequisitionSpec {
   }
 
   oneof requisition_type {
+    // The events to be measured.
     Events events = 4;
+    // The population to be measured.
     Population population = 5;
   }
 }

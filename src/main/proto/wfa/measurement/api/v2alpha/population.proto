@@ -37,6 +37,7 @@ message Population {
   // Resource name.
   string name = 1;
 
+  // The 'Population' description.
   string description = 2;
 
   // When the 'Population' was created.
@@ -52,7 +53,7 @@ message Population {
     ];
   }
 
-  // The blob for the population. Optional.
+  // The blob for the population.
   PopulationBlob population_blob = 4 [(google.api.field_behavior) = IMMUTABLE];
 
   // The EventTemplate that this population conforms to.
