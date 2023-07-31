@@ -214,10 +214,4 @@ message Measurement {
   // is set to `FAILED`.
   Failure failure = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Resource name of the ModelLine for this Measurement.
-  string model_line = 11 [
-    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
 }

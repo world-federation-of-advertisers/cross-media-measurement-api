@@ -224,10 +224,4 @@ message Requisition {
   Measurement.State measurement_state = 13
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Resource name of the ModelLine for this Requisition.
-  string model_line = 14 [
-    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
 }
