@@ -112,5 +112,4 @@ message MeasurementSpec {
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
-
 }

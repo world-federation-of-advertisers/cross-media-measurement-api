@@ -213,5 +213,4 @@ message Measurement {
   // Information about the failure of this `Measurement`. Set when the `state`
   // is set to `FAILED`.
   Failure failure = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
-
 }

@@ -223,5 +223,4 @@ message Requisition {
   // Denormalized `state` field from `measurement`.
   Measurement.State measurement_state = 13
       [(google.api.field_behavior) = OUTPUT_ONLY];
-
 }
