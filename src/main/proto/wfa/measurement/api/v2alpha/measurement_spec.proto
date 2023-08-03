@@ -109,7 +109,6 @@ message MeasurementSpec {
   // Resource name of the ModelLine for this measurement.
   string model_line = 9 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
-    (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
 }

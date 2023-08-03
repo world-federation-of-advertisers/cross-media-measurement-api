@@ -46,15 +46,21 @@ message Population {
 
   // A reference to a population blob.
   message PopulationBlob {
-    // The path the model blob can be downloaded from.
-    string population_blob_path = 1 [
+    //  A reference for the model blob. Can be one of the following:
+    //  1. Key/path and the bucket is communicated out-of-band
+    //  2. Full URI
+    //  3. An external reference.
+    string population_blob_ref = 1 [
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE
     ];
   }
 
   // The blob for the population.
-  PopulationBlob population_blob = 4 [(google.api.field_behavior) = IMMUTABLE];
+  PopulationBlob population_blob = 4 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The EventTemplate that this population conforms to.
   EventTemplate event_template = 5 [
