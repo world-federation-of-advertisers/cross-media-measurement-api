@@ -46,15 +46,8 @@ message Population {
 
   // A reference to a population blob.
   message PopulationBlob {
-    // The type of location for the blob.
-    oneof location {
-      //  A path for the model blob using pre-agreed upon storage.
-      string path = 1;
-      //  A uri for the model blob.
-      string uri = 2;
-      //  A reference id for the model blob in an external system.
-      string reference_id = 3;
-    }
+    //  A uri for the model blob.
+    string model_blob_uri = 1;
   }
 
   // The blob for the population.
