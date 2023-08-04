@@ -46,14 +46,15 @@ message Population {
 
   // A reference to a population blob.
   message PopulationBlob {
-    //  A reference for the model blob. Can be one of the following:
-    //  1. Key/path and the bucket is communicated out-of-band
-    //  2. Full URI
-    //  3. An external reference.
-    string population_blob_ref = 1 [
-      (google.api.field_behavior) = REQUIRED,
-      (google.api.field_behavior) = IMMUTABLE
-    ];
+    // The type of location for the blob.
+    oneof location {
+      //  A path for the model blob using pre-agreed upon storage.
+      string path = 1;
+      //  A uri for the model blob.
+      string uri = 2;
+      //  A reference id for the model blob in an external system.
+      string reference_id = 3;
+    }
   }
 
   // The blob for the population.
