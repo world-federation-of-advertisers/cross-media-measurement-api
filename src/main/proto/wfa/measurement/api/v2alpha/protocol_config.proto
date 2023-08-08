@@ -48,6 +48,8 @@ message ProtocolConfig {
     DURATION = 3;
     // Reach only (no frequency).
     REACH = 4;
+    // Population
+    POPULATION = 5;
   }
   // The type of measurement that this protocol computes.
   MeasurementType measurement_type = 2 [
