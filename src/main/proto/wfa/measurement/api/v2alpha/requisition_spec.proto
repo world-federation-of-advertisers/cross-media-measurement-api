@@ -95,11 +95,12 @@ message RequisitionSpec {
     // Filter to apply to populations. If not specified then all populations
     // will be matched. Required if measurement type is population.
     EventFilter filter = 1;
-    // Time interval over which the event data should be collected.
+    // Time interval over which the population should be calculated.
     // Both `start_time` and `end_time` must be specified.
     google.type.Interval interval = 2;
   }
 
+  // Required. The type of the Requisition.
   oneof requisition_type {
     // The events to be measured.
     Events events = 4;
