@@ -16,7 +16,6 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
-import "google/api/field_behavior.proto";
 import "google/type/date.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
