@@ -1,4 +1,4 @@
-// Copyright 2020 The Cross-Media Measurement Authors
+// Copyright 2023 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,14 +56,9 @@ message RequisitionSpec {
     // Value of this `EventGroupEntry`.
     Value value = 2 [(google.api.field_behavior) = REQUIRED];
   }
-  // Map of `EventGroup` name to parameters for that `EventGroup`.
-  //
-  // All of the `EventGroup`s must belong to the same parent `DataProvider`
-  // as this `Requisition`.
-  repeated EventGroupEntry event_groups = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+
+  // Deprecated list of `EventGroupEntry`s for a measurement
+  repeated EventGroupEntry event_groups = 1 [deprecated = true];
 
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
   // `RequisitionSpec` is associated with.
@@ -82,4 +77,34 @@ message RequisitionSpec {
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  // The details of the events to be measured.
+  message Events {
+    // Map of `EventGroup` name to parameters for that `EventGroup`.
+    //
+    // All of the `EventGroup`s must belong to the same parent `DataProvider`
+    // as this `Requisition`.
+    repeated EventGroupEntry event_groups = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+  }
+
+  // The details of the population to be measured.
+  message Population {
+    // Filter to apply to populations. If not specified then all populations
+    // will be matched. Required if measurement type is population.
+    EventFilter filter = 1;
+    // Time interval over which the population should be calculated.
+    // Both `start_time` and `end_time` must be specified.
+    google.type.Interval interval = 2;
+  }
+
+  // Required. The type of the Requisition.
+  oneof requisition_type {
+    // The events to be measured.
+    Events events = 4;
+    // The population to be measured.
+    Population population = 5;
+  }
 }
