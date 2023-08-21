@@ -86,7 +86,9 @@ message ProtocolConfig {
     int32 elliptic_curve_id = 3 [(google.api.field_behavior) = REQUIRED];
 
     // The maximum frequency to reveal in the histogram.
-    int32 maximum_frequency = 4;
+    //
+    // Deprecated: Read this from MeasurementSpec instead.
+    int32 maximum_frequency = 4 [deprecated = true];
 
     // The mechanism to generate noise during computation.
     NoiseMechanism noise_mechanism = 5;
