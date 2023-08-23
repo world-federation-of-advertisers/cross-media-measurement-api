@@ -14,8 +14,6 @@
 
 // (--
 //    api-linter: core::0123::resource-annotation=disabled
-//    api-linter: core::0203::required=disabled
-//    api-linter: core::0203::immutable=disabled
 //    aip.dev/not-precedent: These are protobuf annotations, not API messages.
 //  --)
 
