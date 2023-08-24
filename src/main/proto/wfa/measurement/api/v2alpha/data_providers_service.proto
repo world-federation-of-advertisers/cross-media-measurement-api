@@ -46,9 +46,6 @@ message ReplaceDataProviderRequiredDuchiesRequest {
   ];
 
   // Replacement for the `required_duchies` field.
-  //
-  // (-- api-linter: core::0203::required=disabled
-  //     aip.dev/not-precedent: api-linter incorrectly identifies this. --)
   repeated string required_duchies = 2
       [(google.api.resource_reference).type = "halo.wfanet.org/Duchy"];
 }
