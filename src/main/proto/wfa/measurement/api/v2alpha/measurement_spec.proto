@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -88,9 +89,18 @@ message MeasurementSpec {
     // Differential privacy parameters.
     DifferentialPrivacyParams privacy_params = 1;
 
+    // Maximum watch duration per user that will be included in this
+    // measurement.
+    //
+    // This may not be specified for legacy Measurements, in which case
+    // `maximum_watch_duration_per_user_seconds` must be read instead.
+    google.protobuf.Duration maximum_watch_duration_per_user = 4;
+
     // Maximum watch duration in seconds per user that will be included in this
     // measurement.
-    int32 maximum_watch_duration_per_user = 2;
+    //
+    // Deprecated: Use maximum_watch_duration_per_user.
+    int32 maximum_watch_duration_per_user_seconds = 2 [deprecated = true];
   }
 
   // Parameters for a population measurement.
