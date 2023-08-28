@@ -63,8 +63,13 @@ message MeasurementSpec {
     // Differential privacy parameters for frequency.
     DifferentialPrivacyParams frequency_privacy_params = 2;
 
-    // Maximum frequency per user that will be included in this measurement.
-    int32 maximum_frequency_per_user = 3;
+    // The maximum frequency to reveal in the histogram.
+    //
+    // This is required in new `CreateMeasurement` requests, but may not be
+    // specified for legacy `Measurement`s. In the case where it is not
+    // specified, it must instead be read from the corresponding field in
+    // `ProtocolConfig`.
+    int32 maximum_frequency = 3;
   }
 
   // Parameters for an impression measurement.
@@ -78,15 +83,14 @@ message MeasurementSpec {
 
   // Parameters for a duration measurement.
   message Duration {
+    reserved 3;
+
     // Differential privacy parameters.
     DifferentialPrivacyParams privacy_params = 1;
 
     // Maximum watch duration in seconds per user that will be included in this
     // measurement.
     int32 maximum_watch_duration_per_user = 2;
-
-    // Maximum frequency per user that will be included in this measurement.
-    int32 maximum_frequency_per_user = 3;
   }
 
   // Parameters for a population measurement.
