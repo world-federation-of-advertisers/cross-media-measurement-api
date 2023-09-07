@@ -160,7 +160,7 @@ message ExchangeWorkflow {
       int32 query_id_to_ids_file_count = 3;
       int32 shard_count = 4;
       int32 buckets_per_shard = 5;
-      // (-- TODO: Consider making this optional once its not experimental. --)
+      // (-- TODO: Consider making this optional once it's not experimental. --)
       int32 queries_per_shard = 6;
       bool add_padding_queries = 7;
     }

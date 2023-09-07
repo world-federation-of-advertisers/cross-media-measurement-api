@@ -40,7 +40,7 @@ service EventGroups {
 
   // Updates an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
   // the authenticated user does not have access to the `EventGroup`. Results in
-  // a `NOT_FOUND` error if the the specified `EventGroup` does not exist.
+  // a `NOT_FOUND` error if the specified `EventGroup` does not exist.
   // (-- api-linter: core::0134::method-signature=disabled
   //     aip.dev/not-precedent: Partial update not supported. --)
   rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {
@@ -51,7 +51,7 @@ service EventGroups {
   // state and will have all of its mutable optional fields cleared. This action
   // is irreversible. Results in a `PERMISSION_DENIED` error if the
   // authenticated user does not have access to the `EventGroup`. Results in a
-  // `NOT_FOUND` error if the the specified `EventGroup` does not exist.
+  // `NOT_FOUND` error if the specified `EventGroup` does not exist.
   rpc DeleteEventGroup(DeleteEventGroupRequest) returns (EventGroup) {
     option (google.api.method_signature) = "name";
   }
