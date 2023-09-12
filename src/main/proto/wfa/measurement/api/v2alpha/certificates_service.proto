@@ -37,6 +37,12 @@ service Certificates {
     option (google.api.method_signature) = "parent,certificate";
   }
 
+  // Lists `Certificate` resources.
+  rpc ListCertificates(ListCertificatesRequest)
+      returns (ListCertificatesResponse) {
+    option (google.api.method_signature) = "parent";
+  }
+
   // Revokes a `Certificate` by setting its revocation state.
   rpc RevokeCertificate(RevokeCertificateRequest) returns (Certificate) {}
 
@@ -67,6 +73,52 @@ message CreateCertificateRequest {
   //
   // The `name` field will be ignored, and the system will assign an ID.
   Certificate certificate = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for `ListCertificates` method.
+message ListCertificatesRequest {
+  // Name of the parent resource.
+  string parent = 1 [
+    (google.api.resource_reference).child_type = "halo.wfanet.org/Certificate",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The maximum number of resources to return.
+  //
+  // The service may return fewer than this value. If unspecified, at most 50
+  // resources will be returned. The maximum value is 1000; values above the
+  // maximum will be coerced to the maximum.
+  int32 page_size = 2;
+
+  // A page token, received from a previous call.
+  //
+  // When paginating, all other request parameters must match those of the call
+  // that provided the page token.
+  string page_token = 3;
+
+  // Filter criteria.
+  //
+  // Repeated fields are treated as logical ORs, and multiple fields specified
+  // as logical ANDs.
+  message Filter {
+    // Matches against the `subject_key_identifier` field.
+    repeated bytes subject_key_identifiers = 1;
+  }
+  // Filter criteria for this request.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
+  Filter filter = 4;
+}
+
+// Response message for `ListCertificates` method.
+message ListCertificatesResponse {
+  // Resources.
+  repeated Certificate certificates = 1;
+
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
 }
 
 // Request message for `RevokeCertificate` method.
