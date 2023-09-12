@@ -68,4 +68,9 @@ message Certificate {
   // determined by the issuing certificate authority.
   RevocationState revocation_state = 3
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // X.509 v3 subject key identifier.
+  // (-- api-linter: core::0140::abbreviations=disabled
+  //     aip.dev/not-precedent: Referring to the name of an X.509 extension. --)
+  bytes subject_key_identifier = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
