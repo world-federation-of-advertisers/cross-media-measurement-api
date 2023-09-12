@@ -140,7 +140,7 @@ message FulfillDirectRequisitionRequest {
   // produced the result. If unspecified, the certificate from the
   // data_provider_certificate from the `Requisition` will be used.
   string certificate = 4
-  [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
 }
 
 // Response message for `FulfillDirectRequisition` method.
