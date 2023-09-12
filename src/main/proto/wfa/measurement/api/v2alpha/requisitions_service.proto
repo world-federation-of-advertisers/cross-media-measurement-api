@@ -136,9 +136,9 @@ message FulfillDirectRequisitionRequest {
   //     aip.dev/not-precedent: This is a random 64-bit value. --)
   fixed64 nonce = 3 [(google.api.field_behavior) = REQUIRED];
 
-  // Resource name of a `Certificate` belonging to the `DataProvider` that
-  // produced the result. If unspecified, the certificate from the
-  // data_provider_certificate from the `Requisition` will be used.
+  // Resource name of the `Certificate` belonging to the `DataProvider` that
+  // can be used to verify the result. If unspecified, the
+  // `data_provider_certificate` from the `Requisition` will be used.
   string certificate = 4
       [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
 }
