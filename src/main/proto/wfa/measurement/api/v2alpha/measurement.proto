@@ -130,23 +130,27 @@ message Measurement {
 
       // The mechanism used to generate noise during computation.
       //
-      // While this **should** always be set, if it is not then it implies
-      // `CONTINUOUS_LAPLACE`.
-      // (-- TODO(@riemanli): set required once EDPs incorporate the new API --)
-      // changes.
+      // During the transition of adopting this field, this field may not be
+      // specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the direct reach
-      // result, it is assumed that DeterministicCountDistinct is used.
+      // Currently, only direct measurement would populate it. During the
+      // transition of adopting this field, this field may not be specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic count distinct methodology.
-        DeterministicCountDistinct deterministic_count_distinct = 3;
+        DeterministicCountDistinct deterministic_count_distinct = 4;
 
         // Liquid Legions count distinct methodology.
-        LiquidLegionsCountDistinct liquid_legions_count_distinct = 4;
+        LiquidLegionsCountDistinct liquid_legions_count_distinct = 5;
       }
     }
     // The reach result.
@@ -162,23 +166,27 @@ message Measurement {
 
       // The mechanism used to generate noise during computation.
       //
-      // While this **should** always be set, if it is not then it implies
-      // `CONTINUOUS_LAPLACE`.
-      // (-- TODO(@riemanli): set required once EDPs incorporate the new API --)
-      // changes.
+      // During the transition of adopting this field, this field may not be
+      // specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the direct
-      // frequency result, it is assumed that DeterministicDistribution is used.
+      // Currently, only direct measurement would populate it. During the
+      // transition of adopting this field, this field may not be specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic distribution methodology.
-        DeterministicDistribution deterministic_distribution = 3;
+        DeterministicDistribution deterministic_distribution = 4;
 
         // Liquid Legions distribution methodology.
-        LiquidLegionsDistribution liquid_legions_distribution = 4;
+        LiquidLegionsDistribution liquid_legions_distribution = 5;
       }
     }
     // The frequency result.
@@ -191,20 +199,24 @@ message Measurement {
 
       // The mechanism used to generate noise during computation.
       //
-      // While this **should** always be set, if it is not then it implies
-      // `CONTINUOUS_LAPLACE`.
-      // (-- TODO(@riemanli): set required once EDPs incorporate the new API --)
-      // changes.
+      // During the transition of adopting this field, this field may not be
+      // specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the impression
-      // result, it is assumed that DeterministicCount is used.
+      // Currently, only direct measurement would populate it. During the
+      // transition of adopting this field, this field may not be specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic count methodology.
-        DeterministicCount deterministic_count = 3;
+        DeterministicCount deterministic_count = 4;
       }
     }
     // The impression result.
@@ -217,20 +229,24 @@ message Measurement {
 
       // The mechanism used to generate noise during computation.
       //
-      // While this **should** always be set, if it is not then it implies
-      // `CONTINUOUS_LAPLACE`.
-      // (-- TODO(@riemanli): set required once EDPs incorporate the new API --)
-      // changes.
+      // During the transition of adopting this field, this field may not be
+      // specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the watch
-      // duration result, it is assumed that DeterministicSum is used.
+      // Currently, only direct measurement would populate it. During the
+      // transition of adopting this field, this field may not be specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic sum methodology.
-        DeterministicSum deterministic_sum = 3;
+        DeterministicSum deterministic_sum = 4;
       }
     }
     // The watch duration result.
@@ -241,11 +257,15 @@ message Measurement {
       // The population value.
       int64 value = 1;
 
-      // The computation methodology done by data provider. Currently, only
-      // direct measurement would populate it.
+      // The computation methodology done by data provider.
+      //
+      // Currently, only direct measurement would populate it. During the
+      // transition of adopting this field, this field may not be specified.
+      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
+      // incorporate the new API changes. --)
       oneof methodology {
         // Deterministic count methodology.
-        DeterministicCount deterministic_count = 3;
+        DeterministicCount deterministic_count = 2;
       }
     }
     // The population result.
