@@ -138,15 +138,18 @@ message Measurement {
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the direct reach
-      // result, it is assumed that DeterministicCountDistinct is used.
+      // Currently, only direct measurement would populate it. For backward
+      // compatibility, CustomDirectMethodology will be set with variance == NaN
+      // for existing direct measurements that don't have methodology set.
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic count distinct methodology.
-        DeterministicCountDistinct deterministic_count_distinct = 3;
+        DeterministicCountDistinct deterministic_count_distinct = 4;
 
         // Liquid Legions count distinct methodology.
-        LiquidLegionsCountDistinct liquid_legions_count_distinct = 4;
+        LiquidLegionsCountDistinct liquid_legions_count_distinct = 5;
       }
     }
     // The reach result.
@@ -170,15 +173,18 @@ message Measurement {
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the direct
-      // frequency result, it is assumed that DeterministicDistribution is used.
+      // Currently, only direct measurement would populate it. For backward
+      // compatibility, CustomDirectMethodology will be set with variance == NaN
+      // for existing direct measurements that don't have methodology set.
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic distribution methodology.
-        DeterministicDistribution deterministic_distribution = 3;
+        DeterministicDistribution deterministic_distribution = 4;
 
         // Liquid Legions distribution methodology.
-        LiquidLegionsDistribution liquid_legions_distribution = 4;
+        LiquidLegionsDistribution liquid_legions_distribution = 5;
       }
     }
     // The frequency result.
@@ -199,12 +205,15 @@ message Measurement {
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the impression
-      // result, it is assumed that DeterministicCount is used.
+      // Currently, only direct measurement would populate it. For backward
+      // compatibility, CustomDirectMethodology will be set with variance == NaN
+      // for existing direct measurements that don't have methodology set.
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic count methodology.
-        DeterministicCount deterministic_count = 3;
+        DeterministicCount deterministic_count = 4;
       }
     }
     // The impression result.
@@ -225,12 +234,15 @@ message Measurement {
 
       // The computation methodology done by data provider.
       //
-      // Currently, only direct measurement would populate it. Before all EDPs
-      // incorporate the new API, if no methodology is set for the watch
-      // duration result, it is assumed that DeterministicSum is used.
+      // Currently, only direct measurement would populate it. For backward
+      // compatibility, CustomDirectMethodology will be set with variance == NaN
+      // for existing direct measurements that don't have methodology set.
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic sum methodology.
-        DeterministicSum deterministic_sum = 3;
+        DeterministicSum deterministic_sum = 4;
       }
     }
     // The watch duration result.
@@ -244,8 +256,11 @@ message Measurement {
       // The computation methodology done by data provider. Currently, only
       // direct measurement would populate it.
       oneof methodology {
+        // Custom methodology.
+        CustomDirectMethodology custom_direct_methodology = 3;
+
         // Deterministic count methodology.
-        DeterministicCount deterministic_count = 3;
+        DeterministicCount deterministic_count = 4;
       }
     }
     // The population result.
