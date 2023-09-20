@@ -61,10 +61,10 @@ message ProtocolConfig {
   //
   // (-- TODO(@riemanli): Move the noise mechanism to its own file. --)
   enum NoiseMechanism {
+    reserved 3;
+
     // Default value used if the mechanism is omitted.
     NOISE_MECHANISM_UNSPECIFIED = 0;
-    // No noise is added.
-    NONE = 3;
     // Geometric, i.e. discrete Laplace.
     GEOMETRIC = 1;
     // Discrete Gaussian.
