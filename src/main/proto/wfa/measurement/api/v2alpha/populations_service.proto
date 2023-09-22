@@ -63,7 +63,7 @@ message GetPopulationRequest {
 }
 
 // Request message for `ListPopulations` method.
-message ListPopulationRequest {
+message ListPopulationsRequest {
   // Resource name of the parent `DataProvider`.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
@@ -83,4 +83,14 @@ message ListPopulationRequest {
   // `ListPopulationsRequest` must match the call that provided the page
   // token.
   string page_token = 3;
+}
+
+// Response message for `ListPopulations` method.
+message ListPopulationResponse {
+  // Resources.
+  repeated Population populations = 1;
+
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
 }
