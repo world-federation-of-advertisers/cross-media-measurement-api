@@ -38,7 +38,8 @@ service Populations {
   }
 
   // Lists `Population`s.
-  rpc ListPopulations(ListPopulationsRequest) returns (ListPopulationsResponse) {
+  rpc ListPopulations(ListPopulationsRequest)
+      returns (ListPopulationsResponse) {
     option (google.api.method_signature) = "parent";
   }
 }
