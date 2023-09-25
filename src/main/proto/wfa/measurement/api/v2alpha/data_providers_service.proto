@@ -42,7 +42,7 @@ service DataProviders {
   rpc UpdateDataAvailabilityInterval(UpdateDataAvailabilityIntervalRequest)
       returns (DataProvider) {
     option (google.api.http) = {
-      post: "/v2alpha/{name=dataProviders/*}"
+      patch: "/v2alpha/{name=dataProviders/*}"
       body: "data_availability_interval"
     };
     option (google.api.method_signature) = "name,data_availability_interval";
@@ -71,6 +71,7 @@ message GetDataProviderRequest {
   ];
 }
 
+// Request message for `UpdateDataAvailability` method.
 message UpdateDataAvailabilityIntervalRequest {
   // Resource name.
   string name = 1 [
