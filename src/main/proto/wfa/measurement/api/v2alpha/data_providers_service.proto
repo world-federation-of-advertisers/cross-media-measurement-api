@@ -38,11 +38,11 @@ service DataProviders {
   rpc ReplaceDataProviderRequiredDuchies(
       ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider) {}
 
-  // Updates `data_availability_interval` for a `DataProvider` resource.
-  rpc UpdateDataAvailabilityInterval(UpdateDataAvailabilityIntervalRequest)
+  // Replaces `data_availability_interval` for a `DataProvider` resource.
+  rpc ReplaceDataAvailabilityInterval(ReplaceDataAvailabilityIntervalRequest)
       returns (DataProvider) {
     option (google.api.http) = {
-      patch: "/v2alpha/{name=dataProviders/*}"
+      post: "/v2alpha/{name=dataProviders/*}"
       body: "data_availability_interval"
     };
     option (google.api.method_signature) = "name,data_availability_interval";
@@ -71,8 +71,8 @@ message GetDataProviderRequest {
   ];
 }
 
-// Request message for `UpdateDataAvailability` method.
-message UpdateDataAvailabilityIntervalRequest {
+// Request message for `ReplaceDataAvailability` method.
+message ReplaceDataAvailabilityIntervalRequest {
   // Resource name.
   string name = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
