@@ -27,24 +27,27 @@ option java_outer_classname = "PopulationsServiceProto";
 
 // Service for interacting with `Population` resources.
 service Populations {
+  // Creates a new `Population`
   rpc CreatePopulation(CreatePopulationRequest) returns (Population) {
     option (google.api.method_signature) = "parent,population";
   }
 
+  // Returns the `Population` with the specified resource key.
   rpc GetPopulation(GetPopulationRequest) returns (Population) {
     option (google.api.method_signature) = "name";
   }
 
-  rpc ListPopulations(ListPopulationsRequest) returns (ListPopulationResponse) {
+  // Lists `Population`s.
+  rpc ListPopulations(ListPopulationsRequest) returns (ListPopulationsResponse) {
     option (google.api.method_signature) = "parent";
   }
 }
 
 // Request message for `GetPopulation` method.
 message CreatePopulationRequest {
-  // Resource name of the parent `Population`.
+  // Resource name of the parent `DataProvider`.
   string parent = 1 [
-    (google.api.resource_reference).type = "halo.wfanet.org/Population",
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -86,7 +89,7 @@ message ListPopulationsRequest {
 }
 
 // Response message for `ListPopulations` method.
-message ListPopulationResponse {
+message ListPopulationsResponse {
   // Resources.
   repeated Population populations = 1;
 
