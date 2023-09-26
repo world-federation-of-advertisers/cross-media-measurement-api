@@ -115,9 +115,17 @@ message EventGroup {
   // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Interval for when data is available for a `Requisition`. If `end_time` is
-  // not set, data is available from `start_time` to now. If this is not set,
-  // the `data_availability_interval` in the parent `DataProvider` determines
-  // the data availability.
+  // Interval for when data for this `EventGroup` is guaranteed to be available
+  // for a `Requisition`.
+  //
+  // The parent `data_availability_interval` defines the upper and lower bounds
+  // for when data is guaranteed to be available.
+  //
+  // If this is not set, the `data_availability_interval` in the parent
+  // `DataProvider` is the interval for when data is guaranteed to be available.
+  //
+  // If this is set, then the data is guaranteed to be available for the
+  // interval that defines the overlap between this and the parent
+  // `data_availability_interval`.
   google.type.Interval data_availability_interval = 10;
 }

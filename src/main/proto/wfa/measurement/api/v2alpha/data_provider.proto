@@ -65,8 +65,7 @@ message DataProvider {
     (google.api.field_behavior) = UNORDERED_LIST
   ];
 
-  // Interval for when data is available for a `Requisition`. If `start_time` is
-  // not set, data is not available. If `end_time` is not set, data is available
-  // from `start_time` to now.
+  // Interval for when data is guaranteed to be available for a `Requisition`.
+  // Both `start_time` and `end_time` must be set.
   google.type.Interval data_availability_interval = 7;
 }
