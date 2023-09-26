@@ -66,6 +66,6 @@ message DataProvider {
   ];
 
   // Interval for when data is guaranteed to be available for a `Requisition`.
-  // Both `start_time` and `end_time` must be set.
+  // If this field is specified, both `start_time` and `end_time` must be set.
   google.type.Interval data_availability_interval = 7;
 }
