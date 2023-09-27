@@ -621,3 +621,15 @@ proto_library(
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
+
+proto_library(
+    name = "populations_service_proto",
+    srcs = ["populations_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":population_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
