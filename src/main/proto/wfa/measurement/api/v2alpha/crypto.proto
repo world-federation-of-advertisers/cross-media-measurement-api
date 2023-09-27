@@ -43,6 +43,12 @@ message SignedData {
 
   // Cryptographic digital signature of `data`.
   bytes signature = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Object identifier (OID) of the signature algorithm in dot notation.
+  //
+  // If not specified, this is assumed to be the signature algorithm of the
+  // accompanying certificate.
+  string signature_algorithm_oid = 3;
 }
 
 // A public key for asymmetric encryption.
