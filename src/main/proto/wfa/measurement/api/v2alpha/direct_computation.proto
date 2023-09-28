@@ -24,8 +24,25 @@ option java_outer_classname = "DirectComputationProto";
 
 // Information about the custom direct methodology.
 message CustomDirectMethodology {
-  // The variance of the result computed with the custom direct methodology.
-  double variance = 1 [(google.api.field_behavior) = REQUIRED];
+  // Different types of variances of a frequency distribution result.
+  message FrequencyVariances {
+    // The variances of a frequency distribution from frequency 1 to maximum
+    // frequency specified in the measurement spec.
+    map<int64, double> variances = 1 [(google.api.field_behavior) = REQUIRED];
+    // The variances of a k+ frequency distribution from frequency 1 to
+    // maximum frequency specified in the measurement spec.
+    map<int64, double> k_plus_variances = 2
+        [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // The variance of the result computed from the custom direct methodology.
+  // REQUIRED.
+  oneof variance {
+    // The variance when the result is a scalar type.
+    double scalar = 1;
+    // The variance when the result is a frequency type.
+    FrequencyVariances frequency = 2;
+  }
 }
 
 // Parameters used when applying the deterministic count distinct methodology.
