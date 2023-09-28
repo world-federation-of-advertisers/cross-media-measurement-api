@@ -140,7 +140,9 @@ message ProtocolConfig {
     // Custom direct methodology.
     //
     // Used when data provider wants to use a methodology that is not listed in
-    // protocol config to compute direct measurements.
+    // direct protocol config to compute direct measurements. Data providers who
+    // use this methodology must guarantee the independence of the result by
+    // salting their hash functions.
     CustomDirectMethodology custom_direct_methodology = 2;
 
     // Deterministic count distinct methodology.
