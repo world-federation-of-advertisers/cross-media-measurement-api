@@ -121,7 +121,8 @@ message EventGroup {
   // The parent `data_availability_interval` defines the upper and lower bounds
   // for when data is guaranteed to be available.
   //
-  // If this is not set, data is not guaranteed to be available.
+  // This field will be required in a future release. Until then, if this is not
+  // set, data is not guaranteed to be available.
   //
   // If this is set, then `start_time` is required and the data is guaranteed to
   // be available for the interval that defines the overlap between this and the
