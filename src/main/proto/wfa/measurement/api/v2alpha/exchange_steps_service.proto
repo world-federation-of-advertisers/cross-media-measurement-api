@@ -37,7 +37,7 @@ service ExchangeSteps {
   rpc ClaimReadyExchangeStep(ClaimReadyExchangeStepRequest)
       returns (ClaimReadyExchangeStepResponse);
 
-  // Lists `ExchangeStep`s.
+  // Lists `ExchangeStep` resources.
   rpc ListExchangeSteps(ListExchangeStepsRequest)
       returns (ListExchangeStepsResponse) {
     option (google.api.method_signature) = "parent";
@@ -72,6 +72,9 @@ message ClaimReadyExchangeStepResponse {
 // Request message for `ListExchangeSteps` method.
 message ListExchangeStepsRequest {
   // Resource name of the parent `Exchange`.
+  //
+  // The wildcard ID (`-`) may be used in place of the `Exchange` ID to list
+  // across every `Exchange` in the ancestor `RecurringExchange`.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/Exchange",
     (google.api.field_behavior) = REQUIRED
@@ -94,6 +97,8 @@ message ListExchangeStepsRequest {
   // Filter criteria. Repeated fields are treated as logical ORs, and multiple
   // fields specified as logical ANDs.
   message Filter {
+    reserved 3, 4;
+
     // Matches against the `exchange_date` field.
     repeated google.type.Date exchange_dates = 1;
     // Matches against the `state` field.
@@ -101,27 +106,13 @@ message ListExchangeStepsRequest {
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated ExchangeStep.State states = 2;
-    // Matches against the `event_data_provider` field of the ancestor
-    // `RecurringExchange`.
-    repeated string recurring_exchange_data_providers = 3
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    // Matches against the `model_provider` field of the ancestor
-    // `RecurringExchange`.
-    repeated string recurring_exchange_model_providers = 4
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/ModelProvider"];
 
-    // Party name.
-    oneof party {
-      // Matches against the `event_data_provider` field of the ancestor
-      // `RecurringExchange`.
-      string data_provider = 5 [(google.api.resource_reference).type =
-                                    "halo.wfanet.org/DataProvider"];
-      // Matches against the `model_provider` field of the ancestor
-      // `RecurringExchange`.
-      string model_provider = 6 [(google.api.resource_reference).type =
-                                     "halo.wfanet.org/ModelProvider"];
-    }
+    // Matches against the `data_provider` field.
+    string data_provider = 5
+        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    // Matches against the `model_provider` field.
+    string model_provider = 6 [(google.api.resource_reference).type =
+                                   "halo.wfanet.org/ModelProvider"];
   }
   // Filter criteria for this request.
   //
