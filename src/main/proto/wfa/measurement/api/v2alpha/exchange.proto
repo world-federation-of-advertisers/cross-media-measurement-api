@@ -24,7 +24,8 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ExchangeProto";
 
-// Represents a RecurringExchange on a specific date.
+// Resource that represents an instance of a `RecurringExchange` for a single
+// date.
 message Exchange {
   option (google.api.resource) = {
     type: "halo.wfanet.org/Exchange"
@@ -38,8 +39,8 @@ message Exchange {
   // Resource name.
   string name = 1;
 
-  // Must be a complete date (no field can be unset/zero).
-  google.type.Date date = 2;
+  // Date of the Exchange. Must be a complete date (no field can be unset/zero).
+  google.type.Date date = 2 [(google.api.field_behavior) = REQUIRED];
 
   // State of an `Exchange`.
   enum State {

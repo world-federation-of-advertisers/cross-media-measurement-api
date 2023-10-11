@@ -38,18 +38,42 @@ message ExchangeStep {
   // Resource name.
   string name = 1;
 
-  // State of this `ExchangeStep`.
-  State state = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
-
-  // Serialized ExchangeWorkflow that this ExchangeStep corresponds to.
-  bytes serialized_exchange_workflow = 3;
-
-  // Denormalized Exchange date. Must be a complete date (no field can be
-  // unset/zero).
-  google.type.Date exchange_date = 4;
+  // Denormalized `date` from the parent `Exchange`.
+  //
+  // Must be a complete date (no field can be unset/zero).
+  google.type.Date exchange_date = 4 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // Current index of the step inside the serialized_exchange_workflow.
-  int32 step_index = 5;
+  int32 step_index = 5 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // The party that executes this step. Required.
+  //
+  // This must be one of the parties on the ancestor `RecurringExchange`.
+  oneof party {
+    // Resource name of the `DataProvider` that executes this step.
+    string data_provider = 6 [
+      (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+    // Resource name of the `ModelProvider` that executes this step.
+    string model_provider = 7 [
+      (google.api.resource_reference).type = "halo.wfanet.org/ModelProvider",
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+  }
+
+  // Serialized denormalized `exchange_workflow` field from the ancestor
+  // `RecurringExchange`.
+  bytes serialized_exchange_workflow = 3 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // State of an `ExchangeStep`.
   enum State {
@@ -81,4 +105,6 @@ message ExchangeStep {
     // associated ExchangeStepAttempt is in state `FAILED_STEP`.
     FAILED = 6;
   }
+  // State of this `ExchangeStep`.
+  State state = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
