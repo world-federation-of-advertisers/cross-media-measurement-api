@@ -37,6 +37,12 @@ message PublicKey {
   // Resource name.
   string name = 1;
 
+  // Version of the API that this resource was last updated in.
+  //
+  // This determines which version of a message definition is used for
+  // serialized messages.
+  string api_version = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
   // Serialized `EncryptionPublicKey` for the parent resource, which can be
   // verified using `certificate`.
   SignedData public_key = 2 [(google.api.field_behavior) = REQUIRED];

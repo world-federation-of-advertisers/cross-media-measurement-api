@@ -54,6 +54,12 @@ message DataProvider {
   // verified using `certificate`.
   SignedData public_key = 4 [(google.api.field_behavior) = REQUIRED];
 
+  // Version of the API that `public_key` was last updated in.
+  //
+  // This determines which version of a message definition is used for
+  // serialized messages.
+  string public_key_api_version = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+
   // Display name of the data provider.
   string display_name = 5;
 

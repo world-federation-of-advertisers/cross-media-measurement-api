@@ -20,8 +20,8 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
-import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -39,6 +39,15 @@ message Measurement {
 
   // Resource name.
   string name = 1;
+
+  // Version of the API that this resource was created in.
+  //
+  // This determines which version of a message definition is used for
+  // serialized messages.
+  string api_version = 7 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // Resource name of the `Certificate` belonging to the parent
   // `MeasurementConsumer`.
@@ -272,23 +281,38 @@ message Measurement {
     Population population = 5;
   }
 
-  // Pair of `Result` to `Certificate`.
-  message ResultPair {
+  // Output message for a `Result`.
+  message ResultOutput {
     // Encrypted `SignedData` containing the serialized `Result`
     // which can be verified using `certificate`.
     //
     // The encryption uses the `measurement_public_key` from `measurement_spec`
     // as the recipient public key.
-    bytes encrypted_result = 1;
+    bytes encrypted_result = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
-    string certificate = 2
-        [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+    string certificate = 2 [
+      (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+
+    // Version of the API that the result was created in.
+    //
+    // This determines which version of a message definition is used for
+    // serialized messages.
+    string public_key_api_version = 3 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
   }
 
   // Results of this `Measurement`. Only set if `state` is `SUCCEEDED`.
-  repeated ResultPair results = 8 [
+  repeated ResultOutput results = 8 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = UNORDERED_LIST
   ];
