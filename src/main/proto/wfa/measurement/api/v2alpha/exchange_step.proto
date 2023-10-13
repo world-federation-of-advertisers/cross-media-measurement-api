@@ -68,7 +68,7 @@ message ExchangeStep {
     ];
   }
 
-  // Serialized denormalized `exchange_workflow` field from the ancestor
+  // Denormalized `exchange_workflow` field from the ancestor
   // `RecurringExchange`.
   bytes serialized_exchange_workflow = 3 [
     (google.api.field_behavior) = OUTPUT_ONLY,

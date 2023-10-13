@@ -41,8 +41,8 @@ message RecurringExchange {
   // Resource name.
   string name = 1;
 
-  // The ExchangeWorkflow for this recurring exchange.
-  ExchangeWorkflow exchange_workflow = 2 [
+  // Serialized `ExchangeWorkflow` for this `RecurringExchange`.
+  bytes exchange_workflow = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
