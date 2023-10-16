@@ -46,7 +46,7 @@ message ExchangeStep {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  // Current index of the step inside the serialized_exchange_workflow.
+  // Current index of the step inside `exchange_workflow`.
   int32 step_index = 5 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
@@ -68,9 +68,9 @@ message ExchangeStep {
     ];
   }
 
-  // Serialized denormalized `exchange_workflow` field from the ancestor
+  // Denormalized `exchange_workflow` field from the ancestor
   // `RecurringExchange`.
-  bytes serialized_exchange_workflow = 3 [
+  bytes exchange_workflow = 3 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
