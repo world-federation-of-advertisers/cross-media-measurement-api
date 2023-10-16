@@ -41,6 +41,15 @@ message RecurringExchange {
   // Resource name.
   string name = 1;
 
+  // Version of the API that this resource was created in.
+  //
+  // This determines which version of a message definition is used for
+  // serialized messages.
+  string api_version = 7 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
   // The ExchangeWorkflow for this recurring exchange.
   ExchangeWorkflow exchange_workflow = 2 [
     (google.api.field_behavior) = REQUIRED,

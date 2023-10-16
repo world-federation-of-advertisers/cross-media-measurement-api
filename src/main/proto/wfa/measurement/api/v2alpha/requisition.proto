@@ -53,23 +53,29 @@ message Requisition {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // Denormalized `api_version` field from `measurement`.
+  string api_version = 14 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
   // Denormalized dereferenced `measurement_consumer_certificate` field from
   // `measurement.
   string measurement_consumer_certificate = 3 [
     (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
   // Denormalized `measurement_spec` field from `measurement`.
   SignedData measurement_spec = 4 [
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
   // Denormalized `protocol_config` field from `measurement`.
   ProtocolConfig protocol_config = 5 [
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
@@ -77,21 +83,21 @@ message Requisition {
   // `DataProviderEntry` in `measurement`.
   string data_provider_certificate = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
   // Denormalized `data_provider_public_key` field from the corresponding
   // `DataProviderEntry` in `measurement`.
   SignedData data_provider_public_key = 7 [
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
 
   // Denormalized `encrypted_requisition_spec` field from the corresponding
   // `DataProviderEntry` in `measurement`.
   bytes encrypted_requisition_spec = 8 [
-    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
 

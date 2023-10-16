@@ -68,6 +68,12 @@ message ExchangeStep {
     ];
   }
 
+  // Denormalized `api_version` field from the ancestor `RecurringExchange`.
+  string api_version = 8 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
   // Serialized denormalized `exchange_workflow` field from the ancestor
   // `RecurringExchange`.
   bytes serialized_exchange_workflow = 3 [

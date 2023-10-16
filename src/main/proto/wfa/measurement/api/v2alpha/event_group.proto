@@ -41,6 +41,12 @@ message EventGroup {
   // Canonical format: dataProviders/{data_provider}/eventGroups/{event_group}
   string name = 1;
 
+  // Version of the API that this resource was last updated in.
+  //
+  // This determines which version of a message definition is used for
+  // serialized messages.
+  string api_version = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
+
   // Resource name of the `MeasurementConsumer` associated with this
   // `EventGroup`.
   string measurement_consumer = 2 [
