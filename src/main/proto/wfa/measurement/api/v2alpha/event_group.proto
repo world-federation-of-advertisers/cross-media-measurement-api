@@ -36,6 +36,8 @@ message EventGroup {
     plural: "eventGroups"
   };
 
+  reserved 8;
+
   // Resource name.
   //
   // Canonical format: dataProviders/{data_provider}/eventGroups/{event_group}
@@ -58,7 +60,10 @@ message EventGroup {
   // Pre-shared serialized `EncryptionPublicKey`, which can be verified using
   // `measurement_consumer_certificate`. Must be set if `encrypted_metadata` is
   // set.
-  SignedData measurement_consumer_public_key = 4;
+  //
+  // The version of the `EncryptionPublicKey` message must match the API version
+  // used to last update this resource.
+  SignedMessage measurement_consumer_public_key = 4;
 
   // ID referencing the `EventGroup` in an external system, provided by the
   // `DataProvider`.
@@ -97,9 +102,12 @@ message EventGroup {
     google.protobuf.Any metadata = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
-  // Encrypted serialized `Metadata`. The encryption uses
-  // `measurement_consumer_public_key` as the recipient public key.
-  bytes encrypted_metadata = 8;
+  // `Metadata` encrypted using the `measurement_consumer_public_key` as the
+  // recipient public key.
+  //
+  // The version of the `Metadata` message type must match the API version used
+  // to last update this resource.
+  EncryptedMessage encrypted_metadata = 10;
 
   // Possible states of Event Group.
   enum State {

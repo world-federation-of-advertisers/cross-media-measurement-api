@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
@@ -123,12 +124,27 @@ message FulfillDirectRequisitionRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Encrypted `SignedData` containing the data (serialized Measurement.Result
-  // message) for fulfillment.
+  // Encrypted `SignedMessage` containing a `Measurement.Result`.
   //
   // The encryption uses the measurement_public_key from measurement_spec as
   // the recipient's public key.
-  bytes encrypted_data = 2 [(google.api.field_behavior) = REQUIRED];
+  //
+  // The versions of the `SignedMessage` and `Measurement.Result` message types
+  // must match the API version of this request message.
+  //
+  // This may be required in the future.
+  EncryptedMessage encrypted_result = 4;
+
+  // Encrypted `SignedMessage` containing a `Measurement.Result`.
+  //
+  // The encryption uses the measurement_public_key from measurement_spec as
+  // the recipient's public key.
+  //
+  // The versions of the `SignedMessage` and `Measurement.Result` message types
+  // must match the API version of this request message.
+  //
+  // Deprecated: Use `encrypted_result`.
+  bytes encrypted_result_ciphertext = 5 [deprecated = true];
 
   // The `nonce` value from the `encrypted_requisition_spec`.
   //
