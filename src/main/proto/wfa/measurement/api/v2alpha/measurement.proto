@@ -20,8 +20,8 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
-import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -50,7 +50,10 @@ message Measurement {
 
   // Serialized `MeasurementSpec` for requisitions, which can be verified using
   // `measurement_consumer_certificate`.
-  SignedData measurement_spec = 3 [
+  //
+  // The version of the `MeasurementSpec` message type must correspond to the
+  // API version that this resource was created in.
+  SignedMessage measurement_spec = 3 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -65,6 +68,8 @@ message Measurement {
 
     // Value of a map entry.
     message Value {
+      reserved 3;
+
       // Resource name of the `Certificate` belonging to `data_provider`.
       string data_provider_certificate = 1 [
         (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
@@ -73,16 +78,27 @@ message Measurement {
 
       // Pre-shared serialized `EncryptionPublicKey`, which can be verified
       // using `data_provider_certificate`.
-      SignedData data_provider_public_key = 2
+      //
+      // The version of the `EncryptionPublicKey` message type must correspond
+      // to the API version that this resource was created in.
+      //
+      // (-- TODO(@SanjayVas): Include the `message` directly rather than
+      // wrapping it in a `SignedMessage`. The signature is not needed here, as
+      // the `MeasurementConsumer` should have already verified it. --)
+      SignedMessage data_provider_public_key = 2
           [(google.api.field_behavior) = REQUIRED];
 
-      // Encrypted `SignedData` containing the serialized `RequisitionSpec` for
-      // this entry, which can be verified using
+      // Encrypted `SignedMessage` containing the serialized `RequisitionSpec`
+      // for this entry, which can be verified using
       // `measurement_consumer_certificate`.
       //
       // The encryption uses `data_provider_public_key` as the recipient public
       // key.
-      bytes encrypted_requisition_spec = 3
+      //
+      // The versions of the `SignedMessage` and `EncryptionPublicKey` message
+      // types must correspond to the API version that this resource was created
+      // in.
+      EncryptedMessage encrypted_requisition_spec = 5
           [(google.api.field_behavior) = REQUIRED];
 
       // SHA256 hash of the `nonce` from `encrypted_requisition_spec`, where the
@@ -272,23 +288,31 @@ message Measurement {
     Population population = 5;
   }
 
-  // Pair of `Result` to `Certificate`.
-  message ResultPair {
-    // Encrypted `SignedData` containing the serialized `Result`
+  // Output message for a `Result`.
+  message ResultOutput {
+    reserved 1;
+
+    // Encrypted `SignedMessage` containing the serialized `Result`
     // which can be verified using `certificate`.
     //
     // The encryption uses the `measurement_public_key` from `measurement_spec`
     // as the recipient public key.
-    bytes encrypted_result = 1;
+    EncryptedMessage encrypted_result = 3 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
-    string certificate = 2
-        [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+    string certificate = 2 [
+      (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE
+    ];
   }
 
   // Results of this `Measurement`. Only set if `state` is `SUCCEEDED`.
-  repeated ResultPair results = 8 [
+  repeated ResultOutput results = 8 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = UNORDERED_LIST
   ];
