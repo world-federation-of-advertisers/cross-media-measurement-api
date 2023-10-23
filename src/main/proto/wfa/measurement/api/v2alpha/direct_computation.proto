@@ -42,7 +42,6 @@ message CustomDirectMethodology {
   }
 
   // The variance of the result computed from the custom direct methodology.
-  // REQUIRED.
   oneof variance {
     // The variance when the result is a scalar type.
     double scalar = 1;
