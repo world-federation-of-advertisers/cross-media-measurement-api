@@ -52,7 +52,10 @@ message DataProvider {
 
   // Serialized `EncryptionPublicKey` for this `DataProvider`, which can be
   // verified using `certificate`.
-  SignedData public_key = 4 [(google.api.field_behavior) = REQUIRED];
+  //
+  // The version of the `EncryptionPublicKey` message must match the API version
+  // used to last update this resource.
+  SignedMessage public_key = 4 [(google.api.field_behavior) = REQUIRED];
 
   // Display name of the data provider.
   string display_name = 5;
