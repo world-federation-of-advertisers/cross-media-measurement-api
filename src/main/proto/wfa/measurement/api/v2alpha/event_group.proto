@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
+import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -113,4 +114,18 @@ message EventGroup {
   }
   // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Interval for when data for this `EventGroup` is guaranteed to be available
+  // for a `Requisition`.
+  //
+  // The parent `data_availability_interval` defines the upper and lower bounds
+  // for when data is guaranteed to be available.
+  //
+  // This field will be required in a future release. Until then, if this is not
+  // set, data is not guaranteed to be available.
+  //
+  // If this is set, then `start_time` is required and the data is guaranteed to
+  // be available for the interval that defines the overlap between this and the
+  // parent `data_availability_interval`.
+  google.type.Interval data_availability_interval = 10;
 }

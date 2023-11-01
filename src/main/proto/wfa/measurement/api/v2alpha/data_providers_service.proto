@@ -16,9 +16,11 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/data_provider.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -35,6 +37,16 @@ service DataProviders {
   // Replaces the `required_duchies` field in a `DataProvider` resource.
   rpc ReplaceDataProviderRequiredDuchies(
       ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider) {}
+
+  // Replaces `data_availability_interval` for a `DataProvider` resource.
+  rpc ReplaceDataAvailabilityInterval(ReplaceDataAvailabilityIntervalRequest)
+      returns (DataProvider) {
+    option (google.api.http) = {
+      post: "/v2alpha/{name=dataProviders/*}"
+      body: "data_availability_interval"
+    };
+    option (google.api.method_signature) = "name,data_availability_interval";
+  }
 }
 
 // Request message for the `ReplaceDataProviderRequiredDuchies` method.
@@ -57,4 +69,17 @@ message GetDataProviderRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
+}
+
+// Request message for `ReplaceDataAvailability` method.
+message ReplaceDataAvailabilityIntervalRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // New value for `data_availability_interval`.
+  google.type.Interval data_availability_interval = 2
+      [(google.api.field_behavior) = REQUIRED];
 }
