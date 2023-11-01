@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/any.proto";
 import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/exchange_workflow.proto";
 
@@ -41,8 +42,11 @@ message RecurringExchange {
   // Resource name.
   string name = 1;
 
-  // The ExchangeWorkflow for this recurring exchange.
-  ExchangeWorkflow exchange_workflow = 2 [
+  // The `ExchangeWorkflow` for this `RecurringExchange`.
+  //
+  // The version of the `ExchangeWorkflow` message type must match the API
+  // version used to create this resource.
+  google.protobuf.Any exchange_workflow = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];

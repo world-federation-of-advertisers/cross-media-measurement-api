@@ -28,16 +28,16 @@ option java_outer_classname = "ExchangeStepsServiceProto";
 
 // Service for interacting with `ExchangeStep` resources.
 service ExchangeSteps {
-  // Claims a single ExchangeStep that is ready to be worked on and creates an
-  // initial ExchangeStepAttempt for it.
+  // Finds the first `ExchangeStep` for the caller under the specified
+  // `recurringExchanges` collection that is ready to be worked on and claims
+  // it, creating an initial `ExchangeStepAttempt` for it.
   //
-  // If there are no ready ExchangeSteps, this will return an empty response.
-  // Since this is expected, normal behavior, it does NOT return a NOT_FOUND
-  // error.
+  // This may create `Exchange` and `ExchangeStep` resources under the
+  // collection.
   rpc ClaimReadyExchangeStep(ClaimReadyExchangeStepRequest)
       returns (ClaimReadyExchangeStepResponse);
 
-  // Lists `ExchangeStep`s.
+  // Lists `ExchangeStep` resources.
   rpc ListExchangeSteps(ListExchangeStepsRequest)
       returns (ListExchangeStepsResponse) {
     option (google.api.method_signature) = "parent";
@@ -46,25 +46,23 @@ service ExchangeSteps {
 
 // Request message for `ClaimReadyExchangeStep` method.
 message ClaimReadyExchangeStepRequest {
-  // If an `ExchangeStep` is returned, it should be executed by this party.
-  // Required.
-  oneof party {
-    // Resource name of parent `DataProvider`.
-    string data_provider = 1
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    // Resource name of parent `ModelProvider`.
-    string model_provider = 2 [(google.api.resource_reference).type =
-                                   "halo.wfanet.org/ModelProvider"];
-  }
+  reserved 1, 2;
+
+  // Resource name of the parent of the `recurringExchanges` collection.
+  string parent = 3 [
+    (google.api.resource_reference).child_type =
+        "halo.wfanet.org/RecurringExchange",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Response message for `ClaimReadyExchangeStep` method.
-// If there are no ready `ExchangeSteps`, all fields will be unset.
 message ClaimReadyExchangeStepResponse {
-  // The `ExchangeStep`.
+  // If an `ExchangeStep` was claimed, that resource.
   ExchangeStep exchange_step = 1;
 
-  // Resource name of a new ExchangeStepAttempt for `exchange_step`.
+  // If an `ExchangeStep` was claimed, the resource name of the resulting
+  // `ExchangeStepAttempt`.
   string exchange_step_attempt = 2 [(google.api.resource_reference).type =
                                         "halo.wfanet.org/ExchangeStepAttempt"];
 }
@@ -72,6 +70,9 @@ message ClaimReadyExchangeStepResponse {
 // Request message for `ListExchangeSteps` method.
 message ListExchangeStepsRequest {
   // Resource name of the parent `Exchange`.
+  //
+  // The wildcard ID (`-`) may be used in place of the `Exchange` ID to list
+  // across every `Exchange` in the ancestor `RecurringExchange`.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/Exchange",
     (google.api.field_behavior) = REQUIRED
@@ -94,6 +95,8 @@ message ListExchangeStepsRequest {
   // Filter criteria. Repeated fields are treated as logical ORs, and multiple
   // fields specified as logical ANDs.
   message Filter {
+    reserved 3, 4;
+
     // Matches against the `exchange_date` field.
     repeated google.type.Date exchange_dates = 1;
     // Matches against the `state` field.
@@ -101,27 +104,13 @@ message ListExchangeStepsRequest {
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated ExchangeStep.State states = 2;
-    // Matches against the `event_data_provider` field of the ancestor
-    // `RecurringExchange`.
-    repeated string recurring_exchange_data_providers = 3
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
-    // Matches against the `model_provider` field of the ancestor
-    // `RecurringExchange`.
-    repeated string recurring_exchange_model_providers = 4
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/ModelProvider"];
 
-    // Party name.
-    oneof party {
-      // Matches against the `event_data_provider` field of the ancestor
-      // `RecurringExchange`.
-      string data_provider = 5 [(google.api.resource_reference).type =
-                                    "halo.wfanet.org/DataProvider"];
-      // Matches against the `model_provider` field of the ancestor
-      // `RecurringExchange`.
-      string model_provider = 6 [(google.api.resource_reference).type =
-                                     "halo.wfanet.org/ModelProvider"];
-    }
+    // Matches against the `data_provider` field.
+    string data_provider = 5
+        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    // Matches against the `model_provider` field.
+    string model_provider = 6 [(google.api.resource_reference).type =
+                                   "halo.wfanet.org/ModelProvider"];
   }
   // Filter criteria for this request.
   //
