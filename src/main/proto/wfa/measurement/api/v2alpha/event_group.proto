@@ -139,5 +139,5 @@ message EventGroup {
   // If this is set, then `start_time` is required and the data is guaranteed to
   // be available for the interval that defines the overlap between this and the
   // parent `data_availability_interval`.
-  google.type.Interval data_availability_interval = 10;
+  google.type.Interval data_availability_interval = 11;
 }
