@@ -17,6 +17,7 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
+import "google/protobuf/any.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -36,19 +37,40 @@ message ElGamalPublicKey {
   bytes element = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Data with an accompanying digital signature.
-message SignedData {
-  // Arbitrary data to sign.
-  bytes data = 1 [(google.api.field_behavior) = REQUIRED];
+// A serialized protobuf message with an accompanying digital signature.
+message SignedMessage {
+  // Message to sign.
+  //
+  // Required for new requests. If not specified, use the `data` field instead.
+  google.protobuf.Any message = 4;
 
-  // Cryptographic digital signature of `data`.
+  // Serialized protobuf message to sign.
+  //
+  // Deprecated: Use the `message` field except for legacy resources where it is
+  // not set.
+  bytes data = 1 [deprecated = true];
+
+  // Cryptographic digital signature of `message.value` (or of `data` for legacy
+  // resources).
   bytes signature = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Object identifier (OID) of the signature algorithm in dot notation.
   //
-  // If not specified, this is assumed to be the signature algorithm of the
-  // accompanying certificate.
+  // Required for new requests. If not specified, this is assumed to be the
+  // signature algorithm of the accompanying certificate.
   string signature_algorithm_oid = 3;
+}
+
+// An encrypted protobuf message.
+message EncryptedMessage {
+  // Protobuf message ciphertext.
+  bytes ciphertext = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Type URL of the protobuf message. See google.protobuf.Any.
+  //
+  // (-- api-linter: core::0140::uri=disabled
+  //     aip.dev/not-precedent: Referencing a well-known field name. --)
+  string type_url = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // A public key for asymmetric encryption.
