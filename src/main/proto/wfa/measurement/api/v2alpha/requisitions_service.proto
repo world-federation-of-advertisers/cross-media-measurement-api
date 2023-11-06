@@ -155,7 +155,7 @@ message FulfillDirectRequisitionRequest {
   // Resource name of the `Certificate` belonging to the `DataProvider` that
   // can be used to verify the result. If unspecified, the
   // `data_provider_certificate` from the `Requisition` will be used.
-  string certificate = 4
+  string certificate = 5
       [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
 }
 
