@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 
@@ -27,12 +28,25 @@ option java_outer_classname = "MeasurementSpecProto";
 
 // Specification for a `Measurement`. Immutable.
 message MeasurementSpec {
+  // `EncryptionPublicKey` for the `Measurement` that this `MeasurementSpec` is
+  // associated with.
+  //
+  // This is serialized so it can be compared with the same field in
+  // `RequisitionSpec`.
+  //
+  // Required for new requests. If not specified, use
+  // `serialized_measurement_public_key`.
+  google.protobuf.Any measurement_public_key = 10;
+
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
   // `MeasurementSpec` is associated with.
   //
   // This is serialized so it can be easily compared with the same field in
   // `RequisitionSpec`.
-  bytes measurement_public_key = 1 [(google.api.field_behavior) = REQUIRED];
+  //
+  // Deprecated: Use `measurement_public_key` except for reading legacy
+  // resources.
+  bytes serialized_measurement_public_key = 1 [deprecated = true];
 
   // List of `nonce_hash` values from `data_providers` of the corresponding
   // `Measurement`.
