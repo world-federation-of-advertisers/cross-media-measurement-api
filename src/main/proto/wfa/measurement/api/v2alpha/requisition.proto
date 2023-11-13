@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/any.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
@@ -75,6 +76,11 @@ message Requisition {
 
   // Denormalized `data_provider_certificate` field from the corresponding
   // `DataProviderEntry` in `measurement`.
+  //
+  // (--
+  // TODO(world-federation-of-advertisers/cross-media-measurement-api#188):
+  // Remove this once the certificate is always specified in
+  // `FulfillDirectRequisitionRequest`. --)
   string data_provider_certificate = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
     (google.api.field_behavior) = OUTPUT_ONLY,
@@ -83,10 +89,18 @@ message Requisition {
 
   // Denormalized `data_provider_public_key` field from the corresponding
   // `DataProviderEntry` in `measurement`.
-  SignedMessage data_provider_public_key = 7 [
+  google.protobuf.Any data_provider_public_key = 15 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  // Denormalized `data_provider_public_key` field with signature from the
+  // corresponding `DataProviderEntry` in `measurement`.
+  //
+  // Deprecated: The `Measurement` may not have signature for this key. Use
+  // `data_provider_public_key` instead.
+  SignedMessage signed_data_provider_public_key = 7
+      [(google.api.field_behavior) = OUTPUT_ONLY, deprecated = true];
 
   // Denormalized `encrypted_requisition_spec` field from the corresponding
   // `DataProviderEntry` in `measurement`.
