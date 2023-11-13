@@ -37,7 +37,7 @@ message EventGroup {
     plural: "eventGroups"
   };
 
-  reserved 8;
+  reserved 3, 4, 8;
 
   // Resource name.
   //
@@ -52,23 +52,6 @@ message EventGroup {
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
-
-  // Resource name of the `Certificate` belonging to `measurement_consumer`.
-  // Must be set if `measurement_consumer_public_key` is set.
-  string measurement_consumer_certificate = 3
-      [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
-
-  // Pre-shared serialized `EncryptionPublicKey`, which can be verified using
-  // `measurement_consumer_certificate`. Must be set if `encrypted_metadata` is
-  // set.
-  //
-  // The version of the `EncryptionPublicKey` message must match the API version
-  // used to last update this resource.
-  //
-  // (-- TODO(@SanjayVas): Include the `message` directly rather than
-  // wrapping it in a `SignedMessage`. The signature is not needed here, as
-  // the `DataProvider` should have already verified it. --)
-  SignedMessage measurement_consumer_public_key = 4;
 
   // ID referencing the `EventGroup` in an external system, provided by the
   // `DataProvider`.
@@ -113,6 +96,13 @@ message EventGroup {
   // The version of the `Metadata` message type must match the API version used
   // to last update this resource.
   EncryptedMessage encrypted_metadata = 10;
+
+  // Pre-shared packed `EncryptionPublicKey` Must be set if `encrypted_metadata`
+  // is set.
+  //
+  // The version of the `EncryptionPublicKey` message must match the API version
+  // used to last update this resource.
+  google.protobuf.Any measurement_consumer_public_key = 12;
 
   // Possible states of Event Group.
   enum State {

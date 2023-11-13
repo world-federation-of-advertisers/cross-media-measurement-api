@@ -65,6 +65,7 @@ proto_library(
         ":protocol_config_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:any_proto",
     ],
 )
 
