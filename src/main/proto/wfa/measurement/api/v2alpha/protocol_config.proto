@@ -201,6 +201,18 @@ message ProtocolConfig {
     NoiseMechanism noise_mechanism = 4;
   }
 
+  // Configuration for the Shuffle Based Secret Sharing Protocol.
+  message ShuffleBasedSecretSharing {
+    // Parameters for secret sharing sketches.
+    SecretSharingSketchParams sketch_params = 1
+        [(google.api.field_behavior) = REQUIRED];
+    // The maximum frequency to reveal in the histogram. This is also the EDP
+    // frequency cap.
+    int32 maximum_frequency = 2;
+    // The mechanism to generate noise by workers during the computation.
+    NoiseMechanism noise_mechanism = 3;
+  }
+
   // Configuration for a specific protocol.
   message Protocol {
     // Configuration for the specific protocol.
@@ -224,6 +236,11 @@ message ProtocolConfig {
       // using this protocol can be fulfilled by calling
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
       ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
+
+      // Shuffle Based Secret Sharing protocol.
+      //
+      // Using honest-majority setting.
+      ShuffleBasedSecretSharing shuffle_based_secret_sharing = 4;
     }
   }
 
@@ -263,4 +280,13 @@ message ReachOnlyLiquidLegionsSketchParams {
 
   // The maximum size of the Liquid Legions sketch.
   int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Parameters for a Shuffle Based Secret Sharing sketch.
+message SecretSharingSketchParams {
+  // The size of the sketch.
+  int64 sketch_size = 1;
+  // Length of each item in bits. #_EDPs * max_frequency should be no more than
+  // 2^bit_per_item.
+  int32 bit_per_item = 2;
 }
