@@ -59,10 +59,13 @@ message FulfillRequisitionRequest {
     // Requisitions of ShuffleBasedSecretSharing protocol is fulfilled by either
     // a blob or a seed.
     message ShuffleBasedSecretSharing {
+      // The seed can be expanded into a deterministic blob using the same PRNG.
       bytes seed = 1;
     }
     // Protocol specified values.
     oneof protocol {
+      // Shuffle based secret sharing protocol. Fulfilled by either chunks (a
+      // blob), or a seed.
       ShuffleBasedSecretSharing shuffle_based_secret_sharing = 4;
     }
   }
