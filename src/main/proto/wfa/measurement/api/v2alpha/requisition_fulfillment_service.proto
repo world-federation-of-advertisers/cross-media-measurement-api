@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -56,6 +57,11 @@ message FulfillRequisitionRequest {
     //     aip.dev/not-precedent: This is a random 64-bit value. --)
     fixed64 nonce = 3 [(google.api.field_behavior) = REQUIRED];
 
+    // The protocol config of the Computation. This is used to validate that
+    // EDPs and the MPC are using the same protocol config.
+    // Required for ShuffleBasedSecretSharing protocol.
+    ProtocolConfig protocol_config = 4;
+
     // Requisitions of ShuffleBasedSecretSharing protocol is fulfilled by either
     // a blob or a seed.
     message ShuffleBasedSecretSharing {
@@ -66,7 +72,7 @@ message FulfillRequisitionRequest {
     oneof protocol {
       // Shuffle based secret sharing protocol. Fulfilled by either chunks (a
       // blob), or a seed.
-      ShuffleBasedSecretSharing shuffle_based_secret_sharing = 4;
+      ShuffleBasedSecretSharing shuffle_based_secret_sharing = 5;
     }
   }
 
