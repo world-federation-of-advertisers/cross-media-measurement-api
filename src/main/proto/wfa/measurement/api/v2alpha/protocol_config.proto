@@ -201,10 +201,11 @@ message ProtocolConfig {
     NoiseMechanism noise_mechanism = 4;
   }
 
-  // Configuration for the Shuffle Based Secret Sharing Protocol.
-  message ShuffleBasedSecretSharing {
-    // Parameters for secret sharing sketches.
-    SecretSharingSketchParams sketch_params = 1
+  // Configuration for the Honest Majority Shuffle Based Secret Sharing
+  // Protocol.
+  message HonestMajorityShareShuffle {
+    // Parameters for honest majority shuffle sketches.
+    ShareShuffleSketchParams sketch_params = 1
         [(google.api.field_behavior) = REQUIRED];
 
     // The mechanism to generate noise by workers during the computation.
@@ -235,10 +236,8 @@ message ProtocolConfig {
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
       ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
 
-      // Shuffle Based Secret Sharing protocol.
-      //
-      // Using honest-majority setting.
-      ShuffleBasedSecretSharing shuffle_based_secret_sharing = 4;
+      // Honest Majority Shuffle Based Secret Sharing protocol.
+      HonestMajorityShareShuffle honest_majority_share_shuffle = 4;
     }
   }
 
@@ -280,8 +279,9 @@ message ReachOnlyLiquidLegionsSketchParams {
   int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Parameters for a Shuffle Based Secret Sharing sketch.
-message SecretSharingSketchParams {
+// Sketch parameters for a Honest Majority Shuffle Based Secret Sharing
+// protocol.
+message ShareShuffleSketchParams {
   // The number of registers in the sketch.
   int64 register_count = 1;
 
