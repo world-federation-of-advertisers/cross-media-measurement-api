@@ -59,13 +59,16 @@ message FulfillRequisitionRequest {
 
     // The protocol config of the Computation. This is used to validate that
     // EDPs and the MPC are using the same protocol config.
-    // Required for ShuffleBasedSecretSharing protocol.
+    // NOT required for LiquidLegionV2 protocol.
     ProtocolConfig protocol_config = 4;
 
     // Requisitions of ShuffleBasedSecretSharing protocol is fulfilled by either
     // a blob or a seed.
     message ShuffleBasedSecretSharing {
       // The seed can be expanded into a deterministic blob using the same PRNG.
+      //
+      // If the seed is not specified or empty, it means the requisition is
+      // fulfilled by a blob of chunks.
       bytes seed = 1;
     }
     // Protocol specified values.

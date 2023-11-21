@@ -282,10 +282,10 @@ message ReachOnlyLiquidLegionsSketchParams {
 
 // Parameters for a Shuffle Based Secret Sharing sketch.
 message SecretSharingSketchParams {
-  // The size of the sketch.
-  int64 sketch_size = 1;
+  // The number of registers in the sketch.
+  int64 register_count = 1;
 
-  // Length of each item in bits. #_EDPs * max_frequency should be no more than
-  // 2^bit_per_item.
-  int32 bit_per_item = 2;
+  // Length of each item in bytes. #_EDPs * max_frequency should be no more than
+  // 2^(byte_per_item*8).
+  int32 byte_per_item = 2;
 }
