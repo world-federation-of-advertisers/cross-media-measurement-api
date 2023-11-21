@@ -206,11 +206,8 @@ message ProtocolConfig {
     // Parameters for secret sharing sketches.
     SecretSharingSketchParams sketch_params = 1
         [(google.api.field_behavior) = REQUIRED];
-    // The maximum frequency to reveal in the histogram. This is also the EDP
-    // frequency cap.
-    int32 maximum_frequency = 2;
     // The mechanism to generate noise by workers during the computation.
-    NoiseMechanism noise_mechanism = 3;
+    NoiseMechanism noise_mechanism = 2;
   }
 
   // Configuration for a specific protocol.
