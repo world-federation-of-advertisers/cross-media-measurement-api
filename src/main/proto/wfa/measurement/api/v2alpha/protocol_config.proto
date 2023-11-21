@@ -286,6 +286,6 @@ message ShareShuffleSketchParams {
   int64 register_count = 1;
 
   // Length of each item in bytes. #_EDPs * max_frequency should be no more than
-  // 2^(byte_per_item*8).
-  int32 byte_per_item = 2;
+  // 2^(bytes_per_item*8).
+  int32 bytes_per_item = 2;
 }
