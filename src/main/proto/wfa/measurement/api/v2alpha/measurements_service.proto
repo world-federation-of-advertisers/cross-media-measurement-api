@@ -169,17 +169,12 @@ message BatchCreateMeasurementsResponse {
 
 // Request message for `BatchGetMeasurements` method.
 message BatchGetMeasurementsRequest {
-  // Resource name of the parent `MeasurementConsumer`.
-  string parent = 1 [
-    (google.api.resource_reference).type =
-        "halo.wfanet.org/MeasurementConsumer",
+  // List of resource names. A maximum of 50 `Measurement`s can be retrieved in
+  // a single batch.
+  repeated string names = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Measurement",
     (google.api.field_behavior) = REQUIRED
   ];
-
-  // The requests specifying the `Measurement`s to get. A maximum of 50
-  // `Measurement`s can be retrieved in a single batch.
-  repeated GetMeasurementRequest requests = 2
-      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for `BatchGetMeasurements` method.
