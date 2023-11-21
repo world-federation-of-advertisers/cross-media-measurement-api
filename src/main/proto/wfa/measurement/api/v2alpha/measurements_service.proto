@@ -156,8 +156,9 @@ message BatchCreateMeasurementsRequest {
   ];
 
   // The requests specifying the `Measurement`s to create. Either all requests
-  // must have the same parent or all requests must leave the parent unset. A
-  // maximum of 50 `Measurement`s can be created in a single batch.
+  // must have the same parent and the parent must match the top-level parent,
+  // or all requests must leave the parent unset. A maximum of 50 `Measurement`s
+  // can be created in a single batch.
   repeated CreateMeasurementRequest requests = 2
       [(google.api.field_behavior) = REQUIRED];
 }
