@@ -60,16 +60,20 @@ message FulfillRequisitionRequest {
     // The protocol config of the Computation. This is used to validate that
     // EDPs and the MPC are using the same protocol config.
     //
-    // NOT required for LiquidLegionV2 protocols.
+    // Required for HonestMajorityShareShuffle protocol. LiquidLegionsV2
+    // protocols will require this field in the future.
     ProtocolConfig protocol_config = 4;
 
-    // Requisitions of HonestMajorityShareShuffle protocol is fulfilled by
-    // either a blob or a seed.
+    // Protocol specified values for HonestMajorityShareShuffle.
+    //
+    // A Requisition of HonestMajorityShareShuffle protocol is fulfilled by
+    // either a seed or a blob of `BodyChunk`s.
     message HonestMajorityShareShuffle {
-      // The seed can be expanded into a deterministic blob using the same PRNG.
+      // The seed is sampled by the DataProvider and can be expanded into a
+      // deterministic blob using the same PRNG function.
       //
-      // If the seed is not specified or empty, it means the requisition is
-      // fulfilled by a blob of chunks.
+      // If the seed is not specified, it means the requisition is
+      // fulfilled by a blob of `BodyChunk`s.
       bytes seed = 1;
     }
     // Protocol specified values.
@@ -84,12 +88,19 @@ message FulfillRequisitionRequest {
   message BodyChunk {
     // The portion of the data for this `BodyChunk`.
     //
-    // The format of the data depends on the corresponding `MeasurementSpec`. If
-    // the `Requisition` is for an encrypted sketch, this is the register
-    // data as documented in the `Sketch` message (sketch.proto) encrypted using
-    // the combined `Duchy` ElGamal public keys. The only alignment requirement
-    // is by bytes: a chunk might begin or end in the middle of a single
-    // register.
+    // The format of the data depends on the corresponding `MeasurementSpec` and
+    // `ProtocolConfig`.
+    //
+    // If the `Requisition` is for an encrypted sketch for LiquidLegionV2
+    // protocols, this is the register data as documented in the `Sketch`
+    // message (sketch.proto) encrypted using the combined `Duchy` ElGamal
+    // public keys.
+    //
+    // If the `Requisition` is a sketch for HonestMajorityShareShuffle protocol,
+    // this is an array of counts as registers.
+    //
+    // The only alignment requirement is by bytes: a chunk might begin or end in
+    // the middle of a single register.
     //
     // The optimal size of this field is one that would result in the
     // `FulfillRequisitionRequest` message being between 16KiB and 64KiB.
