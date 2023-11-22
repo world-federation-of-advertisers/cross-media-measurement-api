@@ -60,8 +60,8 @@ message FulfillRequisitionRequest {
     // The protocol config of the Computation. This is used to validate that
     // EDPs and the MPC are using the same protocol config.
     //
-    // Required for HonestMajorityShareShuffle protocol. LiquidLegionsV2
-    // protocols will require this field in the future.
+    // Required for HonestMajorityShareShuffle protocol. All protocols will
+    // require this field in the future.
     ProtocolConfig protocol_config = 4;
 
     // Protocol specified values for HonestMajorityShareShuffle.
@@ -69,8 +69,8 @@ message FulfillRequisitionRequest {
     // A Requisition of HonestMajorityShareShuffle protocol is fulfilled by
     // either a seed or a blob of `BodyChunk`s.
     message HonestMajorityShareShuffle {
-      // The seed is sampled by the DataProvider and can be expanded into a
-      // deterministic blob using the same PRNG function.
+      // A random seed which is sampled by the DataProvider and can be expanded
+      // into a deterministic blob using the same PRNG function.
       //
       // If the seed is not specified, it means the requisition is
       // fulfilled by a blob of `BodyChunk`s.
