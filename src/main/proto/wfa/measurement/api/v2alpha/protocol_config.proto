@@ -201,6 +201,17 @@ message ProtocolConfig {
     NoiseMechanism noise_mechanism = 4;
   }
 
+  // Configuration for the Honest Majority Shuffle Based Secret Sharing
+  // Protocol.
+  message HonestMajorityShareShuffle {
+    // Parameters for honest majority shuffle sketches.
+    ShareShuffleSketchParams sketch_params = 1
+        [(google.api.field_behavior) = REQUIRED];
+
+    // The mechanism to generate noise by workers during the computation.
+    NoiseMechanism noise_mechanism = 2;
+  }
+
   // Configuration for a specific protocol.
   message Protocol {
     // Configuration for the specific protocol.
@@ -224,6 +235,9 @@ message ProtocolConfig {
       // using this protocol can be fulfilled by calling
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
       ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
+
+      // Honest Majority Shuffle Based Secret Sharing protocol.
+      HonestMajorityShareShuffle honest_majority_share_shuffle = 4;
     }
   }
 
@@ -263,4 +277,17 @@ message ReachOnlyLiquidLegionsSketchParams {
 
   // The maximum size of the Liquid Legions sketch.
   int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Sketch parameters for a Honest Majority Shuffle Based Secret Sharing
+// protocol.
+message ShareShuffleSketchParams {
+  // The number of registers in the sketch.
+  int64 register_count = 1;
+
+  // Length of each register in bytes.
+  //
+  // The product of `maximum_frequency` and the `nonce_hashes` count from the
+  // `MeasurementSpec` should be no more than 2 ^ (`bytes_per_register` * 8).
+  int32 bytes_per_register = 2;
 }
