@@ -118,7 +118,13 @@ message MeasurementSpec {
   }
 
   // Parameters for a population measurement.
-  message Population {}
+  message Population {
+    // Differential privacy parameters.
+    DifferentialPrivacyParams privacy_params = 1;
+
+    // Total population for this measurement.
+    int32 population_count = 2;
+  }
 
   // Fields specific to the type of measurement.
   oneof measurement_type {
