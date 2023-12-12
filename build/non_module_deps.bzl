@@ -12,22 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Transitive dependencies for this workspace."""
+"""Module extension for non-module dependencies."""
 
-load(
-    "@rules_proto//proto:repositories.bzl",
-    "rules_proto_dependencies",
-    "rules_proto_toolchains",
-)
-load(
-    "@com_google_googleapis//:repository_rules.bzl",
-    "switched_rules_by_language",
-)
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
-def wfa_measurement_proto_deps():
-    rules_proto_dependencies()
-    rules_proto_toolchains()
-
-    switched_rules_by_language(
-        name = "com_google_googleapis_imports",
+def _non_module_deps_impl(
+        # buildifier: disable=unused-variable
+        mctx):
+    http_file(
+        name = "plantuml",
+        downloaded_file_path = "plantuml.jar",
+        sha256 = "3a659c3d87ea5ebac7aadb645233176c51d0290777ebc28285dd2a35dc947752",
+        urls = ["https://github.com/plantuml/plantuml/releases/download/v1.2023.4/plantuml-1.2023.4.jar"],
     )
+
+non_module_deps = module_extension(implementation = _non_module_deps_impl)

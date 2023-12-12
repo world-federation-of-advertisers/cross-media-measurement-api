@@ -24,23 +24,8 @@ set -eu -o pipefail
 readonly BAZEL="${BAZEL:-bazel}"
 readonly PROTO_PATH='src/main/proto'
 
-build() {
-  "$BAZEL" query "kind('^proto_library rule', @com_github_protocolbuffers_protobuf//:all + @com_google_googleapis//google/type:all + @com_google_googleapis//google/api:all)" --output=label |
-    xargs "$BAZEL" build
-}
-
 get_descriptor_sets() {
-  readonly external_path="${bazel_bin}/external"
-  find "${external_path}" \
-    -name '*-descriptor-set.proto.bin' \! -name '*test*' \
-    \( \
-      -path "${external_path}/com_github_protocolbuffers_protobuf/*" \
-      -o \
-      -path "${external_path}/com_google_googleapis/google/type/*" \
-      -o \
-      -path "${external_path}/com_google_googleapis/google/api/*" \
-    \)
-
+  "$BAZEL" cquery "kind('^proto_library rule', deps(${target}))" --output=files
 }
 
 get_proto_files() {
@@ -66,11 +51,10 @@ lint() {
 main() {
   readonly path="$1"
   shift 1
+  
+  readonly target="//$PROTO_PATH/${path}/..."
+  "$BAZEL" build "${target}"
 
-  declare bazel_bin
-  bazel_bin="$("$BAZEL" info bazel-bin)"
-
-  build
   lint "$@"
 }
 
