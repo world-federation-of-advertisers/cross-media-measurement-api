@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -55,18 +56,51 @@ message FulfillRequisitionRequest {
     // (-- api-linter: core::0141::forbidden-types=disabled
     //     aip.dev/not-precedent: This is a random 64-bit value. --)
     fixed64 nonce = 3 [(google.api.field_behavior) = REQUIRED];
+
+    // The protocol config of the Computation. This is used to validate that
+    // EDPs and the MPC are using the same protocol config.
+    //
+    // Required for HonestMajorityShareShuffle protocol. All protocols will
+    // require this field in the future.
+    ProtocolConfig protocol_config = 4;
+
+    // Protocol specified values for HonestMajorityShareShuffle.
+    //
+    // A Requisition of HonestMajorityShareShuffle protocol is fulfilled by
+    // either a seed or a blob of `BodyChunk`s.
+    message HonestMajorityShareShuffle {
+      // A random seed which is sampled by the DataProvider and can be expanded
+      // into a deterministic blob using the same PRNG function.
+      //
+      // If the seed is not specified, it means the requisition is
+      // fulfilled by a blob of `BodyChunk`s.
+      bytes seed = 1;
+    }
+    // Protocol specified values.
+    oneof protocol {
+      // Honest Majority Shuffle based secret sharing protocol. Fulfilled by
+      // either chunks (a blob), or a seed.
+      HonestMajorityShareShuffle honest_majority_share_shuffle = 5;
+    }
   }
 
   // The chunk message for this streaming request.
   message BodyChunk {
     // The portion of the data for this `BodyChunk`.
     //
-    // The format of the data depends on the corresponding `MeasurementSpec`. If
-    // the `Requisition` is for an encrypted sketch, this is the register
-    // data as documented in the `Sketch` message (sketch.proto) encrypted using
-    // the combined `Duchy` ElGamal public keys. The only alignment requirement
-    // is by bytes: a chunk might begin or end in the middle of a single
-    // register.
+    // The format of the data depends on the corresponding `MeasurementSpec` and
+    // `ProtocolConfig`.
+    //
+    // If the `Requisition` is for an encrypted sketch for LiquidLegionV2
+    // protocols, this is the register data as documented in the `Sketch`
+    // message (sketch.proto) encrypted using the combined `Duchy` ElGamal
+    // public keys.
+    //
+    // If the `Requisition` is a sketch for HonestMajorityShareShuffle protocol,
+    // this is an array of counts as registers.
+    //
+    // The only alignment requirement is by bytes: a chunk might begin or end in
+    // the middle of a single register.
     //
     // The optimal size of this field is one that would result in the
     // `FulfillRequisitionRequest` message being between 16KiB and 64KiB.
