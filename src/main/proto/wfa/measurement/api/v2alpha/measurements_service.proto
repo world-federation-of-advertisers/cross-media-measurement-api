@@ -48,6 +48,16 @@ service Measurements {
   //
   // This is a state transition method (see https://aip.dev/216).
   rpc CancelMeasurement(CancelMeasurementRequest) returns (Measurement) {}
+
+  // Batch creates `Measurement`s. Results in an error if any of the specified
+  // `Measurement`s fail to be created.
+  rpc BatchCreateMeasurements(BatchCreateMeasurementsRequest)
+      returns (BatchCreateMeasurementsResponse) {}
+
+  // Batch gets `Measurement`s. Results in a `NOT_FOUND` error if any of the
+  // specified `Measurement`s do not exist.
+  rpc BatchGetMeasurements(BatchGetMeasurementsRequest)
+      returns (BatchGetMeasurementsResponse) {}
 }
 
 // Request message for `GetMeasurement` method.
@@ -134,4 +144,50 @@ message CancelMeasurementRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/Measurement",
     (google.api.field_behavior) = REQUIRED
   ];
+}
+
+// Request message for `BatchCreateMeasurements` method.
+message BatchCreateMeasurementsRequest {
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The requests specifying the `Measurement`s to create. Either all requests
+  // must have the same parent and the parent must match the top-level parent,
+  // or all requests must leave the parent unset. A maximum of 50 `Measurement`s
+  // can be created in a single batch.
+  repeated CreateMeasurementRequest requests = 2
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for `BatchCreateMeasurements` method.
+message BatchCreateMeasurementsResponse {
+  // The `Measurement` resources.
+  repeated Measurement measurements = 1;
+}
+
+// Request message for `BatchGetMeasurements` method.
+message BatchGetMeasurementsRequest {
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // List of resource names. A maximum of 50 `Measurement`s can be retrieved in
+  // a single batch.
+  repeated string names = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Measurement",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+// Response message for `BatchGetMeasurements` method.
+message BatchGetMeasurementsResponse {
+  // The `Measurement` resources.
+  repeated Measurement measurements = 1;
 }
