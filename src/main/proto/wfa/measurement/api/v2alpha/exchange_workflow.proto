@@ -209,6 +209,9 @@ message ExchangeWorkflow {
       int32 byte_count = 1;
     }
 
+    // Assigns JoinKey Ids
+    message AssignJoinKeyIdsStep {}
+
     oneof step {
       CopyFromSharedStorageStep copy_from_shared_storage_step = 5;
       CopyToSharedStorageStep copy_to_shared_storage_step = 6;
@@ -239,6 +242,7 @@ message ExchangeWorkflow {
       GenerateHybridEncryptionKeyPairStep
           generate_hybrid_encryption_key_pair_step = 23;
       GenerateRandomBytesStep generate_random_bytes_step = 24;
+      AssignJoinKeyIdsStep assign_join_key_ids_step = 25;
     }
   }
 
