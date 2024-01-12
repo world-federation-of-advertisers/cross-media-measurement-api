@@ -37,7 +37,7 @@ message EventGroup {
     plural: "eventGroups"
   };
 
-  reserved 3, 4, 8;
+  reserved 3;
 
   // Resource name.
   //
@@ -97,12 +97,23 @@ message EventGroup {
   // to last update this resource.
   EncryptedMessage encrypted_metadata = 10;
 
+  // Encrypted serialized `Metadata`.
+  //
+  // Deprecated: Use `encrypted_metadata` instead.
+  bytes serialized_encrypted_metadata = 8 [deprecated = true];
+
   // Pre-shared packed `EncryptionPublicKey` Must be set if `encrypted_metadata`
   // is set.
   //
   // The version of the `EncryptionPublicKey` message must match the API version
   // used to last update this resource.
   google.protobuf.Any measurement_consumer_public_key = 12;
+
+  // Signed pre-shared packed `EncryptionPublicKey`.
+  //
+  // Deprecated: There may not be a signature available. Use
+  // `measurement_consumer_public_key` instead.
+  SignedMessage signed_measurement_consumer_public_key = 4 [deprecated = true];
 
   // Possible states of Event Group.
   enum State {
