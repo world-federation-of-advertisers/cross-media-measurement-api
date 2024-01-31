@@ -69,12 +69,14 @@ message FulfillRequisitionRequest {
     // A Requisition of HonestMajorityShareShuffle protocol is fulfilled by
     // either a seed or a blob of `BodyChunk`s.
     message HonestMajorityShareShuffle {
-      // A random seed which is sampled by the DataProvider and can be expanded
-      // into a deterministic blob using the same PRNG function.
+      // An encrypted `SignedMessage` of random seed.
       //
-      // If the seed is not specified, it means the requisition is
-      // fulfilled by a blob of `BodyChunk`s.
-      bytes seed = 1;
+      // The seed is sampled by the DataProvider and can be expanded into a
+      // deterministic blob using the same PRNG function.
+      //
+      // It is signed by DataProvider and encrypted using the peer worker's
+      // public key.
+      bytes secret_seed = 1;
     }
     // Protocol specified values.
     oneof protocol {
