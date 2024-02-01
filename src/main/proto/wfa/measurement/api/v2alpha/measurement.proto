@@ -234,6 +234,9 @@ message Measurement {
 
         // Deterministic count methodology.
         DeterministicCount deterministic_count = 4;
+
+        // Dynamic Clipping count methodology.
+        DynamicClipCount dynamic_clip_count = 5;
       }
     }
     // The impression result.
