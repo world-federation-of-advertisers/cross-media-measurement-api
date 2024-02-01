@@ -87,6 +87,12 @@ message DeterministicDistribution {}
 // Parameters used when applying the deterministic count methodology.
 message DeterministicCount {}
 
+// Parameters used when applying the Dynamic Clipping count methodology.
+message DynamicClipCount {
+  // Optimized maximum frequency per user value calculated by the EDP.
+  int32 maximum_frequency_per_user = 1;
+}
+
 // Parameters used when applying the deterministic sum methodology.
 message DeterministicSum {}
 
