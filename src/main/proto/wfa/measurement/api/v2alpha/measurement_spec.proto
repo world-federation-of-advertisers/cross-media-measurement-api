@@ -93,6 +93,10 @@ message MeasurementSpec {
     DifferentialPrivacyParams privacy_params = 1;
 
     // Maximum frequency per user that will be included in this measurement.
+    //
+    // Required and validated at Kingdom. It could be ignored by EDP if EDP uses
+    // Dynamic Clipping methodology to calculate an optimized value and report
+    // back to Kingdom.
     int32 maximum_frequency_per_user = 2;
   }
 
