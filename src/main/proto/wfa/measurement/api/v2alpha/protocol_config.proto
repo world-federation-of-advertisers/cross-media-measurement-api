@@ -118,6 +118,8 @@ message ProtocolConfig {
     message DeterministicDistribution {}
     // Configuration parameters for the deterministic count methodology.
     message DeterministicCount {}
+    // Configuration parameters for the Dynamic Clipping count methodology.
+    message DynamicClipCount {}
     // Configuration parameters for the deterministic sum methodology.
     message DeterministicSum {}
     // Configuration parameters for the direct Liquid Legions distribution
@@ -176,6 +178,11 @@ message ProtocolConfig {
     //
     // Can be used in frequency computations.
     LiquidLegionsDistribution liquid_legions_distribution = 8;
+
+    // Dynamic Clipping count methodology.
+    //
+    // Can be used in impression computations.
+    DynamicClipCount dynamic_clip_count = 9;
   }
 
   // Configuration for the Reach-Only Liquid Legions v2 protocol.
