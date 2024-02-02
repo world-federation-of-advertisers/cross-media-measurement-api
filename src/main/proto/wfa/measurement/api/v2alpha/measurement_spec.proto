@@ -94,10 +94,11 @@ message MeasurementSpec {
 
     // Maximum frequency per user that will be included in this measurement.
     //
-    // Required and validated at Kingdom. It could be ignored by EDP if EDP uses
-    // Dynamic Clipping methodology to calculate an optimized value and report
-    // back to Kingdom.
-    int32 maximum_frequency_per_user = 2;
+    // If the DynamicClipCount methodology is used,
+    // this field will be ignored and the value from that message will be used
+    // instead.
+    int32 maximum_frequency_per_user = 2
+        [(google.api.field_behavior) = REQUIRED];
   }
 
   // Parameters for a duration measurement.
