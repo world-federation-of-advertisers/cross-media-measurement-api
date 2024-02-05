@@ -1,905 +1,646 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
-    package(default_visibility = ["//visibility:public"])
+package(default_visibility = ["//visibility:public"])
 
-        IMPORT_PREFIX = "/src/main/proto"
+IMPORT_PREFIX = "/src/main/proto"
 
-#Resources and shared message types.
+# Resources and shared message types.
 
-    proto_library(name = "encrypted_sketch_proto",
-                  srcs = ["encrypted_sketch.proto"],
-                  strip_import_prefix = IMPORT_PREFIX, )
+proto_library(
+    name = "encrypted_sketch_proto",
+    srcs = ["encrypted_sketch.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+)
 
-        proto_library(
-            name = "crypto_proto", srcs = ["crypto.proto"],
-            strip_import_prefix = IMPORT_PREFIX,
-            deps =
-                [
-                  "@com_google_googleapis//google/api:field_behavior_proto",
-                  "@com_google_protobuf//:any_proto",
-                ], )
+proto_library(
+    name = "crypto_proto",
+    srcs = ["crypto.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-            proto_library(
-                name = "certificate_proto", srcs = ["certificate.proto"],
-                strip_import_prefix = IMPORT_PREFIX,
-                deps =
-                    [
-                      "@com_google_googleapis//google/api:field_behavior_proto",
-                      "@com_google_googleapis//google/api:resource_proto",
-                    ], )
+proto_library(
+    name = "certificate_proto",
+    srcs = ["certificate.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                proto_library(
-                    name = "public_key_proto", srcs = ["public_key.proto"],
-                    strip_import_prefix = IMPORT_PREFIX,
-                    deps =
-                        [
-                          ":crypto_proto",
-                          "@com_google_googleapis//google/"
-                          "api:field_behavior_proto",
-                          "@com_google_googleapis//google/api:resource_proto",
-                        ], )
+proto_library(
+    name = "public_key_proto",
+    srcs = ["public_key.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                    proto_library(name = "requisition_spec_proto",
-                                  srcs = ["requisition_spec.proto"],
-                                  strip_import_prefix = IMPORT_PREFIX,
-                                  deps =
-                                      [
-                                        "@com_google_googleapis//google/"
-                                        "api:field_behavior_proto",
-                                        "@com_google_googleapis//google/"
-                                        "api:resource_proto",
-                                        "@com_google_googleapis//google/"
-                                        "type:interval_proto",
-                                        "@com_google_protobuf//:any_proto",
-                                      ], )
+proto_library(
+    name = "requisition_spec_proto",
+    srcs = ["requisition_spec.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-                        proto_library(name = "requisition_proto",
-                                      srcs = ["requisition.proto"],
-                                      strip_import_prefix = IMPORT_PREFIX,
-                                      deps =
-                                          [
-                                            ":crypto_proto",
-                                            ":measurement_proto",
-                                            ":protocol_config_proto",
-                                            "@com_google_googleapis//google/"
-                                            "api:field_behavior_proto",
-                                            "@com_google_googleapis//google/"
-                                            "api:resource_proto",
-                                            "@com_google_protobuf//:any_proto",
-                                          ], )
+proto_library(
+    name = "requisition_proto",
+    srcs = ["requisition.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        ":measurement_proto",
+        ":protocol_config_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-                            proto_library(
-                                name = "account_proto",
-                                srcs = ["account.proto"],
-                                strip_import_prefix = IMPORT_PREFIX,
-                                deps =
-                                    [
-                                      "@com_google_googleapis//google/"
-                                      "api:field_behavior_proto",
-                                      "@com_google_googleapis//google/"
-                                      "api:resource_proto",
-                                    ], )
+proto_library(
+    name = "account_proto",
+    srcs = ["account.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                proto_library(
-                                    name = "api_key_proto",
-                                    srcs = ["api_key.proto"],
-                                    strip_import_prefix = IMPORT_PREFIX,
-                                    deps =
-                                        [
-                                          "@com_google_googleapis//google/"
-                                          "api:field_behavior_proto",
-                                          "@com_google_googleapis//google/"
-                                          "api:resource_proto",
-                                        ], )
+proto_library(
+    name = "api_key_proto",
+    srcs = ["api_key.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                    proto_library(
-                                        name = "measurement_consumer_proto",
-                                        srcs = ["measurement_consumer.proto"],
-                                        strip_import_prefix = IMPORT_PREFIX,
-                                        deps =
-                                            [
-                                              ":crypto_proto",
-                                              "@com_google_googleapis//google/"
-                                              "api:field_behavior_proto",
-                                              "@com_google_googleapis//google/"
-                                              "api:resource_proto",
-                                            ], )
+proto_library(
+    name = "measurement_consumer_proto",
+    srcs = ["measurement_consumer.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                        proto_library(
-                                            name = "data_provider_proto",
-                                            srcs = ["data_provider.proto"],
-                                            strip_import_prefix = IMPORT_PREFIX,
-                                            deps =
-                                                [
-                                                  ":crypto_proto",
-                                                  ":measurement_consumer_proto",
-                                                  "@com_google_googleapis//"
-                                                  "google/"
-                                                  "api:field_behavior_proto",
-                                                  "@com_google_googleapis//"
-                                                  "google/api:resource_proto",
-                                                  "@com_google_googleapis//"
-                                                  "google/type:interval_proto",
-                                                ], )
+proto_library(
+    name = "data_provider_proto",
+    srcs = ["data_provider.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        ":measurement_consumer_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+    ],
+)
 
-                                            proto_library(
-                                                name =
-                                                    "event_annotations_proto",
-                                                srcs =
-                                                    ["event_annotations.proto"],
-                                                strip_import_prefix =
-                                                    IMPORT_PREFIX,
-                                                deps =
-                                                    [
-                                                      "@com_google_protobuf//"
-                                                      ":descriptor_proto",
-                                                    ], )
+proto_library(
+    name = "event_annotations_proto",
+    srcs = ["event_annotations.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_protobuf//:descriptor_proto",
+    ],
+)
 
-                                                proto_library(
-                                                    name = "event_group_proto",
-                                                    srcs =
-                                                        ["event_group.proto"],
-                                                    strip_import_prefix =
-                                                        IMPORT_PREFIX,
-                                                    deps =
-                                                        [
-                                                          ":crypto_proto",
-                                                          ":event_template_"
-                                                          "proto",
-                                                          "@com_google_"
-                                                          "googleapis//google/"
-                                                          "api:field_behavior_"
-                                                          "proto",
-                                                          "@com_google_"
-                                                          "googleapis//google/"
-                                                          "api:resource_proto",
-                                                          "@com_google_"
-                                                          "googleapis//google/"
-                                                          "type:interval_proto",
-                                                          "@com_google_"
-                                                          "protobuf//"
-                                                          ":any_proto",
-                                                        ], )
+proto_library(
+    name = "event_group_proto",
+    srcs = ["event_group.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        ":event_template_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-                                                    proto_library(
-                                                        name =
-                                                            "event_template_"
-                                                            "proto",
-                                                        srcs =
-                                                            ["event_template."
-                                                             "proto"],
-                                                        strip_import_prefix =
-                                                            IMPORT_PREFIX,
-                                                        deps =
-                                                            [
-                                                              "@com_google_"
-                                                              "googleapis//"
-                                                              "google/"
-                                                              "api:field_"
-                                                              "behavior_proto",
-                                                            ], )
+proto_library(
+    name = "event_template_proto",
+    srcs = ["event_template.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)
 
-                                                        proto_library(
-                                                            name =
-                                                                "event_group_"
-                                                                "metadata_"
-                                                                "descriptor_"
-                                                                "proto",
-                                                            srcs =
-                                                                ["event_group_"
-                                                                 "metadata_"
-                                                                 "descriptor."
-                                                                 "proto"],
-                                                            strip_import_prefix =
-                                                                IMPORT_PREFIX,
-                                                            deps =
-                                                                [
-                                                                  "@com_google_"
-                                                                  "googleapis//"
-                                                                  "google/"
-                                                                  "api:"
-                                                                  "resource_"
-                                                                  "proto",
-                                                                  "@com_google_"
-                                                                  "protobuf//"
-                                                                  ":descriptor_"
-                                                                  "proto",
-                                                                ], )
+proto_library(
+    name = "event_group_metadata_descriptor_proto",
+    srcs = ["event_group_metadata_descriptor.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
+    ],
+)
 
-                                                            proto_library(
-                                                                name =
-                                                                    "differenti"
-                                                                    "al_"
-                                                                    "privacy_"
-                                                                    "proto",
-                                                                srcs =
-                                                                    ["different"
-                                                                     "ial_"
-                                                                     "privacy."
-                                                                     "proto"],
-                                                                strip_import_prefix =
-                                                                    IMPORT_PREFIX, )
+proto_library(
+    name = "differential_privacy_proto",
+    srcs = ["differential_privacy.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+)
 
-                                                                proto_library(
-                                                                    name =
-                                                                        "measur"
-                                                                        "ement_"
-                                                                        "spec_"
-                                                                        "proto",
-                                                                    srcs =
-                                                                        ["measu"
-                                                                         "remen"
-                                                                         "t_"
-                                                                         "spec."
-                                                                         "prot"
-                                                                         "o"],
-                                                                    strip_import_prefix =
-                                                                        IMPORT_PREFIX,
-                                                                    deps =
-                                                                        [
-                                                                          ":dif"
-                                                                          "fere"
-                                                                          "ntia"
-                                                                          "l_"
-                                                                          "priv"
-                                                                          "acy_"
-                                                                          "prot"
-                                                                          "o",
-                                                                          "@com"
-                                                                          "_goo"
-                                                                          "gle_"
-                                                                          "goog"
-                                                                          "leap"
-                                                                          "is//"
-                                                                          "goog"
-                                                                          "le/"
-                                                                          "api:"
-                                                                          "fiel"
-                                                                          "d_"
-                                                                          "beha"
-                                                                          "vior"
-                                                                          "_pro"
-                                                                          "to",
-                                                                          "@com"
-                                                                          "_goo"
-                                                                          "gle_"
-                                                                          "goog"
-                                                                          "leap"
-                                                                          "is//"
-                                                                          "goog"
-                                                                          "le/"
-                                                                          "api:"
-                                                                          "reso"
-                                                                          "urce"
-                                                                          "_pro"
-                                                                          "to",
-                                                                          "@com"
-                                                                          "_goo"
-                                                                          "gle_"
-                                                                          "prot"
-                                                                          "obuf"
-                                                                          "//"
-                                                                          ":any"
-                                                                          "_pro"
-                                                                          "to",
-                                                                          "@com"
-                                                                          "_goo"
-                                                                          "gle_"
-                                                                          "prot"
-                                                                          "obuf"
-                                                                          "//"
-                                                                          ":dur"
-                                                                          "atio"
-                                                                          "n_"
-                                                                          "prot"
-                                                                          "o",
-                                                                        ], )
+proto_library(
+    name = "measurement_spec_proto",
+    srcs = ["measurement_spec.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":differential_privacy_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:duration_proto",
+    ],
+)
 
-                                                                    proto_library(
-                                                                        name =
-                                                                            "di"
-                                                                            "re"
-                                                                            "ct"
-                                                                            "_c"
-                                                                            "om"
-                                                                            "pu"
-                                                                            "ta"
-                                                                            "ti"
-                                                                            "on"
-                                                                            "_p"
-                                                                            "ro"
-                                                                            "t"
-                                                                            "o",
-                                                                        srcs =
-                                                                            ["d"
-                                                                             "i"
-                                                                             "r"
-                                                                             "e"
-                                                                             "c"
-                                                                             "t"
-                                                                             "_"
-                                                                             "c"
-                                                                             "o"
-                                                                             "m"
-                                                                             "p"
-                                                                             "u"
-                                                                             "t"
-                                                                             "a"
-                                                                             "t"
-                                                                             "i"
-                                                                             "o"
-                                                                             "n"
-                                                                             "."
-                                                                             "p"
-                                                                             "r"
-                                                                             "o"
-                                                                             "t"
-                                                                             "o"],
-                                                                        strip_import_prefix =
-                                                                            IMPORT_PREFIX,
-                                                                        deps =
-                                                                            [
-                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                            ], )
+proto_library(
+    name = "direct_computation_proto",
+    srcs = ["direct_computation.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)
 
-                                                                        proto_library(
-                                                                            name =
-                                                                                "protocol_config_proto",
-                                                                            srcs =
-                                                                                ["protocol_config.proto"],
-                                                                            strip_import_prefix =
-                                                                                IMPORT_PREFIX,
-                                                                            deps =
-                                                                                [
-                                                                                  ":differential_privacy_proto",
-                                                                                  "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                ], )
+proto_library(
+    name = "protocol_config_proto",
+    srcs = ["protocol_config.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":differential_privacy_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)
 
-                                                                            proto_library(
-                                                                                name =
-                                                                                    "measurement_proto",
-                                                                                srcs =
-                                                                                    ["measurement.proto"],
-                                                                                strip_import_prefix =
-                                                                                    IMPORT_PREFIX,
-                                                                                deps =
-                                                                                    [
-                                                                                      ":crypto_proto",
-                                                                                      ":direct_computation_proto",
-                                                                                      ":protocol_config_proto",
-                                                                                      "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                      "@com_google_googleapis//google/api:resource_proto",
-                                                                                      "@com_google_protobuf//:any_proto",
-                                                                                      "@com_google_protobuf//:duration_proto",
-                                                                                    ], )
+proto_library(
+    name = "measurement_proto",
+    srcs = ["measurement.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        ":direct_computation_proto",
+        ":protocol_config_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:duration_proto",
+    ],
+)
 
-                                                                                proto_library(
-                                                                                    name =
-                                                                                        "duchy_proto",
-                                                                                    srcs =
-                                                                                        ["duchy.proto"],
-                                                                                    strip_import_prefix =
-                                                                                        IMPORT_PREFIX,
-                                                                                    deps =
-                                                                                        [
-                                                                                          "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                          "@com_google_googleapis//google/api:resource_proto",
-                                                                                        ], )
+proto_library(
+    name = "duchy_proto",
+    srcs = ["duchy.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                    proto_library(
-                                                                                        name =
-                                                                                            "exchange_workflow_proto",
-                                                                                        srcs =
-                                                                                            ["exchange_workflow.proto"],
-                                                                                        strip_import_prefix =
-                                                                                            IMPORT_PREFIX,
-                                                                                        deps =
-                                                                                            [
-                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                              "@com_google_googleapis//google/type:date_proto",
-                                                                                              "@com_google_protobuf//:any_proto",
-                                                                                            ], )
+proto_library(
+    name = "exchange_workflow_proto",
+    srcs = ["exchange_workflow.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-                                                                                        proto_library(
-                                                                                            name =
-                                                                                                "model_provider_proto",
-                                                                                            srcs =
-                                                                                                ["model_provider.proto"],
-                                                                                            strip_import_prefix =
-                                                                                                IMPORT_PREFIX,
-                                                                                            deps =
-                                                                                                [
-                                                                                                  "@com_google_googleapis//google/api:resource_proto",
-                                                                                                ], )
+proto_library(
+    name = "model_provider_proto",
+    srcs = ["model_provider.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                            proto_library(name =
-                                                                                                              "model_suite_proto",
-                                                                                                          srcs =
-                                                                                                              ["model_suite.proto"],
-                                                                                                          strip_import_prefix =
-                                                                                                              IMPORT_PREFIX,
-                                                                                                          deps =
-                                                                                                              [
-                                                                                                                "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                "@com_google_protobuf//:timestamp_proto",
-                                                                                                              ], )
+proto_library(
+    name = "model_suite_proto",
+    srcs = ["model_suite.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                proto_library(
-                                                                                                    name =
-                                                                                                        "model_suites_service_proto",
-                                                                                                    srcs =
-                                                                                                        ["model_suites_service.proto"],
-                                                                                                    strip_import_prefix =
-                                                                                                        IMPORT_PREFIX,
-                                                                                                    deps =
-                                                                                                        [
-                                                                                                          ":model_suite_proto",
-                                                                                                          "@com_google_googleapis//google/api:client_proto",
-                                                                                                          "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                          "@com_google_googleapis//google/api:resource_proto",
-                                                                                                        ], )
+proto_library(
+    name = "model_suites_service_proto",
+    srcs = ["model_suites_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_suite_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                    proto_library(
-                                                                                                        name =
-                                                                                                            "model_line_proto",
-                                                                                                        srcs =
-                                                                                                            ["model_line.proto"],
-                                                                                                        strip_import_prefix =
-                                                                                                            IMPORT_PREFIX,
-                                                                                                        deps =
-                                                                                                            [
-                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                              "@com_google_protobuf//:timestamp_proto",
-                                                                                                            ], )
+proto_library(
+    name = "model_line_proto",
+    srcs = ["model_line.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                        proto_library(
-                                                                                                            name =
-                                                                                                                "model_lines_service_proto",
-                                                                                                            srcs =
-                                                                                                                ["model_lines_service.proto"],
-                                                                                                            strip_import_prefix =
-                                                                                                                IMPORT_PREFIX,
-                                                                                                            deps =
-                                                                                                                [
-                                                                                                                  ":model_line_proto",
-                                                                                                                  "@com_google_googleapis//google/api:client_proto",
-                                                                                                                  "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                  "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                  "@com_google_protobuf//:timestamp_proto",
-                                                                                                                ], )
+proto_library(
+    name = "model_lines_service_proto",
+    srcs = ["model_lines_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_line_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                            proto_library(
-                                                                                                                name =
-                                                                                                                    "model_rollout_proto",
-                                                                                                                srcs =
-                                                                                                                    ["model_rollout.proto"],
-                                                                                                                strip_import_prefix =
-                                                                                                                    IMPORT_PREFIX,
-                                                                                                                deps =
-                                                                                                                    [
-                                                                                                                      "//src/main/proto/wfa/measurement/api/v2alpha:date_interval_proto",
-                                                                                                                      "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                      "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                      "@com_google_googleapis//google/type:date_proto",
-                                                                                                                      "@com_google_protobuf//:timestamp_proto",
-                                                                                                                    ], )
+proto_library(
+    name = "model_rollout_proto",
+    srcs = ["model_rollout.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "//src/main/proto/wfa/measurement/api/v2alpha:date_interval_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                                proto_library(
-                                                                                                                    name =
-                                                                                                                        "model_rollouts_service_proto",
-                                                                                                                    srcs =
-                                                                                                                        ["model_rollouts_service.proto"],
-                                                                                                                    strip_import_prefix =
-                                                                                                                        IMPORT_PREFIX,
-                                                                                                                    deps =
-                                                                                                                        [
-                                                                                                                          ":model_rollout_proto",
-                                                                                                                          "//src/main/proto/wfa/measurement/api/v2alpha:date_interval_proto",
-                                                                                                                          "@com_google_googleapis//google/api:client_proto",
-                                                                                                                          "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                          "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                          "@com_google_googleapis//google/type:date_proto",
-                                                                                                                          "@com_google_protobuf//:empty_proto",
-                                                                                                                        ], )
+proto_library(
+    name = "model_rollouts_service_proto",
+    srcs = ["model_rollouts_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_rollout_proto",
+        "//src/main/proto/wfa/measurement/api/v2alpha:date_interval_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:empty_proto",
+    ],
+)
 
-                                                                                                                    proto_library(
-                                                                                                                        name =
-                                                                                                                            "model_release_proto",
-                                                                                                                        srcs =
-                                                                                                                            ["model_release.proto"],
-                                                                                                                        strip_import_prefix =
-                                                                                                                            IMPORT_PREFIX,
-                                                                                                                        deps =
-                                                                                                                            [
-                                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                              "@com_google_protobuf//:timestamp_proto",
-                                                                                                                            ], )
+proto_library(
+    name = "model_release_proto",
+    srcs = ["model_release.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                                        proto_library(name =
-                                                                                                                                          "model_releases_service_proto",
-                                                                                                                                      srcs =
-                                                                                                                                          ["model_releases_service.proto"],
-                                                                                                                                      strip_import_prefix =
-                                                                                                                                          IMPORT_PREFIX,
-                                                                                                                                      deps =
-                                                                                                                                          [
-                                                                                                                                            ":model_release_proto",
-                                                                                                                                            "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                            "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                            "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                          ], )
+proto_library(
+    name = "model_releases_service_proto",
+    srcs = ["model_releases_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_release_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                            proto_library(
-                                                                                                                                name =
-                                                                                                                                    "model_shard_proto",
-                                                                                                                                srcs =
-                                                                                                                                    ["model_shard.proto"],
-                                                                                                                                strip_import_prefix =
-                                                                                                                                    IMPORT_PREFIX,
-                                                                                                                                deps =
-                                                                                                                                    [
-                                                                                                                                      "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                      "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                      "@com_google_protobuf//:timestamp_proto",
-                                                                                                                                    ], )
+proto_library(
+    name = "model_shard_proto",
+    srcs = ["model_shard.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                                                proto_library(name =
-                                                                                                                                                  "model_shards_service_proto",
-                                                                                                                                              srcs =
-                                                                                                                                                  ["model_shards_service.proto"],
-                                                                                                                                              strip_import_prefix =
-                                                                                                                                                  IMPORT_PREFIX,
-                                                                                                                                              deps =
-                                                                                                                                                  [
-                                                                                                                                                    ":model_shard_proto",
-                                                                                                                                                    "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                    "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                    "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                    "@com_google_protobuf//:empty_proto",
-                                                                                                                                                  ], )
+proto_library(
+    name = "model_shards_service_proto",
+    srcs = ["model_shards_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_shard_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
+    ],
+)
 
-                                                                                                                                    proto_library(
-                                                                                                                                        name =
-                                                                                                                                            "model_outage_proto",
-                                                                                                                                        srcs =
-                                                                                                                                            ["model_outage.proto"],
-                                                                                                                                        strip_import_prefix =
-                                                                                                                                            IMPORT_PREFIX,
-                                                                                                                                        deps =
-                                                                                                                                            [
-                                                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                              "@com_google_googleapis//google/type:interval_proto",
-                                                                                                                                              "@com_google_protobuf//:timestamp_proto",
-                                                                                                                                            ], )
+proto_library(
+    name = "model_outage_proto",
+    srcs = ["model_outage.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                                                        proto_library(
-                                                                                                                                            name =
-                                                                                                                                                "model_outages_service_proto",
-                                                                                                                                            srcs =
-                                                                                                                                                ["model_outages_service.proto"],
-                                                                                                                                            strip_import_prefix =
-                                                                                                                                                IMPORT_PREFIX,
-                                                                                                                                            deps =
-                                                                                                                                                [
-                                                                                                                                                  ":model_outage_proto",
-                                                                                                                                                  "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                  "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                  "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                  "@com_google_googleapis//google/type:interval_proto",
-                                                                                                                                                ], )
+proto_library(
+    name = "model_outages_service_proto",
+    srcs = ["model_outages_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_outage_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+    ],
+)
 
-                                                                                                                                            proto_library(
-                                                                                                                                                name =
-                                                                                                                                                    "recurring_exchange_proto",
-                                                                                                                                                srcs =
-                                                                                                                                                    ["recurring_exchange.proto"],
-                                                                                                                                                strip_import_prefix =
-                                                                                                                                                    IMPORT_PREFIX,
-                                                                                                                                                deps =
-                                                                                                                                                    [
-                                                                                                                                                      ":exchange_workflow_proto",
-                                                                                                                                                      "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                      "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                      "@com_google_googleapis//google/type:date_proto",
-                                                                                                                                                      "@com_google_protobuf//:any_proto",
-                                                                                                                                                    ], )
+proto_library(
+    name = "recurring_exchange_proto",
+    srcs = ["recurring_exchange.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":exchange_workflow_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-                                                                                                                                                proto_library(
-                                                                                                                                                    name =
-                                                                                                                                                        "exchange_proto",
-                                                                                                                                                    srcs =
-                                                                                                                                                        ["exchange.proto"],
-                                                                                                                                                    strip_import_prefix =
-                                                                                                                                                        IMPORT_PREFIX,
-                                                                                                                                                    deps =
-                                                                                                                                                        [
-                                                                                                                                                          "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                          "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                          "@com_google_googleapis//google/type:date_proto",
-                                                                                                                                                        ], )
+proto_library(
+    name = "exchange_proto",
+    srcs = ["exchange.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+    ],
+)
 
-                                                                                                                                                    proto_library(name =
-                                                                                                                                                                      "exchange_step_proto",
-                                                                                                                                                                  srcs = ["exchange_step.proto"], strip_import_prefix = IMPORT_PREFIX,
-                                                                                                                                                                  deps =
-                                                                                                                                                                      [
-                                                                                                                                                                        "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                        "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                        "@com_google_googleapis//google/type:date_proto",
-                                                                                                                                                                        "@com_google_protobuf//:any_proto",
-                                                                                                                                                                      ], )
+proto_library(
+    name = "exchange_step_proto",
+    srcs = ["exchange_step.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)
 
-                                                                                                                                                        proto_library(name =
-                                                                                                                                                                          "exchange_step_attempt_proto",
-                                                                                                                                                                      srcs =
-                                                                                                                                                                          ["exchange_step_attempt.proto"],
-                                                                                                                                                                      strip_import_prefix =
-                                                                                                                                                                          IMPORT_PREFIX,
-                                                                                                                                                                      deps =
-                                                                                                                                                                          [
-                                                                                                                                                                            "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                            "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                            "@com_google_protobuf//:timestamp_proto",
-                                                                                                                                                                          ], )
+proto_library(
+    name = "exchange_step_attempt_proto",
+    srcs = ["exchange_step_attempt.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-#Services.
+# Services.
 
-                                                                                                                                                            proto_library(
-                                                                                                                                                                name =
-                                                                                                                                                                    "certificates_service_proto",
-                                                                                                                                                                srcs =
-                                                                                                                                                                    ["certificates_service.proto"],
-                                                                                                                                                                deps =
-                                                                                                                                                                    [
-                                                                                                                                                                      ":certificate_proto",
-                                                                                                                                                                      "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                      "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                      "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                    ], )
+proto_library(
+    name = "certificates_service_proto",
+    srcs = ["certificates_service.proto"],
+    deps = [
+        ":certificate_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                proto_library(name =
-                                                                                                                                                                                  "public_keys_service_proto",
-                                                                                                                                                                              srcs =
-                                                                                                                                                                                  ["public_keys_service.proto"],
-                                                                                                                                                                              deps =
-                                                                                                                                                                                  [
-                                                                                                                                                                                    ":public_key_proto",
-                                                                                                                                                                                    "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                    "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                  ], )
+proto_library(
+    name = "public_keys_service_proto",
+    srcs = ["public_keys_service.proto"],
+    deps = [
+        ":public_key_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)
 
-                                                                                                                                                                    proto_library(
-                                                                                                                                                                        name =
-                                                                                                                                                                            "accounts_service_proto",
-                                                                                                                                                                        srcs =
-                                                                                                                                                                            ["accounts_service.proto"],
-                                                                                                                                                                        deps =
-                                                                                                                                                                            [
-                                                                                                                                                                              ":account_proto",
-                                                                                                                                                                              "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                            ], )
+proto_library(
+    name = "accounts_service_proto",
+    srcs = ["accounts_service.proto"],
+    deps = [
+        ":account_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                        proto_library(
-                                                                                                                                                                            name =
-                                                                                                                                                                                "api_keys_service_proto",
-                                                                                                                                                                            srcs =
-                                                                                                                                                                                ["api_keys_service.proto"],
-                                                                                                                                                                            deps =
-                                                                                                                                                                                [
-                                                                                                                                                                                  ":api_key_proto",
-                                                                                                                                                                                  "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                  "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                  "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                ], )
+proto_library(
+    name = "api_keys_service_proto",
+    srcs = ["api_keys_service.proto"],
+    deps = [
+        ":api_key_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                            proto_library(name =
-                                                                                                                                                                                              "requisitions_service_proto",
-                                                                                                                                                                                          srcs =
-                                                                                                                                                                                              ["requisitions_service.proto"],
-                                                                                                                                                                                          strip_import_prefix =
-                                                                                                                                                                                              IMPORT_PREFIX,
-                                                                                                                                                                                          deps =
-                                                                                                                                                                                              [
-                                                                                                                                                                                                ":crypto_proto",
-                                                                                                                                                                                                ":measurement_proto",
-                                                                                                                                                                                                ":requisition_proto",
-                                                                                                                                                                                                "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                              ], )
+proto_library(
+    name = "requisitions_service_proto",
+    srcs = ["requisitions_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":crypto_proto",
+        ":measurement_proto",
+        ":requisition_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                proto_library(
-                                                                                                                                                                                    name =
-                                                                                                                                                                                        "requisition_fulfillment_service_proto",
-                                                                                                                                                                                    srcs =
-                                                                                                                                                                                        ["requisition_fulfillment_service.proto"],
-                                                                                                                                                                                    strip_import_prefix =
-                                                                                                                                                                                        IMPORT_PREFIX,
-                                                                                                                                                                                    deps =
-                                                                                                                                                                                        [
-                                                                                                                                                                                          ":protocol_config_proto",
-                                                                                                                                                                                          ":requisition_proto",
-                                                                                                                                                                                          "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                          "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                          "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                        ], )
+proto_library(
+    name = "requisition_fulfillment_service_proto",
+    srcs = ["requisition_fulfillment_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":protocol_config_proto",
+        ":requisition_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                    proto_library(
-                                                                                                                                                                                        name =
-                                                                                                                                                                                            "measurement_consumers_service_proto",
-                                                                                                                                                                                        srcs =
-                                                                                                                                                                                            ["measurement_consumers_service.proto"],
-                                                                                                                                                                                        strip_import_prefix =
-                                                                                                                                                                                            IMPORT_PREFIX,
-                                                                                                                                                                                        deps =
-                                                                                                                                                                                            [
-                                                                                                                                                                                              ":measurement_consumer_proto",
-                                                                                                                                                                                              "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                            ], )
+proto_library(
+    name = "measurement_consumers_service_proto",
+    srcs = ["measurement_consumers_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":measurement_consumer_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                        proto_library(name =
-                                                                                                                                                                                                          "measurements_service_proto",
-                                                                                                                                                                                                      srcs =
-                                                                                                                                                                                                          ["measurements_service.proto"],
-                                                                                                                                                                                                      strip_import_prefix =
-                                                                                                                                                                                                          IMPORT_PREFIX,
-                                                                                                                                                                                                      deps =
-                                                                                                                                                                                                          [
-                                                                                                                                                                                                            ":measurement_proto",
-                                                                                                                                                                                                            "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                            "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                            "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                          ], )
+proto_library(
+    name = "measurements_service_proto",
+    srcs = ["measurements_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":measurement_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                            proto_library(name =
-                                                                                                                                                                                                              "data_providers_service_proto",
-                                                                                                                                                                                                          srcs =
-                                                                                                                                                                                                              ["data_providers_service.proto"],
-                                                                                                                                                                                                          strip_import_prefix =
-                                                                                                                                                                                                              IMPORT_PREFIX,
-                                                                                                                                                                                                          deps =
-                                                                                                                                                                                                              [
-                                                                                                                                                                                                                ":data_provider_proto",
-                                                                                                                                                                                                                "@com_google_googleapis//google/api:annotations_proto",
-                                                                                                                                                                                                                "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                "@com_google_googleapis//google/type:interval_proto",
-                                                                                                                                                                                                              ], )
+proto_library(
+    name = "data_providers_service_proto",
+    srcs = ["data_providers_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":data_provider_proto",
+        "@com_google_googleapis//google/api:annotations_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+    ],
+)
 
-                                                                                                                                                                                                proto_library(name =
-                                                                                                                                                                                                                  "model_providers_service_proto",
-                                                                                                                                                                                                              srcs =
-                                                                                                                                                                                                                  ["model_providers_service.proto"],
-                                                                                                                                                                                                              strip_import_prefix =
-                                                                                                                                                                                                                  IMPORT_PREFIX,
-                                                                                                                                                                                                              deps =
-                                                                                                                                                                                                                  [
-                                                                                                                                                                                                                    ":model_provider_proto",
-                                                                                                                                                                                                                    "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                    "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                    "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                  ], )
+proto_library(
+    name = "model_providers_service_proto",
+    srcs = ["model_providers_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":model_provider_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                                    proto_library(
-                                                                                                                                                                                                        name =
-                                                                                                                                                                                                            "event_groups_service_proto",
-                                                                                                                                                                                                        srcs =
-                                                                                                                                                                                                            ["event_groups_service.proto"],
-                                                                                                                                                                                                        strip_import_prefix =
-                                                                                                                                                                                                            IMPORT_PREFIX,
-                                                                                                                                                                                                        deps =
-                                                                                                                                                                                                            [
-                                                                                                                                                                                                              ":event_group_proto",
-                                                                                                                                                                                                              "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                            ], )
+proto_library(
+    name = "event_groups_service_proto",
+    srcs = ["event_groups_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":event_group_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                                        proto_library(
-                                                                                                                                                                                                            name =
-                                                                                                                                                                                                                "event_group_metadata_descriptors_service_proto",
-                                                                                                                                                                                                            srcs =
-                                                                                                                                                                                                                ["event_group_metadata_descriptors_service.proto"],
-                                                                                                                                                                                                            strip_import_prefix =
-                                                                                                                                                                                                                IMPORT_PREFIX,
-                                                                                                                                                                                                            deps =
-                                                                                                                                                                                                                [
-                                                                                                                                                                                                                  ":event_group_metadata_descriptor_proto",
-                                                                                                                                                                                                                  "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                  "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                  "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                ], )
+proto_library(
+    name = "event_group_metadata_descriptors_service_proto",
+    srcs = ["event_group_metadata_descriptors_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":event_group_metadata_descriptor_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                                            proto_library(
-                                                                                                                                                                                                                name =
-                                                                                                                                                                                                                    "exchanges_service_proto",
-                                                                                                                                                                                                                srcs =
-                                                                                                                                                                                                                    ["exchanges_service.proto"],
-                                                                                                                                                                                                                deps =
-                                                                                                                                                                                                                    [
-                                                                                                                                                                                                                      ":exchange_proto",
-                                                                                                                                                                                                                      "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                      "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                      "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                    ], )
+proto_library(
+    name = "exchanges_service_proto",
+    srcs = ["exchanges_service.proto"],
+    deps = [
+        ":exchange_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                                                proto_library(
-                                                                                                                                                                                                                    name =
-                                                                                                                                                                                                                        "exchange_steps_service_proto",
-                                                                                                                                                                                                                    srcs =
-                                                                                                                                                                                                                        ["exchange_steps_service.proto"],
-                                                                                                                                                                                                                    deps =
-                                                                                                                                                                                                                        [
-                                                                                                                                                                                                                          ":exchange_step_proto",
-                                                                                                                                                                                                                          "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                          "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                          "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                          "@com_google_googleapis//google/type:date_proto",
-                                                                                                                                                                                                                        ], )
+proto_library(
+    name = "exchange_steps_service_proto",
+    srcs = ["exchange_steps_service.proto"],
+    deps = [
+        ":exchange_step_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+    ],
+)
 
-                                                                                                                                                                                                                    proto_library(
-                                                                                                                                                                                                                        name =
-                                                                                                                                                                                                                            "exchange_step_attempts_service_proto",
-                                                                                                                                                                                                                        srcs =
-                                                                                                                                                                                                                            ["exchange_step_attempts_service.proto"],
-                                                                                                                                                                                                                        deps =
-                                                                                                                                                                                                                            [
-                                                                                                                                                                                                                              ":exchange_step_attempt_proto",
-                                                                                                                                                                                                                              "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                              "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                              "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                            ], )
+proto_library(
+    name = "exchange_step_attempts_service_proto",
+    srcs = ["exchange_step_attempts_service.proto"],
+    deps = [
+        ":exchange_step_attempt_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
 
-                                                                                                                                                                                                                        proto_library(
-                                                                                                                                                                                                                            name =
-                                                                                                                                                                                                                                "date_interval_proto",
-                                                                                                                                                                                                                            srcs =
-                                                                                                                                                                                                                                ["date_interval.proto"],
-                                                                                                                                                                                                                            strip_import_prefix =
-                                                                                                                                                                                                                                IMPORT_PREFIX,
-                                                                                                                                                                                                                            deps =
-                                                                                                                                                                                                                                [
-                                                                                                                                                                                                                                  "@com_google_googleapis//google/type:date_proto",
-                                                                                                                                                                                                                                ], )
+proto_library(
+    name = "date_interval_proto",
+    srcs = ["date_interval.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/type:date_proto",
+    ],
+)
 
-                                                                                                                                                                                                                            proto_library(name =
-                                                                                                                                                                                                                                              "population_proto",
-                                                                                                                                                                                                                                          srcs =
-                                                                                                                                                                                                                                              ["population.proto"],
-                                                                                                                                                                                                                                          strip_import_prefix =
-                                                                                                                                                                                                                                              IMPORT_PREFIX,
-                                                                                                                                                                                                                                          deps =
-                                                                                                                                                                                                                                              [
-                                                                                                                                                                                                                                                ":event_template_proto",
-                                                                                                                                                                                                                                                "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                                                "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                                                "@com_google_protobuf//:timestamp_proto",
-                                                                                                                                                                                                                                              ], )
+proto_library(
+    name = "population_proto",
+    srcs = ["population.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":event_template_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
 
-                                                                                                                                                                                                                                proto_library(name =
-                                                                                                                                                                                                                                                  "populations_service_proto",
-                                                                                                                                                                                                                                              srcs =
-                                                                                                                                                                                                                                                  ["populations_service.proto"],
-                                                                                                                                                                                                                                              strip_import_prefix =
-                                                                                                                                                                                                                                                  IMPORT_PREFIX,
-                                                                                                                                                                                                                                              deps =
-                                                                                                                                                                                                                                                  [
-                                                                                                                                                                                                                                                    ":population_proto",
-                                                                                                                                                                                                                                                    "@com_google_googleapis//google/api:client_proto",
-                                                                                                                                                                                                                                                    "@com_google_googleapis//google/api:field_behavior_proto",
-                                                                                                                                                                                                                                                    "@com_google_googleapis//google/api:resource_proto",
-                                                                                                                                                                                                                                                  ], )
-
-                                                                                                                                                                                                                                    proto_library(
-                                                                                                                                                                                                                                        name =
-                                                                                                                                                                                                                                            "random_seed_proto",
-                                                                                                                                                                                                                                        srcs = ["random_seed.proto"], strip_import_prefix = IMPORT_PREFIX, )
+proto_library(
+    name = "populations_service_proto",
+    srcs = ["populations_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":population_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+    ],
+)
