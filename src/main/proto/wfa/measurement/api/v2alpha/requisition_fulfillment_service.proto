@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "src/main/proto/wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
@@ -69,15 +70,14 @@ message FulfillRequisitionRequest {
     // A Requisition of HonestMajorityShareShuffle protocol is fulfilled by
     // either a seed or a blob of `BodyChunk`s.
     message HonestMajorityShareShuffle {
-      // An encrypted `SignedMessage` of random seed.
+      // An encrypted SignedMessage of RandomSeed.
       //
-      // The seed is sampled by the DataProvider and can be expanded into a
-      // deterministic blob using the same PRNG function.
       //
-      // It is signed by DataProvider and encrypted using the peer worker's
+      // Signed by DataProvider and encrypted using the peer worker's
       // public key.
-      bytes secret_seed = 1;
+      EncryptedMessage secret_seed = 1;
     }
+
     // Protocol specified values.
     oneof protocol {
       // Honest Majority Shuffle based secret sharing protocol. Fulfilled by
