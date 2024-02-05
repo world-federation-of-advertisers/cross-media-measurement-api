@@ -18,7 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "src/main/proto/wfa/measurement/api/v2alpha/crypto.proto";
+import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
