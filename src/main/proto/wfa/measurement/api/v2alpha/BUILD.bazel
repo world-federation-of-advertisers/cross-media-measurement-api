@@ -162,6 +162,12 @@ proto_library(
 )
 
 proto_library(
+    name = "random_seed_proto",
+    srcs = ["random_seed.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+)
+
+proto_library(
     name = "measurement_spec_proto",
     srcs = ["measurement_spec.proto"],
     strip_import_prefix = IMPORT_PREFIX,
