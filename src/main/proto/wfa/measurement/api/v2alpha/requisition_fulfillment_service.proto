@@ -72,9 +72,9 @@ message FulfillRequisitionRequest {
     message HonestMajorityShareShuffle {
       // An encrypted SignedMessage of RandomSeed.
       //
-      //
-      // Signed by DataProvider and encrypted using the peer worker's
-      // public key.
+      // The RandomSeed is signed by DataProvider, and encrypted using peer
+      // worker's public key in
+      // Requisition.DuchyEntry.HonestMajorityShareShuffle.
       EncryptedMessage secret_seed = 1;
     }
 

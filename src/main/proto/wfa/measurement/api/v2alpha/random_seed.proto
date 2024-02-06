@@ -20,8 +20,8 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "RandomSeedProto";
 
-// A random seed that can be expanded into a deterministic blob using the
-// certain PRNG function.
+// A random seed that can be expanded into a deterministic blob using a
+// specific PRNG function.
 message RandomSeed {
   // The content of the seed.
   bytes data = 1;
