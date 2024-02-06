@@ -94,9 +94,9 @@ message MeasurementSpec {
 
     // Maximum frequency per user that will be included in this measurement.
     //
-    // If the DynamicClipCount methodology is used,
-    // this field will be ignored and the value from that message will be used
-    // instead.
+    // If the dynamic_clip_cap in the DeterministicCount methodology is
+    // specified, this field will be ignored and the value from that message
+    // will be used instead.
     int32 maximum_frequency_per_user = 2
         [(google.api.field_behavior) = REQUIRED];
   }

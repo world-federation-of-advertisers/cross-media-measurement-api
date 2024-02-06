@@ -85,12 +85,17 @@ message DeterministicCountDistinct {}
 message DeterministicDistribution {}
 
 // Parameters used when applying the deterministic count methodology.
-message DeterministicCount {}
+message DeterministicCount {
+  // The privacy mechanism which is the frequency histogram clipping
+  // threshold.
+  oneof privacy_mechanism {
+    // maximum_frequency_per_user passed in measurement_spec.
+    int32 mc_specified_cap = 1;
 
-// Parameters used when applying the Dynamic Clipping count methodology.
-message DynamicClipCount {
-  // Optimized maximum frequency per user value calculated by the DataProvider.
-  int32 maximum_frequency_per_user = 1 [(google.api.field_behavior) = REQUIRED];
+    // Optimized maximum frequency per user value calculated by the
+    // DataProvider.
+    int32 dynamic_clip_cap = 2;
+  }
 }
 
 // Parameters used when applying the deterministic sum methodology.
