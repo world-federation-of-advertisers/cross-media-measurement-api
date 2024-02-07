@@ -237,6 +237,11 @@ message ProtocolConfig {
       ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
 
       // Honest Majority Shuffle Based Secret Sharing protocol.
+      //
+      // `Requisition`s using this protocol can be fulfilled by calling
+      // RequisitionFulfillment/FulfillRequisition with a sketch and a secret
+      // seed. The Requisition should be fulfilled at the Duchy specified by
+      // Requisition/fulfilling_duchy.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 4;
     }
   }
