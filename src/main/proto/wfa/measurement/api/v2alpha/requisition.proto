@@ -168,14 +168,6 @@ message Requisition {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  // The `resource` name of the Duchy to fulfill the requisition at.
-  //
-  // If present, must fulfill the requisition at the target Duchy.
-  string fulfilling_duchy = 16 [
-    (google.api.resource_reference).type = "halo.wfanet.org/Duchy",
-    (google.api.field_behavior) = OUTPUT_ONLY
-  ];
-
   // State of a `Requisition`.
   enum State {
     // Default value if state is omitted. Should never be used.

@@ -240,8 +240,8 @@ message ProtocolConfig {
       //
       // `Requisition`s using this protocol can be fulfilled by calling
       // RequisitionFulfillment/FulfillRequisition with a sketch and a secret
-      // seed. The Requisition should be fulfilled at the Duchy specified by
-      // Requisition/fulfilling_duchy.
+      // seed. The Requisition should be fulfilled at the Duchy that does not
+      // have HonestMajorityShareShuffle.public_key in DuchyEntry.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 4;
     }
   }
