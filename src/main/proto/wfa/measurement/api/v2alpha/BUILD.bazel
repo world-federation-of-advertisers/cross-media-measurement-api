@@ -162,6 +162,12 @@ proto_library(
 )
 
 proto_library(
+    name = "random_seed_proto",
+    srcs = ["random_seed.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+)
+
+proto_library(
     name = "measurement_spec_proto",
     srcs = ["measurement_spec.proto"],
     strip_import_prefix = IMPORT_PREFIX,
@@ -496,6 +502,7 @@ proto_library(
     srcs = ["requisition_fulfillment_service.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        ":crypto_proto",
         ":protocol_config_proto",
         ":requisition_proto",
         "@com_google_googleapis//google/api:client_proto",
