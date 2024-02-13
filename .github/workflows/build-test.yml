@@ -28,9 +28,27 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out revision
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Bazel build and test
-        uses: world-federation-of-advertisers/actions/bazel-build-test@v1
-        with:
-          workspace-path: .
+      - name: Write ~/.bazelrc
+        run: |
+          echo 'common --config=ci' >> ~/.bazelrc
+
+      - name: Set up Bazel
+        run: |
+          mkdir -p ~/.local/bin
+          bazelisk_path="$(which bazelisk)"
+          ln -s "${bazelisk_path}" ~/.local/bin/bazel
+
+      - name: Build
+        run: |
+          bazel build //...
+
+      - name: Test
+        id: run-tests
+        run: |
+          bazel test //... || (( $? == 4 ))
+
+      - name: Upload Bazel testlogs
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: world-federation-of-advertisers/actions/bazel-upload-testlogs@v2
