@@ -92,11 +92,11 @@ message MeasurementSpec {
     // Differential privacy parameters.
     DifferentialPrivacyParams privacy_params = 1;
 
-    // Maximum frequency per user that will be included in this measurement.
+    // Maximum frequency per user that would be included in this measurement.
     //
-    // If the dynamic_clip_cap in the DeterministicCount methodology is
-    // specified, this field will be ignored and the value from that message
-    // will be used instead.
+    // If the custom_maximum_frequency_per_user in the DeterministicCount
+    // methodology is specified, this field will be ignored and the value from
+    // that message will be used instead.
     int32 maximum_frequency_per_user = 2
         [(google.api.field_behavior) = REQUIRED];
   }
