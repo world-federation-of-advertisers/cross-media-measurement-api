@@ -81,8 +81,7 @@ message FulfillRequisitionRequest {
       // `DataProvider` used to verify the secret_seed signature.
       string data_provider_certificate = 2 [
         (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
-        (google.api.field_behavior) = OUTPUT_ONLY,
-        (google.api.field_behavior) = IMMUTABLE
+        (google.api.field_behavior) = REQUIRED
       ];
     }
 
