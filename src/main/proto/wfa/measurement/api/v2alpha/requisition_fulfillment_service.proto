@@ -76,6 +76,13 @@ message FulfillRequisitionRequest {
       // worker's public key in
       // Requisition.DuchyEntry.HonestMajorityShareShuffle.
       EncryptedMessage secret_seed = 1;
+
+      // Resource name of the `Certificate` belonging to the parent
+      // `DataProvider` used to verify the secret_seed signature.
+      string data_provider_certificate = 2 [
+        (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
+        (google.api.field_behavior) = REQUIRED
+      ];
     }
 
     // Protocol specified values.
