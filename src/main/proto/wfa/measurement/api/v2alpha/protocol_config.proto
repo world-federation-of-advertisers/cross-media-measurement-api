@@ -287,12 +287,15 @@ message ReachOnlyLiquidLegionsSketchParams {
 // Sketch parameters for a Honest Majority Shuffle Based Secret Sharing
 // protocol.
 message ShareShuffleSketchParams {
-  // The number of registers in the sketch.
-  int64 register_count = 1;
+  reserved 1;
 
   // Length of each register in bytes.
   //
   // The product of `maximum_frequency` and the `nonce_hashes` count from the
   // `MeasurementSpec` should be no more than 2 ^ (`bytes_per_register` * 8).
   int32 bytes_per_register = 2;
+
+  // The modulus used in the protocol. It is required to be greater than
+  // (1 + `maximum_frequency`).
+  int32 ring_modulus = 3;
 }

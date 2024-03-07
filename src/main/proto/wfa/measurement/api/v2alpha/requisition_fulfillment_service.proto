@@ -77,6 +77,10 @@ message FulfillRequisitionRequest {
       // Requisition.DuchyEntry.HonestMajorityShareShuffle.
       EncryptedMessage secret_seed = 1;
 
+      // The number of registers in the sketch. The expansion of random seed is
+      // based on this value.
+      int64 register_count = 3;
+
       // Resource name of the `Certificate` belonging to the parent
       // `DataProvider` used to verify the secret_seed signature.
       string data_provider_certificate = 2 [
