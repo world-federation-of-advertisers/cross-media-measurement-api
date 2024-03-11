@@ -29,10 +29,14 @@ option java_outer_classname = "DataProvidersServiceProto";
 
 // Service for interacting with `DataProvider` resources.
 service DataProviders {
-  // Returns the `DataProvider` with the specified resource key.
+  // Returns the `DataProvider` with the specified resource name.
   rpc GetDataProvider(GetDataProviderRequest) returns (DataProvider) {
     option (google.api.method_signature) = "name";
   }
+
+  // Returns the `DataProvider`s with the specified resource names.
+  rpc BatchGetDataProviders(BatchGetDataProvidersRequest)
+      returns (BatchGetDataProvidersResponse) {}
 
   // Replaces the `required_duchies` field in a `DataProvider` resource.
   rpc ReplaceDataProviderRequiredDuchies(
@@ -69,6 +73,23 @@ message GetDataProviderRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
+}
+
+// Request message for `BatchGetDataProviders` method.
+message BatchGetDataProvidersRequest {
+  // Resource names.
+  //
+  // A maximum of 100 resources can be retrieved in a batch.
+  repeated string names = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+// Response message for `BatchGetDataProviders` method.
+message BatchGetDataProvidersResponse {
+  // Requested resources.
+  repeated DataProvider data_providers = 1;
 }
 
 // Request message for `ReplaceDataAvailability` method.
