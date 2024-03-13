@@ -77,9 +77,17 @@ message FulfillRequisitionRequest {
       // Requisition.DuchyEntry.HonestMajorityShareShuffle.
       EncryptedMessage secret_seed = 1;
 
+      // The number of registers in the sketch.
+      //
+      // It is calculated by the DataProvider and is determined by the sampling
+      // interval and the size of the population being measured. It is expected
+      // that all DataProviders will yield the same value for a specific
+      // Computation.
+      int64 register_count = 2;
+
       // Resource name of the `Certificate` belonging to the parent
       // `DataProvider` used to verify the secret_seed signature.
-      string data_provider_certificate = 2 [
+      string data_provider_certificate = 3 [
         (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
         (google.api.field_behavior) = REQUIRED
       ];
