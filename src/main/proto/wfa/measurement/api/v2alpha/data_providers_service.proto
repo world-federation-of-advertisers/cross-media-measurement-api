@@ -47,6 +47,10 @@ service DataProviders {
     };
     option (google.api.method_signature) = "name,data_availability_interval";
   }
+
+  // Replaces the `capabilities` field in a `DataProvider` resource.
+  rpc ReplaceDataProviderCapabilities(ReplaceDataProviderCapabilitiesRequest)
+      returns (DataProvider) {}
 }
 
 // Request message for the `ReplaceDataProviderRequiredDuchies` method.
@@ -82,4 +86,16 @@ message ReplaceDataAvailabilityIntervalRequest {
   // New value for `data_availability_interval`.
   google.type.Interval data_availability_interval = 2
       [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for `ReplaceDataProviderCapabilities` method.
+message ReplaceDataProviderCapabilitiesRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // New value for `capabilities`.
+  DataProvider.Capabilities capabilities = 2;
 }
