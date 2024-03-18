@@ -71,4 +71,15 @@ message DataProvider {
   // Interval for when data is guaranteed to be available for a `Requisition`.
   // If this field is specified, both `start_time` and `end_time` must be set.
   google.type.Interval data_availability_interval = 7;
+
+  // Capabilities of a `DataProvider`.
+  message Capabilities {
+    // Whether the Honest Majority Share Shuffle (HMSS) protocol is supported.
+    bool honest_majority_share_shuffle_supported = 1;
+  }
+  // Capabilities of this `DataProvider`.
+  //
+  // This indicates to the CMMS what the `DataProvider` is capable of at
+  // `Measurement` creation time.
+  Capabilities capabilities = 8;
 }
