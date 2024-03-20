@@ -1,0 +1,69 @@
+// Copyright 2024 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/any.proto";
+import "wfa/measurement/api/v2alpha/event_template.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "PopulationSpecProto";
+
+// Specification for a `Population`. Immutable.
+message PopulationSpec {
+  // A range of Virtual Persons.
+  message VirtualPersonRange {
+    // The starting ID for this range of VIDs
+    //
+    // This field is required.
+    int64 start_vid = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // The inclusive ending ID for this range of VIDs.
+    //
+    // In the case the range specifies a single VID, vid_end
+    // will be the same as vid_start.
+    int64 end_vid_inclusive = 2 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // A Subpopulation of the population defined by the PopulationSpec.
+  //
+  // A Subpopulation is composed of a set of VirtualPersonRanges,
+  // all of which share the same attributes.
+  message Subpopulation {
+    // The attributes of the Subpopulation.
+    //
+    // Each attribute must reference an EventTemplate, where
+    // an EventTemplate is a message annotated as such.
+    // See:
+    // https://github.com/world-federation-of-advertisers/cross-media-measurement-api/blob/main/src/main/proto/wfa/measurement/api/v2alpha/event_annotations.proto
+    //
+    // In addition to referring instantiating a valid EventTemplate, each
+    // attribute must also instantiate all fields of the Template marked
+    // as a "population_field"
+    repeated google.protobuf.Any attributes = 1;
+
+    // The set of VirtualPersonRanges for this Subpopulation.
+    repeated VirtualPersonRange vid_ranges = 2;
+  }
+
+  // The set of Subpopulations that comprise this Population Spec.
+  //
+  // Each subpopulation must reference a distinct set of attributes.
+  repeated Subpopulation subpopulations = 3
+      [(google.api.field_behavior) = REQUIRED];
+}
