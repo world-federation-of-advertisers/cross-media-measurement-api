@@ -1,0 +1,85 @@
+// Copyright 2024 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "wfa/measurement/api/v2alpha/event_template.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "PopulationSpecProto";
+
+// Specification for a `Population`. Immutable.
+message PopulationSpec {
+  // Value of a population field.
+  //
+  // Only enum values are supported at this time.
+  // This structure can be extended if additional value
+  // types are needed in the future.
+  message PopulationFieldValue {
+    oneof value {
+      // The number value of the enum.
+      int32 enum_value = 1 [(google.api.field_behavior) = REQUIRED];
+    }
+  }
+
+  // A range of Virtual Persons with their associated population fields.
+  message VirtualPersonRange {
+    // The starting ID for this range of VIDs
+    //
+    // This field is required.
+    int64 vid_start = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // The inclusive ending ID for this range of VIDs.
+    //
+    // In the case the range specifies a single VID, vid_end
+    // will be the same as vid_start.
+    int64 vid_end = 2 [(google.api.field_behavior) = REQUIRED];
+
+    // The values for the population fields defined by the Population.
+    //
+    // This order of these fields must be the same as those in
+    // Population.population_fields. That is,
+    // Population.population_fields[0] specifies
+    // the type for VirtualPersonRange.population_field_values[0].
+    repeated PopulationFieldValue population_field_values = 3
+        [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // The event_template.type is the message type that population_fields
+  // refers to.
+  EventTemplate event_template = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Set of field paths within the event_template that pertain to the
+  // population, with . as the traversal operator.
+  //
+  // For example, an age_group field within a person field would
+  // have the path person.age_group. In this case the ‘person’ field
+  // is expected to be contained in the message pointed to be the
+  // event_template_type_url.
+  //
+  // The values of these fields are assigned in the VirtualPersonRange in
+  // the same order that they are defined in this field.
+  repeated string population_fields = 2
+      [(google.api.field_behavior) = REQUIRED];
+
+  // This field defines a set of virtual people and their attributes.
+  //
+  // VID ranges must be disjoint.
+  repeated VirtualPersonRange virtual_person_ranges = 3
+      [(google.api.field_behavior) = REQUIRED];
+}

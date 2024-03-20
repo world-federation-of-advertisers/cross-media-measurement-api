@@ -44,7 +44,8 @@ message Population {
   google.protobuf.Timestamp create_time = 3
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // A reference to a population blob.
+  // A reference to a population blob. The blob content must be an instance
+  // of PopulationSpec.
   message PopulationBlob {
     //  A uri for the model blob.
     string model_blob_uri = 1;
