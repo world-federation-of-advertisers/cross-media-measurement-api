@@ -651,3 +651,13 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )
+
+proto_library(
+    name = "population_spec_proto",
+    srcs = ["population_spec.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":event_template_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)

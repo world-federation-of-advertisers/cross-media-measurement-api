@@ -25,5 +25,8 @@ option java_outer_classname = "EventTemplateProto";
 // Template for an event message.
 message EventTemplate {
   // The type of the Event Template. A fully-qualified protobuf message type.
+  //
+  // Note that the type name for a given _messagename_ in a given
+  // _packagename_ is: "_packagename_._messagename_"
   string type = 1 [(google.api.field_behavior) = REQUIRED];
 }
