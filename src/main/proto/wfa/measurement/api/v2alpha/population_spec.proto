@@ -1,0 +1,67 @@
+// Copyright 2024 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/protobuf/any.proto";
+import "wfa/measurement/api/v2alpha/event_template.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "PopulationSpecProto";
+
+// Specification for a `Population`. Immutable.
+message PopulationSpec {
+  // A range of Virtual Person IDs (VIDs).
+  message VidRange {
+    // The starting ID for this range of VIDs
+    //
+    // This field is required.
+    int64 start_vid = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // The inclusive ending ID for this range of VIDs.
+    //
+    // If this has the same value as `start_id` the range contains
+    // a single VID.
+    int64 end_vid_inclusive = 2 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // A sub-population of the population defined by the `PopulationSpec`.
+  //
+  // A `SubPopulation` is composed of a set of `VidRange`s,
+  // all of which share the same attributes.
+  message SubPopulation {
+    // The attributes of the Subpopulation.
+    //
+    // The 'type_url' of each element must reference a known
+    // message type annotated with the `EventTemplateDescriptor`
+    // message option.
+    //
+    // Each attribute must also instantiate all fields of the referenced
+    // message type that are marked as `population_field`s
+    repeated google.protobuf.Any attributes = 1;
+
+    // The set of `VidRange`s for this Subpopulation.
+    repeated VidRange vid_ranges = 2;
+  }
+
+  // The set of `SubPopulations` that comprise this `PopulationSpec`.
+  //
+  // Each `SubPopulation` must reference a distinct set of attributes.
+  repeated SubPopulation subpopulations = 3
+      [(google.api.field_behavior) = REQUIRED];
+}
