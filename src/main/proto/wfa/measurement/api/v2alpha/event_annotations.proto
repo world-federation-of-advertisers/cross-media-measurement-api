@@ -33,6 +33,13 @@ message EventFieldDescriptor {
   string display_name = 1;
   // High-level description of the field.
   string description = 2;
+  // Whether this field is a population field.
+  //
+  // A population attribute is an attribute of a Virtual Person.
+  // Put another way, a population field is
+  // a dimension of the output of a Virtual Person Model.
+  // For example, "age bucket" is usually a population attribute.
+  bool population_attribute = 3;
 }
 
 // Descriptor for an event template message type.
