@@ -26,9 +26,6 @@ option java_outer_classname = "MpcProtocolProto";
 message LiquidLegionsV2Methodology {
   // Parameters for sketch. REQUIRED.
   LiquidLegionsSketchParams sketch_params = 1;
-
-  // The maximum frequency to reveal in the histogram.
-  int32 maximum_frequency = 4;
 }
 
 // Configuration for the Reach-Only Liquid Legions v2 protocol.
