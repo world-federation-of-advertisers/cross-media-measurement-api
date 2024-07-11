@@ -25,13 +25,15 @@ option java_outer_classname = "MpcProtocolProto";
 
 message LiquidLegionsV2Methodology {
   // Parameters for sketch. REQUIRED.
-  LiquidLegionsSketchParams sketch_params = 1;
+  LiquidLegionsSketchParams sketch_params = 1
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Configuration for the Reach-Only Liquid Legions v2 protocol.
 message ReachOnlyLiquidLegionsV2Methodology {
   // Parameters for sketch. REQUIRED.
-  ReachOnlyLiquidLegionsSketchParams sketch_params = 1;
+  ReachOnlyLiquidLegionsSketchParams sketch_params = 1
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 message HonestMajorityShareShuffleMethodology {
