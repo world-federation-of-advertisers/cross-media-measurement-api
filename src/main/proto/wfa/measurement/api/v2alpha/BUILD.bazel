@@ -190,6 +190,16 @@ proto_library(
 )
 
 proto_library(
+    name = "mpc_protocol_proto",
+    srcs = ["mpc_protocol.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":protocol_config_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)
+
+proto_library(
     name = "protocol_config_proto",
     srcs = ["protocol_config.proto"],
     strip_import_prefix = IMPORT_PREFIX,
@@ -206,6 +216,7 @@ proto_library(
     deps = [
         ":crypto_proto",
         ":direct_computation_proto",
+        ":mpc_protocol_proto",
         ":protocol_config_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",

@@ -17,34 +17,13 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
+import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "MpcProtocolProto";
 
-// Parameters for a Liquid Legions sketch.
-message LiquidLegionsSketchParams {
-  // The decay rate of the Liquid Legions sketch. Required.
-  double decay_rate = 1;
-
-  // The maximum size of the Liquid Legions sketch. Required.
-  int64 max_size = 2;
-
-  // The size of the distribution of the sampling indicator value, i.e.
-  // fingerprint size. Required.
-  int64 sampling_indicator_size = 3;
-}
-
-// Parameters for a Reach-Only Liquid Legions sketch.
-message ReachOnlyLiquidLegionsSketchParams {
-  // The decay rate of the Liquid Legions sketch. REQUIRED.
-  double decay_rate = 1;
-
-  // The maximum size of the Liquid Legions sketch. REQUIRED.
-  int64 max_size = 2;
-}
-
-message LiquidLegionsV2 {
+message LiquidLegionsV2Methodology {
   // Parameters for sketch. REQUIRED.
   LiquidLegionsSketchParams sketch_params = 1;
 
@@ -53,12 +32,12 @@ message LiquidLegionsV2 {
 }
 
 // Configuration for the Reach-Only Liquid Legions v2 protocol.
-message ReachOnlyLiquidLegionsV2 {
+message ReachOnlyLiquidLegionsV2Methodology {
   // Parameters for sketch. REQUIRED.
   ReachOnlyLiquidLegionsSketchParams sketch_params = 1;
 }
 
-message HonestMajorityShareShuffle {
+message HonestMajorityShareShuffleMethodology {
   // The size of the sampled frequency vector. REQUIRED.
   int64 frequency_vector_size = 1 [(google.api.field_behavior) = REQUIRED];
 }
