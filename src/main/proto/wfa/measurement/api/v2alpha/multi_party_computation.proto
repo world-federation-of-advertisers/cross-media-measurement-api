@@ -17,25 +17,10 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
-import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "MpcProtocolProto";
-
-// Configuration for the Liquid Legions v2 methodology.
-message LiquidLegionsV2Methodology {
-  // Parameters for sketch. REQUIRED.
-  LiquidLegionsSketchParams sketch_params = 1
-      [(google.api.field_behavior) = REQUIRED];
-}
-
-// Configuration for the Reach-Only Liquid Legions v2 methodology.
-message ReachOnlyLiquidLegionsV2Methodology {
-  // Parameters for sketch. REQUIRED.
-  ReachOnlyLiquidLegionsSketchParams sketch_params = 1
-      [(google.api.field_behavior) = REQUIRED];
-}
+option java_outer_classname = "MultiPartyComputationProto";
 
 // Configuration for the Honest Majority Share Shuffle methodology.
 message HonestMajorityShareShuffleMethodology {
