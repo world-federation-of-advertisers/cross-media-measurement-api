@@ -154,11 +154,8 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology done by data provider.
+      // The computation methodology.
       //
-      // Currently, only direct measurement and measurement via honest majority
-      // share shuffle protocol would populate it. During the transition of
-      // adopting this field, this field may not be specified.
       // (-- TODO(@riemanli): set required for new fulfillment once EDPs
       // incorporate the new API changes. --)
       oneof methodology {
@@ -200,11 +197,8 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology done by data provider.
+      // The computation methodology.
       //
-      // Currently, only direct measurement and measurement via honest majority
-      // share shuffle protocol would populate it. During the transition of
-      // adopting this field, this field may not be specified.
       // (-- TODO(@riemanli): set required for new fulfillment once EDPs
       // incorporate the new API changes. --)
       oneof methodology {
