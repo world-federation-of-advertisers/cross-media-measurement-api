@@ -22,6 +22,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
+import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -153,10 +154,8 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology done by data provider.
+      // The computation methodology.
       //
-      // Currently, only direct measurement would populate it. During the
-      // transition of adopting this field, this field may not be specified.
       // (-- TODO(@riemanli): set required for new fulfillment once EDPs
       // incorporate the new API changes. --)
       oneof methodology {
@@ -168,6 +167,15 @@ message Measurement {
 
         // Liquid Legions count distinct methodology.
         LiquidLegionsCountDistinct liquid_legions_count_distinct = 5;
+
+        // Liquid Legions V2 methodology.
+        LiquidLegionsV2Methodology liquid_legions_v2 = 6;
+
+        // Reach Only Liquid Legions V2 methodology.
+        ReachOnlyLiquidLegionsV2Methodology reach_only_liquid_legions_v2 = 7;
+
+        // Honest Majority Share Shuffle methodology.
+        HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 8;
       }
     }
     // The reach result.
@@ -189,10 +197,8 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology done by data provider.
+      // The computation methodology.
       //
-      // Currently, only direct measurement would populate it. During the
-      // transition of adopting this field, this field may not be specified.
       // (-- TODO(@riemanli): set required for new fulfillment once EDPs
       // incorporate the new API changes. --)
       oneof methodology {
@@ -204,6 +210,12 @@ message Measurement {
 
         // Liquid Legions distribution methodology.
         LiquidLegionsDistribution liquid_legions_distribution = 5;
+
+        // Liquid Legions V2 methodology.
+        LiquidLegionsV2Methodology liquid_legions_v2 = 6;
+
+        // Honest Majority Share Shuffle methodology.
+        HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 7;
       }
     }
     // The frequency result.
