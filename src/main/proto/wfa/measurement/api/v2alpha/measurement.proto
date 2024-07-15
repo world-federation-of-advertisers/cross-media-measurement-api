@@ -168,8 +168,14 @@ message Measurement {
         // Liquid Legions count distinct methodology.
         LiquidLegionsCountDistinct liquid_legions_count_distinct = 5;
 
+        // Liquid Legions V2 methodology.
+        LiquidLegionsV2Methodology liquid_legions_v2 = 6;
+
+        // Reach Only Liquid Legions V2 methodology.
+        ReachOnlyLiquidLegionsV2Methodology reach_only_liquid_legions_v2 = 7;
+
         // Honest Majority Share Shuffle methodology.
-        HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 6;
+        HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 8;
       }
     }
     // The reach result.
@@ -205,8 +211,11 @@ message Measurement {
         // Liquid Legions distribution methodology.
         LiquidLegionsDistribution liquid_legions_distribution = 5;
 
+        // Liquid Legions V2 methodology.
+        LiquidLegionsV2Methodology liquid_legions_v2 = 6;
+
         // Honest Majority Share Shuffle methodology.
-        HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 6;
+        HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 7;
       }
     }
     // The frequency result.

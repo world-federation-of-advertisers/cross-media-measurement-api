@@ -22,6 +22,12 @@ option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "MultiPartyComputationProto";
 
+// Configuration for the Liquid Legions v2 methodology.
+message LiquidLegionsV2Methodology {}
+
+// Configuration for the Reach-Only Liquid Legions v2 methodology.
+message ReachOnlyLiquidLegionsV2Methodology {}
+
 // Configuration for the Honest Majority Share Shuffle methodology.
 message HonestMajorityShareShuffleMethodology {
   // The size of the sampled frequency vector. REQUIRED.
