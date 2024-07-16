@@ -212,7 +212,7 @@ message ProtocolConfig {
     // The modulus used in the protocol.
     //
     // For ReachAndFrequency Measurement, it is required to be greater than
-    // (1 + `maximum_frequency`).
+    // (1 + `maximum_frequency` * #EDPs).
     // For Reach Measurement, it is required to be a prime.
     int32 ring_modulus = 3;
   }
