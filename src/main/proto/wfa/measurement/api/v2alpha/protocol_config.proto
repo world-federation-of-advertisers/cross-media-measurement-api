@@ -204,12 +204,17 @@ message ProtocolConfig {
   // Configuration for the Honest Majority Shuffle Based Secret Sharing
   // Protocol.
   message HonestMajorityShareShuffle {
-    // Parameters for honest majority shuffle sketches.
-    ShareShuffleSketchParams sketch_params = 1
-        [(google.api.field_behavior) = REQUIRED];
+    reserved 1;
 
     // The mechanism to generate noise by workers during the computation.
     NoiseMechanism noise_mechanism = 2;
+
+    // The modulus used in the protocol.
+    //
+    // For ReachAndFrequency Measurement, it is required to be greater than
+    // (1 + `maximum_frequency` * #EDPs).
+    // For Reach Measurement, it is required to be a prime.
+    int32 ring_modulus = 3;
   }
 
   // Configuration for a specific protocol.
@@ -282,18 +287,4 @@ message ReachOnlyLiquidLegionsSketchParams {
 
   // The maximum size of the Liquid Legions sketch.
   int64 max_size = 2 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Sketch parameters for a Honest Majority Shuffle Based Secret Sharing
-// protocol.
-message ShareShuffleSketchParams {
-  // Length of each register in bytes.
-  //
-  // The product of `maximum_frequency` and the `nonce_hashes` count from the
-  // `MeasurementSpec` should be no more than 2 ^ (`bytes_per_register` * 8).
-  int32 bytes_per_register = 1;
-
-  // The modulus used in the protocol. It is required to be greater than
-  // (1 + `maximum_frequency`).
-  int32 ring_modulus = 2;
 }
