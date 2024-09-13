@@ -119,6 +119,9 @@ message ListMeasurementsRequest {
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Measurement.State states = 1;
+    google.protobuf.Timestamp updated_after = 4;
+    google.protobuf.Timestamp updated_before = 8;
+    google.protobuf.Timestamp created_before = 9;
   }
   // Filter criteria.
   //
