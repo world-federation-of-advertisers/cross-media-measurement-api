@@ -120,8 +120,20 @@ message ListMeasurementsRequest {
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Measurement.State states = 1;
+    // Filter for measurements that are updated after a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     aip.dev/not-precedent: Make timestamp filter name consistent --)
     google.protobuf.Timestamp updated_after = 4;
+    // Filter for measurements that are updated before a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     aip.dev/not-precedent: Make timestamp filter name consistent --)
     google.protobuf.Timestamp updated_before = 8;
+    // Filter for measurements that are created before a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     aip.dev/not-precedent: Make timestamp filter name consistent --)
     google.protobuf.Timestamp created_before = 9;
   }
   // Filter criteria.
