@@ -89,7 +89,7 @@ message Measurement {
       // The version of the `EncryptionPublicKey` message type must correspond
       // to the API version that this resource was created in.
       google.protobuf.Any data_provider_public_key = 6
-          [(google.api.field_behavior) = REQUIRED];
+      [(google.api.field_behavior) = REQUIRED];
 
       // Encrypted `SignedMessage` containing the serialized `RequisitionSpec`
       // for this entry, which can be verified using
@@ -102,7 +102,7 @@ message Measurement {
       // types must correspond to the API version that this resource was created
       // in.
       EncryptedMessage encrypted_requisition_spec = 5
-          [(google.api.field_behavior) = REQUIRED];
+      [(google.api.field_behavior) = REQUIRED];
 
       // SHA256 hash of the `nonce` from `encrypted_requisition_spec`, where the
       // nonce value has big-endian byte ordering.
@@ -120,7 +120,7 @@ message Measurement {
   // The `ProtocolConfig` selected for this measurement according to the
   // `measurement_spec`.
   ProtocolConfig protocol_config = 5
-      [(google.api.field_behavior) = OUTPUT_ONLY];
+  [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // State for a `Measurement`.
   enum State {
@@ -359,8 +359,8 @@ message Measurement {
   Failure failure = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // When the `Measurement` was created.
-  google.protobuf.Timestamp create_time = 11;
+  google.protobuf.Timestamp create_time = 11 [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // When the 'Measurement' was lastly updated.
-  google.protobuf.Timestamp update_time = 12;
+  google.protobuf.Timestamp update_time = 12 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
