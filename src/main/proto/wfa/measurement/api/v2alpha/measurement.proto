@@ -362,7 +362,7 @@ message Measurement {
   google.protobuf.Timestamp create_time = 11
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // When the 'Measurement' was lastly updated.
+  // When the 'Measurement' was last updated.
   google.protobuf.Timestamp update_time = 12
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }
