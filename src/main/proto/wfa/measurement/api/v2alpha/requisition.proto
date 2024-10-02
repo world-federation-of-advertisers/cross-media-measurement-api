@@ -261,13 +261,6 @@ message Requisition {
   Measurement.State measurement_state = 13
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Resource name of `DataProvider` that this `Requisition` is associated with.
-  string dataProvider = 16 [
-    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
-
   // When the 'Requisition' was last updated.
   google.protobuf.Timestamp update_time = 17
   [(google.api.field_behavior) = OUTPUT_ONLY];
