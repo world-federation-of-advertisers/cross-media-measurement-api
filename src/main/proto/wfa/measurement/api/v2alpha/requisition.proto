@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
@@ -259,4 +260,15 @@ message Requisition {
   // Denormalized `state` field from `measurement`.
   Measurement.State measurement_state = 13
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Resource name of `DataProvider` that this `Requisition` is associated with.
+  string dataProvider = 16 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // When the 'Requisition' was last updated.
+  google.protobuf.Timestamp update_time = 17
+  [(google.api.field_behavior) = OUTPUT_ONLY];
 }
