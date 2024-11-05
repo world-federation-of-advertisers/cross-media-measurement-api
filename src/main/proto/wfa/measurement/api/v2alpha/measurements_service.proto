@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -119,6 +120,34 @@ message ListMeasurementsRequest {
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Measurement.State states = 1;
+    // Filter for measurements that are updated after a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     api-linter: core::0142::time-field-names=disabled
+    //     aip.dev/not-precedent: Structured filters are used instead of the
+    //     AIP-160 filtering language --)
+    google.protobuf.Timestamp updated_after = 4;
+    // Filter for measurements that are updated before a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     api-linter: core::0142::time-field-names=disabled
+    //     aip.dev/not-precedent: Structured filters are used instead of the
+    //     AIP-160 filtering language --)
+    google.protobuf.Timestamp updated_before = 8;
+    // Filter for measurements that are created before a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     api-linter: core::0142::time-field-names=disabled
+    //     aip.dev/not-precedent: Structured filters are used instead of the
+    //     AIP-160 filtering language --)
+    google.protobuf.Timestamp created_before = 9;
+    // Filter for measurements that are created after a certain timestamp
+    //
+    // (-- api-linter: core::0140::prepositions=disabled
+    //     api-linter: core::0142::time-field-names=disabled
+    //     aip.dev/not-precedent: Structured filters are used instead of the
+    //     AIP-160 filtering language --)
+    google.protobuf.Timestamp created_after = 10;
   }
   // Filter criteria.
   //

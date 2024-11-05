@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
@@ -184,6 +185,8 @@ message Requisition {
     //
     // `measurement` will be in the `FAILED` state.
     REFUSED = 3;
+    // The `Requisition` has been withdrawn. Terminal state.
+    WITHDRAWN = 4;
   }
   // The state of this `Requisition`.
   State state = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -256,5 +259,9 @@ message Requisition {
 
   // Denormalized `state` field from `measurement`.
   Measurement.State measurement_state = 13
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'Requisition' was last updated.
+  google.protobuf.Timestamp update_time = 16
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }

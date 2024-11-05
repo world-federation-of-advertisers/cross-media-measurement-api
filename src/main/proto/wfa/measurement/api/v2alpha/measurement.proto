@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
@@ -356,4 +357,12 @@ message Measurement {
   // Information about the failure of this `Measurement`. Set when the `state`
   // is set to `FAILED`.
   Failure failure = 10 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the `Measurement` was created.
+  google.protobuf.Timestamp create_time = 11
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // When the 'Measurement' was last updated.
+  google.protobuf.Timestamp update_time = 12
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
