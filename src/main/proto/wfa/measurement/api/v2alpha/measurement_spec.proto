@@ -165,7 +165,7 @@ message MeasurementSpec {
   //
   // When present the report_metadata can be used by EDPs to group Measurements
   // into logical units to help optimize fulfilment processes.
-  ReportMetadata report_metadata = 1 [
+  ReportMetadata report_metadata = 10 [
     (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE
   ];
