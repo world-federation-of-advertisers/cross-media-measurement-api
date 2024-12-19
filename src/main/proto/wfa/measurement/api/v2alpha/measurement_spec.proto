@@ -144,4 +144,29 @@ message MeasurementSpec {
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  // Provides the report and metric for which this Measurement was created
+  message ReportMetadata {
+    // The Report
+    string report = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE,
+      (google.api.resource_reference) = { type: "halo.wfanet.org/Report" }
+    ];
+    // The Metric
+    string metric = 2 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE,
+      (google.api.resource_reference) = { type: "halo.wfanet.org/Metric" }
+    ];
+  }
+  // Provides additional information about the artifacts upstream of this
+  // Measurement.
+  //
+  // When present the report_metadata can be used by EDPs to group Measurements
+  // into logical units to help optimize fulfilment processes.
+  ReportMetadata report_metadata = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 }
