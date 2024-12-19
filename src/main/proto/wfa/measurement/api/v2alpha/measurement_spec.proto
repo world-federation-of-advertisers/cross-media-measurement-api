@@ -160,8 +160,8 @@ message MeasurementSpec {
       (google.api.resource_reference) = { type: "halo.wfanet.org/Metric" }
     ];
   }
-  // Provides additional information about the artifacts upstream of this
-  // Measurement.
+  // Provides additional information about the Reporting artifacts upstream of
+  // this Measurement.
   //
   // When present the report_metadata can be used by EDPs to group Measurements
   // into logical units to help optimize fulfilment processes.
