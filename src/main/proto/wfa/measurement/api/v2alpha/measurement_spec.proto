@@ -152,13 +152,17 @@ message MeasurementSpec {
     string report = 1 [
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE,
-      (google.api.resource_reference) = { type: "halo.wfanet.org/Report" }
+      (google.api.resource_reference) = {
+        type: "reporting.halo-cmm.org/Report"
+      }
     ];
     // Resource name of the containing `Metric`
     string metric = 2 [
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE,
-      (google.api.resource_reference) = { type: "halo.wfanet.org/Metric" }
+      (google.api.resource_reference) = {
+        type: "reporting.halo-cmm.org/Metric"
+      }
     ];
   }
   // Metadata provided by the Reporting System.
