@@ -73,7 +73,8 @@ message EventGroup {
   // The `EventTemplate`s that events associated with this `EventGroup` conform
   // to.
   repeated EventTemplate event_templates = 7
-      [(google.api.field_behavior) = UNORDERED_LIST];
+      [(google.api.field_behavior) = UNORDERED_LIST,
+       deprecated = true];
 
   // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
@@ -96,7 +97,7 @@ message EventGroup {
   //
   // The version of the `Metadata` message type must match the API version used
   // to last update this resource.
-  EncryptedMessage encrypted_metadata = 10;
+  EncryptedMessage encrypted_metadata = 10 [deprecated = true];
 
   // Encrypted serialized `Metadata`.
   //
@@ -108,7 +109,7 @@ message EventGroup {
   //
   // The version of the `EncryptionPublicKey` message must match the API version
   // used to last update this resource.
-  google.protobuf.Any measurement_consumer_public_key = 12;
+  google.protobuf.Any measurement_consumer_public_key = 12 [deprecated = true];
 
   // Signed pre-shared packed `EncryptionPublicKey`.
   //
@@ -129,16 +130,17 @@ message EventGroup {
   // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Interval for when data for this `EventGroup` is guaranteed to be available
-  // for a `Requisition`.
+  // Interval for when events for this `EventGroup` are available.
   //
-  // The parent `data_availability_interval` defines the upper and lower bounds
-  // for when data is guaranteed to be available.
+  // For an Ad Campaign these are the start and end dates of the campaign.
   //
-  // This field will be required in a future release. Until then, if this is not
-  // set, data is not guaranteed to be available.
+  // Events are available in the range specified here, but are subject to
+  // the data_availability set forth on the `DataProvider` resource as it
+  // pertains to each `ModelLine`
   //
-  // If this is set, then `start_time` is required and the data is guaranteed to
+  // This field will be required in a future release.
+  //
+  // If this is set, then `start_time` is required and Events are available the data is guaranteed to
   // be available for the interval that defines the overlap between this and the
   // parent `data_availability_interval`.
   google.type.Interval data_availability_interval = 11;
