@@ -59,6 +59,7 @@ message EventFieldDescriptor {
   repeated MediaType media_types = 5;
   // The set of reporting features for which an Event Field may be used.
   enum ReportingFeature {
+    // Default value. Unused.
     REPORTING_FEATURE_UNSPECIFIED = 0;
     // Indicates that a field can be used as grouping criteria.
     GROUPABLE = 1;
