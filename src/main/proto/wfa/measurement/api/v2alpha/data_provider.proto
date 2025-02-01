@@ -98,9 +98,10 @@ message DataProvider {
     // must be set.
     google.type.Interval value = 2 [
       (google.api.field_behavior) = IMMUTABLE,
-      (google.api.field_behavior) = REQUIRED];
+      (google.api.field_behavior) = REQUIRED
+    ];
   }
   // `DataAvailability` for each `ModelLine` that the `DataProvider` supports.
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
-  repeated DataAvailabilityMapEntry data_availability_intervals= 9;
+  repeated DataAvailabilityMapEntry data_availability_intervals = 9;
 }
