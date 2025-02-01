@@ -21,6 +21,7 @@ import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
+import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -55,13 +56,21 @@ message EventGroup {
   ];
 
   // ID referencing the `EventGroup` in an external system, provided by the
-  // `DataProvider`.
-  string event_group_reference_id = 5;
+  // `DataProvider`. This value should be used to help the `DataProvider`
+  // synchornize their metadata with the EventGroupsService. See
+  // `EventGroupMetadata` if you wish you provide end-user visible identifiers.
+  string event_group_reference_id = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Metadata that describes the events entailed by the EventGroup.
+  //
+  // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
+  EventGroupMetadata event_group_metadata = 13;
 
   // The set of VID model lines used to label events in this `EventGroup`.
   repeated string vid_model_lines = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
-    (google.api.field_behavior) = UNORDERED_LIST
+    (google.api.field_behavior) = UNORDERED_LIST,
+    deprecated = true
   ];
 
   // Template for an event message.
@@ -73,8 +82,7 @@ message EventGroup {
   // The `EventTemplate`s that events associated with this `EventGroup` conform
   // to.
   repeated EventTemplate event_templates = 7
-      [(google.api.field_behavior) = UNORDERED_LIST,
-       deprecated = true];
+      [(google.api.field_behavior) = UNORDERED_LIST, deprecated = true];
 
   // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
@@ -135,12 +143,9 @@ message EventGroup {
   // For an Ad Campaign these are the start and end dates of the campaign.
   //
   // Events are available in the range specified here, but are subject to
-  // the `data_availability_intervals` set forth on the `DataProvider`
+  // the `data_availability_intervals` set forth on the `DataProvider` for
+  // each active `ModelLine`
   //
-  // This field will be required in a future release.
-  //
-  // If this is set, then `start_time` is required and Events are available the data is guaranteed to
-  // be available for the interval that defines the overlap between this and the
-  // parent `data_availability_interval`.
+  // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
   google.type.Interval data_availability_interval = 11;
 }
