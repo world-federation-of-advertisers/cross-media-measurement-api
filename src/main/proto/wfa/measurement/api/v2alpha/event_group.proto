@@ -134,8 +134,7 @@ message EventGroup {
   // For an Ad Campaign these are the start and end dates of the campaign.
   //
   // Events are available in the range specified here, but are subject to
-  // the data_availability set forth on the `DataProvider` resource as it
-  // pertains to each `ModelLine`
+  // the `data_availability_intervals` set forth on the `DataProvider`
   //
   // This field will be required in a future release.
   //
