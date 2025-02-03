@@ -128,17 +128,31 @@ message EventGroup {
   // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Interval for when data for this `EventGroup` is guaranteed to be available
-  // for a `Requisition`.
-  //
-  // The parent `data_availability_interval` defines the upper and lower bounds
-  // for when data is guaranteed to be available.
-  //
-  // This field will be required in a future release. Until then, if this is not
-  // set, data is not guaranteed to be available.
-  //
-  // If this is set, then `start_time` is required and the data is guaranteed to
-  // be available for the interval that defines the overlap between this and the
-  // parent `data_availability_interval`.
-  google.type.Interval data_availability_interval = 11;
+  // Deprecated: Use `data_availability` field except for legacy resoures
+  // where it is not set.
+  google.type.Interval data_availability_interval = 11 [deprecated = true];
+
+  message DataAvailability {
+    // Resource name of the ModelLine's availability.
+    string model_line = 1 [
+      (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+      (google.api.field_behavior) = IMMUTABLE
+    ];
+
+    // Interval for when data for this `EventGroup` is guaranteed to be available
+    // for a `Requisition`.
+    //
+    // The parent `DataProvider` `data_provider.data_availability.interval`
+    // defines the upper and lower bounds for when data is guaranteed to be
+    // available.
+    //
+    // This field will be required in a future release. Until then, if this is not
+    // set, data is not guaranteed to be available.
+    //
+    // If this is set, then `start_time` is required and the data is guaranteed to
+    // be available for the interval that defines the overlap between this and the
+    // parent `DataProvider`s `data_availability.interval`.
+    google.type.Interval interval = 2;
+  }
+  repeated DataAvailability data_availability = 13;
 }
