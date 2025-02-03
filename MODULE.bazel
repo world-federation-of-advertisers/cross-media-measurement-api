@@ -5,19 +5,15 @@ module(
 
 # Bazel Central Registry deps.
 bazel_dep(
-    name = "rules_proto",
-    version = "5.3.0-21.7",
-)
-bazel_dep(
     name = "protobuf",
-    version = "21.7",
+    version = "29.3",
     repo_name = "com_google_protobuf",
 )
 
 # WFA registry deps.
 bazel_dep(
     name = "googleapis",
-    version = "0.0.0-bzlmod.1",
+    version = "0.0.0-20250120-318818b.bzlmod.2",
     repo_name = "com_google_googleapis",
 )
 
