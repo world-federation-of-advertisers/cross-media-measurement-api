@@ -25,6 +25,7 @@ import "wfa/measurement/api/v2alpha/exchange_step.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ExchangeStepsServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Service for interacting with `ExchangeStep` resources.
 service ExchangeSteps {
