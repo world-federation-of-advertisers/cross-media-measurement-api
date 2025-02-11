@@ -65,7 +65,8 @@ message EventGroup {
 
   // The MediaTypes of the events entailed by this `EventGroup`
   //
-  // These are used to derive the `EventTemplate`s that the events conform to.
+  // These are used to derive the `EventTempalte` `EventFields` that the
+  // events conform to.
   repeated MediaType media_types = 13 [(google.api.field_behavior) = REQUIRED];
 
   // Metadata that describes the events entailed by the EventGroup.
