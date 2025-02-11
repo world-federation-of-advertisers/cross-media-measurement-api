@@ -63,10 +63,15 @@ message EventGroup {
   // defined semantics.
   string event_group_reference_id = 5;
 
+  // The MediaTypes of the events entailed by this `EventGroup`
+  //
+  // These are used to derive the `EventTemplate`s that the events conform to.
+  repeated MediaType media_types = 13 [(google.api.field_behavior) = REQUIRED];
+
   // Metadata that describes the events entailed by the EventGroup.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
-  EventGroupMetadata event_group_metadata = 13;
+  EventGroupMetadata event_group_metadata = 14;
 
   // Deprecated: This field was never adopted and is no longer used.
   // Instead, per `ModelLine` `EventGroup` data availability will be inferred by
@@ -94,11 +99,6 @@ message EventGroup {
   // it is formally marked deprecated.
   repeated EventTemplate event_templates = 7
       [(google.api.field_behavior) = UNORDERED_LIST];
-
-  // The MediaTypes of the events entailed by this `EventGroup`
-  //
-  // These are used to derive the `EventTemplate`s that the events conform to.
-  repeated MediaType media_types = 14 [(google.api.field_behavior) = REQUIRED];
 
   // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
