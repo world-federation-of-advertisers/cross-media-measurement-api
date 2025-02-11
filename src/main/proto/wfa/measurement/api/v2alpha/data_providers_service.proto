@@ -26,11 +26,15 @@ import "wfa/measurement/api/v2alpha/data_provider.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "DataProvidersServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Service for interacting with `DataProvider` resources.
 service DataProviders {
   // Returns the `DataProvider` with the specified resource key.
   rpc GetDataProvider(GetDataProviderRequest) returns (DataProvider) {
+    option (google.api.http) = {
+      get: "/v2alpha/{name=dataProviders/*}"
+    };
     option (google.api.method_signature) = "name";
   }
 
