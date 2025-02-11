@@ -67,12 +67,12 @@ message EventGroup {
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
   EventGroupMetadata event_group_metadata = 13;
 
-  // The set of VID model lines used to label events in this `EventGroup`.
-  //
-  // This field is deprecated and will no longer be used. Instead
-  // the per `ModelLine` `EventGroup` data availability will be inferred by
+  // Deprecated: This field was never adopted and is no longer used.
+  // Instead, per `ModelLine` `EventGroup` data availability will be inferred by
   // intersecting the `DataProvider` per `ModelLine` data availability
   // with the `EventGroup` `data_availability_interval`
+  //
+  // The set of VID model lines used to label events in this `EventGroup`.
   repeated string vid_model_lines = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = UNORDERED_LIST,
