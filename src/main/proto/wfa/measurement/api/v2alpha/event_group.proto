@@ -22,6 +22,7 @@ import "google/protobuf/any.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
+import "wfa/measurement/api/v2alpha/media_type.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -56,9 +57,10 @@ message EventGroup {
 
   // ID referencing the `EventGroup` in an external system, provided by the
   // `DataProvider`. This value should be used to help the `DataProvider`
-  // synchornize their metadata with the EventGroupsService. See
-  // `EventGroupMetadata` if you wish you provide end-user visible identifiers.
-  string event_group_reference_id = 5 [(google.api.field_behavior) = OPTIONAL];
+  // synchronize their metadata with the EventGroupsService. See
+  // `EventGroupMetadata` which provides a set of identifiers with better
+  // defined semantics.
+  string event_group_reference_id = 5;
 
   // Metadata that describes the events entailed by the EventGroup.
   //
@@ -66,6 +68,11 @@ message EventGroup {
   EventGroupMetadata event_group_metadata = 13;
 
   // The set of VID model lines used to label events in this `EventGroup`.
+  //
+  // This field is deprecated and will no longer be used. Instead
+  // the per `ModelLine` `EventGroup` data availability will be inferred by
+  // intersecting the `DataProvider` per `ModelLine` data availability
+  // with the `EventGroup` `data_availability_interval`
   repeated string vid_model_lines = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = UNORDERED_LIST,
@@ -80,8 +87,17 @@ message EventGroup {
 
   // The `EventTemplate`s that events associated with this `EventGroup` conform
   // to.
+  //
+  // In a future release, this field will be deprecated in favor of setting
+  // `media_types`, but should continue to be set alongside `media_types` until
+  // it is formally marked deprecated.
   repeated EventTemplate event_templates = 7
-      [(google.api.field_behavior) = UNORDERED_LIST, deprecated = true];
+      [(google.api.field_behavior) = UNORDERED_LIST];
+
+  // The MediaTypes of the events entailed by this `EventGroup`
+  //
+  // These are used to derive the `EventTemplate`s that the events conform to.
+  repeated MediaType media_types = 14 [(google.api.field_behavior) = REQUIRED];
 
   // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
@@ -104,7 +120,11 @@ message EventGroup {
   //
   // The version of the `Metadata` message type must match the API version used
   // to last update this resource.
-  EncryptedMessage encrypted_metadata = 10 [deprecated = true];
+  //
+  // In a future release this field will be deprecated and replaced by
+  // `event_group_metadata` but until this field is marked deprecated it should
+  // continue to be written alongside `event_group_metadata`
+  EncryptedMessage encrypted_metadata = 10;
 
   // Encrypted serialized `Metadata`.
   //
@@ -116,7 +136,9 @@ message EventGroup {
   //
   // The version of the `EncryptionPublicKey` message must match the API version
   // used to last update this resource.
-  google.protobuf.Any measurement_consumer_public_key = 12 [deprecated = true];
+  //
+  // This field will be deprcated in a future release. See `encrypted_metadata`
+  google.protobuf.Any measurement_consumer_public_key = 12;
 
   // Signed pre-shared packed `EncryptionPublicKey`.
   //
@@ -141,9 +163,10 @@ message EventGroup {
   //
   // For an Ad Campaign these are the start and end dates of the campaign.
   //
-  // Events are available in the range specified here, but are subject to
-  // the `data_availability_intervals` set forth on the `DataProvider` for
-  // each active `ModelLine`
+  // Events are available in the range specified here, but are only guaranteed
+  // to be available for reporting with respect to the
+  // `data_availability_intervals` set forth on the `DataProvider` for each
+  // active `ModelLine`
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
   google.type.Interval data_availability_interval = 11;
