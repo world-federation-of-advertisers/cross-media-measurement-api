@@ -164,9 +164,9 @@ message EventGroup {
   // For an Ad Campaign these are the start and end dates of the campaign.
   //
   // Events are available in the range specified here, but are only guaranteed
-  // to be available for reporting with respect to the
-  // `data_availability_intervals` set forth on the `DataProvider` for each
-  // active `ModelLine`
+  // to be available for reporting for a paticular `ModelLine` where this range
+  // intersects with the `data_availability_intervals` set forth on the
+  // `DataProvider` for the particular `ModelLine`
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
   google.type.Interval data_availability_interval = 11;
