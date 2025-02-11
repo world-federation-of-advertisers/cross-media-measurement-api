@@ -119,6 +119,7 @@ proto_library(
     srcs = ["event_annotations.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        ":media_type_proto",
         "@com_google_protobuf//:descriptor_proto",
     ],
 )
@@ -244,6 +245,14 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
         "@com_google_protobuf//:any_proto",
+    ],
+)
+
+proto_library(
+    name = "media_type_proto",
+    srcs = [":media_type.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
     ],
 )
 
