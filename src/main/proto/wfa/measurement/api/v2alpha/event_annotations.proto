@@ -43,13 +43,6 @@ message EventFieldDescriptor {
   //   2. partitions the space of VIDs.
   // For example, "age bucket" is usually a population attribute.
   bool population_attribute = 3;
-  // The MediaTypes to which this field applies.
-  //
-  // Events associated with a particular MediaType must provide a value for
-  // a all fields annotated with that MediaType.
-  //
-  // Required.
-  repeated MediaType media_types = 4;
   // The set of reporting features for which an Event Field may be used.
   enum ReportingFeature {
     // Default value. Unused.
@@ -83,8 +76,7 @@ message EventTemplateDescriptor {
   string display_name = 2;
   // High-level description of the Event Template.
   string description = 3;
-  // The `MediaType` to which this template applies. If a template is not
-  // annotated with a `media_type` then it applies to all `MediaType`s
+  // The MediaType to which this template applies.
   MediaType media_type = 4;
 }
 
