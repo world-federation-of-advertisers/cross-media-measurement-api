@@ -75,7 +75,8 @@ message EventTemplateDescriptor {
   string display_name = 2;
   // High-level description of the Event Template.
   string description = 3;
-  // The MediaType to which this template applies.
+  // The `MediaType` to which this template applies. If a template is not
+  // annotated with a `media_type` then it applies to all `MediaType`s
   MediaType media_type = 4;
 }
 
