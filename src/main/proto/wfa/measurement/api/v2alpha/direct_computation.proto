@@ -21,6 +21,7 @@ import "google/api/field_behavior.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "DirectComputationProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Information about the custom direct methodology.
 message CustomDirectMethodology {
