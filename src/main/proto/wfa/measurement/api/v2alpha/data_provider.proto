@@ -71,8 +71,10 @@ message DataProvider {
 
   // Interval for when data is guaranteed to be available for a `Requisition`.
   // If this field is specified, both `start_time` and `end_time` must be set.
-  // Deprecated: replaced by `data_availability_intervals`
-  google.type.Interval data_availability_interval = 7 [deprecated = true];
+  //
+  // This field is being replaced by by `data_availability_intervals` and will
+  // be deprecated in a future release.
+  google.type.Interval data_availability_interval = 7;
 
   // Capabilities of a `DataProvider`.
   message Capabilities {
