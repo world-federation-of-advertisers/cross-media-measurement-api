@@ -73,7 +73,7 @@ message DataProvider {
   // If this field is specified, both `start_time` and `end_time` must be set.
   //
   // This field is being replaced by by `data_availability_intervals` and is
-  // planned be deprecated no sooner than in the 0.6 release.
+  // planned be deprecated no sooner than in the Halo CMM 0.6 release.
   google.type.Interval data_availability_interval = 7;
 
   // Capabilities of a `DataProvider`.
