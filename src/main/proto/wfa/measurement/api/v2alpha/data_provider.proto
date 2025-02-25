@@ -71,6 +71,9 @@ message DataProvider {
 
   // Interval for when data is guaranteed to be available for a `Requisition`.
   // If this field is specified, both `start_time` and `end_time` must be set.
+  //
+  // This field is being replaced by by `data_availability_intervals` and is
+  // planned be deprecated no sooner than in the Halo CMM 0.6 release.
   google.type.Interval data_availability_interval = 7;
 
   // Capabilities of a `DataProvider`.
@@ -83,4 +86,26 @@ message DataProvider {
   // This indicates to the CMMS what the `DataProvider` is capable of at
   // `Measurement` creation time.
   Capabilities capabilities = 8;
+
+  // Per `ModelLine` data availabiity
+  message DataAvailabilityMapEntry {
+    // Resource name of a `ModelLine`
+    string key = 1 [
+      (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+      (google.api.field_behavior) = IMMUTABLE,
+      (google.api.field_behavior) = REQUIRED
+    ];
+
+    // Interval for when data is guaranteed to be available for a `Requisition`
+    // fulfillment. If this field is specified, both `start_time` and `end_time`
+    // must be set.
+    google.type.Interval value = 2 [
+      (google.api.field_behavior) = IMMUTABLE,
+      (google.api.field_behavior) = REQUIRED
+    ];
+  }
+  // `DataAvailability` for each `ModelLine` that the `DataProvider` supports.
+  // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
+  // earlier than the 0.7 release.
+  repeated DataAvailabilityMapEntry data_availability_intervals = 9;
 }
