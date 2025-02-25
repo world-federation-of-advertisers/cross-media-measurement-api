@@ -71,8 +71,8 @@ message DataProvider {
   // Interval for when data is guaranteed to be available for a `Requisition`.
   // If this field is specified, both `start_time` and `end_time` must be set.
   //
-  // This field is being replaced by by `data_availability_intervals` and will
-  // be deprecated in a future release.
+  // This field is being replaced by by `data_availability_intervals` and is
+  // planned be deprecated no sooner than in the 0.6 release.
   google.type.Interval data_availability_interval = 7;
 
   // Capabilities of a `DataProvider`.
@@ -104,6 +104,7 @@ message DataProvider {
     ];
   }
   // `DataAvailability` for each `ModelLine` that the `DataProvider` supports.
-  // TODO(@kungfucraig): Make this REQUIRED once it has been adopted.
+  // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
+  // earlier than the 0.7 release.
   repeated DataAvailabilityMapEntry data_availability_intervals = 9;
 }
