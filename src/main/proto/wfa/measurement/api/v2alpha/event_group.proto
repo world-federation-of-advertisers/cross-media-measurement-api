@@ -69,13 +69,13 @@ message EventGroup {
   // with this `EventGroup` conform to.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
-  // sooner than the 0.6 release.
+  // sooner than the Halo CMM 0.6 release.
   repeated MediaType media_types = 13;
 
   // Metadata that describes the events entailed by the EventGroup.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
-  // sooner than the 0.6 release.
+  // sooner than the Halo CMM 0.6 release.
    EventGroupMetadata event_group_metadata = 14;
 
   // Deprecated: This field was never adopted and is no longer used.
@@ -102,7 +102,7 @@ message EventGroup {
   // In a future release, this field will be deprecated in favor of setting
   // `media_types`, but should continue to be set alongside `media_types` until
   // it is formally marked deprecated. It will be deprecated no sooner than the
-  // 0.6 release.
+  // Halo CMM 0.6 release.
   repeated EventTemplate event_templates = 7
       [(google.api.field_behavior) = UNORDERED_LIST];
 
@@ -131,7 +131,7 @@ message EventGroup {
   // In a future release this field will be deprecated and replaced by
   // `event_group_metadata` but until this field is marked deprecated it should
   // continue to be written alongside `event_group_metadata`. It will be
-  // deprecated no sooner than the 0.6 release.
+  // deprecated no sooner than the Halo CMM 0.6 release.
   EncryptedMessage encrypted_metadata = 10;
 
   // Encrypted serialized `Metadata`.
