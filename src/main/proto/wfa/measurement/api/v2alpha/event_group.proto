@@ -65,7 +65,7 @@ message EventGroup {
 
   // The MediaTypes of the events entailed by this `EventGroup`
   //
-  // These are used to derive the `EventTempalte`s that the events associated
+  // These are used to derive the `EventTemplate`s that the events associated
   // with this `EventGroup` conform to.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
