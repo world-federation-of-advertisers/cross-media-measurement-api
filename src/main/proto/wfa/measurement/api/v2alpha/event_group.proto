@@ -76,7 +76,7 @@ message EventGroup {
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
   // sooner than the Halo CMM 0.6 release.
-   EventGroupMetadata event_group_metadata = 14;
+  EventGroupMetadata event_group_metadata = 14;
 
   // Deprecated: This field was never adopted and is no longer used.
   // Instead, per `ModelLine` `EventGroup` data availability will be inferred by
