@@ -1,0 +1,48 @@
+// Copyright 2025 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "EventGroupMetadataProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// Metadata for EventGroups.
+message EventGroupMetadata {
+  // Metadata specific to ad impressions.
+  message AdMetadata {
+    // Metadata that pertains to a campaign.
+    message CampaignMetadata {
+      // The name of the brand for which the campaign is being run.
+      string brand_name = 1 [(google.api.field_behavior) = REQUIRED];
+      // The name of the campaign.
+      string campaign_name = 2 [(google.api.field_behavior) = REQUIRED];
+    }
+    // Metadata the pertains to a campaign that is entailed by the EventGroup.
+    CampaignMetadata campaign_metadata = 1
+        [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // Selector for the specific metadata structure used to describe the events
+  // entailed by an EventGroup.
+  // Required.
+  oneof selector {
+    AdMetadata ad_metadata = 2;
+  }
+}
