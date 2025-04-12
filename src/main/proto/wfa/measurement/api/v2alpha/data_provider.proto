@@ -37,7 +37,7 @@ message DataProvider {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The X.509 certificate belonging to this `DataProvider` in DER format which
   // can be used to verify `public_key`.
@@ -92,20 +92,17 @@ message DataProvider {
     // Resource name of a `ModelLine`
     string key = 1 [
       (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
-      (google.api.field_behavior) = IMMUTABLE,
       (google.api.field_behavior) = REQUIRED
     ];
 
     // Interval for when data is guaranteed to be available for a `Requisition`
     // fulfillment. If this field is specified, both `start_time` and `end_time`
     // must be set.
-    google.type.Interval value = 2 [
-      (google.api.field_behavior) = IMMUTABLE,
-      (google.api.field_behavior) = REQUIRED
-    ];
+    google.type.Interval value = 2 [(google.api.field_behavior) = REQUIRED];
   }
   // `DataAvailability` for each `ModelLine` that the `DataProvider` supports.
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
   // earlier than the 0.7 release.
-  repeated DataAvailabilityMapEntry data_availability_intervals = 9;
+  repeated DataAvailabilityMapEntry data_availability_intervals = 9
+      [(google.api.field_behavior) = UNORDERED_LIST];
 }
