@@ -23,18 +23,22 @@ option java_multiple_files = true;
 option java_outer_classname = "EventGroupMetadataProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// Metadata for EventGroups.
+// Common metadata structure for an [EventGroup][].
 message EventGroupMetadata {
-  // Metadata specific to ad impressions.
+  // Metadata for an [EventGroup][] containing ad impression events.
   message AdMetadata {
-    // Metadata that pertains to a campaign.
+    // Metadata for a brand advertising campaign.
     message CampaignMetadata {
       // The name of the brand for which the campaign is being run.
+      // (-- api-linter: core::0122::name-suffix=disabled
+      //     aip.dev/not-precedent: This is not a resource reference. --)
       string brand_name = 1 [(google.api.field_behavior) = REQUIRED];
       // The name of the campaign.
+      // (-- api-linter: core::0122::name-suffix=disabled
+      //     aip.dev/not-precedent: This is not a resource reference. --)
       string campaign_name = 2 [(google.api.field_behavior) = REQUIRED];
     }
-    // Metadata the pertains to a campaign that is entailed by the EventGroup.
+    // Metadata for a brand advertising campaign.
     CampaignMetadata campaign_metadata = 1
         [(google.api.field_behavior) = REQUIRED];
   }
@@ -43,6 +47,7 @@ message EventGroupMetadata {
   // entailed by an EventGroup.
   // Required.
   oneof selector {
+    // Metadata for an [EventGroup][] containing ad impression events.
     AdMetadata ad_metadata = 2;
   }
 }

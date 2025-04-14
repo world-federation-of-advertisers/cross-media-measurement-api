@@ -47,7 +47,7 @@ message Requisition {
   // Resource name.
   //
   // Canonical format: dataProviders/{data_provider}/requisitions/{requisition}
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Resource name of `Measurement` that this `Requisition` is associated with.
   string measurement = 2 [

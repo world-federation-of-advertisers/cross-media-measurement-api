@@ -36,7 +36,7 @@ message Population {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The 'Population' description.
   string description = 2;

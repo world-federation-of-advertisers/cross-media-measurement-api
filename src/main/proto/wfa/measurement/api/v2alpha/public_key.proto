@@ -36,7 +36,7 @@ message PublicKey {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Serialized `EncryptionPublicKey` for the parent resource, which can be
   // verified using `certificate`.

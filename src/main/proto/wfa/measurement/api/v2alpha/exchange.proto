@@ -38,7 +38,7 @@ message Exchange {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Date of the Exchange. Must be a complete date (no field can be unset/zero).
   google.type.Date date = 2 [(google.api.field_behavior) = REQUIRED];

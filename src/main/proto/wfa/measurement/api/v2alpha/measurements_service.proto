@@ -88,6 +88,8 @@ message CreateMeasurementRequest {
   //
   // If specified, the request will be idempotent. See
   // https://google.aip.dev/155.
+  // (-- api-linter: core::0155::request-id-format=disabled
+  //     aip.dev/not-precedent: This field predates the format requirement. --)
   string request_id = 2;
 }
 

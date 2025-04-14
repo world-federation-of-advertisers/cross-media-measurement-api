@@ -35,7 +35,7 @@ message ModelRelease {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // When the 'ModelRelease' was created.
   google.protobuf.Timestamp create_time = 2

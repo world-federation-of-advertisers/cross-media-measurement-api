@@ -37,7 +37,7 @@ message ExchangeStepAttempt {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // An ExchangeStep can have multiple ExchangeStepAttempts. When sorted by
   // `start_time`, these form a contiguous sequence of integers starting at 1.

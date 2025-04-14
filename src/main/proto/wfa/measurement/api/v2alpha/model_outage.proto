@@ -36,7 +36,7 @@ message ModelOutage {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // google.type.Interval in which the parent `ModelLine` cannot be used to
   // generate sketches. If a report spans across one or more `ModelOutage`s, the
