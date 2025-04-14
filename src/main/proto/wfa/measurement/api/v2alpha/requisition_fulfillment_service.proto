@@ -100,6 +100,9 @@ message FulfillRequisitionRequest {
       // either chunks (a blob), or a seed.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 5;
     }
+
+    // Context information related to the fulfillment of the [Requisition][].
+    Requisition.FulfillmentContext fulfillment_context = 6;
   }
 
   // The chunk message for this streaming request.
