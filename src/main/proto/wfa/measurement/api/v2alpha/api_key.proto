@@ -34,7 +34,7 @@ message ApiKey {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Human-readable nickname for this `ApiKey`.
   string nickname = 2 [(google.api.field_behavior) = REQUIRED];

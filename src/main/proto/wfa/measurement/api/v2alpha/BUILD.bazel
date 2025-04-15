@@ -163,6 +163,7 @@ proto_library(
     srcs = ["event_group_metadata_descriptor.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:descriptor_proto",
     ],
@@ -272,6 +273,7 @@ proto_library(
     srcs = ["model_provider.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
     ],
 )

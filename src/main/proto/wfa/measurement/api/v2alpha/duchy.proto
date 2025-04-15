@@ -34,7 +34,7 @@ message Duchy {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The *preferred* X.509 certificate belonging to this `Duchy` in DER format.
   bytes preferred_certificate_der = 2 [(google.api.field_behavior) = REQUIRED];

@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/descriptor.proto";
 
@@ -39,7 +40,7 @@ message EventGroupMetadataDescriptor {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // `FileDescriptorSet` including the `FileDescriptorProto` of the metadata
   // message and the transitive closure of its dependencies.

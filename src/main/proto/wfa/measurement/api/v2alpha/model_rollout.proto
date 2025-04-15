@@ -18,8 +18,8 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/type/date.proto";
 import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -39,7 +39,7 @@ message ModelRollout {
   reserved 2;
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Determine the type of rollout for this ModelRollout. Required.
   oneof rollout_deploy_period {

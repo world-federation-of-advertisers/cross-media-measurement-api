@@ -35,7 +35,7 @@ message ModelShard {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Resource name of the `ModelRelease` that this is a shard of.
   string model_release = 2 [

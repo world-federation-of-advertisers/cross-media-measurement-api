@@ -45,7 +45,7 @@ message EventGroup {
   // Resource name.
   //
   // Canonical format: dataProviders/{data_provider}/eventGroups/{event_group}
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Resource name of the `MeasurementConsumer` associated with this
   // `EventGroup`.

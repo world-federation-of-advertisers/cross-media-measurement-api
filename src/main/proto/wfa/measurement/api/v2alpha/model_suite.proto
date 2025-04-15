@@ -35,7 +35,7 @@ message ModelSuite {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Human-readable nickname for this ModelSuite.
   string display_name = 2 [(google.api.field_behavior) = REQUIRED];

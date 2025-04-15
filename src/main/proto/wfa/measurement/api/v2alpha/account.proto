@@ -51,7 +51,7 @@ message Account {
   }
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Resource name of the `Account` that created this one.
   string creator = 2 [

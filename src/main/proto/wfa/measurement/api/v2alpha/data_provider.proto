@@ -37,7 +37,7 @@ message DataProvider {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The X.509 certificate belonging to this `DataProvider` in DER format which
   // can be used to verify `public_key`.
