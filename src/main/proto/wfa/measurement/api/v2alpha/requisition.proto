@@ -258,6 +258,20 @@ message Requisition {
   // set when `state` is `REFUSED`.
   Refusal refusal = 12;
 
+  // Context information related to the fulfillment of a [Requisition][].
+  message FulfillmentContext {
+    // Build label from the fulfilling [DataProvider][].
+    string build_label = 1;
+
+    // Human-readable warnings about the fulfillment.
+    //
+    // This must not include sensitive data.
+    repeated string warnings = 2;
+  }
+  // Context information related to the fulfillment of the [Requisition][]. May
+  // only be set when [state][] is [FULFILLED][Requisition.State.FULFILLED].
+  FulfillmentContext fulfillment_context = 17;
+
   // Denormalized `state` field from `measurement`.
   Measurement.State measurement_state = 13
       [(google.api.field_behavior) = OUTPUT_ONLY];

@@ -159,6 +159,9 @@ message FulfillDirectRequisitionRequest {
   // `data_provider_certificate` from the `Requisition` will be used.
   string certificate = 5
       [(google.api.resource_reference).type = "halo.wfanet.org/Certificate"];
+
+  // Context information related to the fulfillment of the [Requisition][].
+  Requisition.FulfillmentContext fulfillment_context = 6;
 }
 
 // Response message for `FulfillDirectRequisition` method.
