@@ -44,23 +44,11 @@ service DataProviders {
 
   // Replaces [DataProviders.data_availability_intervals][].
   rpc ReplaceDataAvailabilityIntervals(ReplaceDataAvailabilityIntervalsRequest)
-      returns (DataProvider) {
-    option (google.api.http) = {
-      post: "/v2alpha/{name=dataProviders/*}"
-      body: "data_availability_intervals"
-    };
-    option (google.api.method_signature) = "name,data_availability_intervals";
-  }
+      returns (DataProvider) {}
 
   // Replaces `data_availability_interval` for a `DataProvider` resource.
   rpc ReplaceDataAvailabilityInterval(ReplaceDataAvailabilityIntervalRequest)
-      returns (DataProvider) {
-    option (google.api.http) = {
-      post: "/v2alpha/{name=dataProviders/*}"
-      body: "data_availability_interval"
-    };
-    option (google.api.method_signature) = "name,data_availability_interval";
-  }
+      returns (DataProvider) {}
 
   // Replaces the `capabilities` field in a `DataProvider` resource.
   rpc ReplaceDataProviderCapabilities(ReplaceDataProviderCapabilitiesRequest)
