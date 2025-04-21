@@ -24,6 +24,7 @@ import "google/type/date.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "RecurringExchangeProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // A Panel Matching exchange that happens between a DataProvider and a
 // ModelProvider on some schedule. This is instantiated once per date in the
@@ -39,7 +40,7 @@ message RecurringExchange {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The `ExchangeWorkflow` for this `RecurringExchange`.
   //

@@ -23,6 +23,7 @@ import "google/type/date.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ExchangeProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Resource that represents an instance of a `RecurringExchange` for a single
 // date.
@@ -37,7 +38,7 @@ message Exchange {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Date of the Exchange. Must be a complete date (no field can be unset/zero).
   google.type.Date date = 2 [(google.api.field_behavior) = REQUIRED];

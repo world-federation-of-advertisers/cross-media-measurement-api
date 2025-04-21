@@ -1,10 +1,10 @@
-// Copyright 2023 The Cross-Media Measurement Authors
+// Copyright 2025 The Cross-Media Measurement Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,21 +16,20 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
-import "google/type/date.proto";
-
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "DateIntervalProto";
+option java_outer_classname = "MediaTypeProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// A date interval. This is intended for mirroring the existing
-// `google.type.Interval` proto message, replacing google.protobuf.Timestamp
-// fields type with google.type.Data
-message DateInterval {
-  // Start of the date interval, inclusive.
-  google.type.Date start_date = 1;
-  // End of the date interval, exclusive. 'end_date' must be
-  // later than 'start_date'. When the start equals the end, the interval is
-  // empty (matches no time).
-  google.type.Date end_date = 2;
+// MediaType for Events, Event Groups, Event Templates, and associated
+// artifacts.
+enum MediaType {
+  // Default value. Unused.
+  MEDIA_TYPE_UNSPECIFIED = 0;
+  // Interpret a set of arifacts as Video
+  VIDEO = 1;
+  // Interpret a set of arifacts as Display
+  DISPLAY = 2;
+  // Interpret as set of artifacts as Other
+  OTHER = 3;
 }

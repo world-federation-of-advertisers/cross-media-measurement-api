@@ -25,6 +25,7 @@ import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "MeasurementSpecProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Specification for a `Measurement`. Immutable.
 message MeasurementSpec {
@@ -145,6 +146,35 @@ message MeasurementSpec {
   // Resource name of the ModelLine for this measurement.
   string model_line = 9 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // Metadata provided by the Reporting System that describes how the
+  // Measurement is being used.
+  message ReportingMetadata {
+    // Resource name of the containing `Report`
+    string report = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE,
+      (google.api.resource_reference) = {
+        type: "reporting.halo-cmm.org/Report"
+      }
+    ];
+    // Resource name of the containing `Metric`
+    string metric = 2 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = IMMUTABLE,
+      (google.api.resource_reference) = {
+        type: "reporting.halo-cmm.org/Metric"
+      }
+    ];
+  }
+  // Metadata provided by the Reporting System.
+  //
+  // When present the report_metadata can be used by EDPs to group Measurements
+  // into logical units to help optimize fulfilment processes.
+  ReportingMetadata reporting_metadata = 11 [
+    (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE
   ];
 }

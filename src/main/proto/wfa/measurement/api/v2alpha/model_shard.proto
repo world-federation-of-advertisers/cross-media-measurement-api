@@ -23,6 +23,7 @@ import "google/protobuf/timestamp.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelShardProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Resource representing a shard of a model for a `DataProvider`.
 message ModelShard {
@@ -34,7 +35,7 @@ message ModelShard {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Resource name of the `ModelRelease` that this is a shard of.
   string model_release = 2 [

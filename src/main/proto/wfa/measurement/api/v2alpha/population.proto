@@ -24,6 +24,7 @@ import "wfa/measurement/api/v2alpha/event_template.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "PopulationProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // A population provided by a `DataProvider`.
 message Population {
@@ -35,7 +36,7 @@ message Population {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The 'Population' description.
   string description = 2;

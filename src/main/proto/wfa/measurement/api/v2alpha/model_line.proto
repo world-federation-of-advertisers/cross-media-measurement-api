@@ -23,6 +23,7 @@ import "google/protobuf/timestamp.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelLineProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Resource representing a series of models within a model suite.
 message ModelLine {
@@ -34,7 +35,7 @@ message ModelLine {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Human-readable display name for this 'ModelLine'.
   string display_name = 2;
@@ -85,6 +86,9 @@ message ModelLine {
   // `PROD` can have a holdback model line set. Any attempt of setting a
   // holdback model line to a 'ModelLine' that does not have type equals to
   // 'PROD' will result in an error.
+  // (-- api-linter: core::0121::no-mutable-cycles=disabled
+  //     aip.dev/not-precedent: This complexity is needed to support holdbacks.
+  //     --)
   string holdback_model_line = 7
       [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
 

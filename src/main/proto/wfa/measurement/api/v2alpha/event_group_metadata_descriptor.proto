@@ -16,12 +16,14 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/descriptor.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "EventGroupMetadataDescriptorProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // The metadata message descriptor of an `EventGroup.Metadata`. This metadata is
 // used to describe the contents of an `EventGroup` without needing a direct
@@ -38,7 +40,7 @@ message EventGroupMetadataDescriptor {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // `FileDescriptorSet` including the `FileDescriptorProto` of the metadata
   // message and the transitive closure of its dependencies.

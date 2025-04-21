@@ -26,11 +26,15 @@ import "wfa/measurement/api/v2alpha/data_provider.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "DataProvidersServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Service for interacting with `DataProvider` resources.
 service DataProviders {
   // Returns the `DataProvider` with the specified resource key.
   rpc GetDataProvider(GetDataProviderRequest) returns (DataProvider) {
+    option (google.api.http) = {
+      get: "/v2alpha/{name=dataProviders/*}"
+    };
     option (google.api.method_signature) = "name";
   }
 
@@ -38,15 +42,13 @@ service DataProviders {
   rpc ReplaceDataProviderRequiredDuchies(
       ReplaceDataProviderRequiredDuchiesRequest) returns (DataProvider) {}
 
+  // Replaces [DataProviders.data_availability_intervals][].
+  rpc ReplaceDataAvailabilityIntervals(ReplaceDataAvailabilityIntervalsRequest)
+      returns (DataProvider) {}
+
   // Replaces `data_availability_interval` for a `DataProvider` resource.
   rpc ReplaceDataAvailabilityInterval(ReplaceDataAvailabilityIntervalRequest)
-      returns (DataProvider) {
-    option (google.api.http) = {
-      post: "/v2alpha/{name=dataProviders/*}"
-      body: "data_availability_interval"
-    };
-    option (google.api.method_signature) = "name,data_availability_interval";
-  }
+      returns (DataProvider) {}
 
   // Replaces the `capabilities` field in a `DataProvider` resource.
   rpc ReplaceDataProviderCapabilities(ReplaceDataProviderCapabilitiesRequest)
@@ -73,6 +75,19 @@ message GetDataProviderRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
+}
+
+// Request message for `ReplaceDataAvailabilityIntervals` method.
+message ReplaceDataAvailabilityIntervalsRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // New value for [DataProvider.data_availability_intervals][].
+  repeated DataProvider.DataAvailabilityMapEntry data_availability_intervals =
+      2;
 }
 
 // Request message for `ReplaceDataAvailability` method.

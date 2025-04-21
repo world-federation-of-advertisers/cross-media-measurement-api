@@ -22,6 +22,7 @@ import "google/api/resource.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "CertificateProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Resource representing an X.509 certificate.
 message Certificate {
@@ -39,7 +40,7 @@ message Certificate {
   //
   // The resource ID alias "preferred" may be used in place of the `Certificate`
   // ID to refer to the *preferred* `Certificate`.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // X.509 certificate in DER format. Required. Immutable.
   bytes x509_der = 2 [

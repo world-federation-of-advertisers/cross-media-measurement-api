@@ -25,18 +25,18 @@ on:
 jobs:
   lint:
     name: API lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     defaults:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Set up api-linter
       uses: world-federation-of-advertisers/actions/setup-api-linter@v2
       with:
-        version: 1.56.1
-        sha256: 4f7ca3e11d3c9a72b894a547e4e3a174fcd826885a875e484777f1eb23d885b4
+        version: 1.69.2
+        sha256: f2d1b0fb8df62676ebc49cc905c4e1ae4b82590bca156c612ac3456e1686b1cc
 
     - env:
         BAZEL: bazelisk

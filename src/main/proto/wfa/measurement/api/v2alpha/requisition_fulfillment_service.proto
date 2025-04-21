@@ -25,6 +25,7 @@ import "wfa/measurement/api/v2alpha/requisition.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "RequisitionFulfillmentServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Duchy service for fulfilling `Requisition`s.
 service RequisitionFulfillment {
@@ -99,6 +100,9 @@ message FulfillRequisitionRequest {
       // either chunks (a blob), or a seed.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 5;
     }
+
+    // Context information related to the fulfillment of the [Requisition][].
+    Requisition.FulfillmentContext fulfillment_context = 6;
   }
 
   // The chunk message for this streaming request.
