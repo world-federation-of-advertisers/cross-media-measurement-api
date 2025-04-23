@@ -54,9 +54,10 @@ message MeasurementSpec {
 
   // Specifies a range of VIDs to be sampled.
   //
-  // The interval is within range of [0.0, 1.0). If start + width > 0, it will
-  // wrap around 1. E.g., start=0.8, width=0.5 stands for intervals [0.0, 0.3]
-  // and [0.8, 1.0].
+  // The interval is within range of [0.0, 1.0]. When interval wrapping is
+  // allowed (e.g. HMSS protocol), if start + width > 1.0, it will wrap
+  // around 1. E.g., start=0.8, width=0.5 stands for intervals [0.0, 0.3] and
+  // [0.8, 1.0].
   message VidSamplingInterval {
     // Start of the sampling interval.
     float start = 1;
