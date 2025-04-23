@@ -23,6 +23,7 @@ import "google/protobuf/timestamp.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ModelReleaseProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Resource representing a release of a model.
 message ModelRelease {
@@ -34,7 +35,7 @@ message ModelRelease {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // When the 'ModelRelease' was created.
   google.protobuf.Timestamp create_time = 2

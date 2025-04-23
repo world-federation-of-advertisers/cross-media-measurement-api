@@ -22,6 +22,7 @@ import "google/api/resource.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "ApiKeyProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Resource representing a revocable authentication key for an API resource.
 message ApiKey {
@@ -33,7 +34,7 @@ message ApiKey {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Human-readable nickname for this `ApiKey`.
   string nickname = 2 [(google.api.field_behavior) = REQUIRED];

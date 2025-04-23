@@ -25,6 +25,7 @@ import "wfa/measurement/api/v2alpha/measurement.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "MeasurementsServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Service for interacting with `Measurement` resources.
 service Measurements {
@@ -87,6 +88,8 @@ message CreateMeasurementRequest {
   //
   // If specified, the request will be idempotent. See
   // https://google.aip.dev/155.
+  // (-- api-linter: core::0155::request-id-format=disabled
+  //     aip.dev/not-precedent: This field predates the format requirement. --)
   string request_id = 2;
 }
 

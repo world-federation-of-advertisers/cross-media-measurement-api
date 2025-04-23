@@ -23,6 +23,7 @@ import "wfa/measurement/api/v2alpha/crypto.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "MeasurementConsumerProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // A consumer of `Measurement` results. For example, an advertiser or ad agency.
 message MeasurementConsumer {
@@ -34,7 +35,7 @@ message MeasurementConsumer {
   };
 
   // Resource name.
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The X.509 certificate belonging to this `MeasurementConsumer` in DER format
   // which can be used to verify `public_key`.

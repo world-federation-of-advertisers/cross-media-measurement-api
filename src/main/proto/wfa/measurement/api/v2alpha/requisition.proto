@@ -27,6 +27,7 @@ import "wfa/measurement/api/v2alpha/protocol_config.proto";
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "RequisitionProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // A requisition for data across `EventGroup`s from a single `DataProvider`.
 // Output-only.
@@ -46,7 +47,7 @@ message Requisition {
   // Resource name.
   //
   // Canonical format: dataProviders/{data_provider}/requisitions/{requisition}
-  string name = 1;
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // Resource name of `Measurement` that this `Requisition` is associated with.
   string measurement = 2 [
@@ -256,6 +257,20 @@ message Requisition {
   // The refusal that put this `Requisition` into the `REFUSED` state. Must be
   // set when `state` is `REFUSED`.
   Refusal refusal = 12;
+
+  // Context information related to the fulfillment of a [Requisition][].
+  message FulfillmentContext {
+    // Build label from the fulfilling [DataProvider][].
+    string build_label = 1;
+
+    // Human-readable warnings about the fulfillment.
+    //
+    // This must not include sensitive data.
+    repeated string warnings = 2;
+  }
+  // Context information related to the fulfillment of the [Requisition][]. May
+  // only be set when [state][] is [FULFILLED][Requisition.State.FULFILLED].
+  FulfillmentContext fulfillment_context = 17;
 
   // Denormalized `state` field from `measurement`.
   Measurement.State measurement_state = 13
