@@ -50,6 +50,12 @@ service ModelLines {
   //     aip.dev/not-precedent: This is not a standard Update method. --)
   rpc SetModelLineActiveEndTime(SetModelLineActiveEndTimeRequest)
       returns (ModelLine);
+
+  // Lists `ModelLine`s that are valid given an `Interval` representing the time
+  // range and a set of `DataProvider`s. Ordered by `type` from `PROD` to
+  // `HOLDBACK` to `DEV`, `active_start_time` descending.
+  rpc ListValidModelLines(ListValidModelLinesRequest)
+      returns (ListValidModelLinesResponse) {}
 }
 
 // Request message for `CreateModelLine` method.
@@ -135,4 +141,32 @@ message SetModelLineActiveEndTimeRequest {
 
   // The active_end_time value to be set.
   google.protobuf.Timestamp active_end_time = 2;
+}
+
+// Request message for `ListValidModelLines` method.
+message ListValidModelLinesRequest {
+  // If `active_end_time` is set, only `ModelLine`s with this interval fully
+  // contained between  `active_start_time`  and `active_end_time` are
+  // considered. If `active_end_time` is not set, then the `start_time` of this
+  // interval needs to be after `active_start_time` for the `ModelLine` to be
+  // considered.
+  google.type.Interval time_interval = 1
+      [(google.api.field_behavior) = REQUIRED];
+
+  // Each `data_availability_intervals` must have an entry for the `ModelLine`
+  // and the interval in each entry must fully contain the `time_interval` for
+  // the `ModelLine` to be considered.
+  repeated string data_providers = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider"
+  ];
+
+  // List of `ModelLine.Type`s to consider. Defaults to `PROD`.
+  repeated ModelLine.Type types = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for `ListValidModelLines` method.
+message ListValidModelLinesResponse {
+  // The `ModelLine`s that met all the criteria.
+  repeated ModelLine model_lines = 1 [(google.api.field_behavior) = OPTIONAL];
 }
