@@ -56,7 +56,7 @@ service ModelLines {
   // range and a set of `DataProvider`s. Ordered by `type` from `PROD` to
   // `HOLDBACK` to `DEV`, `active_start_time` descending.
   rpc SearchValidModelLines(SearchValidModelLinesRequest)
-      returns (SearchValidModelLinesResponse) {}
+      returns (SearchValidModelLinesResponse);
 }
 
 // Request message for `CreateModelLine` method.
