@@ -55,8 +55,8 @@ service ModelLines {
   // Lists `ModelLine`s that are valid given an `Interval` representing the time
   // range and a set of `DataProvider`s. Ordered by `type` from `PROD` to
   // `HOLDBACK` to `DEV`, `active_start_time` descending.
-  rpc ListValidModelLines(ListValidModelLinesRequest)
-      returns (ListValidModelLinesResponse) {}
+  rpc SearchValidModelLines(SearchValidModelLinesRequest)
+      returns (SearchValidModelLinesResponse) {}
 }
 
 // Request message for `CreateModelLine` method.
@@ -144,8 +144,8 @@ message SetModelLineActiveEndTimeRequest {
   google.protobuf.Timestamp active_end_time = 2;
 }
 
-// Request message for `ListValidModelLines` method.
-message ListValidModelLinesRequest {
+// Request message for `SearchValidModelLines` method.
+message SearchValidModelLinesRequest {
   // Resource name of the parent `ModelSuite`.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
@@ -172,8 +172,8 @@ message ListValidModelLinesRequest {
   repeated ModelLine.Type types = 4 [(google.api.field_behavior) = OPTIONAL];
 }
 
-// Response message for `ListValidModelLines` method.
-message ListValidModelLinesResponse {
+// Response message for `SearchValidModelLines` method.
+message SearchValidModelLinesResponse {
   // The `ModelLine`s that met all the criteria.
   repeated ModelLine model_lines = 1 [(google.api.field_behavior) = OPTIONAL];
 }
