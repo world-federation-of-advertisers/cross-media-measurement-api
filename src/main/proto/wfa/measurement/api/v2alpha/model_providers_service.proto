@@ -35,9 +35,7 @@ service ModelProviders {
 
   // Lists `ModelProvider`s.
   rpc ListModelProviders(ListModelProvidersRequest)
-      returns (ListModelProvidersResponse) {
-    option (google.api.method_signature) = "parent";
-  }
+      returns (ListModelProvidersResponse);
 }
 
 // Request message for `GetModelProvider` method.
