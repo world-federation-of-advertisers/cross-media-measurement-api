@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/model_line.proto";
 
@@ -50,6 +51,11 @@ service ModelLines {
   //     aip.dev/not-precedent: This is not a standard Update method. --)
   rpc SetModelLineActiveEndTime(SetModelLineActiveEndTimeRequest)
       returns (ModelLine);
+
+  // Deletes a `ModelLine`
+  rpc DeleteModelLine(DeleteModelLineRequest) returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
+  }
 }
 
 // Request message for `CreateModelLine` method.
@@ -135,4 +141,14 @@ message SetModelLineActiveEndTimeRequest {
 
   // The active_end_time value to be set.
   google.protobuf.Timestamp active_end_time = 2;
+}
+
+// Request message for `DeleteModelLine` method.
+message DeleteModelLineRequest {
+  // The name of `ModelLine` to delete.
+  // Format: modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine"
+  ];
 }
