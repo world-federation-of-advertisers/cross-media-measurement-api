@@ -46,7 +46,8 @@ service ModelSuites {
   }
 
   // Deletes a `ModelSuite`
-  rpc DeleteModelSuite(DeleteModelSuiteRequest) returns (google.protobuf.Empty) {
+  rpc DeleteModelSuite(DeleteModelSuiteRequest)
+      returns (google.protobuf.Empty) {
     option (google.api.method_signature) = "name";
   }
 }

@@ -46,7 +46,8 @@ service Populations {
   }
 
   // Deletes a `Population`
-  rpc DeleteModelSuite(DeletePopulationRequest) returns (google.protobuf.Empty) {
+  rpc DeletePopulation(DeletePopulationRequest)
+      returns (google.protobuf.Empty) {
     option (google.api.method_signature) = "name";
   }
 }
