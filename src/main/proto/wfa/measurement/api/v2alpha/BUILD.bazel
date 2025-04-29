@@ -690,6 +690,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
     ],
 )
 
@@ -701,6 +702,5 @@ proto_library(
         ":event_template_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:empty_proto",
     ],
 )
