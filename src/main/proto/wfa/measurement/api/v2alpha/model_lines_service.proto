@@ -146,7 +146,8 @@ message SetModelLineActiveEndTimeRequest {
 // Request message for `DeleteModelLine` method.
 message DeleteModelLineRequest {
   // The name of `ModelLine` to delete.
-  // Format: modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}
+  // Format:
+  // modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine"
