@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
 import "wfa/measurement/api/v2alpha/population.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -42,6 +43,11 @@ service Populations {
   rpc ListPopulations(ListPopulationsRequest)
       returns (ListPopulationsResponse) {
     option (google.api.method_signature) = "parent";
+  }
+
+  // Deletes a `Population`
+  rpc DeleteModelSuite(DeletePopulationRequest) returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
   }
 }
 
@@ -98,4 +104,14 @@ message ListPopulationsResponse {
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
+}
+
+// Request message for `DeletePopulation` method.
+message DeletePopulationRequest {
+  // The name of `Population` to delete.
+  // Format: dataProviders/{data_provider}/populations/{population}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/Population"
+  ];
 }
