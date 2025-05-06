@@ -19,7 +19,9 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
+import "wfa/measurement/api/v2alpha/media_type.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -131,18 +133,38 @@ message ListEventGroupsRequest {
   // https://aip.dev/158.
   string page_token = 3;
 
-  // Filter criteria for a `ListEventGroups` request.
+  // Structured filter criteria.
   //
-  // Repeated fields are treated as logical ORs, and multiple fields specified
-  // as logical ANDs.
+  // Each field represents a term in a conjunction. If a field is not specified,
+  // its value is not considered as part of the criteria.
+  // (-- api-linter: core::0140::prepositions=disabled
+  //     api-linter: core::0142::time-field-names=disabled
+  //     aip.dev/not-precedent: Using structured filter instead of AIP-160. --)
   message Filter {
-    // Matches against the `measurement_consumer` field.
-    repeated string measurement_consumers = 1
+    // Set of
+    // [MeasurementConsumer][wfa.measurement.api.v2alpha.MeasurementConsumer]
+    // resource names which [EventGroup.measurement_consumer][] must be in.
+    repeated string measurement_consumer_in = 1
         [(google.api.resource_reference).type =
              "halo.wfanet.org/MeasurementConsumer"];
-    // Matches against the parent `DataProvider`.
-    repeated string data_providers = 6
+    // Set of [DataProvider][wfa.measurement.api.v2alpha.DataProvider] resource
+    // names which the canonical parent must be in.
+    repeated string data_provider_in = 6
         [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    // Set of [MediaType][] values which [EventGroup.media_types][] must
+    // intersect.
+    repeated MediaType media_types_intersect = 2;
+    // Time which
+    // [EventGroup.data_availability_interval.start_time][google.type.Interval.start_time]
+    // must be on or after.
+    google.protobuf.Timestamp data_availability_start_time_on_or_after = 3;
+    // Time which
+    // [EventGroup.data_availability_interval.end_time][google.type.Interval.end_time]
+    // must be on or before.
+    google.protobuf.Timestamp data_availability_end_time_on_or_before = 4;
+    // Query for text search on string fields in
+    // [EventGroup.event_group_metadata][].
+    string metadata_search_query = 5;
   }
   // Filter criteria for this request.
   //
@@ -152,6 +174,27 @@ message ListEventGroupsRequest {
 
   // Whether to include EventGroups in the DELETED state.
   bool show_deleted = 5;
+
+  // Structure for ordering results.
+  message OrderBy {
+    // Orderable field.
+    enum Field {
+      // Field unspecified.
+      FIELD_UNSPECIFIED = 0;
+      // [start_time][google.type.Interval.start_time] of
+      // [EventGroup.data_availability_interval][].
+      DATA_AVAILABILITY_START_TIME = 1;
+    }
+    // Field to order by.
+    Field field = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // Whether the sort order is descending.
+    bool descending = 2;
+  }
+  // How results should be ordered.
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: Only supporting a limited set of orderings. --)
+  OrderBy order_by = 6;
 }
 
 // Response message for `ListEventGroups` method.
