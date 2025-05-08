@@ -238,11 +238,17 @@ message Requisition {
       // This implies that the `DataProvider` *should* be able to fulfill the
       // `Requisition`, but something went irrecoverably wrong. For example, the
       // `DataProvider` encountered corruption of the underlying data.
+      //
+      // This indicates a failure within the `DataProvider`'s fulfillment
+      // mechanism.
       UNFULFILLABLE = 4;
 
       // The `DataProvider` has declined to fulfill this `Requisition`
       // regardless of whether any of the other `Justification` conditions
       // apply.
+      //
+      // For example, a `DataProvider` policy that cannot be expressed within
+      // the API.
       DECLINED = 5;
     }
     // Justification for refusing to fulfill this `Requisition`.
