@@ -45,9 +45,17 @@ message RequisitionSpec {
 
     // Value of an `EventGroupEntry`.
     message Value {
-      // Time interval over which the event data should be collected.
+      // Time interval over which event data is collected for fulfillment.
       //
-      // Both `start_time` and `end_time` must be specified.
+      // Both [start_time][google.type.Interval.start_time] and
+      // [end_time][google.type.Interval.end_time] must be specified.
+      //
+      // Only events in the intersection of this, the
+      // [DataProvider.data_availability_intervals][] entry for
+      // [MeasurementSpec.model_line][], and the
+      // [EventGroup.data_availability_interval][] for the [EventGroup][]
+      // matching [key][] need be included. Outside of that intersection, the
+      // [EventGroup][] may be considered to have 0 events.
       google.type.Interval collection_interval = 1
           [(google.api.field_behavior) = REQUIRED];
 
