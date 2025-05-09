@@ -145,7 +145,10 @@ message Measurement {
   message Result {
     // A reach result.
     message Reach {
-      // Number of unique users exposed.
+      // Number of unique users (VIDs) for which there are impression events.
+      //
+      // This must be non-negative, meaning any negative value arising due to
+      // noise must be clamped to 0.
       int64 value = 1;
 
       // The mechanism used to generate noise during computation.
@@ -183,9 +186,13 @@ message Measurement {
     // A frequency result.
     message Frequency {
       // Map of frequency to reach ratio. For example, an entry
-      // {key: 4 value: 0.333} means that 33.3% of users were exposed exactly 4
-      // times, unless 4 is the largest key (maximum frequency) in which case it
-      // means that 33.3% of users were exposed at least 4 times.
+      // {key: 4 value: 0.333} means that 33.3% of users have exactly 4
+      // impression events, unless 4 is the largest key (maximum frequency) in
+      // which case it means that 33.3% of users have *at least* 4 impression
+      // events.
+      //
+      // Values must be non-negative, meaning any negative value arising due to
+      // noise must be clamped to 0.
       map<int64, double> relative_frequency_distribution = 1;
 
       // The mechanism used to generate noise during computation.
@@ -219,7 +226,10 @@ message Measurement {
 
     // An impression result.
     message Impression {
-      // Number of total impressions.
+      // Number of impression events.
+      //
+      // This must be non-negative, meaning any negative value arising due to
+      // noise must be clamped to 0.
       int64 value = 1;
 
       // The mechanism used to generate noise during computation.
@@ -245,6 +255,9 @@ message Measurement {
     // A watch duration result.
     message WatchDuration {
       // Total duration.
+      //
+      // This must be non-negative, meaning any negative value arising due to
+      // noise must be clamped to 0.
       google.protobuf.Duration value = 1;
 
       // The mechanism used to generate noise during computation.
@@ -270,6 +283,8 @@ message Measurement {
     // A population result.
     message Population {
       // The population value.
+      //
+      // This must be non-negative.
       int64 value = 1;
 
       // The computation methodology done by data provider. Required.
