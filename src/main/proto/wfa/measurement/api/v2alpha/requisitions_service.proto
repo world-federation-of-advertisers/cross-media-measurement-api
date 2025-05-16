@@ -85,9 +85,13 @@ message ListRequisitionsRequest {
     repeated Requisition.State states = 1;
     // Matches against the `measurement_state` field.
     //
+    // This field is no longer supported. In some cases, it may be an error to
+    // set it.
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
-    repeated Measurement.State measurement_states = 3;
+    // (-- TODO(@SanjayVas): Remove this field when it is no longer being set.
+    // --)
+    repeated Measurement.State measurement_states = 3 [deprecated = true];
   }
   // Result filter. If a page token is specified, then this will be ignored and
   // the filter for the first page will be applied.
