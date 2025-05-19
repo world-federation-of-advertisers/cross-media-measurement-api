@@ -43,12 +43,6 @@ service Populations {
       returns (ListPopulationsResponse) {
     option (google.api.method_signature) = "parent";
   }
-
-  // Deletes a `Population`
-  rpc DeletePopulation(DeletePopulationRequest)
-      returns (google.protobuf.Empty) {
-    option (google.api.method_signature) = "name";
-  }
 }
 
 // Request message for `GetPopulation` method.
