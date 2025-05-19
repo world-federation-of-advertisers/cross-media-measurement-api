@@ -19,7 +19,6 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
-import "google/protobuf/empty.proto";
 import "wfa/measurement/api/v2alpha/model_suite.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -43,12 +42,6 @@ service ModelSuites {
   rpc ListModelSuites(ListModelSuitesRequest)
       returns (ListModelSuitesResponse) {
     option (google.api.method_signature) = "parent";
-  }
-
-  // Deletes a `ModelSuite`
-  rpc DeleteModelSuite(DeleteModelSuiteRequest)
-      returns (google.protobuf.Empty) {
-    option (google.api.method_signature) = "name";
   }
 }
 
@@ -105,14 +98,4 @@ message ListModelSuitesResponse {
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
-}
-
-// Request message for `DeleteModelSuite` method.
-message DeleteModelSuiteRequest {
-  // The name of `ModelSuite` to delete.
-  // Format: modelProviders/{model_provider}/modelSuites/{model_suite}
-  string name = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite"
-  ];
 }
