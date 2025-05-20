@@ -87,7 +87,7 @@ message DataProvider {
   // `Measurement` creation time.
   Capabilities capabilities = 8;
 
-  // Per `ModelLine` data availabiity
+  // An entry in the [data_availability_intervals][] map.
   message DataAvailabilityMapEntry {
     // Resource name of a `ModelLine`
     string key = 1 [
@@ -95,14 +95,23 @@ message DataProvider {
       (google.api.field_behavior) = REQUIRED
     ];
 
-    // Interval for when data is guaranteed to be available for a `Requisition`
-    // fulfillment. If this field is specified, both `start_time` and `end_time`
-    // must be set.
+    // Interval for when data is guaranteed to be available for a
+    // [Requisition][] fulfillment for the [ModelLine][] indicated by [key][].
+    //
+    // A [DataProvider][] must only specify availability for intervals
+    // when they are guaranteed to have the data available to fulfill any
+    // [Requisition][] within that interval.
+    //
+    // If this field is specified, both `start_time` and `end_time` must be set.
     google.type.Interval value = 2 [(google.api.field_behavior) = REQUIRED];
   }
-  // `DataAvailability` for each `ModelLine` that the `DataProvider` supports.
+  // A map of [ModelLine][] resource name to data availability interval.
+  //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
-  // earlier than the 0.7 release.
+  // earlier than the 0.7 release. Once this is required, it may be an error to
+  // create a [Measurement][] unless the interval specified by
+  // [RequisitionSpec][] does not fall into the availability interval for
+  // [MeasurementSpec.model_line][].
   repeated DataAvailabilityMapEntry data_availability_intervals = 9
       [(google.api.field_behavior) = UNORDERED_LIST];
 }
