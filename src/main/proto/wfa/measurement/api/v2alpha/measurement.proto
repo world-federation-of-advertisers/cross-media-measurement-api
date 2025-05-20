@@ -156,10 +156,7 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology.
-      //
-      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
-      // incorporate the new API changes. --)
+      // The computation methodology. Required.
       oneof methodology {
         // Custom methodology.
         CustomDirectMethodology custom_direct_methodology = 3;
@@ -199,10 +196,7 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology.
-      //
-      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
-      // incorporate the new API changes. --)
+      // The computation methodology. Required.
       oneof methodology {
         // Custom methodology.
         CustomDirectMethodology custom_direct_methodology = 3;
@@ -236,12 +230,7 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology done by data provider.
-      //
-      // Currently, only direct measurement would populate it. During the
-      // transition of adopting this field, this field may not be specified.
-      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
-      // incorporate the new API changes. --)
+      // The computation methodology done by data provider. Required.
       oneof methodology {
         // Custom methodology.
         CustomDirectMethodology custom_direct_methodology = 3;
@@ -266,12 +255,7 @@ message Measurement {
       // incorporate the new API changes. --)
       ProtocolConfig.NoiseMechanism noise_mechanism = 2;
 
-      // The computation methodology done by data provider.
-      //
-      // Currently, only direct measurement would populate it. During the
-      // transition of adopting this field, this field may not be specified.
-      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
-      // incorporate the new API changes. --)
+      // The computation methodology done by data provider. Required.
       oneof methodology {
         // Custom methodology.
         CustomDirectMethodology custom_direct_methodology = 3;
@@ -288,12 +272,7 @@ message Measurement {
       // The population value.
       int64 value = 1;
 
-      // The computation methodology done by data provider.
-      //
-      // Currently, only direct measurement would populate it. During the
-      // transition of adopting this field, this field may not be specified.
-      // (-- TODO(@riemanli): set required for new fulfillment once EDPs
-      // incorporate the new API changes. --)
+      // The computation methodology done by data provider. Required.
       oneof methodology {
         // Deterministic count methodology.
         DeterministicCount deterministic_count = 2;

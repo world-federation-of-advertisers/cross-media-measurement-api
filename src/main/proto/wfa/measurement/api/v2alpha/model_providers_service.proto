@@ -32,6 +32,10 @@ service ModelProviders {
   rpc GetModelProvider(GetModelProviderRequest) returns (ModelProvider) {
     option (google.api.method_signature) = "name";
   }
+
+  // Lists `ModelProvider`s.
+  rpc ListModelProviders(ListModelProvidersRequest)
+      returns (ListModelProvidersResponse);
 }
 
 // Request message for `GetModelProvider` method.
@@ -41,4 +45,31 @@ message GetModelProviderRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/ModelProvider",
     (google.api.field_behavior) = REQUIRED
   ];
+}
+
+// Request message for `ListModelProviders` method.
+message ListModelProvidersRequest {
+  // The maximum number of `ModelProvider`s to return.
+  // The service may return fewer than this value.
+  // If unspecified, at most 50 `ModelProvider`s will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 1;
+
+  // A page token, received from a previous `ListModelProvidersRequest` call.
+  // Provide this to retrieve the subsequent page.
+  //
+  // When paginating, all other parameters provided to
+  // `ListModelProvidersRequest` must match the call that provided the page
+  // token.
+  string page_token = 2;
+}
+
+// Response message for `ListModelProviders` method.
+message ListModelProvidersResponse {
+  // Resources.
+  repeated ModelProvider model_providers = 1;
+
+  // A token, which can be sent as `page_token` to retrieve the next page.
+  // If this field is omitted, there are no subsequent pages.
+  string next_page_token = 2;
 }
