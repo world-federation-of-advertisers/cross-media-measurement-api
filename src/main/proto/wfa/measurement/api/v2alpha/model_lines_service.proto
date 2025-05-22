@@ -35,6 +35,11 @@ service ModelLines {
     option (google.api.method_signature) = "parent,model_line";
   }
 
+  // Get a `ModelLine`.
+  rpc GetModelLine(GetModelLineRequest) returns (ModelLine) {
+    option (google.api.method_signature) = "name";
+  }
+
   // Lists `ModelLine`s for the parent `ModelSuite`.
   rpc ListModelLines(ListModelLinesRequest) returns (ListModelLinesResponse) {
     option (google.api.method_signature) = "parent";
@@ -70,6 +75,15 @@ message CreateModelLineRequest {
   // The `ModelLine` to create. The `name` field will be
   // ignored, and the system will assign an ID.
   ModelLine model_line = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for `GetModelLine` method.
+message GetModelLineRequest {
+  // Resource name of the `ModelLine` to retrieve.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 // Request message for `ListModelLines` method.
