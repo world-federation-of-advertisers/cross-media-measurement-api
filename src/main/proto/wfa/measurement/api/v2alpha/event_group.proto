@@ -168,16 +168,16 @@ message EventGroup {
   // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Interval for when events for this `EventGroup` are available.
+  // Interval for which this [EventGroup][] has events.
   //
-  // For an Ad Campaign these are the start and end dates of the campaign.
+  // When this field is specified, [start_time][google.type.Interval.start_time]
+  // is required. If [end_time][google.type.Interval.end_time] is not specified,
+  // the interval is considered unbounded.
   //
-  // Events are available in the range specified here, but are only guaranteed
-  // to be available for reporting for a paticular `ModelLine` where this range
-  // intersects with the `data_availability_intervals` set forth on the
-  // `DataProvider` for the particular `ModelLine`
+  // If this [EventGroup][] represents an ad campaign, this is typically the
+  // start and end times of the campaign.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted. This will
-  // happen no sooner than the 0.6 relesae.
+  // happen no sooner than the 0.6 release.
   google.type.Interval data_availability_interval = 11;
 }
