@@ -279,4 +279,7 @@ message Requisition {
   // When the 'Requisition' was last updated.
   google.protobuf.Timestamp update_time = 16
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Current etag of the `Requisition`.
+  string etag = 18 [(google.api.field_behavior) = OUTPUT_ONLY];
 }

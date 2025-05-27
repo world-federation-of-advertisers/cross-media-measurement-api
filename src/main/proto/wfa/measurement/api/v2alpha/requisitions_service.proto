@@ -48,6 +48,11 @@ service Requisitions {
   // Fulfills a `Requisition` directly without calling a `Duchy`.
   rpc FulfillDirectRequisition(FulfillDirectRequisitionRequest)
       returns (FulfillDirectRequisitionResponse);
+
+  // Returns the `Requisition` with the specified resource key.
+  rpc GetRequisition(GetRequisitionRequest) returns (Requisition) {
+    option (google.api.method_signature) = "name";
+  };
 }
 
 // Request message for `ListRequisitions` method.
@@ -120,6 +125,14 @@ message RefuseRequisitionRequest {
 
   // Details about the refusal.
   Requisition.Refusal refusal = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Etag of the requisition.
+  //
+  // If it is specified and the value does not match the current etag in the
+  // operation, the operation will not occur and will result in an ABORTED
+  // status.
+  // TODO(@renjiezh): Make this REQUIRED once it has been adopted by all EDPs.
+  string etag = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Request message for `FulfillDirectRequisition` method.
@@ -166,10 +179,27 @@ message FulfillDirectRequisitionRequest {
 
   // Context information related to the fulfillment of the [Requisition][].
   Requisition.FulfillmentContext fulfillment_context = 6;
+
+  // Etag of the requisition.
+  //
+  // If it is specified and the value does not match the current etag in the
+  // operation, the operation will not occur and will result in an ABORTED
+  // status.
+  // TODO(@renjiezh): Make this REQUIRED once it has been adopted by all EDPs.
+  string etag = 7 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for `FulfillDirectRequisition` method.
 message FulfillDirectRequisitionResponse {
   // Resulting state of the `Requisition`.
   Requisition.State state = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+// Request message for `GetRequisition` method.
+message GetRequisitionRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/Requisition",
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
