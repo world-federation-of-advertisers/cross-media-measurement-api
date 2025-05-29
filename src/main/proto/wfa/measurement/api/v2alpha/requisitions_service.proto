@@ -36,16 +36,22 @@ service Requisitions {
     option (google.api.method_signature) = "parent";
   }
 
-  // Transitions a `Requisition` to the `REFUSED` state.
+  // Transitions a [Requisition][] to the [REFUSED][Requisition.State.REFUSED]
+  // state.
   //
-  // This is a terminal state for the `Requisition` and all computations that
-  // rely on the `Requisition` will fail. Consequently, this should only be used
-  // for permanent failures and not transient errors.
+  // This is a terminal state for the [Requisition][], resulting in the
+  // permanent failure of the parent [Measurement][]. Consequently, this should
+  // only be called for permanent failures and not transient errors.
   //
-  // This is a state transition method (see https://aip.dev/216).
+  // This is a [state transition method](https://aip.dev/216).
   rpc RefuseRequisition(RefuseRequisitionRequest) returns (Requisition);
 
-  // Fulfills a `Requisition` directly without calling a `Duchy`.
+  // Fulfills a [Requisition][] using the [Direct][ProtocolConfig.Direct]
+  // protocol.
+  //
+  // This may only be called if [Requisition.protocol_config][] indicates that
+  // the protocol may be used. See the [RequisitionFulfillment][] service to
+  // fulfill using a different protocol.
   rpc FulfillDirectRequisition(FulfillDirectRequisitionRequest)
       returns (FulfillDirectRequisitionResponse);
 }
