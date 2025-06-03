@@ -29,7 +29,11 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 
 // Duchy service for fulfilling `Requisition`s.
 service RequisitionFulfillment {
-  // Fulfills a `Requisition`.
+  // Fulfills a [Requisition][] using a protocol other than
+  // [Direct][ProtocolConfig.Direct].
+  //
+  // See [Requisitions.FulfillDirectRequisition][] for fulfilling a
+  // [Requisition][] using the [Direct][ProtocolConfig.Direct] protocol.
   rpc FulfillRequisition(stream FulfillRequisitionRequest)
       returns (FulfillRequisitionResponse) {}
 }
