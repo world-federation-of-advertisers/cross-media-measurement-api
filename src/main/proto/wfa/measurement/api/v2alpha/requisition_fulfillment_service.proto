@@ -107,6 +107,14 @@ message FulfillRequisitionRequest {
 
     // Context information related to the fulfillment of the [Requisition][].
     Requisition.FulfillmentContext fulfillment_context = 6;
+
+    // Etag of the requisition.
+    //
+    // If it is specified and the value does not match the current etag in the
+    // operation, the operation will not occur and will result in an ABORTED
+    // status.
+    // TODO(@renjiezh): Make this REQUIRED once it has been adopted by all EDPs.
+    string etag = 7 [(google.api.field_behavior) = OPTIONAL];
   }
 
   // The chunk message for this streaming request.
