@@ -162,12 +162,6 @@ message BatchUpdateEventGroupsResponse {
   repeated EventGroup event_groups = 1;
 }
 
-// Response message for `BatchUpdateEventGroups` method.
-message BatchGetMeasurementsResponse {
-  // The `EventGroup` resources.
-  repeated EventGroup event_groups = 1;
-}
-
 // Request message for `DeleteEventGroup` method.
 message DeleteEventGroupRequest {
   // Resource name.
