@@ -98,11 +98,33 @@ message FulfillRequisitionRequest {
       ];
     }
 
+    // Protocol specified values for TrusTEE.
+    message TrusTee {
+      // Specification used to access the KMS and decrypt the data.
+      message EncryptionSpec {
+        // An encrypted data encryption key (dek), which is in the format of
+        // AES-256-GCM.
+        bytes encrypted_data_encryption_key = 1;
+        // The Uri of the key encryption key (kek) in KMS that is used to
+        // decrypt `encrypted_data_encryption_key`.
+        string kms_kek_uri = 2;
+        // Workload Identity Federation provider's resource name from the cloud.
+        string wif_provider = 3;
+      }
+      // A signed message of [EncryptionSpec].
+      //
+      // If not specified, it implies the data is in plaintext.
+      SignedMessage signed_encryption_spec = 1;
+    }
+
     // Protocol specified values.
     oneof protocol {
       // Honest Majority Shuffle based secret sharing protocol. Fulfilled by
       // either chunks (a blob), or a seed.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 5;
+
+      // TrusTEE protocol.
+      TrusTee trus_tee = 8;
     }
 
     // Context information related to the fulfillment of the [Requisition][].

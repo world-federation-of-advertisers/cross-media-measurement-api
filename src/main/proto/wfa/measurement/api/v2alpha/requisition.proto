@@ -143,6 +143,9 @@ message Requisition {
       SignedMessage public_key = 1;
     }
 
+    // Information for the TrusTEE protocol.
+    message TrusTee {}
+
     // Value of a map entry.
     message Value {
       // Resource name of the `Certificate` belonging to the `Duchy`.
@@ -163,6 +166,9 @@ message Requisition {
 
         // Information for the Honest Majority Share Shuffle protocol.
         HonestMajorityShareShuffle honest_majority_share_shuffle = 4;
+
+        // Information for the TrusTEE protocol.
+        TrusTee trus_tee = 5;
       }
     }
     // Value of the map entry.
