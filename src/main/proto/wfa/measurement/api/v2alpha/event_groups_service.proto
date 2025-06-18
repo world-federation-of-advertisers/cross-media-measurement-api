@@ -41,6 +41,11 @@ service EventGroups {
     option (google.api.method_signature) = "parent,event_group";
   }
 
+  // Batch creates `EventGroup`s. Results in an error if any of the specified
+  // `EventGroup`s fail to be created.
+  rpc BatchCreateEventGroups(BatchCreateEventGroupsRequest)
+      returns (BatchCreateEventGroupsResponse) {}
+
   // Updates an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
   // the authenticated user does not have access to the `EventGroup`. Results in
   // a `NOT_FOUND` error if the specified `EventGroup` does not exist.
@@ -49,6 +54,11 @@ service EventGroups {
   rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {
     option (google.api.method_signature) = "event_group";
   }
+
+  // Batch updates `EventGroup`s. Results in an error if any of the specified
+  // `EventGroup`s fail to be updated.
+  rpc BatchUpdateEventGroups(BatchUpdateEventGroupsRequest)
+      returns (BatchUpdateEventGroupsResponse) {}
 
   // Deletes an existing `EventGroup`. `EventGroup` will transition to a DELETED
   // state and will have all of its mutable optional fields cleared. This action
@@ -98,12 +108,56 @@ message CreateEventGroupRequest {
   string request_id = 3;
 }
 
+// Request message for `BatchCreateEventGroups` method.
+message BatchCreateEventGroupsRequest {
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The requests specifying the `EventGroup`s to create. Either all requests
+  // must have the same parent and the parent must match the top-level parent,
+  // or all requests must leave the parent unset. A maximum of 50 `EventGroup`s
+  // can be created in a single batch.
+  repeated CreateEventGroupRequest requests = 2
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for `BatchCreateEventGroups` method.
+message BatchCreateEventGroupsResponse {
+  // The `EventGroup` resources.
+  repeated EventGroup event_groups = 1;
+}
+
 // Request message for `UpdateEventGroup` method.
 // (-- api-linter: core::0134::request-mask-required=disabled
 //     aip.dev/not-precedent: Partial update not supported. --)
 message UpdateEventGroupRequest {
   // Resource.
   EventGroup event_group = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for `BatchUpdateEventGroups` method.
+message BatchUpdateEventGroupsRequest {
+  // Resource name of the parent `DataProvider`.
+  string parent = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The requests specifying the `EventGroup`s to update. Either all requests
+  // must have the same parent and the parent must match the top-level parent,
+  // or all requests must leave the parent unset. A maximum of 50 `EventGroup`s
+  // can be updated in a single batch.
+  repeated UpdateEventGroupRequest requests = 2
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for `BatchUpdateEventGroups` method.
+message BatchUpdateEventGroupsResponse {
+  // The `EventGroup` resources.
+  repeated EventGroup event_groups = 1;
 }
 
 // Request message for `DeleteEventGroup` method.
