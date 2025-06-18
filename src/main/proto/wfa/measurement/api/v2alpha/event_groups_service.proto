@@ -200,7 +200,7 @@ message ListEventGroupsRequest {
     // resource names which [EventGroup.measurement_consumer][] must be in.
     repeated string measurement_consumer_in = 1
         [(google.api.resource_reference).type =
-            "halo.wfanet.org/MeasurementConsumer"];
+             "halo.wfanet.org/MeasurementConsumer"];
     // Set of [DataProvider][wfa.measurement.api.v2alpha.DataProvider] resource
     // names which the canonical parent must be in.
     repeated string data_provider_in = 6
