@@ -121,7 +121,7 @@ message BatchCreateEventGroupsRequest {
   // or all requests must leave the parent unset. A maximum of 50 `EventGroup`s
   // can be created in a single batch.
   repeated CreateEventGroupRequest requests = 2
-  [(google.api.field_behavior) = REQUIRED];
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for `BatchCreateEventGroups` method.
@@ -151,7 +151,7 @@ message BatchUpdateEventGroupsRequest {
   // or all requests must leave the parent unset. A maximum of 50 `EventGroup`s
   // can be updated in a single batch.
   repeated UpdateEventGroupRequest requests = 2
-  [(google.api.field_behavior) = REQUIRED];
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for `BatchUpdateEventGroups` method.
@@ -199,12 +199,11 @@ message ListEventGroupsRequest {
     // [MeasurementConsumer][wfa.measurement.api.v2alpha.MeasurementConsumer]
     // resource names which [EventGroup.measurement_consumer][] must be in.
     repeated string measurement_consumer_in = 1
-    [(google.api.resource_reference).type =
-        "halo.wfanet.org/MeasurementConsumer"];
+        [(google.api.resource_reference).type = "halo.wfanet.org/MeasurementConsumer"];
     // Set of [DataProvider][wfa.measurement.api.v2alpha.DataProvider] resource
     // names which the canonical parent must be in.
     repeated string data_provider_in = 6
-    [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
     // Set of [MediaType][] values which [EventGroup.media_types][] must
     // intersect.
     repeated MediaType media_types_intersect = 2;
