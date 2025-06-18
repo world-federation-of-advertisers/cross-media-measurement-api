@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-syntax = "proto3";
+    syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
@@ -112,8 +112,7 @@ message CreateEventGroupRequest {
 message BatchCreateEventGroupsRequest {
   // Resource name of the parent `DataProvider`.
   string parent = 1 [
-    (google.api.resource_reference).type =
-        "halo.wfanet.org/DataProvider",
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -143,8 +142,7 @@ message UpdateEventGroupRequest {
 message BatchUpdateEventGroupsRequest {
   // Resource name of the parent `DataProvider`.
   string parent = 1 [
-    (google.api.resource_reference).type =
-        "halo.wfanet.org/DataProvider",
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -201,12 +199,12 @@ message ListEventGroupsRequest {
     // [MeasurementConsumer][wfa.measurement.api.v2alpha.MeasurementConsumer]
     // resource names which [EventGroup.measurement_consumer][] must be in.
     repeated string measurement_consumer_in = 1
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/MeasurementConsumer"];
+    [(google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer"];
     // Set of [DataProvider][wfa.measurement.api.v2alpha.DataProvider] resource
     // names which the canonical parent must be in.
     repeated string data_provider_in = 6
-        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+    [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
     // Set of [MediaType][] values which [EventGroup.media_types][] must
     // intersect.
     repeated MediaType media_types_intersect = 2;
