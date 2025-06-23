@@ -111,10 +111,19 @@ message FulfillRequisitionRequest {
         // Workload Identity Federation provider's resource name from the cloud.
         string wif_provider = 3;
       }
-      // A signed message of [EncryptionSpec].
+      // The specification used to access the KMS and decrypt the data.
       //
       // If not specified, it implies the data is in plaintext.
-      SignedMessage signed_encryption_spec = 1;
+      EncryptionSpec encryption_spec = 1;
+
+      // Format of data in [BodyChunk]s after decryption (if encrypted).
+      enum DataFormat {
+        // Default value used if the data format is omitted.
+        DATA_FORMAT_UNSPECIFIED = 0;
+
+        // Frequency vector in bytes.
+        FREQUENCY_VECTOR = 1;
+      }
     }
 
     // Protocol specified values.
