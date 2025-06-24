@@ -102,14 +102,14 @@ message FulfillRequisitionRequest {
     message TrusTee {
       // Specification used to access the KMS and decrypt the data.
       message EncryptionSpec {
-        // An [EncryptionKey] in decrypted format used as data encryption key
+        // An [EncryptionKey] in encrypted format used as data encryption key
         // (DEK).
         //
         // It is Using AES-256-GCM algorithm for symmetric
         // encryption/decryption.
-        EncryptionKey encrypted_data_encryption_key = 1;
+        EncryptionKey encrypted_dek = 1;
         // The Uri of the key encryption key (KEK) in KMS that is used to
-        // decrypt `encrypted_data_encryption_key`.
+        // decrypt `encrypted_dek`.
         string kms_kek_uri = 2;
         // Resource name of the workload identity provider to get access to
         // the KEK.
