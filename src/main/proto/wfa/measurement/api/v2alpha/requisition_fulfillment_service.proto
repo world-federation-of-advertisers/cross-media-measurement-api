@@ -128,6 +128,14 @@ message FulfillRequisitionRequest {
         // Frequency vector in bytes.
         FREQUENCY_VECTOR = 1;
       }
+      // Format of data in [BodyChunk]s after decryption (if encrypted).
+      DataFormat data_format = 2;
+
+      // The SHA256 hash of the PopulationSpec.
+      //
+      // This is computed from the binary serialization of the [PopulationSpec]
+      // proto.
+      bytes population_spec_hash = 3;
     }
 
     // Protocol specified values.
