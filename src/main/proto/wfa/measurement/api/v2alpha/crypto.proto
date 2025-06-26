@@ -101,8 +101,6 @@ message EncryptionPublicKey {
 }
 
 // A encryption key for symmetric encryption and decryption.
-//
-// The content of the key sho
 message EncryptionKey {
   // Format of data for an encryption key.
   enum Format {
