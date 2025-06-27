@@ -135,10 +135,12 @@ message FulfillRequisitionRequest {
       // Format of data in [BodyChunk]s after decryption (if encrypted).
       DataFormat data_format = 2;
 
-      // The fingerprint of the PopulationSpec.
+      // The FarmHash fingerprint of the PopulationSpec.
       //
       // This is a fingerprint computed from the sorted VID ranges in
       // [PopulationSpec].
+      // TODO (@renjiezh): Add detailed description of how to generate
+      // the hash.
       int64 population_spec_fingerprint = 3;
     }
 
