@@ -218,6 +218,9 @@ message ProtocolConfig {
     int32 ring_modulus = 3;
   }
 
+  // Configuration for TrusTEE protocol.
+  message TrusTee {}
+
   // Configuration for a specific protocol.
   message Protocol {
     // Configuration for the specific protocol.
@@ -249,6 +252,14 @@ message ProtocolConfig {
       // seed. The Requisition should be fulfilled at the Duchy that does not
       // have HonestMajorityShareShuffle.public_key in DuchyEntry.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 4;
+
+      // TrusTee protocol.
+      //
+      // May only be set when the measurement type is REACH_AND_FREQUENCY or
+      // REACH. `Requisition`s of this protocol can be fulfilled by calling
+      // RequisitionFulfillment.FulfillRequisition with the metadata and a
+      // frequency vector.
+      TrusTee trus_tee = 5;
     }
   }
 
