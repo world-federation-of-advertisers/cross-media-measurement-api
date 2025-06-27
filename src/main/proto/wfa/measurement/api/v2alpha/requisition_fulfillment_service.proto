@@ -125,8 +125,12 @@ message FulfillRequisitionRequest {
         // Default value used if the data format is omitted.
         DATA_FORMAT_UNSPECIFIED = 0;
 
-        // Frequency vector in bytes.
+        // Frequency vector in plaintext.
         FREQUENCY_VECTOR = 1;
+
+        // Encrypted frequency vector that can be decrypted with
+        // [EncryptionSpec][].
+        ENCRYPTED_FREQUENCY_VECTOR = 2;
       }
       // Format of data in [BodyChunk]s after decryption (if encrypted).
       DataFormat data_format = 2;
