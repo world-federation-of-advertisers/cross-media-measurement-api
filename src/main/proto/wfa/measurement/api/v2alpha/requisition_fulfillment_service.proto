@@ -98,11 +98,63 @@ message FulfillRequisitionRequest {
       ];
     }
 
+    // Protocol specified values for TrusTEE.
+    message TrusTee {
+      // Specification used to access the KMS and decrypt the data.
+      message EncryptionSpec {
+        // An [EncryptionKey] in encrypted format used as data encryption key
+        // (DEK).
+        //
+        // It is Using AES-256-GCM algorithm for symmetric
+        // encryption/decryption.
+        EncryptionKey encrypted_dek = 1;
+        // The Uri of the key encryption key (KEK) in KMS that is used to
+        // decrypt `encrypted_dek`.
+        string kms_kek_uri = 2;
+        // Resource name of the workload identity provider to
+        // impersonate the service account with the KEK access.
+        string workload_identity_provider = 3;
+        // The service account to impersonate to get an access token for the
+        // KEK.
+        string impersonated_service_account = 4;
+      }
+      // The specification used to access the KMS and decrypt the data.
+      //
+      // If not specified, it implies the data is in plaintext.
+      EncryptionSpec encryption_spec = 1;
+
+      // Format of data in [BodyChunk]s after decryption (if encrypted).
+      enum DataFormat {
+        // Default value used if the data format is omitted.
+        DATA_FORMAT_UNSPECIFIED = 0;
+
+        // Frequency vector in plaintext.
+        FREQUENCY_VECTOR = 1;
+
+        // Encrypted frequency vector that can be decrypted with
+        // [EncryptionSpec][].
+        ENCRYPTED_FREQUENCY_VECTOR = 2;
+      }
+      // Format of data in [BodyChunk]s after decryption (if encrypted).
+      DataFormat data_format = 2;
+
+      // The FarmHash fingerprint of the PopulationSpec.
+      //
+      // This is a fingerprint computed from the sorted VID ranges in
+      // [PopulationSpec].
+      // TODO (@renjiezh): Add detailed description of how to generate
+      // the hash.
+      int64 population_spec_fingerprint = 3;
+    }
+
     // Protocol specified values.
     oneof protocol {
       // Honest Majority Shuffle based secret sharing protocol. Fulfilled by
       // either chunks (a blob), or a seed.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 5;
+
+      // TrusTEE protocol.
+      TrusTee trus_tee = 8;
     }
 
     // Context information related to the fulfillment of the [Requisition][].
