@@ -111,9 +111,12 @@ message FulfillRequisitionRequest {
         // The Uri of the key encryption key (KEK) in KMS that is used to
         // decrypt `encrypted_dek`.
         string kms_kek_uri = 2;
-        // Resource name of the workload identity provider to get access to
-        // the KEK.
+        // Resource name of the workload identity provider to
+        // impersonate the service account with the KEK access.
         string workload_identity_provider = 3;
+        // The service account to impersonate to get an access token for the
+        // KEK.
+        string impersonated_service_account = 4;
       }
       // The specification used to access the KMS and decrypt the data.
       //
