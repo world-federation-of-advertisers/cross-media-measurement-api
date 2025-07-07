@@ -49,7 +49,7 @@ message Population {
   // of PopulationSpec.
   message PopulationBlob {
     //  A uri for the population blob.
-    string population_blob_uri = 1;
+    string blob_uri = 1;
   }
 
   // The blob for the population.
