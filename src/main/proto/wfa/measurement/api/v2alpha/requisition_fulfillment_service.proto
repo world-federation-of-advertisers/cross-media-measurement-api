@@ -104,9 +104,6 @@ message FulfillRequisitionRequest {
       message EncryptionSpec {
         // An [EncryptionKey] in encrypted format used as data encryption key
         // (DEK).
-        //
-        // It is Using AES-256-GCM algorithm for symmetric
-        // encryption/decryption.
         EncryptionKey encrypted_dek = 1;
         // The Uri of the key encryption key (KEK) in KMS that is used to
         // decrypt `encrypted_dek`.
@@ -118,10 +115,6 @@ message FulfillRequisitionRequest {
         // KEK.
         string impersonated_service_account = 4;
       }
-      // The specification used to access the KMS and decrypt the data.
-      //
-      // If not specified, it implies the data is in plaintext.
-      EncryptionSpec encryption_spec = 1;
 
       // Format of data in [BodyChunk]s after decryption (if encrypted).
       enum DataFormat {
@@ -129,14 +122,25 @@ message FulfillRequisitionRequest {
         DATA_FORMAT_UNSPECIFIED = 0;
 
         // Frequency vector in plaintext.
+        //
+        // It is an array of 32-bit signed integers in big-endian.
         FREQUENCY_VECTOR = 1;
 
         // Encrypted frequency vector that can be decrypted with
         // [EncryptionSpec][].
+        //
+        // The content of it is an array of 32-bit signed integers in
+        // big-endian. The encryption algorithm is AES-256-GCM.
         ENCRYPTED_FREQUENCY_VECTOR = 2;
       }
       // Format of data in [BodyChunk]s after decryption (if encrypted).
-      DataFormat data_format = 2;
+      DataFormat data_format = 1;
+
+      // The specification used to access the KMS and decrypt the data if the
+      // data is encrypted.
+      //
+      // If not specified, the data is in plaintext.
+      EncryptionSpec encryption_spec = 2;
 
       // The FarmHash fingerprint of the PopulationSpec.
       //
