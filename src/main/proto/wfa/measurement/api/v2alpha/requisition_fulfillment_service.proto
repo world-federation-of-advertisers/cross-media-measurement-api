@@ -139,7 +139,8 @@ message FulfillRequisitionRequest {
       // The specification used to access the KMS and decrypt the data if the
       // data is encrypted.
       //
-      // If not specified, the data is in plaintext.
+      // Required if [data_format][] is
+      // [DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
       EncryptionSpec encryption_spec = 2;
 
       // The FarmHash fingerprint of the PopulationSpec.
