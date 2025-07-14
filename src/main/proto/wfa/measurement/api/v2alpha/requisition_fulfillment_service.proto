@@ -100,9 +100,9 @@ message FulfillRequisitionRequest {
 
     // Protocol specified values for TrusTEE.
     message TrusTee {
-      // Specification for envelope decryption, where the Data Encryption Key
+      // Specification for envelope encryption, where the Data Encryption Key
       // (DEK) is sent in an encrypted form.
-      message EnvelopeDecryption {
+      message EnvelopeEncryption {
         // An [EncryptionKey] in an encrypted format, used as the Data
         // Encryption Key (DEK).
         EncryptionKey encrypted_dek = 1;
@@ -114,21 +114,6 @@ message FulfillRequisitionRequest {
         string workload_identity_provider = 3;
         // The service account to impersonate to get an access token for the
         // KEK.
-        string impersonated_service_account = 4;
-      }
-
-      // Specification for key derivation, where the Data Encryption Key
-      // (DEK) is derived from a master key.
-      message KeyDerivation {
-        // The context used for key derivation.
-        bytes derivation_context = 1;
-        // The URI of the master key in KMS used for key derivation.
-        string kms_master_key_uri = 2;
-        // Resource name of the workload identity provider to impersonate the
-        // service account with the master key access.
-        string workload_identity_provider = 3;
-        // The service account to impersonate to get an access token for the
-        // master key.
         string impersonated_service_account = 4;
       }
 
@@ -152,17 +137,12 @@ message FulfillRequisitionRequest {
       // Format of data in [BodyChunk]s after decryption (if encrypted).
       DataFormat data_format = 1;
 
-      // The specification used to access the KMS and decrypt the data if the
-      // data is encrypted.
+      // Specification for envelope encryption used to access the KMS and
+      // decrypt the data if the data is encrypted.
       //
       // Required if [data_format][] is
       // [DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
-      oneof decryption_spec {
-        // Specification for envelope decryption.
-        EnvelopeDecryption envelope_decryption = 2;
-        // Specification for key derivation.
-        KeyDerivation key_derivation = 3;
-      }
+      EnvelopeEncryption envelope_encryption = 2;
 
       // The FarmHash fingerprint of the PopulationSpec.
       //
@@ -170,7 +150,7 @@ message FulfillRequisitionRequest {
       // [PopulationSpec].
       // TODO (@renjiezh): Add detailed description of how to generate
       // the hash.
-      int64 population_spec_fingerprint = 4;
+      int64 population_spec_fingerprint = 3;
     }
 
     // Protocol specified values.
