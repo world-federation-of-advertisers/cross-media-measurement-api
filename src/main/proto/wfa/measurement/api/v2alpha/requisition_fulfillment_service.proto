@@ -100,19 +100,35 @@ message FulfillRequisitionRequest {
 
     // Protocol specified values for TrusTEE.
     message TrusTee {
-      // Specification used to access the KMS and decrypt the data.
-      message EncryptionSpec {
-        // An [EncryptionKey] in encrypted format used as data encryption key
-        // (DEK).
+      // Specification for envelope decryption, where the Data Encryption Key
+      // (DEK) is sent in an encrypted form.
+      message EnvelopeDecryption {
+        // An [EncryptionKey] in an encrypted format, used as the Data
+        // Encryption Key (DEK).
         EncryptionKey encrypted_dek = 1;
-        // The Uri of the key encryption key (KEK) in KMS that is used to
+        // The URI of the Key Encryption Key (KEK) in a KMS that is used to
         // decrypt `encrypted_dek`.
         string kms_kek_uri = 2;
-        // Resource name of the workload identity provider to
-        // impersonate the service account with the KEK access.
+        // Resource name of the workload identity provider to impersonate the
+        // service account with KEK access.
         string workload_identity_provider = 3;
         // The service account to impersonate to get an access token for the
         // KEK.
+        string impersonated_service_account = 4;
+      }
+
+      // Specification for key derivation, where the Data Encryption Key
+      // (DEK) is derived from a master key.
+      message KeyDerivation {
+        // The context used for key derivation.
+        bytes derivation_context = 1;
+        // The URI of the master key in KMS used for key derivation.
+        string kms_master_key_uri = 2;
+        // Resource name of the workload identity provider to impersonate the
+        // service account with the master key access.
+        string workload_identity_provider = 3;
+        // The service account to impersonate to get an access token for the
+        // master key.
         string impersonated_service_account = 4;
       }
 
@@ -126,8 +142,8 @@ message FulfillRequisitionRequest {
         // It is an array of 32-bit signed integers in big-endian.
         FREQUENCY_VECTOR = 1;
 
-        // Encrypted frequency vector that can be decrypted with
-        // [EncryptionSpec][].
+        // Encrypted frequency vector that can be decrypted using one of the
+        // decryption specifications.
         //
         // The content of it is an array of 32-bit signed integers in
         // big-endian. The encryption algorithm is AES-256-GCM.
@@ -141,7 +157,12 @@ message FulfillRequisitionRequest {
       //
       // Required if [data_format][] is
       // [DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
-      EncryptionSpec encryption_spec = 2;
+      oneof decryption_spec {
+        // Specification for envelope decryption.
+        EnvelopeDecryption envelope_decryption = 2;
+        // Specification for key derivation.
+        KeyDerivation key_derivation = 3;
+      }
 
       // The FarmHash fingerprint of the PopulationSpec.
       //
@@ -149,7 +170,7 @@ message FulfillRequisitionRequest {
       // [PopulationSpec].
       // TODO (@renjiezh): Add detailed description of how to generate
       // the hash.
-      int64 population_spec_fingerprint = 3;
+      int64 population_spec_fingerprint = 4;
     }
 
     // Protocol specified values.
