@@ -99,3 +99,31 @@ message EncryptionPublicKey {
   // decrypt messages given a private key.
   bytes data = 2 [(google.api.field_behavior) = REQUIRED];
 }
+
+// A encryption key for symmetric encryption and decryption.
+message EncryptionKey {
+  // Format of data for an encryption key.
+  enum Format {
+    // Default value used if the format is omitted.
+    FORMAT_UNSPECIFIED = 0;
+
+    // Tink Encrypted Keyset format.
+    //
+    // [data][] is a serialized `google.crypto.tink.EncryptedKeyset` message.
+    // It is ciphertext, meaning the underlying key material has been encrypte
+    // by a master key. To be used, [data][] must be decrypted (e.g., using
+    // Tink's `KeysetHandle.read` with a KMS client) to obtain a usable keyset.
+    //
+    // Ciphertexts use Tink's wire format. See
+    // https://developers.google.com/tink/wire-format.
+    TINK_ENCRYPTED_KEYSET = 1;
+  }
+  // Format of data for this key.
+  Format format = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The format-specific key data.
+  //
+  // [format][] and [data][] together must specify all necessary information to
+  // decrypt ciphertexts.
+  bytes data = 2 [(google.api.field_behavior) = REQUIRED];
+}

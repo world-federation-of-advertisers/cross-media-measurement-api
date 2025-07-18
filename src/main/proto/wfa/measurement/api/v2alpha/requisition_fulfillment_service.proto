@@ -98,11 +98,69 @@ message FulfillRequisitionRequest {
       ];
     }
 
+    // Protocol specified values for TrusTEE.
+    message TrusTee {
+      // Specification for envelope encryption, where the Data Encryption Key
+      // (DEK) is sent in an encrypted form.
+      message EnvelopeEncryption {
+        // An [EncryptionKey] in an encrypted format, used as the Data
+        // Encryption Key (DEK).
+        EncryptionKey encrypted_dek = 1;
+        // The URI of the Key Encryption Key (KEK) in a KMS that is used to
+        // decrypt `encrypted_dek`.
+        string kms_kek_uri = 2;
+        // Resource name of the workload identity provider to impersonate the
+        // service account with KEK access.
+        string workload_identity_provider = 3;
+        // The service account to impersonate to get an access token for the
+        // KEK.
+        string impersonated_service_account = 4;
+      }
+
+      // Format of data in [BodyChunk]s after decryption (if encrypted).
+      enum DataFormat {
+        // Default value used if the data format is omitted.
+        DATA_FORMAT_UNSPECIFIED = 0;
+
+        // Frequency vector in plaintext.
+        //
+        // It is an array of 32-bit signed integers in big-endian.
+        FREQUENCY_VECTOR = 1;
+
+        // Encrypted frequency vector that can be decrypted using one of the
+        // decryption specifications.
+        //
+        // The content of it is an array of 32-bit signed integers in
+        // big-endian. The encryption algorithm is AES-256-GCM.
+        ENCRYPTED_FREQUENCY_VECTOR = 2;
+      }
+      // Format of data in [BodyChunk]s after decryption (if encrypted).
+      DataFormat data_format = 1;
+
+      // Specification for envelope encryption used to access the KMS and
+      // decrypt the data if the data is encrypted.
+      //
+      // Required if [data_format][] is
+      // [DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
+      EnvelopeEncryption envelope_encryption = 2;
+
+      // The FarmHash fingerprint of the PopulationSpec.
+      //
+      // This is a fingerprint computed from the sorted VID ranges in
+      // [PopulationSpec].
+      // TODO (@renjiezh): Add detailed description of how to generate
+      // the hash.
+      int64 population_spec_fingerprint = 3;
+    }
+
     // Protocol specified values.
     oneof protocol {
       // Honest Majority Shuffle based secret sharing protocol. Fulfilled by
       // either chunks (a blob), or a seed.
       HonestMajorityShareShuffle honest_majority_share_shuffle = 5;
+
+      // TrusTEE protocol.
+      TrusTee trus_tee = 8;
     }
 
     // Context information related to the fulfillment of the [Requisition][].
