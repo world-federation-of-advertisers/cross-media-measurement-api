@@ -48,8 +48,8 @@ message Population {
   // A reference to a population blob. The blob content must be an instance
   // of PopulationSpec.
   message PopulationBlob {
-    //  A uri for the model blob.
-    string model_blob_uri = 1;
+    //  A uri for the population blob.
+    string blob_uri = 1;
   }
 
   // The blob for the population.
