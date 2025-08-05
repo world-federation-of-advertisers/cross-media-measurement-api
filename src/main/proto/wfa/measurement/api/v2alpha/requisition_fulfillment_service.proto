@@ -124,14 +124,16 @@ message FulfillRequisitionRequest {
 
         // Frequency vector in plaintext.
         //
-        // It is an array of 32-bit signed integers in big-endian.
+        // It is an array of 8-bit unsigned integers, where each byte
+        // represents a frequency.
         FREQUENCY_VECTOR = 1;
 
         // Encrypted frequency vector that can be decrypted using one of the
         // decryption specifications.
         //
-        // The content of it is an array of 32-bit signed integers in
-        // big-endian. The encryption algorithm is AES-256-GCM.
+        // The content of it is an array of 8-bit unsigned integers (bytes),
+        // where each byte represents a frequency. The encryption algorithm is
+        // AES-256-GCM.
         ENCRYPTED_FREQUENCY_VECTOR = 2;
       }
       // Format of data in [BodyChunk]s after decryption (if encrypted).
