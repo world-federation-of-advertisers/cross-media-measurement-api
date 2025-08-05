@@ -61,6 +61,17 @@ message EventFieldDescriptor {
   // it can be used as a dimension for grouping metrics in `BasicReport`.
   // An example of an EventField that is likely to be `GROUPABLE` is AgeGroup.
   repeated ReportingFeature reporting_features = 5;
+
+  // The template version when this field was added.
+  //
+  // This value must be less than or equal to the Event version.
+  int32 version_added = 6;
+
+  // The template version when this field was removed.
+  //
+  // This value must be less than or equal to the Event version, and it must be
+  // greater than `version_added`.
+  int32 version_removed = 7;
 }
 
 // Descriptor for an event template message type.
@@ -80,12 +91,18 @@ message EventTemplateDescriptor {
   // annotated with a `media_type` then it applies to all `MediaType`s
   MediaType media_type = 4;
 }
+// Descriptor for an Event message type.
+message EventDescriptor {
+  // The current version of the Event. Must be positive.
+  int32 current_version = 2;
+}
 
 // Custom options for messages. Numbering starts at 50000 which is the start of
 // the range for internal use.
 extend google.protobuf.MessageOptions {
   EventTemplateDescriptor event_template = 50000;
   EventFieldDescriptor event_field = 50001 [deprecated = true];
+  EventDescriptor event = 50002;
 }
 
 // Custom options for fields. Numbering starts at 50000 which is the start of
