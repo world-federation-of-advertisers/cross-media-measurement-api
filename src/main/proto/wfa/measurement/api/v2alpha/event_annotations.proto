@@ -62,15 +62,15 @@ message EventFieldDescriptor {
   // An example of an EventField that is likely to be `GROUPABLE` is AgeGroup.
   repeated ReportingFeature reporting_features = 5;
 
-  // The template version when this field was added.
+  // The Event version when this field was added.
   //
-  // This value must be less than or equal to the Event version.
+  // This value must be less than or equal to the Event `current_version`.
   int32 version_added = 6;
 
-  // The template version when this field was removed.
+  // The Event version when this field was removed.
   //
-  // This value must be less than or equal to the Event version, and it must be
-  // greater than `version_added`.
+  // This value must be less than or equal to the Event `current_version`, and
+  // it must be greater than `version_added`.
   int32 version_removed = 7;
 }
 
