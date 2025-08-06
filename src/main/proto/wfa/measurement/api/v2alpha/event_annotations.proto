@@ -93,7 +93,10 @@ message EventTemplateDescriptor {
 }
 // Descriptor for an Event message type.
 message EventDescriptor {
-  // The current version of the Event. Must be positive.
+  // The current version of the Event. Must be positive. Updates to any
+  // particular Event message must be monotonically increasing. We also
+  // recommend maintaining a comment history in the Event message that describes
+  // the changes between each version.
   int32 current_version = 2;
 }
 
