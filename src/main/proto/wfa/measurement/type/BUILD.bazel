@@ -1,0 +1,14 @@
+load("@com_google_protobuf//bazel:proto_library.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+IMPORT_PREFIX = "/src/main/proto"
+
+proto_library(
+    name = "future_disposition_proto",
+    srcs = ["future_disposition.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_protobuf//:descriptor_proto",
+    ],
+)

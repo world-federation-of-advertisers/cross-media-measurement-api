@@ -108,6 +108,7 @@ proto_library(
     deps = [
         ":crypto_proto",
         ":measurement_consumer_proto",
+        "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
@@ -133,6 +134,7 @@ proto_library(
         ":event_group_metadata_proto",
         ":event_template_proto",
         ":media_type_proto",
+        "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
@@ -218,6 +220,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":differential_privacy_proto",
+        "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
     ],
 )
@@ -231,6 +234,7 @@ proto_library(
         ":direct_computation_proto",
         ":multi_party_computation_proto",
         ":protocol_config_proto",
+        "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:any_proto",
@@ -526,6 +530,7 @@ proto_library(
         ":crypto_proto",
         ":measurement_proto",
         ":requisition_proto",
+        "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",

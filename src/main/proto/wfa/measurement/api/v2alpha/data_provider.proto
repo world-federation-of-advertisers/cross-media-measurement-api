@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -74,7 +75,8 @@ message DataProvider {
   //
   // This field is being replaced by by `data_availability_intervals` and is
   // planned be deprecated no sooner than in the Halo CMM 0.6 release.
-  google.type.Interval data_availability_interval = 7;
+  google.type.Interval data_availability_interval = 7
+      [(type.future_disposition) = DEPRECATED];
 
   // Capabilities of a `DataProvider`.
   message Capabilities {
