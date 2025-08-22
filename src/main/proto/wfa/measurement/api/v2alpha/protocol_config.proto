@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -230,7 +231,8 @@ message ProtocolConfig {
       // May only be set when the measurement type is REACH_AND_FREQUENCY or
       // REACH. `Requisition`s using this protocol can be fulfilled by calling
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
-      LiquidLegionsV2 liquid_legions_v2 = 1;
+      LiquidLegionsV2 liquid_legions_v2 = 1
+          [(type.future_disposition) = DEPRECATED];
 
       // Direct protocol.
       //
@@ -243,7 +245,8 @@ message ProtocolConfig {
       // Must only be set when the measurement type is REACH. `Requisition`s
       // using this protocol can be fulfilled by calling
       // RequisitionFulfillment/FulfillRequisition with an encrypted sketch.
-      ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3;
+      ReachOnlyLiquidLegionsV2 reach_only_liquid_legions_v2 = 3
+          [(type.future_disposition) = DEPRECATED];
 
       // Honest Majority Shuffle Based Secret Sharing protocol.
       //
@@ -263,7 +266,7 @@ message ProtocolConfig {
     }
   }
 
-  // Configuration for the specific protocol. Required. Immutable.
+  // Configuration for the specific protocol. Deprecated.
   oneof protocol {
     // Liquid Legions v2 config.
     //
@@ -276,7 +279,8 @@ message ProtocolConfig {
   // Set of protocols that may be used for this `Measurement`.
   repeated Protocol protocols = 4 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
   ];
 }
 
