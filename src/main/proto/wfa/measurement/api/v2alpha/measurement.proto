@@ -25,6 +25,7 @@ import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -82,7 +83,8 @@ message Measurement {
       // `FulfillDirectRequisitionRequest`. --)
       string data_provider_certificate = 1 [
         (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
-        (google.api.field_behavior) = REQUIRED
+        (google.api.field_behavior) = REQUIRED,
+        (type.future_disposition) = DEPRECATED
       ];
 
       // Pre-shared packed `EncryptionPublicKey`.
@@ -157,7 +159,8 @@ message Measurement {
       // specified.
       // (-- TODO(@riemanli): set required for new fulfillment once EDPs
       // incorporate the new API changes. --)
-      ProtocolConfig.NoiseMechanism noise_mechanism = 2;
+      ProtocolConfig.NoiseMechanism noise_mechanism = 2
+          [(type.future_disposition) = REQUIRED];
 
       // The computation methodology. Required.
       oneof methodology {

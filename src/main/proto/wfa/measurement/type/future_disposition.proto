@@ -1,0 +1,44 @@
+// Copyright 2025 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// (--
+//    api-linter: core::0123::resource-annotation=disabled
+//    aip.dev/not-precedent: These are protobuf annotations, not API messages.
+//  --)
+
+syntax = "proto3";
+
+package wfa.measurement.type;
+
+import "google/protobuf/descriptor.proto";
+
+option java_package = "org.wfanet.measurement.type";
+option java_multiple_files = true;
+option java_outer_classname = "FutureDispositionProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/type/typepb";
+
+// The disposition planned in a future release.
+enum FutureDisposition {
+  // Disposition is unspecified.
+  FUTURE_DISPOSITION_UNSPECIFIED = 0;
+  // Planned to be required.
+  REQUIRED = 1;
+  // Planned to be deprecated.
+  DEPRECATED = 2;
+}
+
+// Custom options for fields.
+extend google.protobuf.FieldOptions {
+  FutureDisposition future_disposition = 50010;
+}
