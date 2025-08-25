@@ -23,6 +23,7 @@ import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -70,13 +71,14 @@ message EventGroup {
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
   // sooner than the Halo CMM 0.6 release.
-  repeated MediaType media_types = 13;
+  repeated MediaType media_types = 13 [(type.future_disposition) = REQUIRED];
 
   // Metadata that describes the events entailed by the EventGroup.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
   // sooner than the Halo CMM 0.6 release.
-  EventGroupMetadata event_group_metadata = 14;
+  EventGroupMetadata event_group_metadata = 14
+      [(type.future_disposition) = REQUIRED];
 
   // Deprecated: This field was never adopted and is no longer used.
   // Instead, per `ModelLine` `EventGroup` data availability will be inferred by
@@ -103,8 +105,10 @@ message EventGroup {
   // `media_types`, but should continue to be set alongside `media_types` until
   // it is formally marked deprecated. It will be deprecated no sooner than the
   // Halo CMM 0.6 release.
-  repeated EventTemplate event_templates = 7
-      [(google.api.field_behavior) = UNORDERED_LIST];
+  repeated EventTemplate event_templates = 7 [
+    (google.api.field_behavior) = UNORDERED_LIST,
+    (type.future_disposition) = DEPRECATED
+  ];
 
   // Wrapper for per-EDP EventGroup metadata.
   message Metadata {
@@ -132,7 +136,8 @@ message EventGroup {
   // `event_group_metadata` but until this field is marked deprecated it should
   // continue to be written alongside `event_group_metadata`. It will be
   // deprecated no sooner than the Halo CMM 0.6 release.
-  EncryptedMessage encrypted_metadata = 10;
+  EncryptedMessage encrypted_metadata = 10
+      [(type.future_disposition) = DEPRECATED];
 
   // Encrypted serialized `Metadata`.
   //
@@ -145,9 +150,10 @@ message EventGroup {
   // The version of the `EncryptionPublicKey` message must match the API version
   // used to last update this resource.
   //
-  // This field will be deprcated in a future release. See `encrypted_metadata`
+  // This field will be deprecated in a future release. See `encrypted_metadata`
   // for additional information.
-  google.protobuf.Any measurement_consumer_public_key = 12;
+  google.protobuf.Any measurement_consumer_public_key = 12
+      [(type.future_disposition) = DEPRECATED];
 
   // Signed pre-shared packed `EncryptionPublicKey`.
   //
@@ -179,5 +185,6 @@ message EventGroup {
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted. This will
   // happen no sooner than the 0.6 release.
-  google.type.Interval data_availability_interval = 11;
+  google.type.Interval data_availability_interval = 11
+      [(type.future_disposition) = REQUIRED];
 }

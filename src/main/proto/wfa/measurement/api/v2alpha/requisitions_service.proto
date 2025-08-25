@@ -22,6 +22,7 @@ import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -58,7 +59,7 @@ service Requisitions {
   // Returns the `Requisition` with the specified resource key.
   rpc GetRequisition(GetRequisitionRequest) returns (Requisition) {
     option (google.api.method_signature) = "name";
-  };
+  }
 }
 
 // Request message for `ListRequisitions` method.
@@ -138,7 +139,10 @@ message RefuseRequisitionRequest {
   // operation, the operation will not occur and will result in an ABORTED
   // status.
   // TODO(@renjiezh): Make this REQUIRED once it has been adopted by all EDPs.
-  string etag = 3 [(google.api.field_behavior) = OPTIONAL];
+  string etag = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (type.future_disposition) = REQUIRED
+  ];
 }
 
 // Request message for `FulfillDirectRequisition` method.
@@ -156,9 +160,7 @@ message FulfillDirectRequisitionRequest {
   //
   // The versions of the `SignedMessage` and `Measurement.Result` message types
   // must match the API version of this request message.
-  //
-  // This may be required in the future.
-  EncryptedMessage encrypted_result = 4;
+  EncryptedMessage encrypted_result = 4 [(type.future_disposition) = REQUIRED];
 
   // Encrypted `SignedMessage` containing a `Measurement.Result`.
   //
@@ -192,7 +194,10 @@ message FulfillDirectRequisitionRequest {
   // operation, the operation will not occur and will result in an ABORTED
   // status.
   // TODO(@renjiezh): Make this REQUIRED once it has been adopted by all EDPs.
-  string etag = 7 [(google.api.field_behavior) = OPTIONAL];
+  string etag = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (type.future_disposition) = REQUIRED
+  ];
 }
 
 // Response message for `FulfillDirectRequisition` method.
