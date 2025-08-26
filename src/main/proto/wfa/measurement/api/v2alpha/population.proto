@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/event_template.proto";
+import "wfa/measurement/api/v2alpha/population_spec.proto";
 import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -53,23 +54,26 @@ message Population {
     //
     // This must be unique across all [Population][] resources for the parent
     // [DataProvider][].
-    //
-    // Note that this field is only mutable to allow changes to the URI itself.
-    // The contents of the blob must never change.
     string blob_uri = 1 [(google.api.field_behavior) = REQUIRED];
-    // The type URL of the PopulationSpec message version.
-    //
-    // Note that this should be immutable, and the only reason it is mutable is
-    // due to existing resources that may not yet have this set.
-    //
-    // (-- api-linter: core::0140::uri=disabled
-    //     aip.dev/not-precedent: This mirrors the type_url field in
-    //     protobuf.Any. --)
-    string blob_type_url = 2 [(type.future_disposition) = REQUIRED];
   }
 
-  // The blob for the population.
-  PopulationBlob population_blob = 4 [(google.api.field_behavior) = REQUIRED];
+  // Reference to the [PopulationSpec][]. Required.
+  oneof population_spec_ref {
+    // The blob for the population.
+    //
+    // Deprecated. New resources must use [population_spec][] instead.
+    PopulationBlob population_blob = 4
+        [deprecated = true, (google.api.field_behavior) = IMMUTABLE];
+
+    // The specification of this [Population][]. Required for new resources.
+    //
+    // This must be unique across all [Population][] resources for the parent
+    // [DataProvider][].
+    PopulationSpec population_spec = 6 [
+      (google.api.field_behavior) = IMMUTABLE,
+      (type.future_disposition) = REQUIRED
+    ];
+  }
 
   // The EventTemplate that this population conforms to.
   //
@@ -78,10 +82,4 @@ message Population {
   // [attributes][PopulationSpec.SubPopulation.attributes] element corresponds
   // to an event template.
   EventTemplate event_template = 5 [deprecated = true];
-
-  // etag for this resource. See https://google.aip.dev/154
-  //
-  // If this is specified in a request and it does not match the current etag
-  // then an ABORTED error will be returned.
-  string etag = 6;
 }

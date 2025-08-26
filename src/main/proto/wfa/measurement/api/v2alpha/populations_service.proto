@@ -20,6 +20,7 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/population.proto";
+import "wfa/measurement/api/v2alpha/population_spec.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -43,23 +44,6 @@ service Populations {
       returns (ListPopulationsResponse) {
     option (google.api.method_signature) = "parent";
   }
-
-  // Updates a [Population][].
-  //
-  // (-- api-linter: core::0134::method-signature=disabled
-  //     aip.dev/not-precedent: Partial update not supported. --)
-  rpc UpdatePopulation(UpdatePopulationRequest) returns (Population) {
-    option (google.api.method_signature) = "population";
-  }
-
-  // Retrieves a [Population][] by lookup key.
-  //
-  // (-- api-linter: core::0131::synonyms=disabled
-  //     aip.dev/not-precedent: There is a separate Get method. --)
-  // (-- api-linter: core::0136::response-message-name=disabled
-  //     aip.dev/not-precedent: This method operates on a single resource using
-  //     a unique key rather than name. --)
-  rpc LookupPopulation(LookupPopulationRequest) returns (Population);
 }
 
 // Request message for `GetPopulation` method.
@@ -73,6 +57,13 @@ message CreatePopulationRequest {
   // The `Population` to create. The `name` field will be
   // ignored, and the system will assign an ID.
   Population population = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Unique identifier for this request.
+  //
+  // Limited to 36 ASCII characters. This may be an RFC 4211 UUID.
+  //
+  // The request is only idempotent if this field is specified.
+  string request_id = 3;
 }
 
 // Request message for `GetPopulation` method.
@@ -115,30 +106,4 @@ message ListPopulationsResponse {
   // A token, which can be sent as `page_token` to retrieve the next page.
   // If this field is omitted, there are no subsequent pages.
   string next_page_token = 2;
-}
-
-// Request message for `UpdatePopulation` method.
-//
-// (-- api-linter: core::0134::request-mask-required=disabled
-//     aip.dev/not-precedent: Partial update not supported. --)
-message UpdatePopulationRequest {
-  // Resource to update.
-  //
-  // The [Population.etag][] field is required.
-  Population population = 1 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Request message for `LookupPopulation` method.
-message LookupPopulationRequest {
-  // Resource name of the parent `DataProvider`.
-  string parent = 1 [
-    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  // Lookup key. Required.
-  oneof lookup_key {
-    // PopulationSpec blob URI.
-    string blob_uri = 2;
-  }
 }
