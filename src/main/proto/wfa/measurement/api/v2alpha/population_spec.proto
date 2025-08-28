@@ -25,44 +25,47 @@ option java_multiple_files = true;
 option java_outer_classname = "PopulationSpecProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// Specification for a `Population`. Immutable.
+// Specification for a [Population][]. Immutable.
 message PopulationSpec {
   // A range of Virtual Person IDs (VIDs).
   message VidRange {
     // The starting ID for this range of VIDs
-    //
-    // This field is required.
     int64 start_vid = 1 [(google.api.field_behavior) = REQUIRED];
 
-    // The inclusive ending ID for this range of VIDs.
+    // The ending ID for this range of VIDs, inclusive.
     //
-    // If this has the same value as `start_id` the range contains
+    // If this has the same value as [start_id][] the range contains
     // a single VID.
     int64 end_vid_inclusive = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
-  // A sub-population of the population defined by the `PopulationSpec`.
+  // A sub-population of the population defined by the [PopulationSpec][].
   //
-  // A `SubPopulation` is composed of a set of `VidRange`s,
+  // A [SubPopulation][] is composed of a set of [VidRange][]s,
   // all of which share the same attributes.
   message SubPopulation {
-    // The attributes of the Subpopulation.
+    // The unique attributes of the sub-population.
     //
-    // The 'type_url' of each element must reference a known
-    // message type annotated with the `EventTemplateDescriptor`
-    // message option.
+    // Each element represents a single event template. Therefore the
+    // [type_url][google.protobuf.Any.type_url] of each element must reference a
+    // known event template type, i.e. a message type annotated with the
+    // `event_template` message option.
     //
-    // Each attribute must also instantiate all fields of the referenced
-    // message type that are marked as `population_field`s
+    // All population attribute fields across all event templates for the CMMS
+    // instance must be set. Population attribute fields are those with the
+    // [EventFieldDescriptor.population_attribute][] field set to `true`.
     repeated google.protobuf.Any attributes = 1;
 
-    // The set of `VidRange`s for this Subpopulation.
-    repeated VidRange vid_ranges = 2;
+    // The set of disjoint VID ranges for this sub-population.
+    repeated VidRange vid_ranges = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
-  // The set of `SubPopulations` that comprise this `PopulationSpec`.
+  // The set of [SubPopulation][]s that comprise this [PopulationSpec][].
   //
-  // Each `SubPopulation` must reference a distinct set of attributes.
-  repeated SubPopulation subpopulations = 3
-      [(google.api.field_behavior) = REQUIRED];
+  // [SubPopulation.vid_ranges][] must be disjoint across all elements, and the
+  // set of [SubPopulation.attributes][] must be unique across all elements.
+  repeated SubPopulation subpopulations = 3 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 }
