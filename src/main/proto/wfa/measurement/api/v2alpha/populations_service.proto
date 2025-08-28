@@ -56,6 +56,15 @@ message CreatePopulationRequest {
   // The `Population` to create. The `name` field will be
   // ignored, and the system will assign an ID.
   Population population = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Unique identifier for this request.
+  //
+  // Limited to 36 ASCII characters. This may be an RFC 4211 UUID.
+  //
+  // The request is only idempotent if this field is specified.
+  // (-- api-linter: core::0155::request-id-format=disabled
+  //     aip.dev/not-precedent: Formats other than UUID are supported. --)
+  string request_id = 3;
 }
 
 // Request message for `GetPopulation` method.
