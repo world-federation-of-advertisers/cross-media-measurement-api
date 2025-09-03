@@ -20,6 +20,8 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/event_template.proto";
+import "wfa/measurement/api/v2alpha/population_spec.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -48,19 +50,36 @@ message Population {
   // A reference to a population blob. The blob content must be an instance
   // of PopulationSpec.
   message PopulationBlob {
-    //  A uri for the population blob.
-    string blob_uri = 1;
+    // A uri for the population blob.
+    //
+    // This must be unique across all [Population][] resources for the parent
+    // [DataProvider][].
+    string blob_uri = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
-  // The blob for the population.
-  PopulationBlob population_blob = 4 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+  // Reference to the [PopulationSpec][]. Required.
+  oneof population_spec_ref {
+    // The blob for the population.
+    //
+    // Deprecated. New resources must use [population_spec][] instead.
+    PopulationBlob population_blob = 4
+        [deprecated = true, (google.api.field_behavior) = IMMUTABLE];
+
+    // The specification of this [Population][]. Required for new resources.
+    //
+    // This must be unique across all [Population][] resources for the parent
+    // [DataProvider][].
+    PopulationSpec population_spec = 6 [
+      (google.api.field_behavior) = IMMUTABLE,
+      (type.future_disposition) = REQUIRED
+    ];
+  }
 
   // The EventTemplate that this population conforms to.
-  EventTemplate event_template = 5 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+  //
+  // Deprecated. The event templates can be determined from the
+  // [PopulationSpec][], as each
+  // [attributes][PopulationSpec.SubPopulation.attributes] element corresponds
+  // to an event template.
+  EventTemplate event_template = 5 [deprecated = true];
 }
