@@ -44,8 +44,7 @@ message ModelLine {
   string description = 3;
 
   // The start of the time range when this `ModelLine` is active (available for
-  // labeling), inclusive. When specified in a request message, this must be in
-  // the future.
+  // labeling), inclusive.
   google.protobuf.Timestamp active_start_time = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
