@@ -69,11 +69,32 @@ message GetModelReleaseRequest {
 
 // Request message for `ListModelReleases` method.
 message ListModelReleasesRequest {
-  // Resource name of the parent `ModelSuite`.
+  // Resource name of the parent [ModelSuite][].
+  //
+  // The wildcard ID (`-`) may be used in place of the [ModelSuite][] ID to list
+  // across every [ModelSuite][] in the ancestor [ModelProvider][].
   string parent = 1 [
-    (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
+    (google.api.resource_reference).child_type = "halo.wfanet.org/ModelRelease",
     (google.api.field_behavior) = REQUIRED
   ];
+
+  // Structured filter criteria.
+  //
+  // Each field represents a term in a conjunction. If a field is not specified,
+  // its value is not considered as part of the criteria.
+  // (-- api-linter: core::0140::prepositions=disabled
+  //     aip.dev/not-precedent: Using structured filter instead of AIP-160. --)
+  message Filter {
+    // Set of [Population][] resource names which [ModelRelease.population][]
+    // must be in.
+    repeated string population_in = 1
+        [(google.api.resource_reference).type = "halo.wfanet.org/Population"];
+  }
+  // Filter criteria for this request.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
+  Filter filter = 4;
 
   // The maximum number of `ModelRelease`s to return.
   // The service may return fewer than this value.
