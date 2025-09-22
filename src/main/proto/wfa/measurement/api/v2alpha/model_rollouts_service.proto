@@ -73,7 +73,10 @@ message CreateModelRolloutRequest {
 
 // Request message for `ListModelRollouts` method.
 message ListModelRolloutsRequest {
-  // Resource name of the parent `ModelLine`.
+  // Resource name of the parent [ModelLine][].
+  //
+  // The wildcard ID (`-`) may be used in place of the [ModelLine][] ID to list
+  // across every [ModelLine][] in the ancestor [ModelSuite][].
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
     (google.api.field_behavior) = REQUIRED
@@ -94,10 +97,22 @@ message ListModelRolloutsRequest {
   string page_token = 3;
 
   // Filter criteria for a `ListModelRolloutsRequest`.
+  //
+  // Each field represents a term in a conjunction. If a field is not specified,
+  // its value is not considered as part of the criteria.
+  // (-- api-linter: core::0140::prepositions=disabled
+  //     aip.dev/not-precedent: Using structured filter instead of AIP-160. --)
   message Filter {
     // Only 'ModelRollout's having 'rollout_deploy_period' overlapping
     // 'rollout_period_overlapping' are returned.
     DateInterval rollout_period_overlapping = 1;
+
+    // Set of [ModelRelease][] resource names which
+    // [ModelRollout.model_release][] must be in.
+    // 
+    // These must belong to the same [ModelSuite][] as specified in [parent][].
+    repeated string model_release_in = 2
+        [(google.api.resource_reference).type = "halo.wfanet.org/ModelRelease"];
   }
   // Filter criteria for this request.
   // (-- api-linter: core::0132::request-field-types=disabled
