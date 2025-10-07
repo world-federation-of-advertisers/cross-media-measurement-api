@@ -105,14 +105,19 @@ message DataProvider {
     // [Requisition][] within that interval. See
     // [RequisitionSpec.EventGroupEntry.Value.collection_interval][].
     //
-    // If this field is specified, both `start_time` and `end_time` must be set.
+    // This interval must be fully contained by the active range of the
+    // corresponding [ModelLine][].
+    //
+    // If this field is specified, both
+    // [start_time][google.type.Interval.start_time] and
+    // [end_time][google.type.Interval.end_time] must be set.
     google.type.Interval value = 2 [(google.api.field_behavior) = REQUIRED];
   }
   // A map of [ModelLine][] resource name to data availability interval.
   //
   // TODO(@kungfucraig): Make this REQUIRED once it has been adopted, and no
   // earlier than the 0.7 release. Once this is required, it may be an error to
-  // create a [Measurement][] unless the interval specified by
+  // create a [Measurement][] if the interval specified by
   // [RequisitionSpec][] does not fall into the availability interval for
   // [MeasurementSpec.model_line][].
   repeated DataAvailabilityMapEntry data_availability_intervals = 9
