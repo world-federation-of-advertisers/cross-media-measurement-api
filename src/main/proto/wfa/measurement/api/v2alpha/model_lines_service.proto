@@ -162,7 +162,12 @@ message SetModelLineActiveEndTimeRequest {
 
 // Request message for `EnumerateValidModelLines` method.
 message EnumerateValidModelLinesRequest {
-  // Resource name of the parent `ModelSuite`.
+  // Resource name of the parent [ModelSuite][].
+  //
+  // The wildcard ID (`-`) may be used in place of the [ModelSuite][] ID to list
+  // across every [ModelSuite][] in the ancestor [ModelProvider][]. If this is
+  // done, then the wildcard ID may also be used in place of the
+  // [ModelProvider][] ID to list across all ancestors.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
     (google.api.field_behavior) = REQUIRED
