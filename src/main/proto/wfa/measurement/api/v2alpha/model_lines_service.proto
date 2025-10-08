@@ -90,7 +90,12 @@ message GetModelLineRequest {
 
 // Request message for `ListModelLines` method.
 message ListModelLinesRequest {
-  // Resource name of the parent `ModelSuite`.
+  // Resource name of the parent [ModelSuite][].
+  //
+  // The wildcard ID (`-`) may be used in place of the [ModelSuite][] ID to list
+  // across every [ModelSuite][] in the ancestor [ModelProvider][]. If this is
+  // done, then the wildcard ID may also be used in place of the
+  // [ModelProvider][] ID to list across all ancestors.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/ModelSuite",
     (google.api.field_behavior) = REQUIRED
@@ -109,13 +114,21 @@ message ListModelLinesRequest {
   // must match the call that provided the page token.
   string page_token = 3;
 
-  // Filter criteria for a `ListModelLines` request.
+  // Structured filter criteria.
   //
-  // Repeated fields are treated as logical ORs, and multiple
-  // fields specified as logical ANDs.
+  // Each field represents a term in a conjunction. If a field is not specified,
+  // its value is not considered as part of the criteria.
+  // (-- api-linter: core::0140::prepositions=disabled
+  //     api-linter: core::0142::time-field-names=disabled
+  //     aip.dev/not-precedent: Using structured filter instead of AIP-160. --)
   message Filter {
-    // Matches against the `type` of the `ModelLine`.
-    repeated ModelLine.Type types = 1;
+    // Set of [ModelLine.Type][] values which [ModelLine.type][] must
+    // in.
+    repeated ModelLine.Type type_in = 1;
+
+    // Time interval which must be fully contained by the interval specified by
+    // [ModelLine.active_start_time][] and [ModelLine.active_end_time][].
+    google.type.Interval active_interval_contains = 2;
   }
   // Filter criteria for this request.
   // (-- api-linter: core::0132::request-field-types=disabled
