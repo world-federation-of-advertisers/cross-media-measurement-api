@@ -220,7 +220,10 @@ message ProtocolConfig {
   }
 
   // Configuration for TrusTEE protocol.
-  message TrusTee {}
+  message TrusTee {
+    // The mechanism to generate noise during the computation.
+    NoiseMechanism noise_mechanism = 1;
+  }
 
   // Configuration for a specific protocol.
   message Protocol {
