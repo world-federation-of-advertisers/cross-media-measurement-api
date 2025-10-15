@@ -82,6 +82,9 @@ message DataProvider {
   message Capabilities {
     // Whether the Honest Majority Share Shuffle (HMSS) protocol is supported.
     bool honest_majority_share_shuffle_supported = 1;
+
+    // Whether the TrusTEE protocol is supported.
+    bool trus_tee_supported = 2;
   }
   // Capabilities of this `DataProvider`.
   //
