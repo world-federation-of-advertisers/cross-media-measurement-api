@@ -222,7 +222,7 @@ message ProtocolConfig {
   // Configuration for TrusTEE protocol.
   message TrusTee {
     // The mechanism to generate noise during the computation.
-    NoiseMechanism noise_mechanism = 1;
+    NoiseMechanism noise_mechanism = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Configuration for a specific protocol.
