@@ -49,13 +49,20 @@ service ModelLines {
   // (-- api-linter: core::0134::synonyms=disabled
   //     aip.dev/not-precedent: This is not a standard Update method. --)
   rpc SetModelLineHoldbackModelLine(SetModelLineHoldbackModelLineRequest)
-      returns (ModelLine);
+      returns (ModelLine) {
+    option deprecated = true;
+  }
 
   // Sets the `active_end_time` for a `ModelLine`.
   // (-- api-linter: core::0134::synonyms=disabled
   //     aip.dev/not-precedent: This is not a standard Update method. --)
   rpc SetModelLineActiveEndTime(SetModelLineActiveEndTimeRequest)
       returns (ModelLine);
+
+  // Sets the [type][ModelLine.type] field of a [ModelLine][].
+  // (-- api-linter: core::0134::synonyms=disabled
+  //     aip.dev/not-precedent: This is not a standard Update method. --)
+  rpc SetModelLineType(SetModelLineTypeRequest) returns (ModelLine);
 
   // Enumerates the [ModelLine][]s which are available across all specified
   // [DataProvider][]s for the specified time interval.
@@ -155,9 +162,10 @@ message SetModelLineHoldbackModelLineRequest {
   ];
 
   // The holdback model line resource name.
+  //
+  // If not specified, the field will be cleared.
   string holdback_model_line = 2 [
-    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
-    (google.api.field_behavior) = REQUIRED
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine"
   ];
 }
 
@@ -171,6 +179,18 @@ message SetModelLineActiveEndTimeRequest {
 
   // The active_end_time value to be set.
   google.protobuf.Timestamp active_end_time = 2;
+}
+
+// Request message for the [ModelLines.SetModelLineType][] method.
+message SetModelLineTypeRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Type value to be set.
+  ModelLine.Type type = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `EnumerateValidModelLines` method.
