@@ -1,0 +1,103 @@
+// Copyright 2025 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
+import "wfa/measurement/api/v2alpha/event_group_activity.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "EventGroupActivitiesServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// Service for interacting with `EventGroupActivity` resources.
+service EventGroupActivityService {
+  // Batch creates or updates `EventGroupActivities`. Results in an error if any of the specified
+  // `EventGroupActivity`s fail to be updated.
+  rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
+      returns (BatchUpdateEventGroupActivitiesResponse) {}
+
+  // Deletes an existing `EventGroupActivity`. Results in a `PERMISSION_DENIED` error if the
+  // authenticated user does not have access to the `EventGroupActivity`. Results in a
+  // `NOT_FOUND` error if the specified `EventGroupActivity` does not exist.
+  rpc DeleteEventGroupActivity(DeleteEventGroupActivityRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
+  }
+
+  // Batch deletes `EventGroupActivities`. Results in an error if any of the specified
+  // `EventGroupActivity`s fail to be updated.
+  rpc BatchDeleteEventGroupActivities(BatchDeleteEventGroupActivitiesRequest)
+    returns (google.protobuf.Empty) {}
+}
+
+// Request message for `DeleteEventGroupActivity` method.
+message DeleteEventGroupActivityRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "measurement.wfanet.org/EventGroupActivity"
+    }
+  ];
+}
+
+// Request message for BatchUpdateEventGroupActivities method.
+message BatchUpdateEventGroupActivitiesRequest {
+  // The parent EventGroup resource where these EventGroupActivities will be
+  // created or updated.
+  // Format: dataProviders/{data_provider}/eventGroups/{event_group}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "measurement.wfanet.org/EventGroupActivity"
+    }
+  ];
+
+  // The requests for updating EventGroupActivities.
+  // A maximum of 1000 EventGroupActivities can be updated in a batch.
+  repeated UpdateEventGroupActivityRequest requests = 2
+  [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for BatchUpdateEventGroupActivities method.
+message BatchUpdateEventGroupActivitiesResponse {
+  // The updated EventGroupActivities.
+  repeated EventGroupActivity event_group_activities = 1;
+}
+
+// Request message for the `BatchDeleteEventGroupActivities` method.
+message BatchDeleteEventGroupActivitiesRequest {
+  // The parent EventGroup resource name.
+  // Format: dataProviders/{data_provider}/eventGroups/{event_group}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "edpaggregator.halo-cmm.org/EventGroupActivity"
+    }
+  ];
+
+  // The resource names of the EventGroupActivity to delete.
+  repeated string names = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "edpaggregator.halo-cmm.org/EventGroupActivity"
+    }
+  ];
+}

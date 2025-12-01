@@ -1,0 +1,42 @@
+// Copyright 2025 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/type/date.proto";
+
+// A grouping of activities for a `EventGroup`.
+message EventGroupActivity {
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/EventGroupActivity"
+    pattern: "dataProviders/{data_provider}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}"
+    pattern: "measurementConsumers/{measurement_consumer}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}"
+    singular: "eventGroupActivity"
+    plural: "eventGroupActivities"
+  };
+
+
+  // Resource name.
+  //
+  // Canonical format: dataProviders/{data_provider}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+
+  // The date of the activity.
+  google.type.Date date = 2 [(google.api.field_behavior) = REQUIRED];
+}
