@@ -61,6 +61,8 @@ message DeleteEventGroupActivityRequest {
 }
 
 // Request message for `UpdateEventGroupActivity` method.
+// (-- api-linter: core::0134::request-mask-required=disabled
+//     aip.dev/not-precedent: Partial update not supported. --)
 message UpdateEventGroupActivityRequest {
   // Resource
   EventGroupActivity event_group_activity = 1
