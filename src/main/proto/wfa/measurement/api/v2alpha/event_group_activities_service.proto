@@ -63,12 +63,13 @@ message DeleteEventGroupActivityRequest {
 // Request message for `UpdateEventGroupActivity` method.
 message UpdateEventGroupActivityRequest {
   // Resource
-  EventGroupActivity event_group_activity = 1  [(google.api.field_behavior) = REQUIRED];
+  EventGroupActivity event_group_activity = 1
+      [(google.api.field_behavior) = REQUIRED];
 
-  // If set to true, and the event group activity is not found, a new event group activity will be created.
+  // If set to true, and the event group activity is not found, a new event
+  // group activity will be created.
   bool allow_missing = 2;
 }
-
 
 // Request message for BatchUpdateEventGroupActivities method.
 message BatchUpdateEventGroupActivitiesRequest {
