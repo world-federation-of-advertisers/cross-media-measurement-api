@@ -231,7 +231,8 @@ message ListEventGroupsRequest {
     // Query for text search on string fields in
     // [EventGroup.event_group_metadata][].
     string metadata_search_query = 5;
-    DateInterval activity_interval = 6;
+    // Duration when there are [EventGroupActivity][]
+    DateInterval activity_interval = 9;
   }
   // Filter criteria for this request.
   //
