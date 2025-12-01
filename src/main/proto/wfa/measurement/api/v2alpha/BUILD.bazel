@@ -143,6 +143,17 @@ proto_library(
 )
 
 proto_library(
+    name = "event_group_activity_proto",
+    srcs = ["event_group_activity.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:date_proto",
+    ],
+)
+
+proto_library(
     name = "event_group_metadata_proto",
     srcs = ["event_group_metadata.proto"],
     strip_import_prefix = IMPORT_PREFIX,
@@ -613,6 +624,19 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "event_group_activities_service_proto",
+    srcs = ["event_group_activities_service.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        ":event_group_activity_proto",
+        "@com_google_googleapis//google/api:client_proto",
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
     ],
 )
 
