@@ -30,12 +30,11 @@ message EventGroupActivity {
     plural: "eventGroupActivities"
   };
 
-
   // Resource name.
   //
-  // Canonical format: dataProviders/{data_provider}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}
+  // Canonical format:
+  // dataProviders/{data_provider}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
-
 
   // The date of the activity.
   google.type.Date date = 2 [(google.api.field_behavior) = REQUIRED];

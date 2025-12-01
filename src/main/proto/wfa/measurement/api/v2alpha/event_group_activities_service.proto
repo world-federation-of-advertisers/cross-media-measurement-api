@@ -28,23 +28,24 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 
 // Service for interacting with `EventGroupActivity` resources.
 service EventGroupActivityService {
-  // Batch creates or updates `EventGroupActivities`. Results in an error if any of the specified
-  // `EventGroupActivity`s fail to be updated.
+  // Batch creates or updates `EventGroupActivities`. Results in an error if any
+  // of the specified `EventGroupActivity`s fail to be updated.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
       returns (BatchUpdateEventGroupActivitiesResponse) {}
 
-  // Deletes an existing `EventGroupActivity`. Results in a `PERMISSION_DENIED` error if the
-  // authenticated user does not have access to the `EventGroupActivity`. Results in a
-  // `NOT_FOUND` error if the specified `EventGroupActivity` does not exist.
+  // Deletes an existing `EventGroupActivity`. Results in a `PERMISSION_DENIED`
+  // error if the authenticated user does not have access to the
+  // `EventGroupActivity`. Results in a `NOT_FOUND` error if the specified
+  // `EventGroupActivity` does not exist.
   rpc DeleteEventGroupActivity(DeleteEventGroupActivityRequest)
       returns (google.protobuf.Empty) {
     option (google.api.method_signature) = "name";
   }
 
-  // Batch deletes `EventGroupActivities`. Results in an error if any of the specified
-  // `EventGroupActivity`s fail to be updated.
+  // Batch deletes `EventGroupActivities`. Results in an error if any of the
+  // specified `EventGroupActivity`s fail to be updated.
   rpc BatchDeleteEventGroupActivities(BatchDeleteEventGroupActivitiesRequest)
-    returns (google.protobuf.Empty) {}
+      returns (google.protobuf.Empty) {}
 }
 
 // Request message for `DeleteEventGroupActivity` method.
@@ -73,7 +74,7 @@ message BatchUpdateEventGroupActivitiesRequest {
   // The requests for updating EventGroupActivities.
   // A maximum of 1000 EventGroupActivities can be updated in a batch.
   repeated UpdateEventGroupActivityRequest requests = 2
-  [(google.api.field_behavior) = REQUIRED];
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for BatchUpdateEventGroupActivities method.
