@@ -20,6 +20,7 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
+import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
 
@@ -84,6 +85,9 @@ message GetEventGroupRequest {
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup",
     (google.api.field_behavior) = REQUIRED
   ];
+
+  // The view of EventGroup to return
+  EventGroup.View view = 2;
 }
 
 // Request message for `CreateEventGroup` method.
@@ -227,6 +231,7 @@ message ListEventGroupsRequest {
     // Query for text search on string fields in
     // [EventGroup.event_group_metadata][].
     string metadata_search_query = 5;
+    DateInterval activity_interval = 6;
   }
   // Filter criteria for this request.
   //

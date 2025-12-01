@@ -21,6 +21,7 @@ import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
+import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
 import "wfa/measurement/type/future_disposition.proto";
@@ -187,4 +188,24 @@ message EventGroup {
   // happen no sooner than the 0.6 release.
   google.type.Interval data_availability_interval = 11
       [(type.future_disposition) = REQUIRED];
+
+  // View of an `EventGroup`.
+  enum View {
+    // The default/unset value.
+    //
+    // The API will default to the `BASIC` view unless otherwise specified by
+    // the method.
+    VIEW_UNSPECIFIED = 0;
+
+    // Basic view.
+    BASIC = 1;
+
+    // View with activity summary
+    WITH_ACTIVITY_SUMMARY = 2;
+  }
+
+  // Summary of continuous activity date intervals for this EventGroup.
+  //
+  // Only set in `WITH_ACTIVITY_SUMMARY` view.
+  repeated DateInterval activity_intervals = 15;
 }
