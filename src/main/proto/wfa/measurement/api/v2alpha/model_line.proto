@@ -61,35 +61,34 @@ message ModelLine {
     // The default value if 'Type' is omitted. Should not be used.
     TYPE_UNSPECIFIED = 0;
     // DEV `ModelLine`s are used to test new `ModelRelease`s. They are not
-    // available to `MeasurementConsumer`s when generating reports.
+    // available to all `MeasurementConsumer`s when generating reports.
     DEV = 1;
     // Default 'ModelLine' that must be used to generate reports for
     // `MeasurementConsumer`s.
     PROD = 2;
     // Used to generate reports in case of PROD 'ModelLine' outages. Holdback
     // 'ModelLine' should only includes stable and bug-free 'ModelRelease's.
-    HOLDBACK = 3;
+    HOLDBACK = 3 [deprecated = true];
   }
 
   // Type of this `ModelLine`.
   //
   // `DataProvider`s must label events using all available `ModelLine`s
   // independently of their type.
-  Type type = 6 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
+  Type type = 6 [(google.api.field_behavior) = REQUIRED];
 
-  // The holdback 'ModelLine' that must be used to generate reports in case this
-  // `ModelLine` presents outages. Only 'ModelLine's having `type` equal to
-  // `PROD` can have a holdback model line set. Any attempt of setting a
-  // holdback model line to a 'ModelLine' that does not have type equals to
-  // 'PROD' will result in an error.
+  // The holdback [ModelLine][] that must be used to generate reports in case
+  // this [ModelLine][] presents outages. May only be set if [type][] is
+  // [ModelLine.Type.PROD][]. The [type][] of the referenced [ModelLine][] must
+  // be [ModelLine.Type.HOLDBACK][].
   // (-- api-linter: core::0121::no-mutable-cycles=disabled
-  //     aip.dev/not-precedent: This complexity is needed to support holdbacks.
+  //     aip.dev/not-precedent: This is not cyclical as it can only ever refer
+  //     to a different ModelLine.
   //     --)
-  string holdback_model_line = 7
-      [(google.api.resource_reference).type = "halo.wfanet.org/ModelLine"];
+  string holdback_model_line = 7 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    deprecated = true
+  ];
 
   // When the 'ModelLine' was created.
   google.protobuf.Timestamp create_time = 8
