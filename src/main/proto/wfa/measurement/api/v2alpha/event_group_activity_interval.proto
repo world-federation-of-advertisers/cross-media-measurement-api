@@ -16,14 +16,16 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
+import "google/type/date.proto";
+
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "EventGroupActivityIntervalProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// A date interval for event group activity. This is intended for mirroring the existing
-// `google.type.Interval` proto message, replacing google.protobuf.Timestamp
-// fields type with google.type.Date
+// A date interval for event group activity. This is intended for mirroring the
+// existing `google.type.Interval` proto message, replacing
+// google.protobuf.Timestamp fields type with google.type.Date
 message EventGroupActivityInterval {
   // Start of the activity date interval, inclusive.
   google.type.Date start_date = 1;
