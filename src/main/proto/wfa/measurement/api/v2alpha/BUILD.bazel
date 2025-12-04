@@ -131,6 +131,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":crypto_proto",
+        ":event_group_activity_interval_proto",
         ":event_group_metadata_proto",
         ":event_template_proto",
         ":media_type_proto",

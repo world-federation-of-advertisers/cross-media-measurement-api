@@ -22,6 +22,7 @@ import "google/protobuf/any.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
+import "wfa/measurement/api/v2alpha/event_group_activity_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
 import "wfa/measurement/type/future_disposition.proto";
@@ -204,8 +205,8 @@ message EventGroup {
     WITH_ACTIVITY_SUMMARY = 2;
   }
 
-  // Summary of continuous activity date intervals for this EventGroup.
+  // Summary of continuous activity intervals for this EventGroup.
   //
   // Only set in `WITH_ACTIVITY_SUMMARY` view.
-  repeated DateInterval activity_intervals = 15;
+  repeated EventGroupActivityInterval activity_intervals = 15;
 }
