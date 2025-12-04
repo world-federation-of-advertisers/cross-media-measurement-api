@@ -55,7 +55,7 @@ message DeleteEventGroupActivityRequest {
   string name = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
-      type: "measurement.wfanet.org/EventGroupActivity"
+      type: "halo.wfanet.org/EventGroupActivity"
     }
   ];
 }
@@ -81,7 +81,7 @@ message BatchUpdateEventGroupActivitiesRequest {
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
-      child_type: "measurement.wfanet.org/EventGroupActivity"
+      child_type: "halo.wfanet.org/EventGroupActivity"
     }
   ];
 

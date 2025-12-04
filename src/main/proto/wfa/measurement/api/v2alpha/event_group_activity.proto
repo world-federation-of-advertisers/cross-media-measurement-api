@@ -29,8 +29,8 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 message EventGroupActivity {
   option (google.api.resource) = {
     type: "halo.wfanet.org/EventGroupActivity"
-    pattern: "dataProviders/{data_provider}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}"
-    pattern: "measurementConsumers/{measurement_consumer}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}"
+    pattern: "dataProviders/{data_provider}/eventGroups/{event_group}/activities/{activity}"
+    pattern: "measurementConsumers/{measurement_consumer}/eventGroups/{event_group}/activities/{activity}"
     singular: "eventGroupActivity"
     plural: "eventGroupActivities"
   };
@@ -38,7 +38,7 @@ message EventGroupActivity {
   // Resource name.
   //
   // Canonical format:
-  // dataProviders/{data_provider}/eventGroups/{event_group}/eventGroupActivities/{event_group_activity}
+  // dataProviders/{data_provider}/eventGroups/{event_group}/activities/{event_group_activity}
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
   // The date of the activity.

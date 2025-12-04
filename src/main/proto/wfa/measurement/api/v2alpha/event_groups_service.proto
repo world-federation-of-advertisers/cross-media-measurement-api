@@ -231,8 +231,8 @@ message ListEventGroupsRequest {
     // Query for text search on string fields in
     // [EventGroup.event_group_metadata][].
     string metadata_search_query = 5;
-    // Duration when there are [EventGroupActivity][]
-    DateInterval activity_interval = 9;
+    // Activity duration that must be fully contained (including both ends)
+    DateInterval activity_contains = 9;
   }
   // Filter criteria for this request.
   //
@@ -263,6 +263,9 @@ message ListEventGroupsRequest {
   // (-- api-linter: core::0132::request-field-types=disabled
   //     aip.dev/not-precedent: Only supporting a limited set of orderings. --)
   OrderBy order_by = 6;
+
+  // The view of EventGroup to return
+  EventGroup.View view = 7;
 }
 
 // Response message for `ListEventGroups` method.
