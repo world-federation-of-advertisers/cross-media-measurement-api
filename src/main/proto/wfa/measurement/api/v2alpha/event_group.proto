@@ -207,6 +207,7 @@ message EventGroup {
 
   // Wrapper for activity summary.
   message ActivitySummary {
+    //
     repeated EventGroupActivityInterval activity_intervals = 1;
   }
 
