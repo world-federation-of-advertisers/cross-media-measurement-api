@@ -205,8 +205,13 @@ message EventGroup {
     WITH_ACTIVITY_SUMMARY = 2;
   }
 
-  // Summary of continuous activity intervals for this EventGroup.
+  // Wrapper for EventGroup activity summary.
+  message ActivitySummary {
+    repeated EventGroupActivityInterval activity_intervals = 1;
+  }
+
+  // Summary of activities for this EventGroup.
   //
   // Only set in `WITH_ACTIVITY_SUMMARY` view.
-  repeated EventGroupActivityInterval activity_intervals = 15;
+  ActivitySummary summary = 15;
 }
