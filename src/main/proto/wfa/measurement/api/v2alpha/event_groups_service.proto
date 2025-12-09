@@ -231,7 +231,10 @@ message ListEventGroupsRequest {
     // Query for text search on string fields in
     // [EventGroup.event_group_metadata][].
     string metadata_search_query = 5;
-    // Activity duration that must be fully contained (including both ends)
+    // Interval that must be fully contained by an
+    // [activity_summary.interval][EventGroup.ActivitySummary.interval] in the
+    // [EventGroup][]. [start_date][DateInterval.start_date] and
+    // [end_date][DateInterval.end_date] are required.
     DateInterval activity_contains = 9;
   }
   // Filter criteria for this request.

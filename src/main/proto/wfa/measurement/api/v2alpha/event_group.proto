@@ -213,5 +213,5 @@ message EventGroup {
   // Summary of activities for this EventGroup.
   //
   // Only set in `WITH_ACTIVITY_SUMMARY` view.
-  ActivitySummary summary = 15;
+  ActivitySummary activity_summary = 15;
 }
