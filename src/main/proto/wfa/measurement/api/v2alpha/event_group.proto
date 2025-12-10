@@ -22,7 +22,6 @@ import "google/protobuf/any.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
-import "wfa/measurement/api/v2alpha/event_group_activity_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
 import "wfa/measurement/type/future_disposition.proto";
@@ -205,14 +204,13 @@ message EventGroup {
     WITH_ACTIVITY_SUMMARY = 2;
   }
 
-  // Wrapper for activity summary.
-  message ActivitySummary {
-    // Collapsed activity intervals.
-    repeated EventGroupActivityInterval activity_intervals = 1;
+  // Aggregated EventGroupActivity for a contiguous date interval.
+  message AggregatedActivity {
+    DateInterval interval = 1;
   }
 
-  // Summary of activities for this EventGroup.
+  // A summary of EventGroupActivity resources for this EventGroup.
   //
-  // Only set in `WITH_ACTIVITY_SUMMARY` view.
-  ActivitySummary activity_summary = 15;
+  // Only set when the view is `WITH_ACTIVITY_SUMMARY`.
+  repeated AggregatedActivity aggregated_activities = 15 [(google.api.field_behavior) = OUTPUT_ONLY)];
 }
