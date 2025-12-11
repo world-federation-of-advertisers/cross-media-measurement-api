@@ -206,6 +206,7 @@ message EventGroup {
 
   // Aggregated EventGroupActivity for a contiguous date interval.
   message AggregatedActivity {
+    // Aggregated interval.
     DateInterval interval = 1;
   }
 
