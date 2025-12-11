@@ -212,5 +212,5 @@ message EventGroup {
   // A summary of EventGroupActivity resources for this EventGroup.
   //
   // Only set when the view is `WITH_ACTIVITY_SUMMARY`.
-  repeated AggregatedActivity aggregated_activities = 15 [(google.api.field_behavior) = OUTPUT_ONLY)];
+  repeated AggregatedActivity aggregated_activities = 15 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
