@@ -19,6 +19,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -29,6 +30,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -40,6 +42,7 @@ proto_library(
         ":crypto_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -52,6 +55,7 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -66,6 +70,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -77,6 +82,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -87,6 +93,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -98,6 +105,7 @@ proto_library(
         ":crypto_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -112,6 +120,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -140,6 +149,7 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -160,6 +170,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -169,6 +180,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -204,6 +216,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:duration_proto",
     ],
 )
@@ -214,6 +227,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -223,6 +237,7 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -234,6 +249,7 @@ proto_library(
         ":differential_privacy_proto",
         "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -250,6 +266,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -262,6 +279,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -273,6 +291,7 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -280,8 +299,7 @@ proto_library(
     name = "media_type_proto",
     srcs = [":media_type.proto"],
     strip_import_prefix = IMPORT_PREFIX,
-    deps = [
-    ],
+    deps = [],
 )
 
 proto_library(
@@ -291,6 +309,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -301,6 +320,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -314,6 +334,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -324,6 +345,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -338,6 +360,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -351,6 +374,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -366,6 +390,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:empty_proto",
     ],
 )
@@ -377,6 +402,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -390,6 +416,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -400,6 +427,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -413,6 +441,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:empty_proto",
     ],
 )
@@ -425,6 +454,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -439,6 +469,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -452,6 +483,7 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -463,6 +495,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -475,6 +508,7 @@ proto_library(
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -485,6 +519,7 @@ proto_library(
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -499,6 +534,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -509,6 +545,7 @@ proto_library(
         ":public_key_proto",
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -520,6 +557,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -531,6 +569,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -546,6 +585,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -560,6 +600,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -572,6 +613,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -584,6 +626,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -599,6 +642,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:interval_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -611,6 +655,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -625,6 +670,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -652,6 +698,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -663,6 +710,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -675,6 +723,7 @@ proto_library(
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_googleapis//google/type:date_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -686,6 +735,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -708,6 +758,7 @@ proto_library(
         "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
@@ -721,6 +772,7 @@ proto_library(
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
 
@@ -732,5 +784,6 @@ proto_library(
         ":event_template_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
     ],
 )
