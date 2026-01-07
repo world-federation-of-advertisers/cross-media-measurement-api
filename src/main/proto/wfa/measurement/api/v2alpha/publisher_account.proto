@@ -24,8 +24,7 @@ option java_multiple_files = true;
 option java_outer_classname = "PublisherAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// An account that is owned by a `MeasurementConsumer` within the
-// `DataProvider`'s ecosystem.
+// An account of a MeasurementConsumer within the DataProvider ecosystem.
 message PublisherAccount {
   option (google.api.resource) = {
     type: "halo.wfanet.org/PublisherAccount"
