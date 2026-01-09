@@ -21,26 +21,41 @@ import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "PublisherAccountProto";
+option java_outer_classname = "AdAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// An account of a MeasurementConsumer within the DataProvider ecosystem.
-message PublisherAccount {
+// A mapping of a `MeasurementConsumer` to an ad account within a `DataProvider`'s
+// ecosystem.
+//
+// This resource exists to provide a representation of an ad account that can be
+// mapped back to a `MeasurementConsumer` ID, enabling `EventGroup` registration
+// within the EDP Aggregator.
+//
+// Each `AdAccount` is owned and managed by the operator on behalf of the
+// `MeasurementConsumer`. The `reference_id` is known by the `DataProvider` and
+// shared with the operator out of band.
+//
+// A given `MeasurementConsumer` may have more than one `AdAccount` for the same
+// `DataProvider`.
+message AdAccount {
   option (google.api.resource) = {
-    type: "halo.wfanet.org/PublisherAccount"
-    pattern: "dataProviders/{data_provider}/publisherAccounts/{publisher_account}"
-    pattern: "measurementConsumers/{measurement_consumer}/publisherAccounts/{publisher_account}"
-    singular: "publisherAccount"
-    plural: "publisherAccounts"
+    type: "halo.wfanet.org/AdAccount"
+    // The `MeasurementConsumer` is the canonical parent as
+    // the operator (on behalf of the `MeasurementConsumer`) is responsible for
+    // managing these resources.
+    pattern: "measurementConsumers/{measurement_consumer}/adAccounts/{ad_account}"
+    pattern: "dataProviders/{data_provider}/adAccounts/{ad_account}"
+    singular: "adAccount"
+    plural: "adAccounts"
   };
 
   // Resource name.
   //
   // Canonical format:
-  // dataProviders/{data_provider}/publisherAccounts/{publisher_account}
+  // measurementConsumers/{measurement_consumer}/adAccounts/{ad_account}
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  // Resource name of the `DataProvider` whose ecosystem this `PublisherAccount`
+  // Resource name of the `DataProvider` whose ecosystem this `AdAccount`
   // exists within.
   string data_provider = 2 [
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
@@ -48,15 +63,6 @@ message PublisherAccount {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  // Resource name of the `MeasurementConsumer` that owns this
-  // `PublisherAccount` within the `DataProvider`'s ecosystem.
-  string measurement_consumer = 3 [
-    (google.api.resource_reference).type =
-        "halo.wfanet.org/MeasurementConsumer",
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
-  ];
-
-  // External reference ID for the account in the `DataProvider`'s ecosystem.
-  string external_reference_id = 4;
+  // Reference ID for the account in the `DataProvider`'s ecosystem.
+  string reference_id = 3;
 }
