@@ -66,5 +66,5 @@ message AdAccount {
   // Reference ID for the account in the `DataProvider`'s ecosystem.
   //
   // This must be unique per (`MeasurementConsumer`, `DataProvider`) pair.
-  string reference_id = 3;
+  string ad_account_reference_id = 3;
 }
