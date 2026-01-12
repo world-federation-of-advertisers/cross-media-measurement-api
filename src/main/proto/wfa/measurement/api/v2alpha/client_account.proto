@@ -21,41 +21,41 @@ import "google/api/resource.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "AdAccountProto";
+option java_outer_classname = "ClientAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// An ad account belonging to a `MeasurementConsumer` within a `DataProvider`'s
+// A client account belonging to a `MeasurementConsumer` within a `DataProvider`'s
 // ecosystem.
 //
-// This resource exists to provide a representation of an ad account that can be
+// This resource exists to provide a representation of a client account that can be
 // mapped back to a `MeasurementConsumer` ID, enabling `EventGroup` registration
 // within the EDP Aggregator.
 //
-// Each `AdAccount` is owned and managed by the operator on behalf of the
+// Each `ClientAccount` is owned and managed by the operator on behalf of the
 // `MeasurementConsumer`. The `reference_id` is known by the `DataProvider` and
 // shared with the operator out of band.
 //
-// A given `MeasurementConsumer` may have more than one `AdAccount` for the same
+// A given `MeasurementConsumer` may have more than one `ClientAccount` for the same
 // `DataProvider`.
-message AdAccount {
+message ClientAccount {
   option (google.api.resource) = {
-    type: "halo.wfanet.org/AdAccount"
+    type: "halo.wfanet.org/ClientAccount"
     // The `MeasurementConsumer` is the canonical parent as
     // the operator (on behalf of the `MeasurementConsumer`) is responsible for
     // managing these resources.
-    pattern: "measurementConsumers/{measurement_consumer}/adAccounts/{ad_account}"
-    pattern: "dataProviders/{data_provider}/adAccounts/{ad_account}"
-    singular: "adAccount"
-    plural: "adAccounts"
+    pattern: "measurementConsumers/{measurement_consumer}/clientAccounts/{client_account}"
+    pattern: "dataProviders/{data_provider}/clientAccounts/{client_account}"
+    singular: "clientAccount"
+    plural: "clientAccounts"
   };
 
   // Resource name.
   //
   // Canonical format:
-  // measurementConsumers/{measurement_consumer}/adAccounts/{ad_account}
+  // measurementConsumers/{measurement_consumer}/clientAccounts/{client_account}
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  // Resource name of the `DataProvider` whose ecosystem this `AdAccount`
+  // Resource name of the `DataProvider` whose ecosystem this `ClientAccount`
   // exists within.
   string data_provider = 2 [
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
@@ -65,8 +65,8 @@ message AdAccount {
 
   // Reference ID for the account in the `DataProvider`'s ecosystem.
   //
-  // The combination of `data_provider` and `ad_account_reference_id` must be
+  // The combination of `data_provider` and `client_account_reference_id` must be
   // unique. Each reference ID maps to exactly one `MeasurementConsumer` per
   // `DataProvider`, or (`MeasurementConsumer`, `DataProvider`) pair.
-  string ad_account_reference_id = 3;
+  string client_account_reference_id = 3;
 }
