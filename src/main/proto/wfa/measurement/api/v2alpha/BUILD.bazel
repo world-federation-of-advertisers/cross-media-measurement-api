@@ -736,8 +736,8 @@ proto_library(
 )
 
 proto_library(
-    name = "ad_account_proto",
-    srcs = ["ad_account.proto"],
+    name = "client_account_proto",
+    srcs = ["client_account.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",
@@ -746,11 +746,11 @@ proto_library(
 )
 
 proto_library(
-    name = "ad_accounts_service_proto",
-    srcs = ["ad_accounts_service.proto"],
+    name = "client_accounts_service_proto",
+    srcs = ["client_accounts_service.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
-        ":ad_account_proto",
+        ":client_account_proto",
         "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",

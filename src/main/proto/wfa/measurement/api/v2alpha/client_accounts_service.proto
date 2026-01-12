@@ -138,24 +138,19 @@ message ListClientAccountsRequest {
   // Each field represents a term in a conjunction. If a field is not specified,
   // its value is not considered as part of the criteria.
   message Filter {
-    // Resource name of the `ClientAccount` to filter by.
-    string client_account = 1 [
-      (google.api.resource_reference).type = "halo.wfanet.org/ClientAccount"
-    ];
-
     // Resource name of the `MeasurementConsumer` to filter by.
-    string measurement_consumer = 2 [
+    string measurement_consumer = 1 [
       (google.api.resource_reference).type =
           "halo.wfanet.org/MeasurementConsumer"
     ];
 
     // Resource name of the `DataProvider` to filter by.
-    string data_provider = 3 [
+    string data_provider = 2 [
       (google.api.resource_reference).type = "halo.wfanet.org/DataProvider"
     ];
 
     // Reference ID for the account in the `DataProvider`'s ecosystem.
-    string client_account_reference_id = 4;
+    string client_account_reference_id = 3;
   }
   // Filter criteria for this request.
   //
