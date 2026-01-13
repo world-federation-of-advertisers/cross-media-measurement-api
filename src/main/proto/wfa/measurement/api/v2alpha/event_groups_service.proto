@@ -20,6 +20,7 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
+import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
@@ -228,6 +229,10 @@ message ListEventGroupsRequest {
     // [EventGroup.data_availability_interval.end_time][google.type.Interval.end_time]
     // must be on or after.
     google.protobuf.Timestamp data_availability_end_time_on_or_after = 8;
+    // Interval that must be intersected by
+    // [EventGroup.data_availability_interval.start_time][google.type.Interval.start_time]
+    // [EventGroup.data_availability_interval.end_time][google.type.Interval.end_time]
+    google.type.Interval data_availability_intersects = 10;
     // Query for text search on string fields in
     // [EventGroup.event_group_metadata][].
     string metadata_search_query = 5;
