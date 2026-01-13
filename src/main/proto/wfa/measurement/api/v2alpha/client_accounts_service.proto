@@ -146,6 +146,7 @@ message ListClientAccountsRequest {
         [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
 
     // Reference ID for the account in the `DataProvider`'s ecosystem.
+    // Must not exceed 36 characters.
     string client_account_reference_id = 3;
   }
   // Filter criteria for this request.
