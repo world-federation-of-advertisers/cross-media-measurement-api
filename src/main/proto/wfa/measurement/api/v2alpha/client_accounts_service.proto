@@ -1,0 +1,192 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
+import "wfa/measurement/api/v2alpha/client_account.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "ClientAccountsServiceProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// Service for interacting with `ClientAccount` resources.
+service ClientAccounts {
+  // Creates a new `ClientAccount`.
+  rpc CreateClientAccount(CreateClientAccountRequest) returns (ClientAccount) {
+    option (google.api.method_signature) = "parent,client_account";
+  }
+
+  // Batch creates `ClientAccount`s. Results in an error if any of the
+  // specified `ClientAccount`s fail to be created.
+  rpc BatchCreateClientAccounts(BatchCreateClientAccountsRequest)
+      returns (BatchCreateClientAccountsResponse) {}
+
+  // Returns the `ClientAccount` with the specified resource name.
+  rpc GetClientAccount(GetClientAccountRequest) returns (ClientAccount) {
+    option (google.api.method_signature) = "name";
+  }
+
+  // Lists `ClientAccount`s for a parent resource.
+  rpc ListClientAccounts(ListClientAccountsRequest)
+      returns (ListClientAccountsResponse) {
+    option (google.api.method_signature) = "parent";
+  }
+
+  // Deletes an existing `ClientAccount`.
+  rpc DeleteClientAccount(DeleteClientAccountRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
+  }
+
+  // Batch deletes `ClientAccount`s. Results in an error if any of the
+  // specified `ClientAccount`s fail to be deleted.
+  rpc BatchDeleteClientAccounts(BatchDeleteClientAccountsRequest)
+      returns (google.protobuf.Empty) {}
+}
+
+// Request message for `CreateClientAccount` method.
+message CreateClientAccountRequest {
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 1 [
+    (google.api.resource_reference).child_type =
+        "halo.wfanet.org/ClientAccount",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The `ClientAccount` to create.
+  //
+  // The `name` field will be ignored, and the system will assign an ID.
+  ClientAccount client_account = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for `BatchCreateClientAccounts` method.
+message BatchCreateClientAccountsRequest {
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The requests specifying the `ClientAccount`s to create. Either all
+  // requests must have the same parent and the parent must match the top-level
+  // parent, or all requests must leave the parent unset. A maximum of 1000
+  // `ClientAccount`s can be created in a single batch.
+  repeated CreateClientAccountRequest requests = 2
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for `BatchCreateClientAccounts` method.
+message BatchCreateClientAccountsResponse {
+  // The `ClientAccount` resources.
+  repeated ClientAccount client_accounts = 1;
+}
+
+// Request message for `GetClientAccount` method.
+message GetClientAccountRequest {
+  // Resource name of the `ClientAccount` to retrieve.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ClientAccount",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+// Request message for `ListClientAccounts` method.
+message ListClientAccountsRequest {
+  // Resource name of the parent.
+  //
+  // Format: "dataProviders/{data_provider}" or
+  // "measurementConsumers/{measurement_consumer}"
+  string parent = 1 [
+    (google.api.resource_reference).child_type =
+        "halo.wfanet.org/ClientAccount",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The maximum number of resources to return. The service may return fewer
+  // than this value.
+  //
+  // If unspecified, at most 50 resources will be returned. The maximum value
+  // is 1000; values above this will be coerced to the maximum.
+  int32 page_size = 2;
+
+  // A token from a previous call, specified to retrieve the next page. See
+  // https://aip.dev/158.
+  string page_token = 3;
+
+  // Structured filter criteria.
+  //
+  // Each field represents a term in a conjunction. If a field is not specified,
+  // its value is not considered as part of the criteria.
+  message Filter {
+    // Resource name of the `MeasurementConsumer` to filter by.
+    string measurement_consumer = 1 [(google.api.resource_reference).type =
+                                         "halo.wfanet.org/MeasurementConsumer"];
+
+    // Resource name of the `DataProvider` to filter by.
+    string data_provider = 2
+        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
+
+    // Reference ID for the account in the `DataProvider`'s ecosystem.
+    string client_account_reference_id = 3;
+  }
+  // Filter criteria for this request.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
+  Filter filter = 4;
+}
+
+// Response message for `ListClientAccounts` method.
+message ListClientAccountsResponse {
+  // The `ClientAccount` resources.
+  repeated ClientAccount client_accounts = 1;
+
+  // A token that can be specified in a subsequent call to retrieve the next
+  // page. See https://aip.dev/158.
+  string next_page_token = 2;
+}
+
+// Request message for `DeleteClientAccount` method.
+message DeleteClientAccountRequest {
+  // Resource name of the `ClientAccount` to delete.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ClientAccount",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+// Request message for `BatchDeleteClientAccounts` method.
+message BatchDeleteClientAccountsRequest {
+  // Resource name of the parent `MeasurementConsumer`.
+  string parent = 1 [
+    (google.api.resource_reference).type =
+        "halo.wfanet.org/MeasurementConsumer",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // The resource names of the `ClientAccount`s to delete. A maximum of 1000
+  // `ClientAccount`s can be deleted in a single batch.
+  repeated string names = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ClientAccount",
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
