@@ -29,10 +29,8 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 
 // Service for interacting with `ClientAccount` resources.
 service ClientAccounts {
-
   // Creates a new `ClientAccount`.
-  rpc CreateClientAccount(CreateClientAccountRequest)
-      returns (ClientAccount) {
+  rpc CreateClientAccount(CreateClientAccountRequest) returns (ClientAccount) {
     option (google.api.method_signature) = "parent,client_account";
   }
 
@@ -68,7 +66,8 @@ service ClientAccounts {
 message CreateClientAccountRequest {
   // Resource name of the parent `MeasurementConsumer`.
   string parent = 1 [
-    (google.api.resource_reference).child_type = "halo.wfanet.org/ClientAccount",
+    (google.api.resource_reference).child_type =
+        "halo.wfanet.org/ClientAccount",
     (google.api.field_behavior) = REQUIRED
   ];
 
@@ -140,14 +139,12 @@ message ListClientAccountsRequest {
   message Filter {
     // Resource name of the `MeasurementConsumer` to filter by.
     string measurement_consumer = 1 [
-      (google.api.resource_reference).type =
-          "halo.wfanet.org/MeasurementConsumer"
+        (google.api.resource_reference).type = "halo.wfanet.org/MeasurementConsumer"
     ];
 
     // Resource name of the `DataProvider` to filter by.
-    string data_provider = 2 [
-      (google.api.resource_reference).type = "halo.wfanet.org/DataProvider"
-    ];
+    string data_provider = 2
+        [(google.api.resource_reference).type = "halo.wfanet.org/DataProvider"];
 
     // Reference ID for the account in the `DataProvider`'s ecosystem.
     string client_account_reference_id = 3;

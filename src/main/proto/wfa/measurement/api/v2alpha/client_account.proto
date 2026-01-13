@@ -24,19 +24,19 @@ option java_multiple_files = true;
 option java_outer_classname = "ClientAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// A client account belonging to a `MeasurementConsumer` within a `DataProvider`'s
-// ecosystem.
+// A client account belonging to a `MeasurementConsumer` within a
+// `DataProvider`'s ecosystem.
 //
-// This resource exists to provide a representation of a client account that can be
-// mapped back to a `MeasurementConsumer` ID, enabling `EventGroup` registration
-// within the EDP Aggregator.
+// This resource exists to provide a representation of a client account that can
+// be mapped back to a `MeasurementConsumer` ID, enabling `EventGroup`
+// registration within the EDP Aggregator.
 //
 // Each `ClientAccount` is owned and managed by the operator on behalf of the
 // `MeasurementConsumer`. The `reference_id` is known by the `DataProvider` and
 // shared with the operator out of band.
 //
-// A given `MeasurementConsumer` may have more than one `ClientAccount` for the same
-// `DataProvider`.
+// A given `MeasurementConsumer` may have more than one `ClientAccount` for the
+// same `DataProvider`.
 message ClientAccount {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ClientAccount"
@@ -65,8 +65,8 @@ message ClientAccount {
 
   // Reference ID for the account in the `DataProvider`'s ecosystem.
   //
-  // The combination of `data_provider` and `client_account_reference_id` must be
-  // unique. Each reference ID maps to exactly one `MeasurementConsumer` per
+  // The combination of `data_provider` and `client_account_reference_id` must
+  // be unique. Each reference ID maps to exactly one `MeasurementConsumer` per
   // `DataProvider`, or (`MeasurementConsumer`, `DataProvider`) pair.
   string client_account_reference_id = 3;
 }
