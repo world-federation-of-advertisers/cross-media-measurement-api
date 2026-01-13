@@ -138,9 +138,8 @@ message ListClientAccountsRequest {
   // its value is not considered as part of the criteria.
   message Filter {
     // Resource name of the `MeasurementConsumer` to filter by.
-    string measurement_consumer = 1 [
-        (google.api.resource_reference).type = "halo.wfanet.org/MeasurementConsumer"
-    ];
+    string measurement_consumer = 1 [(google.api.resource_reference).type =
+                                         "halo.wfanet.org/MeasurementConsumer"];
 
     // Resource name of the `DataProvider` to filter by.
     string data_provider = 2
