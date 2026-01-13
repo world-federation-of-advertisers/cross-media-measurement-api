@@ -64,6 +64,7 @@ message ClientAccount {
   ];
 
   // Reference ID for the account in the `DataProvider`'s ecosystem.
+  // Must not exceed 36 characters.
   //
   // The combination of `data_provider` and `client_account_reference_id` must
   // be unique. Each reference ID maps to exactly one `MeasurementConsumer` per
