@@ -181,6 +181,9 @@ message Measurement {
 
         // Honest Majority Share Shuffle methodology.
         HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 8;
+
+        // TrusTEE methodology.
+        TrusTeeMethodology trus_tee_methodology = 9;
       }
     }
     // The reach result.
@@ -222,6 +225,9 @@ message Measurement {
 
         // Honest Majority Share Shuffle methodology.
         HonestMajorityShareShuffleMethodology honest_majority_share_shuffle = 7;
+
+        // TrusTEE methodology.
+        TrusTeeMethodology trus_tee_methodology = 9;
       }
     }
     // The frequency result.

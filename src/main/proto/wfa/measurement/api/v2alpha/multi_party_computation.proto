@@ -34,3 +34,9 @@ message HonestMajorityShareShuffleMethodology {
   // The size of the sampled frequency vector. REQUIRED.
   int64 frequency_vector_size = 1 [(google.api.field_behavior) = REQUIRED];
 }
+
+// Configuration for the TrusTEE methodology.
+message TrusTeeMethodology {
+  // The size of the sampled frequency vector.
+  int64 frequency_vector_size = 1 [(google.api.field_behavior) = REQUIRED];
+}
