@@ -730,7 +730,6 @@ proto_library(
     srcs = ["population_spec.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
-        ":event_template_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_protobuf//:any_proto",
     ],
