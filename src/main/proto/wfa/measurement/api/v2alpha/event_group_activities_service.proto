@@ -28,7 +28,7 @@ option java_outer_classname = "EventGroupActivitiesServiceProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Service for interacting with `EventGroupActivity` resources.
-service EventGroupActivityService {
+service EventGroupActivities {
   // Batch creates or updates `EventGroupActivities`. Results in an error if any
   // of the specified `EventGroupActivity`s fail to be updated.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
