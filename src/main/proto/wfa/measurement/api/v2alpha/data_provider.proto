@@ -65,9 +65,12 @@ message DataProvider {
 
   // Resource names of every `Duchy` that must be included in all computations
   // involving this `DataProvider`.
+  //
+  // Deprecated: This field only applies to LLv2 protocols.
   repeated string required_duchies = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/Duchy",
-    (google.api.field_behavior) = UNORDERED_LIST
+    (google.api.field_behavior) = UNORDERED_LIST,
+    deprecated = true
   ];
 
   // Interval for when data is guaranteed to be available for a `Requisition`.
