@@ -105,8 +105,11 @@ message FulfillRequisitionRequest {
       message EnvelopeEncryption {
         // Type of KMS used for envelope encryption.
         enum KmsType {
+          // Default value. Unspecified KMS type.
           KMS_TYPE_UNSPECIFIED = 0;
+          // Google Cloud KMS.
           GCP = 1;
+          // Amazon Web Services KMS.
           AWS = 2;
         }
 
@@ -129,7 +132,7 @@ message FulfillRequisitionRequest {
         string aws_role_arn = 6;
         // Optional. Identifier for the assumed AWS role session.
         // Only used when `kms_type` is `AWS`.
-        string aws_role_session_name = 7;
+        string aws_role_session = 7;
         // Optional. AWS region for STS and KMS endpoints.
         // Only used when `kms_type` is `AWS`.
         string aws_region = 8;
