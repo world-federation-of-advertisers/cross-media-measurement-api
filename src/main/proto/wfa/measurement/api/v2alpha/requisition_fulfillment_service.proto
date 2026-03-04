@@ -103,9 +103,9 @@ message FulfillRequisitionRequest {
       // Specification for envelope encryption, where the Data Encryption Key
       // (DEK) is sent in an encrypted form.
       message EnvelopeEncryption {
-        // AWS-specific configuration for KMS. Set when AWS KMS is used
+        // AWS-specific parameters for KMS. Set when AWS KMS is used
         // for the KEK. If not set, GCP KMS is assumed.
-        message AwsKmsConfig {
+        message AwsKmsParams {
           // AWS IAM role ARN to assume via GCP identity federation.
           string role_arn = 1;
           // Identifier for the assumed AWS role session.
@@ -128,9 +128,9 @@ message FulfillRequisitionRequest {
         // The service account to impersonate to get an access token for the
         // KEK.
         string impersonated_service_account = 4;
-        // AWS KMS configuration. If set, AWS KMS is used for the KEK;
+        // AWS KMS parameters. If set, AWS KMS is used for the KEK;
         // otherwise GCP KMS is assumed.
-        AwsKmsConfig aws_kms_config = 5;
+        AwsKmsParams aws_kms_params = 5;
       }
 
       // Format of data in [BodyChunk]s after decryption (if encrypted).
