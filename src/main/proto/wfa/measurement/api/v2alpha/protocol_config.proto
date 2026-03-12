@@ -231,8 +231,6 @@ message ProtocolConfig {
       int32 min_impressions = 1;
       // The minimum number of unique users.
       int32 min_users = 2;
-      // The maximum frequency per user for reach measurements. Must be > 0.
-      int32 reach_max_frequency_per_user = 3;
     }
 
     // Optional k-anonymity parameters.
