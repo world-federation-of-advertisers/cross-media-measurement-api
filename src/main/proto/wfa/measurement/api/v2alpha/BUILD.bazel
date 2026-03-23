@@ -108,6 +108,7 @@ proto_library(
     deps = [
         ":crypto_proto",
         ":measurement_consumer_proto",
+        ":protocol_config_proto",
         "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",

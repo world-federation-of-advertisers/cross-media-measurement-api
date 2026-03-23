@@ -53,6 +53,10 @@ service DataProviders {
   // Replaces the `capabilities` field in a `DataProvider` resource.
   rpc ReplaceDataProviderCapabilities(ReplaceDataProviderCapabilitiesRequest)
       returns (DataProvider) {}
+
+  // Replaces the `requirements` field in a `DataProvider` resource.
+  rpc ReplaceDataProviderRequirements(ReplaceDataProviderRequirementsRequest)
+      returns (DataProvider) {}
 }
 
 // Request message for the `ReplaceDataProviderRequiredDuchies` method.
@@ -113,4 +117,16 @@ message ReplaceDataProviderCapabilitiesRequest {
 
   // New value for `capabilities`.
   DataProvider.Capabilities capabilities = 2;
+}
+
+// Request message for `ReplaceDataProviderRequirements` method.
+message ReplaceDataProviderRequirementsRequest {
+  // Resource name.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // New value for `requirements`.
+  DataProvider.Requirements requirements = 2;
 }
