@@ -82,37 +82,26 @@ message DataProvider {
   google.type.Interval data_availability_interval = 7
       [(type.future_disposition) = DEPRECATED];
 
-  // Capabilities of a `DataProvider`.
+  // Technical capabilities and willingness of a `DataProvider`.
   message Capabilities {
     // Whether the Honest Majority Share Shuffle (HMSS) protocol is supported.
     bool honest_majority_share_shuffle_supported = 1;
 
     // Whether the TrusTEE protocol is supported.
     bool trus_tee_supported = 2;
-  }
-  // Capabilities of this `DataProvider`.
-  //
-  // This indicates to the CMMS what the `DataProvider` is capable of at
-  // `Measurement` creation time.
-  Capabilities capabilities = 8;
 
-  // Requirements of a `DataProvider` for `Measurement` computation.
-  message Requirements {
-    // The set of noise mechanisms that this `DataProvider` allows for direct
-    // and cross-publisher `Measurement` computations.
+    // The set of noise mechanisms that this `DataProvider` allows for
+    // `Measurement` computations.
     //
-    // Only continuous types and NONE are valid. If not specified,
-    // CONTINUOUS_GAUSSIAN is assumed.
-    //
-    // This field is planned to become REQUIRED in a future Halo CMM release.
-    repeated ProtocolConfig.NoiseMechanism allowed_noise_mechanisms = 1
+    // Currently only used for TrusTEE protocol noise mechanism selection.
+    repeated ProtocolConfig.NoiseMechanism allowed_noise_mechanisms = 3
         [(google.api.field_behavior) = UNORDERED_LIST];
   }
-  // Requirements of this `DataProvider`.
+  // Technical capabilities and willingness of this `DataProvider`.
   //
-  // These constrain how the CMMS may configure `Measurement` computations
-  // involving this `DataProvider`.
-  Requirements requirements = 10;
+  // This indicates to the CMMS what the `DataProvider` is capable of and
+  // willing to support at `Measurement` creation time.
+  Capabilities capabilities = 8;
 
   // An entry in the [data_availability_intervals][] map.
   message DataAvailabilityMapEntry {
