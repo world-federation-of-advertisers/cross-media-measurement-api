@@ -90,10 +90,16 @@ message DataProvider {
     // Whether the TrusTEE protocol is supported.
     bool trus_tee_supported = 2;
 
-    // The set of noise mechanisms that this `DataProvider` allows for
-    // `Measurement` computations.
+    // The set of noise mechanisms that this `DataProvider` allows for direct
+    // and cross-publisher `Measurement` computations.
     //
-    // Currently only used for TrusTEE protocol noise mechanism selection.
+    // Only continuous types and NONE are valid. If not specified,
+    // CONTINUOUS_GAUSSIAN is assumed.
+    //
+    // Currently only used for TrusTEE protocol noise mechanism selection,
+    // but will apply to direct measurements in a future release.
+    //
+    // This field is planned to become REQUIRED in a future Halo CMM release.
     repeated ProtocolConfig.NoiseMechanism allowed_noise_mechanisms = 3
         [(google.api.field_behavior) = UNORDERED_LIST];
   }
