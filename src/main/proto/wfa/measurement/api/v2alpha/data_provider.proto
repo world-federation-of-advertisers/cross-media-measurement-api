@@ -20,7 +20,6 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
-import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -90,18 +89,24 @@ message DataProvider {
     // Whether the TrusTEE protocol is supported.
     bool trus_tee_supported = 2;
 
-    // The set of noise mechanisms that this `DataProvider` allows for direct
-    // and cross-publisher `Measurement` computations.
-    //
-    // Only continuous types and NONE are valid. If not specified,
-    // CONTINUOUS_GAUSSIAN is assumed.
+    // Noise mechanisms that this `DataProvider` allows for direct and
+    // cross-publisher `Measurement` computations.
     //
     // Currently only used for TrusTEE protocol noise mechanism selection,
     // but will apply to direct measurements in a future release.
+    message NoiseMechanisms {
+      // Whether no-noise (NONE) is allowed.
+      bool none = 1;
+      // Whether Continuous Gaussian noise is allowed.
+      bool continuous_gaussian = 2;
+    }
+
+    // Noise mechanisms allowed by this `DataProvider`.
+    //
+    // If not specified, CONTINUOUS_GAUSSIAN is assumed.
     //
     // This field is planned to become REQUIRED in a future Halo CMM release.
-    repeated ProtocolConfig.NoiseMechanism allowed_noise_mechanisms = 3
-        [(google.api.field_behavior) = UNORDERED_LIST];
+    NoiseMechanisms noise_mechanisms = 3;
   }
   // Technical capabilities and willingness of this `DataProvider`.
   //
