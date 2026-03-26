@@ -81,7 +81,8 @@ message DataProvider {
   google.type.Interval data_availability_interval = 7
       [(type.future_disposition) = DEPRECATED];
 
-  // Technical capabilities and willingness of a `DataProvider`.
+  // Capabilities of a `DataProvider`, i.e. what a `DataProvider` is both
+  // willing and able to support.
   message Capabilities {
     // Whether the Honest Majority Share Shuffle (HMSS) protocol is supported.
     bool honest_majority_share_shuffle_supported = 1;
@@ -108,7 +109,8 @@ message DataProvider {
     // This field is planned to become REQUIRED in a future Halo CMM release.
     NoiseMechanisms noise_mechanisms = 3;
   }
-  // Technical capabilities and willingness of this `DataProvider`.
+  // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
+  // willing and able to support.
   //
   // This indicates to the CMMS what the `DataProvider` is capable of and
   // willing to support at `Measurement` creation time.
