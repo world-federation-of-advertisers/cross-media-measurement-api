@@ -90,24 +90,23 @@ message DataProvider {
     // Whether the TrusTEE protocol is supported.
     bool trus_tee_supported = 2;
 
-    // Noise mechanisms that this `DataProvider` allows for direct and
-    // cross-publisher `Measurement` computations.
+    // Whether the no-noise (NONE) mechanism is supported.
     //
     // Currently only used for TrusTEE protocol noise mechanism selection,
     // but will apply to direct measurements in a future release.
-    message NoiseMechanisms {
-      // Whether no-noise (NONE) is allowed.
-      bool none = 1;
-      // Whether Continuous Gaussian noise is allowed.
-      bool continuous_gaussian = 2;
-    }
+    //
+    // If neither this nor `continuous_gaussian_noise_mechanism_supported` is
+    // set, CONTINUOUS_GAUSSIAN is assumed.
+    optional bool no_noise_mechanism_supported = 3;
 
-    // Noise mechanisms allowed by this `DataProvider`.
+    // Whether the Continuous Gaussian noise mechanism is supported.
     //
-    // If not specified, CONTINUOUS_GAUSSIAN is assumed.
+    // Currently only used for TrusTEE protocol noise mechanism selection,
+    // but will apply to direct measurements in a future release.
     //
-    // This field is planned to become REQUIRED in a future Halo CMM release.
-    NoiseMechanisms noise_mechanisms = 3;
+    // If neither this nor `no_noise_mechanism_supported` is set,
+    // CONTINUOUS_GAUSSIAN is assumed.
+    optional bool continuous_gaussian_noise_mechanism_supported = 4;
   }
   // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
   // willing and able to support.
