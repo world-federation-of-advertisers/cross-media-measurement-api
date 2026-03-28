@@ -95,18 +95,8 @@ message DataProvider {
     // Currently only used for TrusTEE protocol noise mechanism selection,
     // but will apply to direct measurements in a future release.
     //
-    // If neither this nor `continuous_gaussian_noise_mechanism_supported` is
-    // set, CONTINUOUS_GAUSSIAN is assumed.
-    optional bool no_noise_mechanism_supported = 3;
-
-    // Whether the Continuous Gaussian noise mechanism is supported.
-    //
-    // Currently only used for TrusTEE protocol noise mechanism selection,
-    // but will apply to direct measurements in a future release.
-    //
-    // If neither this nor `no_noise_mechanism_supported` is set,
-    // CONTINUOUS_GAUSSIAN is assumed.
-    optional bool continuous_gaussian_noise_mechanism_supported = 4;
+    // CONTINUOUS_GAUSSIAN is always assumed to be supported.
+    bool no_noise_mechanism_supported = 3;
   }
   // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
   // willing and able to support.
