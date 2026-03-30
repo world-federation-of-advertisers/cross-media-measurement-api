@@ -96,7 +96,7 @@ message DataProvider {
     // but will apply to direct measurements in a future release.
     //
     // CONTINUOUS_GAUSSIAN is always assumed to be supported.
-    bool no_noise_mechanism_supported = 3;
+    bool noise_mechanism_none_supported = 3;
   }
   // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
   // willing and able to support.
