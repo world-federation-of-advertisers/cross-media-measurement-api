@@ -17,6 +17,8 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
+import "google/protobuf/struct.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -50,4 +52,11 @@ message EventGroupMetadata {
     // Metadata for an [EventGroup][] containing ad impression events.
     AdMetadata ad_metadata = 2;
   }
+
+  // Metadata for the entity that the [EventGroup][] represents.
+  //
+  // The schema is specific to the ([DataProvider][],
+  // [EventGroup.EntityType][]) pair.
+  google.protobuf.Struct entity_metadata = 3
+      [(type.future_disposition) = REQUIRED];
 }
