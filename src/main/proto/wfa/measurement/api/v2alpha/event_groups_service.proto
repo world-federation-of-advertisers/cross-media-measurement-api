@@ -241,6 +241,12 @@ message ListEventGroupsRequest {
     // [EventGroup][]. [start_date][DateInterval.start_date] and
     // [end_date][DateInterval.end_date] are required.
     DateInterval activity_contains = 9;
+    // Set of [EventGroup.EntityType][] values which
+    // [EventGroup.EntityKey.type][] of [EventGroup.entity_key][] must be in.
+    //
+    // If unspecified, the server will treat this as if it contains
+    // [EventGroup.EntityType.CAMPAIGN][].
+    repeated EventGroup.EntityType entity_type_in = 11;
   }
   // Filter criteria for this request.
   //
