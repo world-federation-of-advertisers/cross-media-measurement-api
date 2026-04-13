@@ -60,8 +60,9 @@ message EventGroup {
 
   // ID referencing the `EventGroup` in an external system, provided by the
   // `DataProvider`. This value should be used to help the `DataProvider`
-  // synchronize their metadata with the EventGroupsService. See
-  // `EventGroupMetadata` which provides a set of identifiers with better
+  // synchronize their metadata with the EventGroupsService.
+  //
+  // See [entity_key][] which provides a set of identifiers with better
   // defined semantics.
   string event_group_reference_id = 5;
 
@@ -214,5 +215,56 @@ message EventGroup {
   //
   // Only set when the view is `WITH_ACTIVITY_SUMMARY`.
   repeated AggregatedActivity aggregated_activities = 15
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Key of the entity in the [DataProvider][]'s system that an [EventGroup][]
+  // represents.
+  message EntityKey {
+    // Type of the entity in the [DataProvider][]'s system.
+    //
+    // This must be a URL-safe string, such that URL-encoding or -decoding
+    // results in the same string.
+    string entity_type = 1 [(type.future_disposition) = REQUIRED];
+    // ID of the entity in the [DataProvider][]'s system.
+    //
+    // This should be an ID that is available to [MeasurementConsumer][]'s
+    // through the [DataProvider][]'s system.
+    //
+    // This must be a URL-safe string, such that URL-encoding or -decoding
+    // results in the same string.
+    string entity_id = 2 [(type.future_disposition) = REQUIRED];
+  }
+  // Entity in the [DataProvider][]'s system that this [EventGroup][]
+  // represents.
+  //
+  // Once specified, this may not change.
+  EntityKey entity_key = 16 [(type.future_disposition) = REQUIRED];
+
+  // Resource name of the parent [EventGroup][].
+  //
+  // The referenced [EventGroup][] must belong to to the same parent
+  // [DataProvider][] and [MeasurementConsumer][] as this one.
+  //
+  // If no [EventGroup][] has this one as its [EventGroup.parent_event_group][]
+  // it is a leaf. Any [DataProvider][] event must belong to no more than one
+  // leaf [EventGroup][] for its parent [MeasurementConsumer][].
+  //
+  // If specified, [entity_key][] is required for both this [EventGroup][] and
+  // the parent. Furthermore, the parent's [EntityKey.entity_type][] must differ
+  // from that of all of its descendants.
+  //
+  // (-- api-linter: core::0121::no-mutable-cycles=disabled
+  //     aip.dev/not-precedent: Cycles cannot be formed. --)
+  string parent_event_group = 17
+      [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+
+  // Path from the root [EventGroup][] to this one.
+  //
+  // This is equivalent of appending [entity_key][] to  the [entity_path][]
+  // field of [parent_event_group][].
+  //
+  // This must be unique across all [EventGroup][]s for the parent
+  // ([DataProvider][], [MeasurementConsumer][]) pair.
+  repeated EntityKey entity_path = 18
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }
