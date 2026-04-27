@@ -97,6 +97,28 @@ message DataProvider {
     //
     // CONTINUOUS_GAUSSIAN is always assumed to be supported.
     bool noise_mechanism_none_supported = 3;
+
+    // Whether this `DataProvider` attests that ALL of its `Requisition`
+    // fulfillments are based on panel projections (i.e. statistical
+    // projections from a sample panel to a population), as opposed to
+    // event-level (e.g. impression-level) data.
+    //
+    // The default `false` is the privacy-conservative assumption: the
+    // CMMS will treat the `DataProvider` as potentially providing
+    // event-level data. A `DataProvider` must only set this to `true`
+    // if it can attest that none of its fulfillments expose precise
+    // event-level counts.
+    //
+    // This signal is used by the CMMS as input to noise-mechanism
+    // selection for protocols (such as TrusTEE) whose privacy
+    // properties depend on the data shape of the contributing
+    // `DataProvider`s. For example, an operator may forbid
+    // `NoiseMechanism.NONE` for any `Measurement` that combines more
+    // than a configured number of `DataProvider`s without this
+    // capability set, since differential queries over a no-noise
+    // aggregate could otherwise expose precise cross-publisher overlap
+    // that no individual `DataProvider` has consented to.
+    bool is_panel_projection = 4;
   }
   // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
   // willing and able to support.
