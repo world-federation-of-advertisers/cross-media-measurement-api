@@ -224,17 +224,31 @@ message ProtocolConfig {
     // The mechanism to generate noise during the computation.
     NoiseMechanism noise_mechanism = 1 [(google.api.field_behavior) = REQUIRED];
 
-    // Parameters for k-anonymity applied to the result. If the threshold is
-    // not met, a zero result is returned instead.
-    message KAnonymityParams {
-      // The minimum number of impressions.
+    // Minimum thresholds that the underlying (pre-noise) result must meet for
+    // the result to be released. If any specified threshold is not met, a zero
+    // result is returned instead.
+    //
+    // These thresholds serve two purposes:
+    //   1. Small-cell suppression for privacy. When `min_users` is set and no
+    //      noise is added to the reach, requiring at least `min_users` unique
+    //      contributors approximates k-anonymity for the released result.
+    //   2. Avoiding spurious precision. Results computed from very few
+    //      impressions or users can imply a level of accuracy that the system
+    //      does not actually provide, particularly once noise is added.
+    //
+    // Note: these are not, on their own, a formal k-anonymity guarantee. In
+    // particular, `min_impressions` does not bound the number of distinct
+    // contributors, and any threshold loses its k-anonymity interpretation
+    // once noise is applied to the quantity being thresholded.
+    message ResultMinimumThresholds {
+      // The minimum number of impressions in the underlying result.
       int32 min_impressions = 1;
-      // The minimum number of unique users.
+      // The minimum number of unique users in the underlying result.
       int32 min_users = 2;
     }
 
-    // Optional k-anonymity parameters.
-    KAnonymityParams k_anonymity_params = 2;
+    // Optional minimum thresholds for releasing the result.
+    ResultMinimumThresholds result_minimum_thresholds = 2;
   }
 
   // Configuration for a specific protocol.
