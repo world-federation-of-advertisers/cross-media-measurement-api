@@ -237,30 +237,32 @@ message ProtocolConfig {
     //     `min_impressions`. If either threshold is not met, a zero result
     //     is returned.
     //
-    //   - Frequency distribution: Thresholds are applied by folding down from
-    //     the highest frequency bucket. If the top bucket (e.g. 12+) does not
-    //     meet the thresholds, its count is folded into the next lower bucket
-    //     (e.g. 11+, which becomes the new top bucket) and that bucket is
-    //     re-evaluated. This repeats until all remaining buckets meet the
-    //     thresholds. Folded buckets are reported as zero. If the 1+ bucket
-    //     does not meet the thresholds, a zero result is returned.
+    //   - Frequency distribution: Both `min_users` and `min_impressions`
+    //     are checked for each frequency bucket. Thresholds are applied by
+    //     folding down from the highest frequency bucket. If the top bucket
+    //     (e.g. 12+) does not meet either threshold, its count is folded
+    //     into the next lower bucket (e.g. 11+, which becomes the new top
+    //     bucket) and that bucket is re-evaluated. This repeats until all
+    //     remaining buckets meet both thresholds. Folded buckets are
+    //     reported as zero. If the 1+ bucket does not meet the thresholds,
+    //     a zero result is returned.
     //
     // These thresholds serve two purposes:
-    //   1. Small-cell suppression for privacy. When `min_users` is set and no
-    //      noise is added to the reach, requiring at least `min_users` unique
-    //      contributors approximates k-anonymity for the released result.
+    //   1. Small-cell suppression for privacy. Requiring at least
+    //      `min_users` unique contributors approximates k-anonymity for
+    //      the released result.
     //   2. Avoiding spurious precision. Results computed from very few
-    //      impressions or users can imply a level of accuracy that the system
-    //      does not actually provide, particularly once noise is added.
+    //      impressions or users can imply a level of accuracy that the
+    //      system does not actually provide.
     //
     // Note: these are not, on their own, a formal k-anonymity guarantee. In
     // particular, `min_impressions` does not bound the number of distinct
     // contributors, and any threshold loses its k-anonymity interpretation
     // once noise is applied to the quantity being thresholded.
     message ResultMinimumThresholds {
-      // The minimum number of impressions in the underlying result.
+      // The minimum number of impressions in the data used to compute the result.
       int32 min_impressions = 1;
-      // The minimum number of unique users in the underlying result.
+      // The minimum number of unique users in the data used to compute the result.
       int32 min_users = 2;
     }
 
