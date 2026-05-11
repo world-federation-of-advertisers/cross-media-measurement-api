@@ -224,9 +224,26 @@ message ProtocolConfig {
     // The mechanism to generate noise during the computation.
     NoiseMechanism noise_mechanism = 1 [(google.api.field_behavior) = REQUIRED];
 
-    // Minimum thresholds that the underlying (pre-noise) result must meet for
-    // the result to be released. If any specified threshold is not met, a zero
-    // result is returned instead.
+    // Minimum thresholds that the result must meet for the result to be
+    // released. Thresholds are applied after noise is added; thresholding
+    // pre-noise values could leak information about the underlying data.
+    //
+    // How thresholds are applied depends on the result type:
+    //
+    //   - Scalar results (reach, impression count): The result is released
+    //     only if the noised result meets both `min_users` and
+    //     `min_impressions`. For example, an impression count result must
+    //     also meet `min_users`, and a reach result must also meet
+    //     `min_impressions`. If either threshold is not met, a zero result
+    //     is returned.
+    //
+    //   - Frequency distribution: Thresholds are applied by folding down from
+    //     the highest frequency bucket. If the top bucket (e.g. 12+) does not
+    //     meet the thresholds, its count is folded into the next lower bucket
+    //     (e.g. 11+, which becomes the new top bucket) and that bucket is
+    //     re-evaluated. This repeats until all remaining buckets meet the
+    //     thresholds. Folded buckets are reported as zero. If the 1+ bucket
+    //     does not meet the thresholds, a zero result is returned.
     //
     // These thresholds serve two purposes:
     //   1. Small-cell suppression for privacy. When `min_users` is set and no
