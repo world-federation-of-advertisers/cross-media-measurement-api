@@ -223,6 +223,52 @@ message ProtocolConfig {
   message TrusTee {
     // The mechanism to generate noise during the computation.
     NoiseMechanism noise_mechanism = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // Minimum threshold that the result must meet for the result to be
+    // released. Thresholds are applied after noise is added; thresholding
+    // pre-noise values could leak information about the underlying data.
+    //
+    // How thresholds are applied depends on the result type:
+    //
+    //   - Reach: The noised reach is released only if it meets
+    //     `min_users`. Otherwise, zero reach is returned.
+    //
+    //   - Frequency histogram: Both `min_users` and `min_impressions`
+    //     are checked for each frequency bucket. For a bucket at
+    //     frequency f with n users, the impression count is n * f;
+    //     the bucket passes when n >= `min_users` and
+    //     n * f >= `min_impressions`. Thresholds are applied by folding
+    //     down from the highest frequency bucket: if the top bucket
+    //     (e.g. 12+) does not meet either threshold, its user count is
+    //     added to the next lower bucket (e.g. 11+, which becomes the
+    //     new top bucket) and that bucket is re-evaluated. This repeats
+    //     until all remaining buckets meet both thresholds. Folded
+    //     buckets are reported as zero. If the 1+ bucket does not meet
+    //     the thresholds, the entire histogram is zeroed out and reach
+    //     is also reported as zero.
+    //
+    // These thresholds serve two purposes:
+    //   1. Small-cell suppression for privacy. Requiring at least
+    //      `min_users` unique contributors approximates k-anonymity for
+    //      the released result.
+    //   2. Avoiding false specificity. Results computed from very few
+    //      users or impressions can imply a level of specificity that
+    //      the system does not actually provide.
+    //
+    // Note: this is not, on its own, a formal k-anonymity guarantee. Any
+    // threshold loses its k-anonymity interpretation once noise is applied
+    // to the quantity being thresholded.
+    message ResultMinimumThresholds {
+      // The minimum number of impressions in the data used to compute the
+      // result.
+      int32 min_impressions = 1;
+      // The minimum number of unique users in the data used to compute the
+      // result.
+      int32 min_users = 2;
+    }
+
+    // Optional minimum thresholds for releasing the result.
+    ResultMinimumThresholds result_minimum_thresholds = 2;
   }
 
   // Configuration for a specific protocol.
