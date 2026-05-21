@@ -233,11 +233,6 @@ message ProtocolConfig {
     //   - Reach: The noised reach is released only if it meets
     //     `min_users`. Otherwise, zero reach is returned.
     //
-    //   - Impression count: The noised impression count is released only
-    //     if it meets both `min_users` (total unique users) and
-    //     `min_impressions` (total impressions). Otherwise, zero is
-    //     returned.
-    //
     //   - Frequency histogram: Both `min_users` and `min_impressions`
     //     are checked for each frequency bucket. For a bucket at
     //     frequency f with n users, the impression count is n * f;
