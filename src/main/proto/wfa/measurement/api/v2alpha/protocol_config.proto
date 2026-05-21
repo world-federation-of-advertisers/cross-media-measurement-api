@@ -242,10 +242,16 @@ message ProtocolConfig {
     //     (e.g. 12+) does not meet either threshold, its user count is
     //     added to the next lower bucket (e.g. 11+, which becomes the
     //     new top bucket) and that bucket is re-evaluated. This repeats
-    //     until all remaining buckets meet both thresholds. Folded
-    //     buckets are reported as zero. If the 1+ bucket does not meet
-    //     the thresholds, the entire histogram is zeroed out and reach
-    //     is also reported as zero.
+    //     until all remaining buckets meet both thresholds.
+    //     When users fold from frequency f to f-1, the impressions
+    //     threshold on the receiving bucket evaluates them at frequency
+    //     f-1, not their original frequency. Folded buckets are
+    //     reported as zero. If the lowest bucket (frequency
+    //     1) does not meet the thresholds, it is zeroed like any other
+    //     bucket; however, because there is no lower bucket to fold
+    //     into, its user count is simply dropped. Higher-frequency
+    //     buckets that independently meet the thresholds are still
+    //     reported.
     //
     // These thresholds serve two purposes:
     //   1. Small-cell suppression for privacy. Requiring at least
