@@ -693,13 +693,12 @@ proto_library(
 )
 
 proto_library(
-    name = "edp_impression_validation_proto",
-    srcs = ["edp_impression_validation.proto"],
+    name = "data_provider_impression_validation_proto",
+    srcs = ["data_provider_impression_validation.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
-        "@com_google_protobuf//:duration_proto",
+        "@com_google_googleapis//google/type:interval_proto",
         "@com_google_protobuf//:struct_proto",
-        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 

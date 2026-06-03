@@ -1,0 +1,127 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/protobuf/struct.proto";
+import "google/type/interval.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "DataProviderImpressionValidationProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// Request sent to a `DataProvider`'s impression validation cloud function.
+//
+// One request per (entity key union, time interval, filter) combination.
+message DataProviderImpressionValidationRequest {
+  // Unique identifier for idempotency and correlation.
+  string request_id = 1;
+
+  // Resource name of the `DataProvider`.
+  string data_provider_name = 2;
+
+  // Impression query to validate.
+  ImpressionValidationQuery query = 3;
+}
+
+// Query parameters for an impression validation request.
+message ImpressionValidationQuery {
+  // Entity keys to look up (treated as union).
+  //
+  // Impressions are computed across all entity keys combined.
+  repeated EntityKey entity_keys = 1;
+
+  // Time interval for the measurement period.
+  google.type.Interval time_interval = 2;
+
+  // Impression qualification filter applied to this query.
+  //
+  // If unset, this is an unfiltered query. Uses `Struct` to avoid a
+  // cross-repo dependency on `ImpressionQualificationFilterSpec` from
+  // `cross-media-measurement`.
+  google.protobuf.Struct impression_qualification_filter = 3;
+
+  // Demographic dimension groupings for this measurement slice.
+  //
+  // If empty, this is an all-adults (total population) query.
+  repeated DimensionGrouping dimensions = 4;
+}
+
+// Identifier for an entity in the `DataProvider`'s system.
+message EntityKey {
+  // Type of entity (e.g. "campaign", "ad_set").
+  string entity_type = 1;
+
+  // Identifier of the entity.
+  string entity_id = 2;
+}
+
+// Demographic dimension grouping for a measurement slice.
+message DimensionGrouping {
+  // Dimension path (e.g. "common.sex", "common.age_group").
+  string path = 1;
+
+  // Dimension value (e.g. "1", "2").
+  string value = 2;
+}
+
+// Response from a `DataProvider`'s impression validation cloud function.
+message DataProviderImpressionValidationResponse {
+  // Echoed `request_id` from the request for correlation.
+  string request_id = 1;
+
+  // Required. Validation outcome.
+  oneof outcome {
+    // Publisher's impression count for this query.
+    ImpressionCount result = 2;
+
+    // Reason this query could not be computed.
+    SkipDetail skipped = 3;
+  }
+}
+
+// Publisher's impression count for a validation query.
+message ImpressionCount {
+  // Raw impression count from the publisher's system.
+  int64 value = 1;
+}
+
+// Detail about why a validation query was skipped.
+message SkipDetail {
+  // Reason the query was skipped.
+  SkipReason reason = 1;
+
+  // Human-readable detail about the skip.
+  string detail = 2;
+}
+
+// Reason a validation query could not be computed by the `DataProvider`.
+enum SkipReason {
+  SKIP_REASON_UNSPECIFIED = 0;
+
+  // Filter not supported by this `DataProvider`'s publisher API.
+  FILTER_NOT_SUPPORTED = 1;
+
+  // Entity not found in the publisher's system.
+  ENTITY_NOT_FOUND = 2;
+
+  // Publisher API returned an error.
+  API_ERROR = 3;
+
+  // Demographic dimension not supported by this `DataProvider`'s publisher API.
+  DIMENSION_NOT_SUPPORTED = 4;
+}
