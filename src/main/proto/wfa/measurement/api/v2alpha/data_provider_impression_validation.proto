@@ -16,7 +16,8 @@ syntax = "proto3";
 
 package wfa.measurement.api.v2alpha;
 
-import "google/protobuf/struct.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
 import "google/type/interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -29,60 +30,85 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 // One request per (entity key union, time interval, filter) combination.
 message DataProviderImpressionValidationRequest {
   // Unique identifier for idempotency and correlation.
-  string request_id = 1;
+  string request_id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Resource name of the `DataProvider`.
-  string data_provider_name = 2;
+  string data_provider_name = 2 [
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+    (google.api.field_behavior) = REQUIRED
+  ];
 
   // Impression query to validate.
-  ImpressionValidationQuery query = 3;
+  ImpressionValidationQuery query = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Query parameters for an impression validation request.
 message ImpressionValidationQuery {
+  // Identifier for an entity in the `DataProvider`'s system.
+  message EntityKey {
+    // Type of entity (e.g. "campaign", "ad_set").
+    string entity_type = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // Identifier of the entity.
+    string entity_id = 2 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // Filter to apply to events.
+  message EventFilter {
+    // Raw CEL expression that is applied to a message which has a field for
+    // each event template.
+    string expression = 1;
+  }
+
   // Entity keys to look up (treated as union).
   //
   // Impressions are computed across all entity keys combined.
-  repeated EntityKey entity_keys = 1;
+  repeated EntityKey entity_keys = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Time interval for the measurement period.
-  google.type.Interval time_interval = 2;
+  //
+  // Both `start_time` and `end_time` must be specified.
+  google.type.Interval time_interval = 2 [(google.api.field_behavior) = REQUIRED];
 
   // Impression qualification filter applied to this query.
   //
-  // If unset, this is an unfiltered query. Uses `Struct` to avoid a
-  // cross-repo dependency on `ImpressionQualificationFilterSpec` from
-  // `cross-media-measurement`.
-  google.protobuf.Struct impression_qualification_filter = 3;
-
-  // Demographic dimension groupings for this measurement slice.
-  //
-  // If empty, this is an all-adults (total population) query.
-  repeated DimensionGrouping dimensions = 4;
-}
-
-// Identifier for an entity in the `DataProvider`'s system.
-message EntityKey {
-  // Type of entity (e.g. "campaign", "ad_set").
-  string entity_type = 1;
-
-  // Identifier of the entity.
-  string entity_id = 2;
-}
-
-// Demographic dimension grouping for a measurement slice.
-message DimensionGrouping {
-  // Dimension path (e.g. "common.sex", "common.age_group").
-  string path = 1;
-
-  // Dimension value (e.g. "1", "2").
-  string value = 2;
+  // If not specified, all impressions are included.
+  EventFilter filter = 3;
 }
 
 // Response from a `DataProvider`'s impression validation cloud function.
 message DataProviderImpressionValidationResponse {
+  // Publisher's impression count for a validation query.
+  message ImpressionCount {
+    // Raw impression count from the publisher's system.
+    int64 value = 1 [(google.api.field_behavior) = REQUIRED];
+  }
+
+  // Detail about why a validation query was skipped.
+  message SkipDetail {
+    // Reason a validation query could not be computed by the `DataProvider`.
+    enum SkipReason {
+      SKIP_REASON_UNSPECIFIED = 0;
+
+      // Filter not supported by this `DataProvider`'s publisher API.
+      FILTER_NOT_SUPPORTED = 1;
+
+      // Entity not found in the publisher's system.
+      ENTITY_NOT_FOUND = 2;
+
+      // Publisher API returned an error.
+      API_ERROR = 3;
+    }
+
+    // Reason the query was skipped.
+    SkipReason reason = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // Human-readable detail about the skip.
+    string detail = 2;
+  }
+
   // Echoed `request_id` from the request for correlation.
-  string request_id = 1;
+  string request_id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Required. Validation outcome.
   oneof outcome {
@@ -92,36 +118,4 @@ message DataProviderImpressionValidationResponse {
     // Reason this query could not be computed.
     SkipDetail skipped = 3;
   }
-}
-
-// Publisher's impression count for a validation query.
-message ImpressionCount {
-  // Raw impression count from the publisher's system.
-  int64 value = 1;
-}
-
-// Detail about why a validation query was skipped.
-message SkipDetail {
-  // Reason the query was skipped.
-  SkipReason reason = 1;
-
-  // Human-readable detail about the skip.
-  string detail = 2;
-}
-
-// Reason a validation query could not be computed by the `DataProvider`.
-enum SkipReason {
-  SKIP_REASON_UNSPECIFIED = 0;
-
-  // Filter not supported by this `DataProvider`'s publisher API.
-  FILTER_NOT_SUPPORTED = 1;
-
-  // Entity not found in the publisher's system.
-  ENTITY_NOT_FOUND = 2;
-
-  // Publisher API returned an error.
-  API_ERROR = 3;
-
-  // Demographic dimension not supported by this `DataProvider`'s publisher API.
-  DIMENSION_NOT_SUPPORTED = 4;
 }
