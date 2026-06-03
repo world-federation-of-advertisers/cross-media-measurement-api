@@ -61,6 +61,9 @@ message ModelShard {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // Whether memoized VID assignment is enabled for this `ModelShard`.
+  bool memoized_vid_assignment_enabled = 4;
+
   // When the 'ModelShard' was created.
   google.protobuf.Timestamp create_time = 5
       [(google.api.field_behavior) = OUTPUT_ONLY];
