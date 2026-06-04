@@ -61,6 +61,12 @@ message ModelShard {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // If true, the EDP Aggregator must run pool assignment (Phase 0)
+  // and rank allocation (Phase 1) before VID labeling for impressions
+  // associated with this `ModelShard`.
+  bool memoized_vid_assignment_enabled = 4
+      [(google.api.field_behavior) = IMMUTABLE];
+
   // When the 'ModelShard' was created.
   google.protobuf.Timestamp create_time = 5
       [(google.api.field_behavior) = OUTPUT_ONLY];
