@@ -693,8 +693,8 @@ proto_library(
 )
 
 proto_library(
-    name = "data_provider_impression_validation_proto",
-    srcs = ["data_provider_impression_validation.proto"],
+    name = "data_provider_impression_query_proto",
+    srcs = ["data_provider_impression_query.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         "@com_google_googleapis//google/api:field_behavior_proto",

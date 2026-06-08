@@ -22,7 +22,7 @@ import "google/type/interval.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
-option java_outer_classname = "DataProviderImpressionValidationProto";
+option java_outer_classname = "DataProviderImpressionQueryProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Request for a `DataProvider`'s impression count.
@@ -38,12 +38,12 @@ message DataProviderImpressionQueryRequest {
     (google.api.field_behavior) = REQUIRED
   ];
 
-  // Impression query to validate.
-  ImpressionValidationQuery query = 3 [(google.api.field_behavior) = REQUIRED];
+  // Impression query.
+  ImpressionQuery query = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
-// Query parameters for an impression validation request.
-message ImpressionValidationQuery {
+// Query parameters for an impression query.
+message ImpressionQuery {
   // Identifier for an entity in the `DataProvider`'s system.
   message EntityKey {
     // Type of entity (e.g. "campaign", "ad_set").
@@ -76,17 +76,17 @@ message ImpressionValidationQuery {
   EventFilter filter = 3;
 }
 
-// Response from a `DataProvider`'s impression validation cloud function.
-message DataProviderImpressionValidationResponse {
-  // Publisher's impression count for a validation query.
+// Response from a `DataProvider`'s impression query cloud function.
+message DataProviderImpressionQueryResponse {
+  // Publisher's impression count for a query.
   message ImpressionCount {
     // Raw impression count from the publisher's system.
     int64 value = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
-  // Detail about why a validation query was skipped.
+  // Detail about why a query was skipped.
   message SkipDetail {
-    // Reason a validation query could not be computed by the `DataProvider`.
+    // Reason a query could not be computed by the `DataProvider`.
     enum SkipReason {
       SKIP_REASON_UNSPECIFIED = 0;
 
@@ -110,7 +110,7 @@ message DataProviderImpressionValidationResponse {
   // Echoed `request_id` from the request for correlation.
   string request_id = 1 [(google.api.field_behavior) = REQUIRED];
 
-  // Required. Validation outcome.
+  // Required. Query outcome.
   oneof outcome {
     // Publisher's impression count for this query.
     ImpressionCount result = 2;
