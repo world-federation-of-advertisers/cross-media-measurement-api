@@ -163,9 +163,12 @@ message ListEventGroupActivitiesRequest {
     // Resource names of `EventGroup`s to filter to. If empty, returns
     // activities across all `EventGroup`s for the `DataProvider`.
     repeated string event_groups = 2
-        [(google.api.resource_reference).type =
-             "halo.wfanet.org/EventGroup" ];
+        [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
   }
+  // Filter criteria for this request.
+  //
+  // (-- api-linter: core::0132::request-field-types=disabled
+  //     aip.dev/not-precedent: This API uses structured filters. --)
   Filter filter = 4;
 }
 
