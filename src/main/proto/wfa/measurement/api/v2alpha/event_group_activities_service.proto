@@ -20,7 +20,7 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
-import "google/type/interval.proto";
+import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group_activity.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -159,7 +159,7 @@ message ListEventGroupActivitiesRequest {
   message Filter {
     // Filter by activity date range. Only activities with dates within
     // this interval are returned.
-    google.type.Interval date_interval = 1;
+    DateInterval date_interval = 1;
     // Resource names of `EventGroup`s to filter to. If empty, returns
     // activities across all `EventGroup`s for the `DataProvider`.
     repeated string event_groups = 2
