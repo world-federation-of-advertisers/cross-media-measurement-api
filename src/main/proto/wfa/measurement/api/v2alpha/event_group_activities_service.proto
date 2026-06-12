@@ -126,13 +126,15 @@ message BatchDeleteEventGroupActivitiesRequest {
 
 // Request message for `ListEventGroupActivities` method.
 message ListEventGroupActivitiesRequest {
-  // The parent `DataProvider` resource name.
-  // Format: dataProviders/{data_provider}
+  // Resource name of the parent `EventGroup`.
+  //
+  // The wildcard ID (`-`) may be used in place of the `EventGroup` ID to list
+  // across every `EventGroup` in the ancestor `DataProvider`. If this is done,
+  // then the wildcard ID may also be used in place of the `DataProvider` ID to
+  // list across all ancestors.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference) = {
-      child_type: "halo.wfanet.org/EventGroupActivity"
-    }
+    (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
   ];
 
   // The maximum number of resources to return. The service may return fewer
@@ -160,10 +162,6 @@ message ListEventGroupActivitiesRequest {
     // Filter by activity date range. Only activities with dates within
     // this interval are returned.
     DateInterval date_interval = 1;
-    // Resource names of `EventGroup`s to filter to. If empty, returns
-    // activities across all `EventGroup`s for the `DataProvider`.
-    repeated string event_groups = 2
-        [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
   }
   // Filter criteria for this request.
   //
