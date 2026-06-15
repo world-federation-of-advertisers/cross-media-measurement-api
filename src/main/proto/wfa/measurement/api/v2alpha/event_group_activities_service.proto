@@ -129,9 +129,7 @@ message ListEventGroupActivitiesRequest {
   // Resource name of the parent `EventGroup`.
   //
   // The wildcard ID (`-`) may be used in place of the `EventGroup` ID to list
-  // across every `EventGroup` in the ancestor `DataProvider`. If this is done,
-  // then the wildcard ID may also be used in place of the `DataProvider` ID to
-  // list across all ancestors.
+  // across every `EventGroup` in the ancestor `DataProvider`.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
