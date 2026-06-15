@@ -694,6 +694,18 @@ proto_library(
 )
 
 proto_library(
+    name = "data_provider_impression_query_proto",
+    srcs = ["data_provider_impression_query.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+        "@com_google_googleapis//google/api:field_info_proto",
+        "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_googleapis//google/type:interval_proto",
+    ],
+)
+
+proto_library(
     name = "date_interval_proto",
     srcs = ["date_interval.proto"],
     strip_import_prefix = IMPORT_PREFIX,
