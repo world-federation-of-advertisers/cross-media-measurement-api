@@ -49,7 +49,8 @@ service EventGroupActivities {
   rpc BatchDeleteEventGroupActivities(BatchDeleteEventGroupActivitiesRequest)
       returns (google.protobuf.Empty) {}
 
-  // Lists `EventGroupActivity` resources for a given `EventGroup`.
+  // Lists `EventGroupActivity` resources for a given `EventGroup`, or across
+  // all `EventGroup`s under a `DataProvider` when the wildcard ID is used.
   rpc ListEventGroupActivities(ListEventGroupActivitiesRequest)
       returns (ListEventGroupActivitiesResponse) {
     option (google.api.method_signature) = "parent";
