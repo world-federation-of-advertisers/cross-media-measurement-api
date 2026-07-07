@@ -88,7 +88,22 @@ message EventTemplateDescriptor {
   // High-level description of the Event Template.
   string description = 3;
   // The `MediaType` to which this template applies. If a template is not
-  // annotated with a `media_type` then it applies to all `MediaType`s
+  // annotated with a `media_type` then it applies to all `MediaType`s.
+  //
+  // Media-type inheritance for oneof members. Fields nested inside a
+  // `oneof` member of a template are exposed as template fields under the
+  // dotted path `<template>.<member>.<field>`. Their effective `MediaType`
+  // is inherited from the parent template (the message annotated with
+  // `event_template`). If the parent carries no `media_type` annotation,
+  // the inherited value is `MEDIA_TYPE_UNSPECIFIED`, which silently makes
+  // `IMPRESSION_QUALIFICATION`-tagged nested fields unreachable to all
+  // Impression Qualification Filter specs (an IQF requires a matching
+  // non-unspecified `MediaType`).
+  //
+  // Guidance for real EDP schemas: place `IMPRESSION_QUALIFICATION`
+  // annotations on per-mediaType templates (which carry an explicit
+  // `media_type`). Reserve `FILTERABLE` / `GROUPABLE` for nested fields
+  // on cross-mediaType templates.
   MediaType media_type = 4;
 }
 // Descriptor for an Event message type.
