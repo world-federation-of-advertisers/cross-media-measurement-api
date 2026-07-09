@@ -88,7 +88,25 @@ message EventTemplateDescriptor {
   // High-level description of the Event Template.
   string description = 3;
   // The `MediaType` to which this template applies. If a template is not
-  // annotated with a `media_type` then it applies to all `MediaType`s
+  // annotated with a `media_type` then it applies to all `MediaType`s.
+  //
+  // When a template contains a `oneof`, fields nested inside a member
+  // are exposed as template fields under the dotted path
+  // `<template>.<member>.<field>`. Their effective `MediaType` is
+  // inherited from the parent template (the message annotated with
+  // `event_template`). This matters for `IMPRESSION_QUALIFICATION`:
+  // an IQF requires a matching non-unspecified `MediaType`, so
+  // `IMPRESSION_QUALIFICATION`-tagged nested fields on a template
+  // with no `media_type` (inherited value `MEDIA_TYPE_UNSPECIFIED`)
+  // are unreachable to all IQF specs.
+  //
+  // `FILTERABLE` and `GROUPABLE` fields are unaffected by
+  // `media_type` -- they work on any template regardless.
+  //
+  // Guidance: place `IMPRESSION_QUALIFICATION` annotations on
+  // per-mediaType templates (which carry an explicit `media_type`).
+  // `FILTERABLE` / `GROUPABLE` may go on any template, including
+  // cross-mediaType templates and their oneof members.
   MediaType media_type = 4;
 }
 // Descriptor for an Event message type.
