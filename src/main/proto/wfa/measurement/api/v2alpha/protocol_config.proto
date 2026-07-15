@@ -279,11 +279,12 @@ message ProtocolConfig {
     ResultMinimumThresholds result_minimum_thresholds = 2;
 
     // Required when `noise_mechanism` is DETERMINISTIC_TRUNCATED_LAPLACE.
-    DeterministicNoiseParams deterministic_noise_params = 3;
+    DeterministicTruncatedLaplaceNoiseParams
+        deterministic_truncated_laplace_noise_params = 3;
   }
 
   // Parameters for DETERMINISTIC_TRUNCATED_LAPLACE noise.
-  message DeterministicNoiseParams {
+  message DeterministicTruncatedLaplaceNoiseParams {
     // Draws are truncated to `[-truncation_bound, truncation_bound]`.
     int32 truncation_bound = 1;
   }

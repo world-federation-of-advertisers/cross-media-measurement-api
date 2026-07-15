@@ -99,7 +99,7 @@ message DataProvider {
     bool noise_mechanism_none_supported = 3;
 
     // Whether the DETERMINISTIC_TRUNCATED_LAPLACE noise mechanism is supported.
-    bool deterministic_noise_supported = 4;
+    bool noise_mechanism_deterministic_truncated_laplace_supported = 4;
   }
   // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
   // willing and able to support.
