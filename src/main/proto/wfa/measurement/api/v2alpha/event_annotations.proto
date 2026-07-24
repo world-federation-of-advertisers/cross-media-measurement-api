@@ -72,6 +72,32 @@ message EventFieldDescriptor {
   // This value must be less than or equal to the Event `current_version`, and
   // it must be greater than `version_added`.
   int32 version_removed = 7;
+
+  // Constraint on the values this field may take, beyond its proto type.
+  //
+  // For example, a `double` field that only ever holds quartiles can declare
+  // the set `{0.0, 0.25, 0.5, 0.75, 1.0}`. If unset, the field is
+  // unconstrained beyond its proto type. Enums and booleans are already
+  // constrained by their type and do not need this.
+  FieldValueConstraint value_constraint = 4;
+}
+
+// Constraint on the set of values a numeric event field may take.
+message FieldValueConstraint {
+  // The constraint. The arm used must match the annotated field's proto type.
+  //
+  // Currently only a set of `double` values is supported; further arms (e.g.
+  // a numeric range, or a set of another numeric type) may be added as fields
+  // requiring them are introduced.
+  oneof kind {
+    DoubleValueSet double_value_set = 1;
+  }
+
+  // An explicit set of allowed values for a `double` field.
+  message DoubleValueSet {
+    // The allowed values. A field value not in this set is invalid.
+    repeated double values = 1;
+  }
 }
 
 // Descriptor for an event template message type.
