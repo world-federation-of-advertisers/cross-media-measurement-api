@@ -90,6 +90,7 @@ message FieldValueConstraint {
   // a numeric range, or a set of another numeric type) may be added as fields
   // requiring them are introduced.
   oneof kind {
+    // A set of allowed values for a `double` field.
     DoubleValueSet double_value_set = 1;
   }
 
