@@ -73,32 +73,33 @@ message EventFieldDescriptor {
   // it must be greater than `version_added`.
   int32 version_removed = 7;
 
-  // Constraint on the values this field may take, beyond its proto type.
+  // Grouping predicate offered over this field for reporting, if any.
   //
-  // For example, a `double` field that only ever holds quartiles can declare
-  // the set `{0.0, 0.25, 0.5, 0.75, 1.0}`. If unset, the field is
-  // unconstrained beyond its proto type. Enums and booleans are already
-  // constrained by their type and do not need this.
-  FieldValueConstraint value_constraint = 4;
+  // For example, a `double` field holding video completion can declare the
+  // "at least" thresholds `{0.25, 0.5, 0.75, 1.0}`, offering the quartile
+  // groupings 25%+, 50%+, 75%+ and 100%. Enums and booleans are already
+  // partitioned by their type and do not need this.
+  EventFieldGroupingPredicate grouping_predicate = 4;
 }
 
-// Constraint on the set of values a numeric event field may take.
-message FieldValueConstraint {
-  // The constraint. The arm used must match the annotated field's proto type.
-  //
-  // Currently only a set of `double` values is supported; further arms (e.g.
-  // a numeric range, or a set of another numeric type) may be added as fields
-  // requiring them are introduced.
-  oneof kind {
-    // A set of allowed values for a `double` field.
-    DoubleValueSet double_value_set = 1;
+// A grouping predicate offered over a numeric event field: the field value
+// compared against each of `values` using `operator`.
+//
+// For example, `{operator: GREATER_THAN_OR_EQUAL, values: [0.25, 0.5, 0.75,
+// 1.0]}` offers the four "at least" thresholds 25%+, 50%+, 75%+ and 100%.
+message EventFieldGroupingPredicate {
+  // Comparison applied between the field value and each threshold value.
+  enum Operator {
+    OPERATOR_UNSPECIFIED = 0;
+    GREATER_THAN_OR_EQUAL = 1;
   }
 
-  // An explicit set of allowed values for a `double` field.
-  message DoubleValueSet {
-    // The allowed values. A field value not in this set is invalid.
-    repeated double values = 1;
-  }
+  // Comparison operator. Required.
+  Operator operator = 1;
+
+  // Threshold values the field is compared against. Currently only `double`
+  // fields are supported.
+  repeated double values = 2;
 }
 
 // Descriptor for an event template message type.
