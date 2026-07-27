@@ -90,7 +90,9 @@ message EventFieldDescriptor {
 message EventFieldGroupingPredicate {
   // Comparison applied between the field value and each threshold value.
   enum Operator {
+    // Default value. Unused.
     OPERATOR_UNSPECIFIED = 0;
+    // The field value is at least the threshold value.
     GREATER_THAN_OR_EQUAL = 1;
   }
 
