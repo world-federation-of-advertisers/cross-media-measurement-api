@@ -73,21 +73,24 @@ message EventFieldDescriptor {
   // it must be greater than `version_added`.
   int32 version_removed = 7;
 
-  // Grouping predicate offered over this field for reporting, if any.
+  // Grouping spec offered over this field for reporting.
   //
-  // For example, a `double` field holding video completion can declare the
-  // "at least" thresholds `{0.25, 0.5, 0.75, 1.0}`, offering the quartile
-  // groupings 25%+, 50%+, 75%+ and 100%. Enums and booleans are already
-  // partitioned by their type and do not need this.
-  EventFieldGroupingPredicate grouping_predicate = 4;
+  // Required for a field whose type is neither an enum nor a boolean when
+  // `reporting_features` includes `GROUPABLE`, since such a field is not
+  // partitioned into groups by its type alone. For example, a `double` field
+  // holding video completion can declare the "at least" thresholds
+  // `{0.25, 0.5, 0.75, 1.0}`, offering the quartile groupings 25%+, 50%+,
+  // 75%+ and 100%. Enums and booleans are already partitioned by their type
+  // and do not need this.
+  EventFieldGroupingSpec grouping_spec = 4;
 }
 
-// A grouping predicate offered over a numeric event field: the field value
-// compared against each of `values` using `operator`.
+// A grouping spec offered over a numeric event field: the field value compared
+// against each of `values` using `operator`.
 //
 // For example, `{operator: GREATER_THAN_OR_EQUAL, values: [0.25, 0.5, 0.75,
 // 1.0]}` offers the four "at least" thresholds 25%+, 50%+, 75%+ and 100%.
-message EventFieldGroupingPredicate {
+message EventFieldGroupingSpec {
   // Comparison applied between the field value and each threshold value.
   enum Operator {
     // Default value. Unused.
@@ -96,12 +99,20 @@ message EventFieldGroupingPredicate {
     GREATER_THAN_OR_EQUAL = 1;
   }
 
+  // A list of `double` threshold values.
+  message DoubleValueList {
+    // The threshold values.
+    repeated double values = 1;
+  }
+
   // Comparison operator. Required.
   Operator operator = 1;
 
-  // Threshold values the field is compared against. Currently only `double`
-  // fields are supported.
-  repeated double values = 2;
+  // Operand values for the predicate operation. Required.
+  oneof values {
+    // Threshold values for a `double` field.
+    DoubleValueList double_value_list = 2;
+  }
 }
 
 // Descriptor for an event template message type.
