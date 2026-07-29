@@ -127,10 +127,11 @@ message BatchDeleteEventGroupActivitiesRequest {
 
 // Request message for `ListEventGroupActivities` method.
 message ListEventGroupActivitiesRequest {
-  // Resource name of the parent `EventGroup`.
+  // Resource name of the parent `EventGroup`, either DataProvider-rooted or
+  // MeasurementConsumer-rooted.
   //
-  // The wildcard ID (`-`) may be used in place of the `EventGroup` ID to list
-  // across every `EventGroup` in the ancestor `DataProvider`.
+  // The wildcard ID (`-`) may replace the `EventGroup` ID to list across every
+  // `EventGroup` in the ancestor `DataProvider` or `MeasurementConsumer`.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
@@ -138,7 +139,7 @@ message ListEventGroupActivitiesRequest {
 
   // The maximum number of resources to return. The service may return fewer
   // than this value.
-  // If unspecified, at most 1000 resources will be returned.
+  // If unspecified, at most 50 resources will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
   int32 page_size = 2;
 
