@@ -86,10 +86,11 @@ message EventFieldDescriptor {
 }
 
 // A grouping spec offered over a numeric event field: the field value compared
-// against each of `values` using `operator`.
+// against each threshold in `double_value_list` using `operator`.
 //
-// For example, `{operator: GREATER_THAN_OR_EQUAL, values: [0.25, 0.5, 0.75,
-// 1.0]}` offers the four "at least" thresholds 25%+, 50%+, 75%+ and 100%.
+// For example, `{operator: GREATER_THAN_OR_EQUAL, double_value_list: {values:
+// [0.25, 0.5, 0.75, 1.0]}}` offers the four "at least" thresholds 25%+, 50%+,
+// 75%+ and 100%.
 message EventFieldGroupingSpec {
   // Comparison applied between the field value and each threshold value.
   enum Operator {
