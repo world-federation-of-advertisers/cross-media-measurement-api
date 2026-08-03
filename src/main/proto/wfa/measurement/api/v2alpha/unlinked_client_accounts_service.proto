@@ -53,7 +53,8 @@ message ReplaceUnlinkedClientAccountsRequest {
 
   // The full current set of unlinked client accounts for the DataProvider.
   //
-  // An empty set deletes all stored accounts for this DataProvider.
+  // An empty set deletes all stored accounts for this DataProvider. A maximum
+  // of 1000 `UnlinkedClientAccount`s can be replaced in a single call.
   repeated UnlinkedClientAccount unlinked_client_accounts = 2
       [(google.api.field_behavior) = OPTIONAL];
 }
