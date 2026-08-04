@@ -56,13 +56,12 @@ message FulfillRequisitionRequest {
     // 1. The `data` in `measurement_spec` from the `Requisition`.
     // 2. The SHA256 hash of `encrypted_requisition_spec` from the
     //    `Requisition`.
-    bytes requisition_fingerprint = 2
-        [ (google.api.field_behavior) = REQUIRED ];
+    bytes requisition_fingerprint = 2 [(google.api.field_behavior) = REQUIRED];
 
     // The `nonce` value from the `encrypted_requisition_spec`.
     // (-- api-linter: core::0141::forbidden-types=disabled
     //     aip.dev/not-precedent: This is a random 64-bit value. --)
-    fixed64 nonce = 3 [ (google.api.field_behavior) = REQUIRED ];
+    fixed64 nonce = 3 [(google.api.field_behavior) = REQUIRED];
 
     // The protocol config of the Computation. This is used to validate that
     // EDPs and the MPC are using the same protocol config.
@@ -210,7 +209,7 @@ message FulfillRequisitionRequest {
     // operation, the operation will not occur and will result in an ABORTED
     // status.
     // TODO(@renjiezh): Make this REQUIRED once it has been adopted by all EDPs.
-    string etag = 7 [ (google.api.field_behavior) = OPTIONAL ];
+    string etag = 7 [(google.api.field_behavior) = OPTIONAL];
   }
 
   // The chunk message for this streaming request.
@@ -234,7 +233,7 @@ message FulfillRequisitionRequest {
     // The optimal size of this field is one that would result in the
     // `FulfillRequisitionRequest` message being between 16KiB and 64KiB.
     // See https://github.com/grpc/grpc.github.io/issues/371
-    bytes data = 1 [ (google.api.field_behavior) = REQUIRED ];
+    bytes data = 1 [(google.api.field_behavior) = REQUIRED];
   }
 
   // Request message payload. Exactly one of these must be specified.
@@ -252,5 +251,5 @@ message FulfillRequisitionRequest {
 // Response message for `FulfillRequisition` method.
 message FulfillRequisitionResponse {
   // Resulting state of the `Requisition`.
-  Requisition.State state = 1 [ (google.api.field_behavior) = OUTPUT_ONLY ];
+  Requisition.State state = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
