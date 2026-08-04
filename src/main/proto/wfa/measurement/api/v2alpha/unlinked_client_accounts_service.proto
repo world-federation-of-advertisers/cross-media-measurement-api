@@ -46,9 +46,7 @@ message ReplaceUnlinkedClientAccountsRequest {
   // Format: `dataProviders/{data_provider}`
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference) = {
-      child_type: "halo.wfanet.org/UnlinkedClientAccount"
-    }
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider"
   ];
 
   // The full current set of unlinked client accounts for the DataProvider.

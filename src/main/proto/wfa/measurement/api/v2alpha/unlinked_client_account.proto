@@ -48,7 +48,7 @@ message UnlinkedClientAccount {
       [(google.api.field_behavior) = REQUIRED];
 
   // The distinct brands observed for this client account. Display hint only.
-  repeated string brands = 3 [(google.api.field_behavior) = OPTIONAL];
+  repeated string brands = 3 [(google.api.field_behavior) = UNORDERED_LIST];
 
   // One EventGroup observed for this client account, for traceability.
   //
@@ -62,10 +62,10 @@ message UnlinkedClientAccount {
     string event_group_reference_id = 4;
 
     // Entity key of an observed EventGroup.
-    EventGroup.EntityKey entity_key = 6;
+    EventGroup.EntityKey entity_key = 5;
   }
 
   // The time this client account was first observed unlinked.
-  google.protobuf.Timestamp first_observed_time = 5
+  google.protobuf.Timestamp first_observed_time = 6
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }
