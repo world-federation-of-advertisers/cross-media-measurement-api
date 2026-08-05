@@ -47,6 +47,9 @@ message UnlinkedClientAccount {
   // The combination of the parent `DataProvider` and
   // `client_account_reference_id` must be unique and cannot be shared by both a
   // `ClientAccount` and an `UnlinkedClientAccount`.
+  //
+  // Used as the resource ID, so this must be a URL-safe string, such that
+  // URL-encoding or -decoding results in the same string.
   string client_account_reference_id = 2
       [(google.api.field_behavior) = REQUIRED];
 

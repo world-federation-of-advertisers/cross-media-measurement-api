@@ -76,7 +76,9 @@ message CreateUnlinkedClientAccountRequest {
 
   // The `UnlinkedClientAccount` to create.
   //
-  // The `name` field will be ignored, and the system will assign an ID.
+  // The `name` field will be ignored. The resource ID is the
+  // `client_account_reference_id`, so the resource name is
+  // `{parent}/unlinkedClientAccounts/{client_account_reference_id}`.
   UnlinkedClientAccount unlinked_client_account = 2
       [(google.api.field_behavior) = REQUIRED];
 }
