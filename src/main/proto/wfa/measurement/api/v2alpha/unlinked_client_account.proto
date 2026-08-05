@@ -27,9 +27,8 @@ option java_multiple_files = true;
 option java_outer_classname = "UnlinkedClientAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// A `ClientAccount` observed by EventGroupSync that could not be resolved to a
-// `MeasurementConsumer` ("unlinked"). It is effectively a `ClientAccount` that
-// is not yet mapped to a `MeasurementConsumer`.
+// A `ClientAccount` observed by EventGroupSync that is not yet mapped to a
+// `MeasurementConsumer` ("unlinked").
 message UnlinkedClientAccount {
   option (google.api.resource) = {
     type: "halo.wfanet.org/UnlinkedClientAccount"
