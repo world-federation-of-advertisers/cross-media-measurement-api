@@ -18,9 +18,9 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
-import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -53,20 +53,21 @@ message UnlinkedClientAccount {
   string client_account_reference_id = 2
       [(google.api.field_behavior) = REQUIRED];
 
-  // Metadata of one campaign observed for this client account.
-  //
-  // Provides a human-readable hint (e.g. `brand_name`) for display, since the
-  // account is otherwise only identified by `client_account_reference_id`.
-  EventGroupMetadata.AdMetadata.CampaignMetadata campaign_metadata = 3;
+  // Entity metadata denormalized from the observed EventGroup, for display.
+  // Same schema as `EventGroupMetadata.entity_metadata` (e.g. a `brand_name`
+  // entry).
+  google.protobuf.Struct entity_metadata = 3;
 
-  // One EventGroup observed for this client account, for traceability.
+  // Identifiers of one EventGroup observed for this account, for traceability.
+  // The EventGroup exists in the DataProvider's system but is not registered
+  // in the Kingdom: EventGroupSync only registers an EventGroup for an account
+  // that resolves to a MeasurementConsumer, and this one is unlinked, so no
+  // CMMS EventGroup is created. It is therefore referenced by these
+  // DataProvider-side identifiers rather than a resource name.
   //
-  // Corresponds to `EventGroup.event_group_reference_id` and
-  // `EventGroup.entity_key`. Selected deterministically across the EventGroups
-  // observed for this account: `entity_key` is preferred when any observed
-  // EventGroup carries one, falling back to `event_group_reference_id`. Among
-  // candidates of the chosen kind, the lexicographically smallest is used, so
-  // repeated syncs over the same input produce the same value.
+  // Chosen deterministically so repeated syncs yield the same value:
+  // `entity_key` is preferred over `event_group_reference_id`, and the
+  // lexicographically smallest candidate wins.
   oneof observed_event_group {
     // Legacy EventGroup reference ID. See
     // `EventGroup.event_group_reference_id`.
