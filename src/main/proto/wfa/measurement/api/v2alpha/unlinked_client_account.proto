@@ -20,14 +20,21 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
+import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "UnlinkedClientAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// An advertiser client-account reference ID that EventGroupSync could not
-// resolve to any MeasurementConsumer ("unlinked").
+// A client account observed within a `DataProvider`'s ecosystem that could not
+// be resolved to any `MeasurementConsumer` ("unlinked").
+//
+// This is effectively a `ClientAccount` that has not yet been mapped to a
+// `MeasurementConsumer`. A given (`DataProvider`,
+// `client_account_reference_id`) can have either a `ClientAccount` or an
+// `UnlinkedClientAccount`, but not both: creating the corresponding
+// `ClientAccount` deletes the `UnlinkedClientAccount`.
 message UnlinkedClientAccount {
   option (google.api.resource) = {
     type: "halo.wfanet.org/UnlinkedClientAccount"
@@ -37,35 +44,43 @@ message UnlinkedClientAccount {
   };
 
   // Resource name.
-  //
-  // Ignored on the `ReplaceUnlinkedClientAccounts` write path: the
-  // request-level `parent` DataProvider and each entry
-  // `client_account_reference_id` are authoritative.
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  // Reference ID of the client account in the DataProvider ecosystem.
+  // Reference ID for the account in the `DataProvider`'s ecosystem.
+  // Must not exceed 36 characters.
+  //
+  // This is the same identifier as `ClientAccount.client_account_reference_id`.
+  // The combination of the parent `DataProvider` and
+  // `client_account_reference_id` must be unique and cannot be shared by both a
+  // `ClientAccount` and an `UnlinkedClientAccount`.
   string client_account_reference_id = 2
       [(google.api.field_behavior) = REQUIRED];
 
-  // The distinct brands observed for this client account. Display hint only.
-  repeated string brands = 3 [(google.api.field_behavior) = UNORDERED_LIST];
+  // Metadata of one campaign observed for this client account.
+  //
+  // Provides a human-readable hint (e.g. `brand_name`) for display, since the
+  // account is otherwise only identified by `client_account_reference_id`.
+  EventGroupMetadata.AdMetadata.CampaignMetadata campaign_metadata = 3;
 
   // One EventGroup observed for this client account, for traceability.
   //
-  // Selected deterministically across the EventGroups observed for this
-  // account: `entity_key` is preferred when any observed EventGroup carries
-  // one, falling back to `event_group_reference_id`. Among candidates of the
-  // chosen kind, the lexicographically smallest is used, so repeated syncs
-  // over the same input produce the same value.
+  // Corresponds to `EventGroup.event_group_reference_id` and
+  // `EventGroup.entity_key`. Selected deterministically across the EventGroups
+  // observed for this account: `entity_key` is preferred when any observed
+  // EventGroup carries one, falling back to `event_group_reference_id`. Among
+  // candidates of the chosen kind, the lexicographically smallest is used, so
+  // repeated syncs over the same input produce the same value.
   oneof observed_event_group {
-    // Legacy EventGroup reference ID.
+    // Legacy EventGroup reference ID. See
+    // `EventGroup.event_group_reference_id`.
     string event_group_reference_id = 4;
 
-    // Entity key of an observed EventGroup.
+    // Entity key of an observed EventGroup. See `EventGroup.entity_key`.
     EventGroup.EntityKey entity_key = 5;
   }
 
-  // The time this client account was first observed unlinked.
-  google.protobuf.Timestamp first_observed_time = 6
+  // The time this `UnlinkedClientAccount` was created, i.e. when the account
+  // was first observed unlinked.
+  google.protobuf.Timestamp create_time = 6
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }

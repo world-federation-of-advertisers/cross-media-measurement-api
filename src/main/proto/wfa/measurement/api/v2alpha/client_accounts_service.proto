@@ -30,12 +30,20 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 // Service for interacting with `ClientAccount` resources.
 service ClientAccounts {
   // Creates a new `ClientAccount`.
+  //
+  // If an `UnlinkedClientAccount` exists for the same `DataProvider` and
+  // `client_account_reference_id`, it is atomically deleted, since an account
+  // cannot be both linked and unlinked.
   rpc CreateClientAccount(CreateClientAccountRequest) returns (ClientAccount) {
     option (google.api.method_signature) = "parent,client_account";
   }
 
   // Batch creates `ClientAccount`s. Results in an error if any of the
   // specified `ClientAccount`s fail to be created.
+  //
+  // As with `CreateClientAccount`, any `UnlinkedClientAccount` matching a
+  // created `ClientAccount`'s `DataProvider` and `client_account_reference_id`
+  // is atomically deleted.
   rpc BatchCreateClientAccounts(BatchCreateClientAccountsRequest)
       returns (BatchCreateClientAccountsResponse) {}
 

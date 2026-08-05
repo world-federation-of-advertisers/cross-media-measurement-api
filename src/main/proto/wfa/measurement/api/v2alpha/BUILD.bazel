@@ -779,6 +779,7 @@ proto_library(
     srcs = ["unlinked_client_account.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        ":event_group_metadata_proto",
         ":event_group_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
@@ -792,7 +793,9 @@ proto_library(
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":unlinked_client_account_proto",
+        "@com_google_googleapis//google/api:client_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
+        "@com_google_protobuf//:empty_proto",
     ],
 )
