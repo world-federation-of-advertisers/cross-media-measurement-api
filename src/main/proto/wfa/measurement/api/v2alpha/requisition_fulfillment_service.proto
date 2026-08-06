@@ -106,17 +106,14 @@ message FulfillRequisitionRequest {
         // AWS-specific parameters for KMS. Set when AWS KMS is used
         // for the KEK. If not set, GCP KMS is assumed.
         message AwsKmsParams {
+          reserved 5;
+
           // AWS IAM role ARN to assume.
           string role_arn = 1;
           // Identifier for the assumed AWS role session.
           string role_session = 2;
           // AWS region for STS and KMS endpoints.
           string region = 3;
-
-          // Field 5 held a `credential_source` enum that the `token_audience`
-          // oneof replaces. It was released with a different wire type, so the
-          // field number is not reused.
-          reserved 5;
 
           // Audience presented to AWS STS when assuming `role_arn`. The member
           // that is set determines how the workload authenticates to AWS STS.
