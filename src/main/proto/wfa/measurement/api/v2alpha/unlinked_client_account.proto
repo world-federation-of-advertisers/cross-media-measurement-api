@@ -18,6 +18,7 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/event_group.proto";
 
@@ -26,8 +27,8 @@ option java_multiple_files = true;
 option java_outer_classname = "UnlinkedClientAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// An advertiser client-account reference ID that EventGroupSync could not
-// resolve to any MeasurementConsumer ("unlinked").
+// A `ClientAccount` that is not yet mapped to a `MeasurementConsumer`
+// ("unlinked").
 message UnlinkedClientAccount {
   option (google.api.resource) = {
     type: "halo.wfanet.org/UnlinkedClientAccount"
@@ -37,35 +38,45 @@ message UnlinkedClientAccount {
   };
 
   // Resource name.
-  //
-  // Ignored on the `ReplaceUnlinkedClientAccounts` write path: the
-  // request-level `parent` DataProvider and each entry
-  // `client_account_reference_id` are authoritative.
   string name = 1 [(google.api.field_behavior) = IDENTIFIER];
 
-  // Reference ID of the client account in the DataProvider ecosystem.
+  // Reference ID for the account in the `DataProvider`'s ecosystem.
+  // Must not exceed 36 characters.
+  //
+  // This is the same identifier as `ClientAccount.client_account_reference_id`.
+  // The combination of the parent `DataProvider` and
+  // `client_account_reference_id` must be unique and cannot be shared by both a
+  // `ClientAccount` and an `UnlinkedClientAccount`.
+  //
+  // Used as the resource ID, so this must be a URL-safe string, such that
+  // URL-encoding or -decoding results in the same string.
   string client_account_reference_id = 2
       [(google.api.field_behavior) = REQUIRED];
 
-  // The distinct brands observed for this client account. Display hint only.
-  repeated string brands = 3 [(google.api.field_behavior) = UNORDERED_LIST];
+  // Metadata for the DataProvider-side entity this client account is associated
+  // with, using the same schema as `EventGroupMetadata.entity_metadata` (e.g. a
+  // `brand_name` entry).
+  google.protobuf.Struct entity_metadata = 3;
 
-  // One EventGroup observed for this client account, for traceability.
+  // Identifiers of the DataProvider-side entity this client account is
+  // associated with, for traceability.
   //
-  // Selected deterministically across the EventGroups observed for this
-  // account: `entity_key` is preferred when any observed EventGroup carries
-  // one, falling back to `event_group_reference_id`. Among candidates of the
-  // chosen kind, the lexicographically smallest is used, so repeated syncs
-  // over the same input produce the same value.
+  // This entity maps to an `EventGroup`, but the corresponding `EventGroup`
+  // resource may not exist. It is therefore referenced by these
+  // DataProvider-side identifiers (the same ones an `EventGroup` carries)
+  // rather than by resource name. At most one is set; `entity_key` is preferred
+  // over the legacy `event_group_reference_id`.
   oneof observed_event_group {
-    // Legacy EventGroup reference ID.
+    // Legacy DataProvider-side reference ID. See
+    // `EventGroup.event_group_reference_id`.
     string event_group_reference_id = 4;
 
-    // Entity key of an observed EventGroup.
+    // Entity key of the DataProvider-side entity. See `EventGroup.entity_key`.
     EventGroup.EntityKey entity_key = 5;
   }
 
-  // The time this client account was first observed unlinked.
-  google.protobuf.Timestamp first_observed_time = 6
+  // The time this `UnlinkedClientAccount` was created, i.e. when the account
+  // was first observed unlinked.
+  google.protobuf.Timestamp create_time = 6
       [(google.api.field_behavior) = OUTPUT_ONLY];
 }

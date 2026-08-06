@@ -69,5 +69,9 @@ message ClientAccount {
   // The combination of `data_provider` and `client_account_reference_id` must
   // be unique. Each reference ID maps to exactly one `MeasurementConsumer` per
   // `DataProvider`, or (`MeasurementConsumer`, `DataProvider`) pair.
+  //
+  // A given (`DataProvider`, `client_account_reference_id`) cannot have both a
+  // `ClientAccount` and an `UnlinkedClientAccount`; creating a `ClientAccount`
+  // deletes any corresponding `UnlinkedClientAccount`.
   string client_account_reference_id = 3;
 }
