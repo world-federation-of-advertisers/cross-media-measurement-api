@@ -27,8 +27,8 @@ option java_multiple_files = true;
 option java_outer_classname = "UnlinkedClientAccountProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
-// A `ClientAccount` observed by EventGroupSync that is not yet mapped to a
-// `MeasurementConsumer` ("unlinked").
+// A `ClientAccount` that is not yet mapped to a `MeasurementConsumer`
+// ("unlinked").
 message UnlinkedClientAccount {
   option (google.api.resource) = {
     type: "halo.wfanet.org/UnlinkedClientAccount"
@@ -53,27 +53,25 @@ message UnlinkedClientAccount {
   string client_account_reference_id = 2
       [(google.api.field_behavior) = REQUIRED];
 
-  // Entity metadata denormalized from the observed EventGroup, for display.
-  // Same schema as `EventGroupMetadata.entity_metadata` (e.g. a `brand_name`
-  // entry).
+  // Metadata for the DataProvider-side entity this client account is associated
+  // with, using the same schema as `EventGroupMetadata.entity_metadata` (e.g. a
+  // `brand_name` entry).
   google.protobuf.Struct entity_metadata = 3;
 
-  // Identifiers of one EventGroup observed for this account, for traceability.
-  // The EventGroup exists in the DataProvider's system but is not registered
-  // in the Kingdom: EventGroupSync only registers an EventGroup for an account
-  // that resolves to a MeasurementConsumer, and this one is unlinked, so no
-  // CMMS EventGroup is created. It is therefore referenced by these
-  // DataProvider-side identifiers rather than a resource name.
+  // Identifiers of the DataProvider-side entity this client account is
+  // associated with, for traceability.
   //
-  // Chosen deterministically so repeated syncs yield the same value:
-  // `entity_key` is preferred over `event_group_reference_id`, and the
-  // lexicographically smallest candidate wins.
+  // This entity maps to an `EventGroup`, but the corresponding `EventGroup`
+  // resource may not exist. It is therefore referenced by these
+  // DataProvider-side identifiers (the same ones an `EventGroup` carries)
+  // rather than by resource name. At most one is set; `entity_key` is preferred
+  // over the legacy `event_group_reference_id`.
   oneof observed_event_group {
-    // Legacy EventGroup reference ID. See
+    // Legacy DataProvider-side reference ID. See
     // `EventGroup.event_group_reference_id`.
     string event_group_reference_id = 4;
 
-    // Entity key of an observed EventGroup. See `EventGroup.entity_key`.
+    // Entity key of the DataProvider-side entity. See `EventGroup.entity_key`.
     EventGroup.EntityKey entity_key = 5;
   }
 
