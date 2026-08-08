@@ -18,7 +18,6 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
 import "google/protobuf/any.proto";
-import "wfa/measurement/api/v2alpha/event_template.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
