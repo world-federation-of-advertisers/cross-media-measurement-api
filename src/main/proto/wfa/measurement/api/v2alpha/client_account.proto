@@ -74,4 +74,13 @@ message ClientAccount {
   // `ClientAccount` and an `UnlinkedClientAccount`; creating a `ClientAccount`
   // deletes any corresponding `UnlinkedClientAccount`.
   string client_account_reference_id = 3;
+
+  // Whether a corresponding `UnlinkedClientAccount` existed when this
+  // `ClientAccount` was created, i.e. the account had been observed in
+  // `EventGroup` data but was not yet linked. Creating the `ClientAccount`
+  // deletes that `UnlinkedClientAccount`.
+  //
+  // Set only in `CreateClientAccount` and `BatchCreateClientAccounts`
+  // responses.
+  bool had_unlinked_account = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
