@@ -106,6 +106,16 @@ message BatchCreateClientAccountsRequest {
 message BatchCreateClientAccountsResponse {
   // The `ClientAccount` resources.
   repeated ClientAccount client_accounts = 1;
+
+  // `client_account_reference_id`s of the created `ClientAccount`s that had no
+  // corresponding `UnlinkedClientAccount`, i.e. that had not been observed in
+  // `EventGroup` data.
+  //
+  // Linking an account that has not been observed is valid: the linkage is
+  // applied retroactively once the account appears. This is therefore
+  // advisory, and is intended to surface mistyped reference IDs.
+  repeated string unobserved_client_account_reference_ids = 2
+      [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 // Request message for `GetClientAccount` method.
