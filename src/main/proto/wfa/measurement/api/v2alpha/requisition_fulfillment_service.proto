@@ -213,7 +213,8 @@ message FulfillRequisitionRequest {
       oneof details {
         // Values in plaintext.
         //
-        // May only be set if [data_format][] is [DataFormat.FREQUENCY_VECTOR][].
+        // May only be set if [data_format][] is
+        // [DataFormat.FREQUENCY_VECTOR][].
         FulfillmentDetails fulfillment_details = 4;
 
         // Values encrypted with the same Data Encryption Key as the frequency
