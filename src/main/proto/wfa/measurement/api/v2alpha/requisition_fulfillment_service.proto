@@ -208,10 +208,22 @@ message FulfillRequisitionRequest {
 
       // Values the TEE reads alongside the frequency vector.
       //
-      // The decrypted message is a [FulfillmentDetails][]. It is encrypted
-      // with the same Data Encryption Key as the frequency vector, so the
-      // `Duchy` cannot read it.
-      EncryptedMessage fulfillment_details = 4;
+      // These carry the same protection as the frequency vector itself, so
+      // which field is set follows [data_format][].
+      oneof details {
+        // Values in plaintext.
+        //
+        // May only be set if [data_format][] is [DataFormat.FREQUENCY_VECTOR][].
+        FulfillmentDetails fulfillment_details = 4;
+
+        // Values encrypted with the same Data Encryption Key as the frequency
+        // vector, so the `Duchy` cannot read them. The decrypted message is a
+        // [FulfillmentDetails][].
+        //
+        // May only be set if [data_format][] is
+        // [DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
+        EncryptedMessage encrypted_fulfillment_details = 5;
+      }
     }
 
     // Protocol specified values.
