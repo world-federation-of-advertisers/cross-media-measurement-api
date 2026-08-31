@@ -201,9 +201,8 @@ message FulfillRequisitionRequest {
         // the frequency vector. Its `methodology` carries either the per-user
         // clip the TEE needs in order to noise the value, or the variance when
         // the `DataProvider` has already noised it.
-        Measurement.Result.Impression impression = 1 [
-          (google.api.field_behavior) = OPTIONAL
-        ];
+        Measurement.Result.Impression impression = 1
+            [(google.api.field_behavior) = OPTIONAL];
 
         // This `DataProvider`'s contribution to the deterministic noise seed.
         //
@@ -226,9 +225,8 @@ message FulfillRequisitionRequest {
         //
         // May only be set if [TrusTee.data_format][] is
         // [TrusTee.DataFormat.FREQUENCY_VECTOR][].
-        FulfillmentDetails fulfillment_details = 2 [
-          (google.api.field_behavior) = OPTIONAL
-        ];
+        FulfillmentDetails fulfillment_details = 2
+            [(google.api.field_behavior) = OPTIONAL];
 
         // Values encrypted with the same Data Encryption Key as the frequency
         // vector, so the `Duchy` cannot read them. The decrypted message is a
@@ -236,9 +234,8 @@ message FulfillRequisitionRequest {
         //
         // May only be set if [TrusTee.data_format][] is
         // [TrusTee.DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
-        EncryptedMessage encrypted_fulfillment_details = 3 [
-          (google.api.field_behavior) = OPTIONAL
-        ];
+        EncryptedMessage encrypted_fulfillment_details = 3
+            [(google.api.field_behavior) = OPTIONAL];
       }
     }
 
