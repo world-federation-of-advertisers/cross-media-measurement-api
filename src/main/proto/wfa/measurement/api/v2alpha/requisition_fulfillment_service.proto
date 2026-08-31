@@ -201,7 +201,9 @@ message FulfillRequisitionRequest {
         // the frequency vector. Its `methodology` carries either the per-user
         // clip the TEE needs in order to noise the value, or the variance when
         // the `DataProvider` has already noised it.
-        Measurement.Result.Impression impression = 1;
+        Measurement.Result.Impression impression = 1 [
+          (google.api.field_behavior) = OPTIONAL
+        ];
 
         // This `DataProvider`'s contribution to the deterministic noise seed.
         //
@@ -209,10 +211,13 @@ message FulfillRequisitionRequest {
         // of the frequency vector. A `DataProvider` that mixes a value of its
         // own into that seed supplies the value here. If not specified, the
         // seed covers the frequency vector alone.
-        bytes noise_seed_component = 2;
+        bytes noise_seed_component = 2 [(google.api.field_behavior) = OPTIONAL];
       }
 
       // Values the TEE reads alongside the frequency vector.
+      //
+      // Optional. When neither field is set the TEE computes impressions from
+      // the frequency vector and the noise seed covers that vector alone.
       //
       // These carry the same protection as the frequency vector itself, so
       // which field is set follows [TrusTee.data_format][].
@@ -221,7 +226,9 @@ message FulfillRequisitionRequest {
         //
         // May only be set if [TrusTee.data_format][] is
         // [TrusTee.DataFormat.FREQUENCY_VECTOR][].
-        FulfillmentDetails fulfillment_details = 2;
+        FulfillmentDetails fulfillment_details = 2 [
+          (google.api.field_behavior) = OPTIONAL
+        ];
 
         // Values encrypted with the same Data Encryption Key as the frequency
         // vector, so the `Duchy` cannot read them. The decrypted message is a
@@ -229,7 +236,9 @@ message FulfillRequisitionRequest {
         //
         // May only be set if [TrusTee.data_format][] is
         // [TrusTee.DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
-        EncryptedMessage encrypted_fulfillment_details = 3;
+        EncryptedMessage encrypted_fulfillment_details = 3 [
+          (google.api.field_behavior) = OPTIONAL
+        ];
       }
     }
 
