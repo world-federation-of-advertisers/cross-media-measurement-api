@@ -213,10 +213,7 @@ message FulfillRequisitionRequest {
         bytes noise_seed_component = 2 [(google.api.field_behavior) = OPTIONAL];
       }
 
-      // Values the TEE reads alongside the frequency vector.
-      //
-      // Optional. When neither field is set the TEE computes impressions from
-      // the frequency vector and the noise seed covers that vector alone.
+      // Values the TEE reads alongside the frequency vector. Optional.
       //
       // These carry the same protection as the frequency vector itself, so
       // which field is set follows [TrusTee.data_format][].
