@@ -221,6 +221,16 @@ message ProtocolConfig {
     int32 ring_modulus = 3;
   }
 
+  // Configuration for the TrusTEE multimeasurement protocol.
+  //
+  // The Kingdom issues several `Requisition`s per `DataProvider`, each carrying
+  // its own `RequisitionSpec`. The `DataProvider` sends an uncapped frequency
+  // vector over the `MeasurementSpec`'s `vid_sampling_interval`, encrypted to
+  // the TEE, which folds the histogram downstream. The noise mechanism follows
+  // from the protocol, since deterministic noise is compiled into the attested
+  // image, and everything per-measurement lives on the `Measurement`.
+  message TrusTeeV2 {}
+
   // Configuration for TrusTEE protocol.
   message TrusTee {
     // The mechanism to generate noise during the computation.
@@ -320,6 +330,14 @@ message ProtocolConfig {
       // RequisitionFulfillment.FulfillRequisition with the metadata and a
       // frequency vector.
       TrusTee trus_tee = 5;
+
+      // TrusTEE multimeasurement protocol.
+      //
+      // May only be set when the measurement type is MULTI. `Requisition`s of
+      // this protocol are fulfilled by calling
+      // RequisitionFulfillment.FulfillRequisition with a
+      // `Header.TrusTeeV2` and a frequency vector.
+      TrusTeeV2 trus_tee_v2 = 6;
     }
   }
 

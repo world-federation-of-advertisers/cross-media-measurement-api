@@ -146,6 +146,9 @@ message Requisition {
     // Information for the TrusTEE protocol.
     message TrusTee {}
 
+    // Information for the TrusTEE multimeasurement protocol.
+    message TrusTeeV2 {}
+
     // Value of a map entry.
     message Value {
       // Resource name of the `Certificate` belonging to the `Duchy`.
@@ -169,6 +172,9 @@ message Requisition {
 
         // Information for the TrusTEE protocol.
         TrusTee trus_tee = 5;
+
+        // Information for the TrusTEE multimeasurement protocol.
+        TrusTeeV2 trus_tee_v2 = 6;
       }
     }
     // Value of the map entry.
