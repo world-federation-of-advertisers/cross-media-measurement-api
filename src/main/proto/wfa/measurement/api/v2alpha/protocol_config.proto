@@ -52,6 +52,8 @@ message ProtocolConfig {
     REACH = 4;
     // Population
     POPULATION = 5;
+    // Multimeasurement.
+    MULTI = 6;
   }
   // The type of measurement that this protocol computes.
   MeasurementType measurement_type = 2 [
