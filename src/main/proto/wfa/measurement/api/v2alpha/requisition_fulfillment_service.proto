@@ -190,7 +190,7 @@ message FulfillRequisitionRequest {
     // Protocol specified values for TrusTEE multimeasurement.
     message TrusTeeV2 {
       // The TrusTEE parameters, which v2 does not change.
-      TrusTee trus_tee = 1;
+      TrusTee trus_tee = 1 [(google.api.field_behavior) = REQUIRED];
 
       // Values a `DataProvider` supplies alongside the frequency vector.
       message FulfillmentDetails {

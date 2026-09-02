@@ -226,11 +226,10 @@ message ProtocolConfig {
   // Configuration for the TrusTEE multimeasurement protocol.
   //
   // The Kingdom issues several `Requisition`s per `DataProvider`, each carrying
-  // its own `RequisitionSpec`. The `DataProvider` sends an uncapped frequency
-  // vector over the `MeasurementSpec`'s `vid_sampling_interval`, encrypted to
-  // the TEE, which folds the histogram downstream. The noise mechanism follows
-  // from the protocol, since deterministic noise is compiled into the attested
-  // image, and everything per-measurement lives on the `Measurement`.
+  // its own `RequisitionSpec`. This message carries no fields today: the noise
+  // mechanism follows from the protocol, since deterministic noise is compiled
+  // into the attested image, and everything per-measurement lives on the
+  // `Measurement`.
   message TrusTeeV2 {}
 
   // Configuration for TrusTEE protocol.
