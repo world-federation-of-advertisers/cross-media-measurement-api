@@ -182,8 +182,7 @@ message FulfillRequisitionRequest {
       //
       // This is a fingerprint computed from the sorted VID ranges in
       // [PopulationSpec].
-      // TODO (@renjiezh): Add detailed description of how to generate
-      // the hash.
+      // TODO(#299): Add detailed description of how to generate the hash.
       int64 population_spec_fingerprint = 3;
     }
 
