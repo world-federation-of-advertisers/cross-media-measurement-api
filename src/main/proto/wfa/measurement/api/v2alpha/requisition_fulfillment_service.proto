@@ -202,14 +202,6 @@ message FulfillRequisitionRequest {
         // the `DataProvider` has already noised it.
         Measurement.Result.Impression impression = 1
             [(google.api.field_behavior) = OPTIONAL];
-
-        // This `DataProvider`'s contribution to the deterministic noise seed.
-        //
-        // A deterministic noise mechanism seeds its draws from a fingerprint
-        // of the frequency vector. A `DataProvider` that mixes a value of its
-        // own into that seed supplies the value here. If not specified, the
-        // seed covers the frequency vector alone.
-        bytes noise_seed_component = 2 [(google.api.field_behavior) = OPTIONAL];
       }
 
       // Values the TEE reads alongside the frequency vector. Optional.
