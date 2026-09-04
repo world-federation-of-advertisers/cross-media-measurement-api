@@ -226,10 +226,10 @@ message ProtocolConfig {
   // Configuration for the TrusTEE multimeasurement protocol.
   //
   // The Kingdom issues several `Requisition`s per `DataProvider`, each carrying
-  // its own `RequisitionSpec`. This message carries no fields today: the noise
-  // mechanism follows from the protocol, since deterministic noise is compiled
-  // into the attested image, and everything per-measurement lives on the
-  // `Measurement`.
+  // its own `RequisitionSpec`. This message carries no fields today. The
+  // deterministic noise parameters and the result minimum thresholds are fixed
+  // and versioned with the attested image, and everything per-measurement lives
+  // on the `Measurement`.
   message TrusTeeV2 {}
 
   // Configuration for TrusTEE protocol.
