@@ -132,6 +132,12 @@ message MeasurementSpec {
   // Parameters for a population measurement.
   message Population {}
 
+  // Parameters for a multimeasurement.
+  //
+  // What the Kingdom fans out lives on the `Measurement`, which the
+  // `DataProvider` never sees, so this carries nothing itself.
+  message MultiMeasurementSpec {}
+
   // Fields specific to the type of measurement.
   oneof measurement_type {
     // Parameters for a reach and frequency measurement.
@@ -144,6 +150,8 @@ message MeasurementSpec {
     Reach reach = 7;
     // Parameters for a population-only measurement.
     Population population = 8;
+    // Parameters for a multimeasurement.
+    MultiMeasurementSpec multi = 12;
   }
 
   // Resource name of the ModelLine for this measurement.

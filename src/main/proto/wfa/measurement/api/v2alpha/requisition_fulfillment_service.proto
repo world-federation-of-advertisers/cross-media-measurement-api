@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
+import "wfa/measurement/api/v2alpha/measurement.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/requisition.proto";
 
@@ -181,9 +182,47 @@ message FulfillRequisitionRequest {
       //
       // This is a fingerprint computed from the sorted VID ranges in
       // [PopulationSpec].
-      // TODO (@renjiezh): Add detailed description of how to generate
-      // the hash.
+      // TODO(#299): Add detailed description of how to generate the hash.
       int64 population_spec_fingerprint = 3;
+    }
+
+    // Protocol specified values for TrusTEE multimeasurement.
+    message TrusTeeV2 {
+      // The TrusTEE parameters, which v2 does not change.
+      TrusTee trus_tee = 1 [(google.api.field_behavior) = REQUIRED];
+
+      // Values a `DataProvider` supplies alongside the frequency vector.
+      message FulfillmentDetails {
+        // The impression count over the whole population, rather than over
+        // the sampling interval the frequency vector covers.
+        //
+        // When set, the TEE uses this to correct the count it computes from
+        // the frequency vector. Its `methodology` carries either the per-user
+        // clip the TEE needs in order to noise the value, or the variance when
+        // the `DataProvider` has already noised it.
+        Measurement.Result.Impression impression = 1
+            [(google.api.field_behavior) = OPTIONAL];
+      }
+
+      // Values the TEE reads alongside the frequency vector. Optional.
+      //
+      // These carry the same protection as the frequency vector itself, so
+      // which field is set follows [TrusTee.data_format][].
+      oneof details {
+        // Values in plaintext.
+        //
+        // May only be set if [TrusTee.data_format][] is
+        // [TrusTee.DataFormat.FREQUENCY_VECTOR][].
+        FulfillmentDetails fulfillment_details = 2;
+
+        // Values encrypted with the same Data Encryption Key as the frequency
+        // vector, so the `Duchy` cannot read them. The decrypted message is a
+        // [FulfillmentDetails][].
+        //
+        // May only be set if [TrusTee.data_format][] is
+        // [TrusTee.DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
+        EncryptedMessage encrypted_fulfillment_details = 3;
+      }
     }
 
     // Protocol specified values.
@@ -194,6 +233,9 @@ message FulfillRequisitionRequest {
 
       // TrusTEE protocol.
       TrusTee trus_tee = 8;
+
+      // TrusTEE multimeasurement protocol.
+      TrusTeeV2 trus_tee_v2 = 9;
     }
 
     // Context information related to the fulfillment of the [Requisition][].

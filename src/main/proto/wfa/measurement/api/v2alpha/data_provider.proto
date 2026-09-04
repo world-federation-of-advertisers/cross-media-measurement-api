@@ -100,6 +100,12 @@ message DataProvider {
 
     // Whether the DETERMINISTIC_TRUNCATED_LAPLACE noise mechanism is supported.
     bool noise_mechanism_deterministic_truncated_laplace_supported = 4;
+
+    // Whether the TrusTEE multimeasurement protocol is supported.
+    //
+    // The Kingdom only issues `Requisition`s of that protocol to a
+    // `DataProvider` that sets this.
+    bool trus_tee_v2_supported = 5;
   }
   // Capabilities of this `DataProvider`, i.e. what this `DataProvider` is both
   // willing and able to support.
