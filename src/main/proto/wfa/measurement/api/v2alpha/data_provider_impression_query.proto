@@ -97,22 +97,22 @@ message DataProviderImpressionQueryResponse {
 
     // Raw impression count from the publisher's system.
     //
-    // When `bounds` is set this is the publisher's best available figure for the
-    // requested interval rather than an exact one, and callers comparing against
-    // a reported count should use `bounds`.
+    // When `bounds` is set this is the publisher's best available figure for
+    // the requested interval rather than an exact one, and callers comparing
+    // against a reported count should use `bounds`.
     int64 value = 1 [(google.api.field_behavior) = REQUIRED];
 
-    // Set only when the publisher API cannot answer the requested `time_interval`
-    // exactly, in which case `value` is approximate and the true count lies within
-    // this range. Unset means `value` is exact.
+    // Set only when the publisher API cannot answer the requested
+    // `time_interval` exactly, in which case `value` is approximate and the
+    // true count lies within this range. Unset means `value` is exact.
     //
-    // Some publisher APIs answer only at a coarser granularity than the requested
-    // interval — for example Meta's Insights endpoint answers whole days in an ad
-    // account's own timezone, which need not align with the interval boundaries a
-    // caller derives from a report's measurement period. Rather than fail such a
-    // query or silently return a count for a different window, a `DataProvider`
-    // may answer the closest achievable window and report how much of the result
-    // is attributable to the requested one.
+    // Some publisher APIs answer only at a coarser granularity than the
+    // requested interval — for example Meta's Insights endpoint answers whole
+    // days in an ad account's own timezone, which need not align with the
+    // interval boundaries a caller derives from a report's measurement period.
+    // Rather than fail such a query or silently return a count for a different
+    // window, a `DataProvider` may answer the closest achievable window and
+    // report how much of the result is attributable to the requested one.
     //
     // Bounds rather than the queried interval, because the gap cannot be
     // converted into a count by the caller: how many impressions fall in a
