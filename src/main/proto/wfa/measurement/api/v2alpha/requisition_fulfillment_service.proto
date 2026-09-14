@@ -165,7 +165,7 @@ message FulfillRequisitionRequest {
         //
         // The content of it is an array of 8-bit signed integers (bytes),
         // where each byte represents a frequency. The encryption algorithm is
-        // AES-256-GCM.
+        // AES-256-GCM. The associated data is empty.
         ENCRYPTED_FREQUENCY_VECTOR = 2;
       }
       // Format of data in [BodyChunk]s after decryption (if encrypted).
@@ -218,6 +218,11 @@ message FulfillRequisitionRequest {
         // Values encrypted with the same Data Encryption Key as the frequency
         // vector, so the `Duchy` cannot read them. The decrypted message is a
         // [FulfillmentDetails][].
+        //
+        // The associated data is [EncryptedMessage.type_url][] encoded as
+        // UTF-8, while the frequency vector is encrypted with empty associated
+        // data. The two ciphertexts therefore cannot be substituted for one
+        // another, and a reader must pass these exact bytes to decrypt.
         //
         // May only be set if [TrusTee.data_format][] is
         // [TrusTee.DataFormat.ENCRYPTED_FREQUENCY_VECTOR][].
