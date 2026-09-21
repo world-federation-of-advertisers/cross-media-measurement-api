@@ -1,0 +1,51 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "wfa/measurement/api/v2alpha/event_template_field.proto";
+import "wfa/measurement/api/v2alpha/measurement.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "QueryResultProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// The result of one [Query][] for one grouping combination. [id][] and
+// [attributes][] together identify the cell.
+message QueryResult {
+  // The [Query.id][] of the query that produced this result, echoed unchanged.
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The grouping combination this result is for: the values the
+  // [Query.grouping_paths][] fields take in the subpopulation, keyed by
+  // [EventTemplateField.path][]. Empty when the query set no grouping
+  // paths.
+  map<string, EventTemplateField.FieldValue> attributes = 2;
+
+  // The metrics the query asked for, noised and thresholded inside the TEE.
+  Measurement.Result result = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Every cell of every query of a multimeasurement. A TrusTEE v2 aggregator
+// signs and encrypts this into
+// [Measurement.ResultOutput.encrypted_result][].
+message ComputeQueriesResult {
+  // One entry per query per grouping combination.
+  repeated QueryResult results = 1
+      [(google.api.field_behavior) = UNORDERED_LIST];
+}
