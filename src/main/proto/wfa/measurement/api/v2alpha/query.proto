@@ -39,8 +39,12 @@ message VectorSet {
 message VidFilter {
   // A Venn region, as who reached the VID and who did not.
   message ReachClause {
-    // The VID's count is greater than zero in each of these sets, tested one
-    // set at a time.
+    // The VID's count is greater than zero in each of these sets.
+    //
+    // Repeated because each set is tested on its own, which is what
+    // distinguishes intersection from union. `[{A}, {B}]` passes a VID
+    // reached by both A and B. `[{A, B}]` sums the two first, so it also
+    // passes a VID reached by A alone.
     repeated VectorSet reached_sets = 1
         [(google.api.field_behavior) = UNORDERED_LIST];
 
@@ -49,6 +53,10 @@ message VidFilter {
   }
 
   // A VID passes when it satisfies any clause.
+  //
+  // Repeated so that one query can cover a union of Venn regions, e.g. the
+  // VIDs reached by A alone together with those reached by B alone. A single
+  // clause cannot express that, since its own fields are conjunctive.
   repeated ReachClause reach_clauses = 1
       [(google.api.field_behavior) = UNORDERED_LIST];
 
@@ -95,6 +103,11 @@ message Query {
   string id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // FROM. Whose counts to add for a VID that passes [vid_filter][].
+  //
+  // Independent of the vector sets named in [vid_filter][]: which VIDs the
+  // query covers and whose impressions are counted for them are separate
+  // choices. A query may select the VIDs reached by both A and B, then sum
+  // only A's counts for them.
   VectorSet summands = 2 [(google.api.field_behavior) = REQUIRED];
 
   // WHERE. Covers the whole population when unset.
