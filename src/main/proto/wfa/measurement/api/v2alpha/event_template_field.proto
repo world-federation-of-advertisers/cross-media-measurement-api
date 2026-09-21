@@ -1,0 +1,69 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "EventTemplateFieldProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// An event template field with its value.
+//
+// The CMMS copy of [wfa.measurement.reporting.v2alpha.EventTemplateField][],
+// so that the two APIs version independently.
+message EventTemplateField {
+  // Field path with respect to the local market Event message, with `.` as the
+  // traversal operator.
+  //
+  // For example, an Event message with an event template `person` having a
+  // field `age_group` has the path `person.age_group`.
+  //
+  // Only population attributes are supported.
+  string path = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // Value of an event template field.
+  message FieldValue {
+    // Value type selector. Required.
+    oneof selector {
+      // Value as a string. Only a STRING field type is supported.
+      string string_value = 1 [(google.api.field_behavior) = IMMUTABLE];
+
+      // Value as a stringified enum value. This is the symbol associated with
+      // the enum value, not a stringification of its integer value. For
+      // example, for MediaType.VIDEO this is "VIDEO", not "1". Only an ENUM
+      // field type is supported.
+      string enum_value = 2 [(google.api.field_behavior) = IMMUTABLE];
+
+      // Value as a Boolean. Only a BOOL field type is supported.
+      bool bool_value = 3 [(google.api.field_behavior) = IMMUTABLE];
+
+      // Value as a float. Only a FLOAT field type is supported.
+      float float_value = 4 [(google.api.field_behavior) = IMMUTABLE];
+    }
+  }
+
+  // Value of the field. Required.
+  FieldValue value = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+}

@@ -106,7 +106,20 @@ message Requisition {
 
   // Denormalized `encrypted_requisition_spec` field from the corresponding
   // `DataProviderEntry` in `measurement`.
+  //
+  // A multimeasurement `Requisition` sets `requisition_spec` instead.
   EncryptedMessage encrypted_requisition_spec = 14 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
+
+  // Denormalized `requisition_spec` field from the corresponding
+  // `Measurement.Multimeasurement.Vector` in `measurement`.
+  //
+  // A packed `RequisitionSpec` in plaintext, served as the bytes the Kingdom
+  // stored. Set only for a multimeasurement `Requisition`, whose fulfillment
+  // carries no nonce.
+  google.protobuf.Any requisition_spec = 19 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
