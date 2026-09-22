@@ -114,9 +114,9 @@ message MetricSpec {
 //
 //   SELECT metrics FROM summands WHERE vid_filter GROUP BY grouping_paths
 message Query {
-  // Identifier echoed on every [QueryResult][] this query produces. Opaque to
-  // the Kingdom and the Duchy. Required, and distinct within a
-  // multimeasurement.
+  // Identifier echoed on [Measurement.Result.query_id][] by every result this
+  // query produces. Opaque to the Kingdom and the Duchy. Required, and
+  // distinct within a multimeasurement.
   string id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // FROM. Whose counts to add for a VID that passes [vid_filter][].
