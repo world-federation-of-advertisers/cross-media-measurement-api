@@ -23,7 +23,6 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
-import "wfa/measurement/api/v2alpha/event_template_field.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/query.proto";
@@ -366,10 +365,10 @@ message Measurement {
 
     // The grouping combination this `Result` is for: the values the
     // `Query.grouping_paths` fields take in the subpopulation, keyed by
-    // `EventTemplateField.path`.
+    // field path.
     //
     // Empty when the query set no grouping paths.
-    map<string, EventTemplateField.FieldValue> attributes = 7;
+    map<string, PopulationAttributeValue> attributes = 7;
   }
 
   // Output message for a `Result`.

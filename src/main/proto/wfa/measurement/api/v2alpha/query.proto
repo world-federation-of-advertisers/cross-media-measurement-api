@@ -17,12 +17,31 @@ syntax = "proto3";
 package wfa.measurement.api.v2alpha;
 
 import "google/api/field_behavior.proto";
-import "wfa/measurement/api/v2alpha/event_template_field.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
 option java_outer_classname = "QueryProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// The value of a population attribute, a field whose
+// [EventFieldDescriptor.population_attribute][] is true.
+message PopulationAttributeValue {
+  // Value type selector. Required.
+  oneof selector {
+    // Value as a string. Only a STRING field type is supported.
+    string string_value = 1;
+
+    // Value as the symbol of an enum value, e.g. "VIDEO" rather than "1". Only
+    // an ENUM field type is supported.
+    string enum_value = 2;
+
+    // Value as a Boolean. Only a BOOL field type is supported.
+    bool bool_value = 3;
+
+    // Value as a float. Only a FLOAT field type is supported.
+    float float_value = 4;
+  }
+}
 
 // A set of base vectors, summed. A VID's count in the set is its total across
 // all of them.
@@ -60,11 +79,9 @@ message VidFilter {
   repeated ReachClause reach_clauses = 1
       [(google.api.field_behavior) = UNORDERED_LIST];
 
-  // The VID falls in a subpopulation matching every entry. The key is an
-  // [EventTemplateField.path][] naming a population attribute field, one
-  // whose [EventFieldDescriptor.population_attribute][] is true, e.g.
-  // "person.age_group".
-  map<string, EventTemplateField.FieldValue> attributes = 2
+  // The VID falls in a subpopulation matching every entry. The key is the
+  // field path, e.g. "person.age_group".
+  map<string, PopulationAttributeValue> attributes = 2
       [(google.api.field_behavior) = OPTIONAL];
 }
 
@@ -117,9 +134,7 @@ message Query {
   // across [PopulationSpec.subpopulations][]. The Duchy resolves each VID to
   // its subpopulation and reads the fields from there.
   //
-  // Each entry is an [EventTemplateField.path][] naming a population
-  // attribute field, one whose
-  // [EventFieldDescriptor.population_attribute][] is true, e.g.
+  // Each entry is the path of a population attribute field, e.g.
   // "person.gender". Empty yields a single result.
   repeated string grouping_paths = 4
       [(google.api.field_behavior) = UNORDERED_LIST];
