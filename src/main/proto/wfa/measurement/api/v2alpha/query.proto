@@ -79,7 +79,7 @@ message MetricSpec {
     REACH = 1;
 
     // Histogram of the counts of the selected VIDs, folded at
-    // [maximum_frequency][].
+    // [max_frequency][].
     FREQUENCY = 2;
 
     // Sum of the counts of the selected VIDs.
@@ -90,7 +90,7 @@ message MetricSpec {
 
   // Counts above this fold into the top bin. Required when [metric][] is
   // [FREQUENCY][Metric.FREQUENCY], and set only then.
-  int32 maximum_frequency = 2 [(google.api.field_behavior) = OPTIONAL];
+  int32 max_frequency = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // One query over the base vectors of a multimeasurement, read as:
