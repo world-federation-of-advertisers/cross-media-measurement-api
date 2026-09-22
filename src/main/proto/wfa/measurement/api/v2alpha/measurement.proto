@@ -357,18 +357,23 @@ message Measurement {
     // The population result.
     Population population = 5;
 
-    // The `Query.id` that produced this `Result`, echoed unchanged.
-    //
-    // Set only for a multimeasurement, whose aggregator produces one `Result`
-    // per query per grouping combination.
-    string query_id = 6;
+    // Which cell of a multimeasurement this `Result` is.
+    message QueryKey {
+      // The `Query.id` that produced this `Result`, echoed unchanged.
+      string query_id = 1;
 
-    // The grouping combination this `Result` is for: the values the
-    // `Query.grouping_paths` fields take in the subpopulation, keyed by
-    // field path.
+      // The grouping combination this `Result` is for: the values the
+      // `Query.grouping_paths` fields take in the subpopulation, keyed by
+      // field path.
+      //
+      // Empty when the query set no grouping paths.
+      map<string, PopulationAttributeValue> attributes = 2;
+    }
+    // Which cell of a multimeasurement this `Result` is.
     //
-    // Empty when the query set no grouping paths.
-    map<string, PopulationAttributeValue> attributes = 7;
+    // Set if and only if the `Measurement` is a multimeasurement, whose
+    // aggregator produces one `Result` per query per grouping combination.
+    QueryKey query_key = 6;
   }
 
   // Output message for a `Result`.
