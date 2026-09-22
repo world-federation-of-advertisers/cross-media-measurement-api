@@ -26,6 +26,7 @@ import "wfa/measurement/api/v2alpha/direct_computation.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/query.proto";
+import "wfa/measurement/api/v2alpha/requisition_spec.proto";
 import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -134,14 +135,8 @@ message Measurement {
       // `n` is the total number of `Vector`s across `data_provider_vectors`.
       int32 index = 1 [(google.api.field_behavior) = REQUIRED];
 
-      // Packed `RequisitionSpec` for this vector, in plaintext.
-      //
-      // The Kingdom stores and serves these bytes verbatim, so a fingerprint
-      // over them agrees on both sides.
-      //
-      // The version of the `RequisitionSpec` message type must correspond to
-      // the API version that this resource was created in.
-      google.protobuf.Any requisition_spec = 2
+      // The `RequisitionSpec` for this vector, in plaintext.
+      RequisitionSpec requisition_spec = 2
           [(google.api.field_behavior) = REQUIRED];
     }
 
