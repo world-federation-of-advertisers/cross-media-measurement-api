@@ -1,0 +1,87 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "EventGroupHierarchyProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// An ordered nesting of entity types for the [EventGroup][]s of a
+// ([DataProvider][], [MeasurementConsumer][]) pair.
+//
+// Read-only. The contents are supplied by operator configuration, not written
+// through this API.
+//
+// A pair may have more than one [EventGroupHierarchy][]. Every
+// [entity_type][EventGroup.EntityKey.entity_type] belongs to exactly one of
+// them, so the hierarchy containing an [EventGroup][] is determined by its
+// [EventGroup.entity_key][].
+message EventGroupHierarchy {
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/EventGroupHierarchy"
+    pattern: "dataProviders/{data_provider}/measurementConsumers/{measurement_consumer}/eventGroupHierarchies/{event_group_hierarchy}"
+    singular: "eventGroupHierarchy"
+    plural: "eventGroupHierarchies"
+  };
+
+  // Resource name.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // A single level of an [EventGroupHierarchy][].
+  message Level {
+    // The [EventGroup.EntityKey.entity_type][] of [EventGroup][]s at this
+    // level.
+    //
+    // This must be a URL-safe string, such that URL-encoding or -decoding
+    // results in the same string. It must be distinct from the
+    // [entity_type][] of every other [Level][] of every
+    // [EventGroupHierarchy][] of the same ([DataProvider][],
+    // [MeasurementConsumer][]) pair.
+    //
+    // The value "campaign" is reserved for legacy [EventGroup][]s and must not
+    // be used.
+    string entity_type = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+    // The key in [EventGroupMetadata.entity_metadata][] holding the ID of the
+    // entity at this level.
+    //
+    // Every [EventGroup][] in this hierarchy must specify this key for its own
+    // level and for every level above it. Its value forms one segment of
+    // [EventGroup.entity_path][].
+    string id_field = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+    // The keys in [EventGroupMetadata.entity_metadata][] which describe the
+    // entity at this level.
+    //
+    // These are copied onto the [EventGroup][] representing an entity at this
+    // level. Keys which no [Level][] claims as its [id_field][] or in
+    // [fields][] are not interpreted, and are stored and returned unchanged.
+    repeated string fields = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+  }
+
+  // The levels of this hierarchy, outermost first.
+  //
+  // A level may be added at the innermost end, which leaves every existing
+  // [EventGroup.entity_path][] unchanged. Levels are never reordered, removed,
+  // or added at the outermost end, as any of those would rewrite every path in
+  // the hierarchy.
+  repeated Level levels = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
