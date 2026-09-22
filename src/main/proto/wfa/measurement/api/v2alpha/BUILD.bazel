@@ -260,23 +260,13 @@ proto_library(
 )
 
 proto_library(
-    name = "query_result_proto",
-    srcs = ["query_result.proto"],
-    strip_import_prefix = IMPORT_PREFIX,
-    deps = [
-        ":event_template_field_proto",
-        ":measurement_proto",
-        "@com_google_googleapis//google/api:field_behavior_proto",
-    ],
-)
-
-proto_library(
     name = "measurement_proto",
     srcs = ["measurement.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
         ":crypto_proto",
         ":direct_computation_proto",
+        ":event_template_field_proto",
         ":multi_party_computation_proto",
         ":protocol_config_proto",
         ":query_proto",

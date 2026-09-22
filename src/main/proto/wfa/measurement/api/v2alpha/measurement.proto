@@ -23,6 +23,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
+import "wfa/measurement/api/v2alpha/event_template_field.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/query.proto";
@@ -356,6 +357,19 @@ message Measurement {
     }
     // The population result.
     Population population = 5;
+
+    // The `Query.id` that produced this `Result`, echoed unchanged.
+    //
+    // Set only for a multimeasurement, whose aggregator produces one `Result`
+    // per query per grouping combination.
+    string query_id = 6;
+
+    // The grouping combination this `Result` is for: the values the
+    // `Query.grouping_paths` fields take in the subpopulation, keyed by
+    // `EventTemplateField.path`.
+    //
+    // Empty when the query set no grouping paths.
+    map<string, EventTemplateField.FieldValue> attributes = 7;
   }
 
   // Output message for a `Result`.
