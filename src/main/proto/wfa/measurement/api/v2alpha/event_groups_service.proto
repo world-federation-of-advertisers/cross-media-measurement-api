@@ -246,6 +246,39 @@ message ListEventGroupsRequest {
     //
     // If unspecified, the server will treat this as if it contains "campaign".
     repeated string entity_type_in = 11;
+
+    // Resource name of an [EventGroup][] whose direct children to return.
+    //
+    // Only [EventGroup][]s whose [EventGroup.parent_event_group][] is equal to
+    // this value are returned. Use [entity_path_prefix][] to return a whole
+    // subtree instead of a single level.
+    string parent = 12
+        [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+
+    // Prefix which [EventGroup.entity_path][] must start with.
+    //
+    // Matches the [EventGroup][] at that path, if any, and all of its
+    // descendants.
+    //
+    // This is one term in the conjunction, so it intersects with
+    // [entity_type_in][] rather than overriding it. Since [entity_type_in][]
+    // defaults to "campaign", which is reserved for legacy [EventGroup][]s and
+    // is never part of a hierarchy, specifying only a prefix returns nothing.
+    // Specify the [entity_type][EventGroup.EntityKey.entity_type] of a single
+    // level to select that level, or every
+    // [entity_type][EventGroup.EntityKey.entity_type] in the hierarchy to
+    // select a whole subtree.
+    //
+    // Because the sequence of [entity_type][EventGroup.EntityKey.entity_type]
+    // values in a path is a prefix of the ordering declared by an
+    // [EventGroupHierarchy][], and those values are distinct across the
+    // hierarchies of a ([DataProvider][], [MeasurementConsumer][]) pair, an
+    // [entity_type][EventGroup.EntityKey.entity_type] identifies a level
+    // exactly. There is therefore no separate depth parameter.
+    //
+    // A ([DataProvider][], [MeasurementConsumer][]) pair with no declared
+    // [EventGroupHierarchy][] has no paths, so any prefix matches nothing.
+    repeated EventGroup.EntityKey entity_path_prefix = 13;
   }
   // Filter criteria for this request.
   //
