@@ -44,7 +44,14 @@ message PopulationAttributeValue {
 }
 
 // A set of base vectors, summed. A VID's count in the set is its total across
-// all of them.
+// all of them, so a non-zero count means any of them reached the VID.
+//
+// Base vectors are per filter and period, so one `DataProvider` over a
+// reporting period is normally several of them. Summing inside the set is what
+// keeps [VidFilter][] flat. Naming single vectors instead would push that
+// union up into the clauses, at one clause per way of picking a vector from
+// each party, and would leave [VidFilter.ReachClause.unreached_set][] unable
+// to exclude a party at all without becoming repeated itself.
 message VectorSet {
   // Values of [Measurement.Multimeasurement.Vector.index][], distinct.
   repeated int32 base_vectors = 1 [
@@ -55,27 +62,35 @@ message VectorSet {
 
 // Which VIDs a [Query][] covers. A VID passes when it satisfies every field
 // that is set. An empty [VidFilter][] covers the whole population.
+//
+// [reach_clauses][] is a disjunctive normal form over "reached by" predicates:
+// clauses are ORed, the required sets within a clause are ANDed, and the
+// excluded set is negated. Any boolean combination of reach predicates is
+// therefore expressible, and dropping either repetition loses a connective.
 message VidFilter {
   // A Venn region, as who reached the VID and who did not.
   message ReachClause {
-    // The VID's count is greater than zero in each of these sets.
+    // Sets the VID must have a non-zero count in, each tested on its own.
+    // The conjunction of the form.
     //
-    // Repeated because each set is tested on its own, which is what
-    // distinguishes intersection from union. `[{A}, {B}]` passes a VID
-    // reached by both A and B. `[{A, B}]` sums the two first, so it also
-    // passes a VID reached by A alone.
+    // Without the repetition there is no conjunction: one entry holding A and
+    // B sums them first, giving the VIDs reached by either, and the region
+    // reached by both becomes inexpressible.
     repeated VectorSet reached_sets = 1
         [(google.api.field_behavior) = UNORDERED_LIST];
 
-    // The VID's count is zero in this set.
+    // A set the VID must have a zero count in. The negation of the form.
+    //
+    // One is enough for any number of excluded sets: counts are non-negative,
+    // so a zero total over their union is zero in each.
     VectorSet unreached_set = 2 [(google.api.field_behavior) = OPTIONAL];
   }
 
-  // A VID passes when it satisfies any clause.
+  // A VID passes when it satisfies any clause. The disjunction of the form.
   //
-  // Repeated so that one query can cover a union of Venn regions, e.g. the
-  // VIDs reached by A alone together with those reached by B alone. A single
-  // clause cannot express that, since its own fields are conjunctive.
+  // Without the repetition a query covers one Venn region, and a union of
+  // regions becomes several queries whose results are added, each noised and
+  // thresholded on its own.
   repeated ReachClause reach_clauses = 1
       [(google.api.field_behavior) = UNORDERED_LIST];
 
