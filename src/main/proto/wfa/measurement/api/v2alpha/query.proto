@@ -100,34 +100,62 @@ message VidFilter {
       [(google.api.field_behavior) = OPTIONAL];
 }
 
-// One metric to compute over the VIDs a [Query][] selects.
-message MetricSpec {
-  // A metric over the selected VIDs and their counts in [Query.summands][].
-  enum Metric {
-    // Default value. Never set intentionally.
-    METRIC_UNSPECIFIED = 0;
-
-    // Number of selected VIDs with a non-zero count.
-    REACH = 1;
-
-    // Histogram of the counts of the selected VIDs, folded at
-    // [max_frequency][].
-    FREQUENCY = 2;
-
-    // Sum of the counts of the selected VIDs.
-    IMPRESSIONS = 3;
-  }
-  // The metric. Required.
-  Metric metric = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // Counts above this fold into the top bin. Required when [metric][] is
-  // [FREQUENCY][Metric.FREQUENCY], and set only then.
-  int32 max_frequency = 2 [(google.api.field_behavior) = OPTIONAL];
-}
-
 // One query over the base vectors of a multimeasurement, read as:
 //
-//   SELECT metrics FROM summands WHERE vid_filter GROUP BY grouping_paths
+//   SELECT reach, frequency, impressions
+//   FROM summands WHERE vid_filter GROUP BY grouping_paths
+//
+// All three metrics are computed for every cell. They read off one histogram
+// per cell, so producing all three costs no more than producing one: reach is
+// the count outside the zero bin, impressions are the bins weighted by their
+// frequency, and the frequency histogram is the output itself.
+//
+// The examples below take vectors 0, 1 and 2 as the base vectors of
+// `DataProvider`s A, B and C.
+//
+// Union reach of the three, broken down by age and gender, is one query. A
+// VID's count in [summands][] is its total across the three, so a non-zero
+// count already means the union reached it and no [vid_filter][] is needed:
+//
+//   id: "union"
+//   summands { base_vectors: [0, 1, 2] }
+//   grouping_paths: ["person.age_group", "person.gender"]
+//   max_frequency: 10
+//
+// Unique reach of A, the VIDs A reached that neither B nor C did, is one
+// query per `DataProvider`. [summands][] already restricts the count to A, so
+// the clause carries only the exclusion, and one
+// [ReachClause.unreached_set][] covers both excluded providers:
+//
+//   id: "unique-a"
+//   summands { base_vectors: [0] }
+//   vid_filter {
+//     reach_clauses { unreached_set { base_vectors: [1, 2] } }
+//   }
+//   max_frequency: 10
+//
+// Unique reach across the set, the VIDs exactly one of the three reached, is
+// one query whose clauses union. Here [summands][] is the union of all three,
+// so each clause needs its own [ReachClause.reached_sets][] to say which
+// provider its region belongs to:
+//
+//   id: "unique-any"
+//   summands { base_vectors: [0, 1, 2] }
+//   vid_filter {
+//     reach_clauses {
+//       reached_sets { base_vectors: [0] }
+//       unreached_set { base_vectors: [1, 2] }
+//     }
+//     reach_clauses {
+//       reached_sets { base_vectors: [1] }
+//       unreached_set { base_vectors: [0, 2] }
+//     }
+//     reach_clauses {
+//       reached_sets { base_vectors: [2] }
+//       unreached_set { base_vectors: [0, 1] }
+//     }
+//   }
+//   max_frequency: 10
 message Query {
   // Identifier echoed on [Measurement.Result.QueryKey.query_id][] by every
   // result this query produces. Opaque to the Kingdom and the Duchy.
@@ -154,9 +182,7 @@ message Query {
   repeated string grouping_paths = 4
       [(google.api.field_behavior) = UNORDERED_LIST];
 
-  // SELECT. Required, and distinct by [MetricSpec.metric][].
-  repeated MetricSpec metrics = 5 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = UNORDERED_LIST
-  ];
+  // Counts above this fold into the top bin of the frequency histogram.
+  // Required.
+  int32 max_frequency = 5 [(google.api.field_behavior) = REQUIRED];
 }
