@@ -119,7 +119,7 @@ message Measurement {
   // Map of `DataProvider` name to parameters for that `DataProvider`.
   //
   // Empty when `measurement_spec` carries a `MultiMeasurementSpec`, where
-  // `multimeasurement.vectors` names the `DataProvider`s.
+  // `multimeasurement` names the `DataProvider`s.
   repeated DataProviderEntry data_providers = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
@@ -132,27 +132,35 @@ message Measurement {
     message Vector {
       // What `VectorSet.base_vectors` references. Assigned by the
       // `MeasurementConsumer`. The indexes cover `0..n-1` exactly once, where
-      // `n` is the total number of `Vector`s.
+      // `n` is the total number of `Vector`s across `data_provider_vectors`.
       int32 index = 1 [(google.api.field_behavior) = REQUIRED];
 
-      // Resource name of the `DataProvider` that fulfills this `Vector`.
-      //
-      // A `DataProvider` appears once per `Vector` it fulfills, which is one
-      // per filter and period it covers.
-      string data_provider = 2 [
+      // The `RequisitionSpec` for this vector, in plaintext.
+      RequisitionSpec requisition_spec = 2
+          [(google.api.field_behavior) = REQUIRED];
+    }
+
+    // One `DataProvider` and every `Vector` it fulfills.
+    //
+    // A multimeasurement signs nothing and encrypts nothing to the
+    // `DataProvider`'s key, so no certificate or public key is carried here.
+    message DataProviderVectors {
+      // Resource name of the `DataProvider`.
+      string data_provider = 1 [
         (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
         (google.api.field_behavior) = REQUIRED
       ];
 
-      // The `RequisitionSpec` for this vector, in plaintext.
-      //
-      // The Kingdom stores and serves these bytes verbatim.
-      RequisitionSpec requisition_spec = 3
-          [(google.api.field_behavior) = REQUIRED];
+      // The `Vector`s this `DataProvider` fulfills.
+      repeated Vector vectors = 2 [
+        (google.api.field_behavior) = REQUIRED,
+        (google.api.field_behavior) = UNORDERED_LIST
+      ];
     }
 
-    // The base vectors of this multimeasurement.
-    repeated Vector vectors = 1 [
+    // The base vectors, grouped by the `DataProvider` that fulfills them.
+    // `data_provider` is distinct across entries.
+    repeated DataProviderVectors data_provider_vectors = 1 [
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = UNORDERED_LIST
     ];
@@ -392,11 +400,6 @@ message Measurement {
   }
 
   // Results of this `Measurement`. Only set if `state` is `SUCCEEDED`.
-  //
-  // A multimeasurement has one entry per cell, each holding a `Result` whose
-  // `query_key` names the `Query` and grouping combination it is for. Every
-  // entry carries the aggregator's certificate, so `query_key` is what tells
-  // them apart.
   repeated ResultOutput results = 8 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = UNORDERED_LIST
