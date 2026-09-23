@@ -25,6 +25,8 @@ import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "wfa/measurement/api/v2alpha/query.proto";
+import "wfa/measurement/api/v2alpha/requisition_spec.proto";
 import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -115,10 +117,66 @@ message Measurement {
     Value value = 2 [(google.api.field_behavior) = REQUIRED];
   }
   // Map of `DataProvider` name to parameters for that `DataProvider`.
+  //
+  // Empty when `measurement_spec` carries a `MultiMeasurementSpec`, where
+  // `multimeasurement` names the `DataProvider`s.
   repeated DataProviderEntry data_providers = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  // Parameters for a multimeasurement: one base vector per `Vector`, each
+  // fulfilled by its own `Requisition`, and a set of `Query`s over them.
+  message Multimeasurement {
+    // One `Requisition`, whose fulfillment returns one base vector.
+    message Vector {
+      // What `VectorSet.base_vectors` references. Assigned by the
+      // `MeasurementConsumer`. The indexes cover `0..n-1` exactly once, where
+      // `n` is the total number of `Vector`s across `data_provider_vectors`.
+      int32 index = 1 [(google.api.field_behavior) = REQUIRED];
+
+      // The `RequisitionSpec` for this vector, in plaintext.
+      RequisitionSpec requisition_spec = 2
+          [(google.api.field_behavior) = REQUIRED];
+    }
+
+    // One `DataProvider` and every `Vector` it fulfills.
+    //
+    // A multimeasurement signs nothing and encrypts nothing to the
+    // `DataProvider`'s key, so no certificate or public key is carried here.
+    message DataProviderVectors {
+      // Resource name of the `DataProvider`.
+      string data_provider = 1 [
+        (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+        (google.api.field_behavior) = REQUIRED
+      ];
+
+      // The `Vector`s this `DataProvider` fulfills.
+      repeated Vector vectors = 2 [
+        (google.api.field_behavior) = REQUIRED,
+        (google.api.field_behavior) = UNORDERED_LIST
+      ];
+    }
+
+    // The base vectors, grouped by the `DataProvider` that fulfills them.
+    // `data_provider` is distinct across entries.
+    repeated DataProviderVectors data_provider_vectors = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = UNORDERED_LIST
+    ];
+
+    // How to combine the base vectors. Opaque to the Kingdom, which forwards
+    // them to the Duchy. A `Query` naming a `VectorSet.base_vectors` value
+    // that no `Vector` carries fails in the Duchy.
+    repeated Query queries = 2 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = UNORDERED_LIST
+    ];
+  }
+  // Parameters for a multimeasurement. Set if and only if
+  // `measurement_spec` carries a `MultiMeasurementSpec`.
+  Multimeasurement multimeasurement = 13
+      [(google.api.field_behavior) = IMMUTABLE];
 
   // The `ProtocolConfig` selected for this measurement according to the
   // `measurement_spec`.
@@ -298,6 +356,24 @@ message Measurement {
     }
     // The population result.
     Population population = 5;
+
+    // Which cell of a multimeasurement this `Result` is.
+    message QueryKey {
+      // The `Query.id` that produced this `Result`, echoed unchanged.
+      string query_id = 1;
+
+      // The grouping combination this `Result` is for: the values the
+      // `Query.grouping_paths` fields take in the subpopulation, keyed by
+      // field path.
+      //
+      // Empty when the query set no grouping paths.
+      map<string, PopulationAttributeValue> attributes = 2;
+    }
+    // Which cell of a multimeasurement this `Result` is.
+    //
+    // Set if and only if the `Measurement` is a multimeasurement, whose
+    // aggregator produces one `Result` per query per grouping combination.
+    QueryKey query_key = 6;
   }
 
   // Output message for a `Result`.

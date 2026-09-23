@@ -63,6 +63,7 @@ proto_library(
         ":crypto_proto",
         ":measurement_proto",
         ":protocol_config_proto",
+        ":requisition_spec_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",
         "@com_google_protobuf//:any_proto",
@@ -240,6 +241,15 @@ proto_library(
 )
 
 proto_library(
+    name = "query_proto",
+    srcs = ["query.proto"],
+    strip_import_prefix = IMPORT_PREFIX,
+    deps = [
+        "@com_google_googleapis//google/api:field_behavior_proto",
+    ],
+)
+
+proto_library(
     name = "measurement_proto",
     srcs = ["measurement.proto"],
     strip_import_prefix = IMPORT_PREFIX,
@@ -248,6 +258,8 @@ proto_library(
         ":direct_computation_proto",
         ":multi_party_computation_proto",
         ":protocol_config_proto",
+        ":query_proto",
+        ":requisition_spec_proto",
         "//src/main/proto/wfa/measurement/type:future_disposition_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:resource_proto",

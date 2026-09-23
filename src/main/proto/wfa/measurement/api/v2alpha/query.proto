@@ -1,0 +1,188 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "QueryProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// The value of a population attribute, a field whose
+// [EventFieldDescriptor.population_attribute][] is true.
+message PopulationAttributeValue {
+  // Value type selector. Required.
+  oneof selector {
+    // Value as a string. Only a STRING field type is supported.
+    string string_value = 1;
+
+    // Value as the symbol of an enum value, e.g. "VIDEO" rather than "1". Only
+    // an ENUM field type is supported.
+    string enum_value = 2;
+
+    // Value as a Boolean. Only a BOOL field type is supported.
+    bool bool_value = 3;
+
+    // Value as a float. Only a FLOAT field type is supported.
+    float float_value = 4;
+  }
+}
+
+// A set of base vectors, summed. A VID's count in the set is its total across
+// all of them, so a non-zero count means any of them reached the VID.
+//
+// Base vectors are per filter and period, so one `DataProvider` over a
+// reporting period is normally several of them. Summing inside the set is what
+// keeps [VidFilter][] flat. Naming single vectors instead would push that
+// union up into the clauses, at one clause per way of picking a vector from
+// each party, and would leave [VidFilter.ReachClause.unreached_set][] unable
+// to exclude a party at all without becoming repeated itself.
+message VectorSet {
+  // Values of [Measurement.Multimeasurement.Vector.index][], distinct.
+  repeated int32 base_vectors = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
+}
+
+// Which VIDs a [Query][] covers. A VID passes when it satisfies every field
+// that is set. An empty [VidFilter][] covers the whole population.
+//
+// [reach_clauses][] is a disjunctive normal form over "reached by" predicates:
+// clauses are ORed, the required sets within a clause are ANDed, and the
+// excluded set is negated. Any boolean combination of reach predicates is
+// therefore expressible, and dropping either repetition loses a connective.
+message VidFilter {
+  // A Venn region, as who reached the VID and who did not.
+  message ReachClause {
+    // Sets the VID must have a non-zero count in, each tested on its own.
+    // The conjunction of the form.
+    //
+    // Without the repetition there is no conjunction: one entry holding A and
+    // B sums them first, giving the VIDs reached by either, and the region
+    // reached by both becomes inexpressible.
+    repeated VectorSet reached_sets = 1
+        [(google.api.field_behavior) = UNORDERED_LIST];
+
+    // A set the VID must have a zero count in. The negation of the form.
+    //
+    // One is enough for any number of excluded sets: counts are non-negative,
+    // so a zero total over their union is zero in each.
+    VectorSet unreached_set = 2 [(google.api.field_behavior) = OPTIONAL];
+  }
+
+  // A VID passes when it satisfies any clause. The disjunction of the form.
+  //
+  // Without the repetition a query covers one Venn region, and a union of
+  // regions becomes several queries whose results are added, each noised and
+  // thresholded on its own.
+  repeated ReachClause reach_clauses = 1
+      [(google.api.field_behavior) = UNORDERED_LIST];
+
+  // The VID falls in a subpopulation matching every entry. The key is the
+  // field path, e.g. "person.age_group".
+  map<string, PopulationAttributeValue> attributes = 2
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// One query over the base vectors of a multimeasurement, read as:
+//
+//   SELECT reach, frequency, impressions
+//   FROM summands WHERE vid_filter GROUP BY grouping_paths
+//
+// All three metrics are computed for every cell. They read off one histogram
+// per cell, so producing all three costs no more than producing one: reach is
+// the count outside the zero bin, impressions are the bins weighted by their
+// frequency, and the frequency histogram is the output itself.
+//
+// The examples below take vectors 0, 1 and 2 as the base vectors of
+// `DataProvider`s A, B and C.
+//
+// Union reach of the three, broken down by age and gender, is one query. A
+// VID's count in [summands][] is its total across the three, so a non-zero
+// count already means the union reached it and no [vid_filter][] is needed:
+//
+//   id: "union"
+//   summands { base_vectors: [0, 1, 2] }
+//   grouping_paths: ["person.age_group", "person.gender"]
+//   max_frequency: 10
+//
+// Unique reach of A, the VIDs A reached that neither B nor C did, is one
+// query per `DataProvider`. [summands][] already restricts the count to A, so
+// the clause carries only the exclusion, and one
+// [ReachClause.unreached_set][] covers both excluded providers:
+//
+//   id: "unique-a"
+//   summands { base_vectors: [0] }
+//   vid_filter {
+//     reach_clauses { unreached_set { base_vectors: [1, 2] } }
+//   }
+//   max_frequency: 10
+//
+// Unique reach across the set, the VIDs exactly one of the three reached, is
+// one query whose clauses union. Here [summands][] is the union of all three,
+// so each clause needs its own [ReachClause.reached_sets][] to say which
+// provider its region belongs to:
+//
+//   id: "unique-any"
+//   summands { base_vectors: [0, 1, 2] }
+//   vid_filter {
+//     reach_clauses {
+//       reached_sets { base_vectors: [0] }
+//       unreached_set { base_vectors: [1, 2] }
+//     }
+//     reach_clauses {
+//       reached_sets { base_vectors: [1] }
+//       unreached_set { base_vectors: [0, 2] }
+//     }
+//     reach_clauses {
+//       reached_sets { base_vectors: [2] }
+//       unreached_set { base_vectors: [0, 1] }
+//     }
+//   }
+//   max_frequency: 10
+message Query {
+  // Identifier echoed on [Measurement.Result.QueryKey.query_id][] by every
+  // result this query produces. Opaque to the Kingdom and the Duchy.
+  // Required, and distinct within a multimeasurement.
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // FROM. Whose counts to add for a VID that passes [vid_filter][].
+  //
+  // Independent of the vector sets named in [vid_filter][]: which VIDs the
+  // query covers and whose impressions are counted for them are separate
+  // choices. A query may select the VIDs reached by both A and B, then sum
+  // only A's counts for them.
+  VectorSet summands = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // WHERE. Covers the whole population when unset.
+  VidFilter vid_filter = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // GROUP BY. One result per combination of the values these fields take
+  // across [PopulationSpec.subpopulations][]. The Duchy resolves each VID to
+  // its subpopulation and reads the fields from there.
+  //
+  // Each entry is the path of a population attribute field, e.g.
+  // "person.gender". Empty yields a single result.
+  repeated string grouping_paths = 4
+      [(google.api.field_behavior) = UNORDERED_LIST];
+
+  // Counts above this fold into the top bin of the frequency histogram.
+  // Required.
+  int32 max_frequency = 5 [(google.api.field_behavior) = REQUIRED];
+}
