@@ -392,6 +392,11 @@ message Measurement {
   }
 
   // Results of this `Measurement`. Only set if `state` is `SUCCEEDED`.
+  //
+  // A multimeasurement has one entry per cell, each holding a `Result` whose
+  // `query_key` names the `Query` and grouping combination it is for. Every
+  // entry carries the aggregator's certificate, so `query_key` is what tells
+  // them apart.
   repeated ResultOutput results = 8 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = UNORDERED_LIST
