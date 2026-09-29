@@ -357,23 +357,72 @@ message Measurement {
     // The population result.
     Population population = 5;
 
-    // Which cell of a multimeasurement this `Result` is.
-    message QueryKey {
-      // The `Query.id` that produced this `Result`, echoed unchanged.
-      string query_id = 1;
-
-      // The grouping combination this `Result` is for: the values the
-      // `Query.grouping_paths` fields take in the subpopulation, keyed by
-      // field path.
-      //
-      // Empty when the query set no grouping paths.
-      map<string, PopulationAttributeValue> attributes = 2;
-    }
-    // Which cell of a multimeasurement this `Result` is.
+    // Every cell of a multimeasurement.
     //
-    // Set if and only if the `Measurement` is a multimeasurement, whose
-    // aggregator produces one `Result` per query per grouping combination.
-    QueryKey query_key = 6;
+    // A multimeasurement returns one `Result` holding all of its cells rather
+    // than one `Result` per cell: the aggregator signs the whole set once, and
+    // the query id, grouping paths and noise mechanisms are stated once
+    // instead of on every cell.
+    message Multimeasurement {
+      // The noise mechanism for each metric, fixed by the attested image and
+      // therefore the same for every cell.
+      ProtocolConfig.NoiseMechanism reach_noise_mechanism = 1;
+      ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 2;
+      ProtocolConfig.NoiseMechanism impression_noise_mechanism = 3;
+
+      // The cells of one `Query`.
+      message QueryResults {
+        // The `Query.id` that produced these cells, echoed unchanged.
+        string query_id = 1;
+
+        // The `Query.grouping_paths` these cells are partitioned by, in the
+        // order `Cell.attribute_values` matches.
+        repeated string grouping_paths = 2;
+
+        // The `Query.max_frequency` the histograms are folded at, and so the
+        // length of `Cell.frequency_bins`.
+        int32 max_frequency = 3;
+
+        // One grouping combination.
+        message Cell {
+          // The values the `grouping_paths` fields take, positionally. Empty
+          // when the query set no grouping paths, which yields one `Cell`.
+          repeated PopulationAttributeValue attribute_values = 1;
+
+          // Number of VIDs with a non-zero count. Zero when the anonymity
+          // threshold suppressed this cell, which `suppressed` distinguishes
+          // from a genuine zero.
+          int64 reach = 2;
+          double reach_variance = 3;
+
+          // Sum of the counts. Its variance is derived from this cell's own
+          // histogram, so it cannot be hoisted.
+          int64 impressions = 4;
+          double impression_variance = 5;
+
+          // Number of VIDs at each frequency, `max_frequency` entries, the
+          // last folding every higher frequency into it. Counts rather than
+          // the ratios `Frequency.relative_frequency_distribution` carries,
+          // so that a reader sees the noised values the post-processor
+          // reconciles rather than values already normalized against a
+          // separately noised reach.
+          repeated int64 frequency_bins = 6;
+
+          // One per entry in `frequency_bins`. Folding the top bin sums
+          // several draws into it, so the bins need not share a variance.
+          repeated double frequency_bin_variance = 7;
+
+          // The anonymity threshold released nothing for this cell.
+          bool suppressed = 8;
+        }
+        repeated Cell cells = 4;
+      }
+      // One entry per `Query` of the multimeasurement.
+      repeated QueryResults query_results = 4;
+    }
+    // Every cell of a multimeasurement. Set if and only if the `Measurement`
+    // is a multimeasurement, in which case no other field of this `Result` is.
+    Multimeasurement multimeasurement = 6;
   }
 
   // Output message for a `Result`.
@@ -389,6 +438,13 @@ message Measurement {
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE
     ];
+
+    // Signed `Result`, unencrypted.
+    //
+    // Set instead of `encrypted_result` where the `Kingdom` operator is
+    // trusted with results. The signature still binds the `Result` to the
+    // aggregator that produced it, verifiable using `certificate`.
+    SignedMessage signed_result = 4;
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
