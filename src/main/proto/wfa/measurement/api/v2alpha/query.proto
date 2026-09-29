@@ -158,8 +158,8 @@ message VidFilter {
 //   max_frequency: 10
 message Query {
   // Identifier echoed on
-  // [Measurement.Result.Multimeasurement.QueryResults.query_id][] by the
-  // results this query produces. Opaque to the Kingdom and the Duchy.
+  // [Measurement.Result.MultimeasurementResult.QueryResults.query_id][] by
+  // the results this query produces. Opaque to the Kingdom and the Duchy.
   // Required, and distinct within a multimeasurement.
   string id = 1 [(google.api.field_behavior) = REQUIRED];
 

@@ -363,7 +363,7 @@ message Measurement {
     // than one `Result` per cell: the aggregator signs the whole set once, and
     // the query id, grouping paths and noise mechanisms are stated once
     // instead of on every cell.
-    message Multimeasurement {
+    message MultimeasurementResult {
       // The noise mechanism for each metric, fixed by the attested image and
       // therefore the same for every cell.
       ProtocolConfig.NoiseMechanism reach_noise_mechanism = 1;
@@ -389,30 +389,35 @@ message Measurement {
           // when the query set no grouping paths, which yields one `Cell`.
           repeated PopulationAttributeValue attribute_values = 1;
 
-          // Number of VIDs with a non-zero count. Zero when the anonymity
-          // threshold suppressed this cell, which `suppressed` distinguishes
-          // from a genuine zero.
+          // Number of VIDs with a non-zero count.
           int64 reach = 2;
+
+          // Variance of `reach`. A consumer storing a standard deviation
+          // takes its square root.
           double reach_variance = 3;
 
-          // Sum of the counts. Its variance is derived from this cell's own
-          // histogram, so it cannot be hoisted.
+          // Sum of the counts.
           int64 impressions = 4;
+
+          // Variance of `impressions`, derived from this cell's own
+          // histogram, so it cannot be hoisted.
           double impression_variance = 5;
 
-          // Number of VIDs at each frequency, `max_frequency` entries, the
-          // last folding every higher frequency into it. Counts rather than
-          // the ratios `Frequency.relative_frequency_distribution` carries,
-          // so that a reader sees the noised values the post-processor
-          // reconciles rather than values already normalized against a
-          // separately noised reach.
+          // Number of VIDs at each frequency, `max_frequency` entries.
+          //
+          // Positional: entry `i` is the number of VIDs reached exactly
+          // `i + 1` times, and the last entry folds every higher frequency
+          // into it, making it the `k+` count at `max_frequency`.
           repeated int64 frequency_bins = 6;
 
-          // One per entry in `frequency_bins`. Folding the top bin sums
-          // several draws into it, so the bins need not share a variance.
+          // Variance of each entry of `frequency_bins`, in the same order and
+          // of the same length. Folding the last bin sums several draws into
+          // it, so the bins need not share a variance.
           repeated double frequency_bin_variance = 7;
 
-          // The anonymity threshold released nothing for this cell.
+          // The anonymity threshold released nothing for this cell, which
+          // distinguishes a suppressed cell from a genuinely empty one. The
+          // metrics above are zero.
           bool suppressed = 8;
         }
         repeated Cell cells = 4;
@@ -422,7 +427,7 @@ message Measurement {
     }
     // Every cell of a multimeasurement. Set if and only if the `Measurement`
     // is a multimeasurement, in which case no other field of this `Result` is.
-    Multimeasurement multimeasurement = 6;
+    MultimeasurementResult multimeasurement_result = 6;
   }
 
   // Output message for a `Result`.
