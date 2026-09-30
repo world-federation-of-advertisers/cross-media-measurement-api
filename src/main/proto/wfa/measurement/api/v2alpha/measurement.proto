@@ -478,12 +478,11 @@ message Measurement {
       (google.api.field_behavior) = IMMUTABLE
     ];
 
-    // Signed `Result`, unencrypted.
+    // The `Result` itself, neither signed nor encrypted.
     //
     // Set instead of `encrypted_result` where the `Kingdom` operator is
-    // trusted with results. The signature still binds the `Result` to the
-    // aggregator that produced it, verifiable using `certificate`.
-    SignedMessage signed_result = 4;
+    // trusted with results.
+    Result result = 4 [(google.api.field_behavior) = OPTIONAL];
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
