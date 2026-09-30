@@ -359,10 +359,9 @@ message Measurement {
 
     // Every cell of a multimeasurement.
     //
-    // A multimeasurement returns one `Result` holding all of its cells rather
-    // than one `Result` per cell: the aggregator signs the whole set once, and
-    // the query id, grouping paths and noise mechanisms are stated once
-    // instead of on every cell.
+    // One entry per `Query`, each stating that query's id, grouping paths and
+    // fold point once and holding a `Cell` per grouping combination. The
+    // aggregator signs the whole set as a single `Result`.
     message MultimeasurementResult {
       // The mechanism used to noise every cell's reach, fixed by the attested
       // image and therefore the same for every cell.
