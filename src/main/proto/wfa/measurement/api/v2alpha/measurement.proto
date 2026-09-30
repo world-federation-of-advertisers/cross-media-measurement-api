@@ -359,22 +359,10 @@ message Measurement {
 
     // Every cell of a multimeasurement.
     //
-    // One entry per `Query`, each stating that query's id, grouping paths and
-    // fold point once and holding a `Cell` per grouping combination. The
-    // aggregator signs the whole set as a single `Result`.
+    // One entry per `Query`, each stating that query's id, grouping paths,
+    // fold point and noise mechanisms once and holding a `Cell` per grouping
+    // combination. The aggregator signs the whole set as a single `Result`.
     message MultimeasurementResult {
-      // The mechanism used to noise every cell's reach, fixed by the attested
-      // image and therefore the same for every cell.
-      ProtocolConfig.NoiseMechanism reach_noise_mechanism = 1;
-
-      // The mechanism used to noise every cell's frequency histogram, fixed
-      // likewise.
-      ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 2;
-
-      // The mechanism used to noise every cell's impression count, fixed
-      // likewise.
-      ProtocolConfig.NoiseMechanism impression_noise_mechanism = 3;
-
       // The cells of one `Query`.
       message QueryResults {
         // The `Query.id` that produced these cells, echoed unchanged.
@@ -427,9 +415,23 @@ message Measurement {
         }
         // One per grouping combination the query produced.
         repeated Cell cells = 4;
+
+        // The mechanism used to noise the reach of every cell of this query.
+        //
+        // Per query rather than per multimeasurement: it follows the base
+        // vectors `Query.summands` reads, which differ between queries.
+        ProtocolConfig.NoiseMechanism reach_noise_mechanism = 5;
+
+        // The mechanism used to noise the frequency histogram of every cell
+        // of this query.
+        ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 6;
+
+        // The mechanism used to noise the impression count of every cell of
+        // this query.
+        ProtocolConfig.NoiseMechanism impression_noise_mechanism = 7;
       }
       // One entry per `Query` of the multimeasurement.
-      repeated QueryResults query_results = 4;
+      repeated QueryResults query_results = 1;
     }
     // Every cell of a multimeasurement. Set if and only if the `Measurement`
     // is a multimeasurement, in which case no other field of this `Result` is.
