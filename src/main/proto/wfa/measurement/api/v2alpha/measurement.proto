@@ -364,10 +364,16 @@ message Measurement {
     // the query id, grouping paths and noise mechanisms are stated once
     // instead of on every cell.
     message MultimeasurementResult {
-      // The noise mechanism for each metric, fixed by the attested image and
-      // therefore the same for every cell.
+      // The mechanism used to noise every cell's reach, fixed by the attested
+      // image and therefore the same for every cell.
       ProtocolConfig.NoiseMechanism reach_noise_mechanism = 1;
+
+      // The mechanism used to noise every cell's frequency histogram, fixed
+      // likewise.
       ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 2;
+
+      // The mechanism used to noise every cell's impression count, fixed
+      // likewise.
       ProtocolConfig.NoiseMechanism impression_noise_mechanism = 3;
 
       // The cells of one `Query`.
