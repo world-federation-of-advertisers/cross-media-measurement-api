@@ -378,8 +378,7 @@ message Measurement {
         //   attribute_values { enum_value: "FEMALE" }
         //
         // Empty here means one `Cell` with no `attribute_values`.
-        repeated string grouping_paths = 2
-            [(google.api.field_behavior) = UNORDERED_LIST];
+        repeated string grouping_paths = 2;
 
         // The `Query.max_frequency` the histograms are folded at, and so the
         // length of `Cell.frequency_bins`.
@@ -396,33 +395,35 @@ message Measurement {
 
           // Variance of `reach`. A consumer storing a standard deviation
           // takes its square root.
-          double reach_variance = 3 [(google.api.field_behavior) = REQUIRED];
+          //
+          // Unset where it is not derivable, and zero where
+          // `reach_noise_mechanism` is `NONE`.
+          double reach_variance = 3 [(google.api.field_behavior) = OPTIONAL];
 
           // Sum of the counts.
           int64 impressions = 4 [(google.api.field_behavior) = REQUIRED];
 
           // Variance of `impressions`, derived from this cell's own
-          // histogram, so it cannot be hoisted.
+          // histogram, so it cannot be hoisted. Unset where it is not
+          // derivable.
           double impression_variance = 5
-              [(google.api.field_behavior) = REQUIRED];
+              [(google.api.field_behavior) = OPTIONAL];
 
           // Number of VIDs at each frequency, `max_frequency` entries.
           //
           // Positional: entry `i` is the number of VIDs reached exactly
           // `i + 1` times, and the last entry folds every higher frequency
           // into it, making it the `k+` count at `max_frequency`.
-          repeated int64 frequency_bins = 6 [
-            (google.api.field_behavior) = REQUIRED,
-            (google.api.field_behavior) = UNORDERED_LIST
-          ];
+          repeated int64 frequency_bins = 6
+              [(google.api.field_behavior) = REQUIRED];
 
           // Variance of each entry of `frequency_bins`, in the same order and
           // of the same length. Folding the last bin sums several draws into
           // it, so the bins need not share a variance.
-          repeated double frequency_bin_variance = 7 [
-            (google.api.field_behavior) = REQUIRED,
-            (google.api.field_behavior) = UNORDERED_LIST
-          ];
+          //
+          // Empty where the variances are not derivable.
+          repeated double frequency_bin_variance = 7
+              [(google.api.field_behavior) = OPTIONAL];
 
           // The anonymity threshold released nothing for this cell, which
           // distinguishes a suppressed cell from a genuinely empty one. The
