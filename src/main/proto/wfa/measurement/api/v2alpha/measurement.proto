@@ -426,6 +426,7 @@ message Measurement {
           // metrics above are zero.
           bool suppressed = 8;
         }
+        // One per grouping combination the query produced.
         repeated Cell cells = 4;
       }
       // One entry per `Query` of the multimeasurement.
