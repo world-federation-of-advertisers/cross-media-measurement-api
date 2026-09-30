@@ -359,22 +359,31 @@ message Measurement {
 
     // Every cell of a multimeasurement.
     //
-    // One entry per `Query`, each stating that query's id, grouping paths,
-    // fold point and noise mechanisms once and holding a `Cell` per grouping
-    // combination. The aggregator signs the whole set as a single `Result`.
+    // One of these per `Measurement`, holding one `QueryResult` per `Query`.
+    // A `QueryResult` states its query's id, grouping paths, fold point and
+    // noise mechanisms once, and holds a `Cell` per grouping combination.
     message MultimeasurementResult {
       // The cells of one `Query`.
-      message QueryResults {
+      message QueryResult {
         // The `Query.id` that produced these cells, echoed unchanged.
-        string query_id = 1;
+        string query_id = 1 [(google.api.field_behavior) = REQUIRED];
 
-        // The `Query.grouping_paths` these cells are partitioned by, in the
-        // order `Cell.attribute_values` matches.
-        repeated string grouping_paths = 2;
+        // The `Query.grouping_paths` these cells are partitioned by.
+        //
+        // `Cell.attribute_values` matches this positionally. Grouping by
+        // `["person.age_group", "person.gender"]` gives a `Cell` per
+        // combination, one of which reads:
+        //
+        //   attribute_values { enum_value: "YEARS_25_TO_34" }
+        //   attribute_values { enum_value: "FEMALE" }
+        //
+        // Empty here means one `Cell` with no `attribute_values`.
+        repeated string grouping_paths = 2
+            [(google.api.field_behavior) = UNORDERED_LIST];
 
         // The `Query.max_frequency` the histograms are folded at, and so the
         // length of `Cell.frequency_bins`.
-        int32 max_frequency = 3;
+        int32 max_frequency = 3 [(google.api.field_behavior) = REQUIRED];
 
         // One grouping combination.
         message Cell {
@@ -383,55 +392,71 @@ message Measurement {
           repeated PopulationAttributeValue attribute_values = 1;
 
           // Number of VIDs with a non-zero count.
-          int64 reach = 2;
+          int64 reach = 2 [(google.api.field_behavior) = REQUIRED];
 
           // Variance of `reach`. A consumer storing a standard deviation
           // takes its square root.
-          double reach_variance = 3;
+          double reach_variance = 3 [(google.api.field_behavior) = REQUIRED];
 
           // Sum of the counts.
-          int64 impressions = 4;
+          int64 impressions = 4 [(google.api.field_behavior) = REQUIRED];
 
           // Variance of `impressions`, derived from this cell's own
           // histogram, so it cannot be hoisted.
-          double impression_variance = 5;
+          double impression_variance = 5
+              [(google.api.field_behavior) = REQUIRED];
 
           // Number of VIDs at each frequency, `max_frequency` entries.
           //
           // Positional: entry `i` is the number of VIDs reached exactly
           // `i + 1` times, and the last entry folds every higher frequency
           // into it, making it the `k+` count at `max_frequency`.
-          repeated int64 frequency_bins = 6;
+          repeated int64 frequency_bins = 6 [
+            (google.api.field_behavior) = REQUIRED,
+            (google.api.field_behavior) = UNORDERED_LIST
+          ];
 
           // Variance of each entry of `frequency_bins`, in the same order and
           // of the same length. Folding the last bin sums several draws into
           // it, so the bins need not share a variance.
-          repeated double frequency_bin_variance = 7;
+          repeated double frequency_bin_variance = 7 [
+            (google.api.field_behavior) = REQUIRED,
+            (google.api.field_behavior) = UNORDERED_LIST
+          ];
 
           // The anonymity threshold released nothing for this cell, which
           // distinguishes a suppressed cell from a genuinely empty one. The
           // metrics above are zero.
-          bool suppressed = 8;
+          bool suppressed = 8 [(google.api.field_behavior) = OPTIONAL];
         }
         // One per grouping combination the query produced.
-        repeated Cell cells = 4;
+        repeated Cell cells = 4 [
+          (google.api.field_behavior) = REQUIRED,
+          (google.api.field_behavior) = UNORDERED_LIST
+        ];
 
         // The mechanism used to noise the reach of every cell of this query.
         //
         // Per query rather than per multimeasurement: it follows the base
         // vectors `Query.summands` reads, which differ between queries.
-        ProtocolConfig.NoiseMechanism reach_noise_mechanism = 5;
+        ProtocolConfig.NoiseMechanism reach_noise_mechanism = 5
+            [(google.api.field_behavior) = REQUIRED];
 
         // The mechanism used to noise the frequency histogram of every cell
         // of this query.
-        ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 6;
+        ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 6
+            [(google.api.field_behavior) = REQUIRED];
 
         // The mechanism used to noise the impression count of every cell of
         // this query.
-        ProtocolConfig.NoiseMechanism impression_noise_mechanism = 7;
+        ProtocolConfig.NoiseMechanism impression_noise_mechanism = 7
+            [(google.api.field_behavior) = REQUIRED];
       }
       // One entry per `Query` of the multimeasurement.
-      repeated QueryResults query_results = 1;
+      repeated QueryResult query_results = 1 [
+        (google.api.field_behavior) = REQUIRED,
+        (google.api.field_behavior) = UNORDERED_LIST
+      ];
     }
     // Every cell of a multimeasurement. Set if and only if the `Measurement`
     // is a multimeasurement, in which case no other field of this `Result` is.
