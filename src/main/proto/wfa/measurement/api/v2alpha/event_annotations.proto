@@ -73,6 +73,16 @@ message EventFieldDescriptor {
   // it must be greater than `version_added`.
   int32 version_removed = 7;
 
+  // Whether this field is virtual.
+  //
+  // A virtual field is never populated by a DataProvider. Its value is
+  // resolved at report time from other event template fields according to a
+  // VirtualDimensionConfig entry keyed on this field's path. A virtual field
+  // must be of enum type.
+  //
+  // Virtual fields must never appear in a RequisitionSpec CEL expression.
+  bool virtual = 8;
+
   // Grouping spec offered over this field for reporting.
   //
   // Required for a field whose type is neither an enum nor a boolean when
