@@ -480,8 +480,8 @@ message Measurement {
 
     // The `Result` itself, neither signed nor encrypted.
     //
-    // Set instead of `encrypted_result` where the `Kingdom` operator is
-    // trusted with results.
+    // Only populated when the `Result` type is a `MultimeasurementResult`, in
+    // which case `encrypted_result` is not populated.
     Result result = 4 [(google.api.field_behavior) = OPTIONAL];
 
     // Resource name of a `Certificate` belonging to the entity that produced
