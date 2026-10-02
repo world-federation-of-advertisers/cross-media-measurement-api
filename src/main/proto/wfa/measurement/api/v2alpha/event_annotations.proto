@@ -73,6 +73,16 @@ message EventFieldDescriptor {
   // it must be greater than `version_added`.
   int32 version_removed = 7;
 
+  // Whether this field is virtual.
+  //
+  // A virtual field is never populated by a DataProvider. Its value is
+  // resolved at report time from other event template fields according to a
+  // VirtualDimensionConfig entry keyed on this field's path. A virtual field
+  // must be of enum type.
+  //
+  // Virtual fields must never appear in a RequisitionSpec CEL expression.
+  bool virtual = 8;
+
   // Grouping spec offered over this field for reporting.
   //
   // Required for a field whose type is neither an enum nor a boolean when
@@ -158,6 +168,33 @@ message EventDescriptor {
   // recommend maintaining a comment history in the Event message that describes
   // the changes between each version.
   int32 current_version = 2;
+
+  // The set of Event Data Providers that support the event.
+  //
+  // This list of strings will be read by the Halo Reporting Server
+  // along with a configuration that associates each with a DataProvider
+  // resource name.
+  repeated string event_data_providers = 3;
+}
+
+// EventTemplate annotations for enums.
+message EventTemplateEnumDescriptor {
+  // The set of data providers that supports grouping and filtering
+  // on all non-zero values of the enum.
+  repeated string supported_data_providers = 1;
+}
+
+// EventTemplate annotations for enum values.
+message EventTemplateEnumValueDescriptor {
+  // The set of data providers that supports grouping and filtering
+  // on the annotated enum value.
+  repeated string supported_data_providers = 1;
+
+  // The event filter applied to requisitions when the annotated
+  // enum value is used for filtering or grouping.
+  //
+  // Only supported for fields marked virtual.
+  string event_filter = 2;
 }
 
 // Custom options for messages. Numbering starts at 50000 which is the start of
@@ -172,4 +209,17 @@ extend google.protobuf.MessageOptions {
 // the range for internal use.
 extend google.protobuf.FieldOptions {
   EventFieldDescriptor template_field = 50000;
+}
+
+// Custom options for enums. Numbering starts at 50000 which is the start of
+// the range for internal use.
+extend google.protobuf.EnumOptions {
+  EventTemplateEnumDescriptor event_template_enum = 50000;
+}
+
+
+// Custom options for enum values. Numbering starts at 50000 which is the start
+// of the range for internal use.
+extend google.protobuf.EnumValueOptions {
+  EventTemplateEnumValueDescriptor event_template_value = 50000;
 }
