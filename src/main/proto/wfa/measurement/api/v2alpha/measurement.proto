@@ -25,6 +25,8 @@ import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "wfa/measurement/api/v2alpha/query.proto";
+import "wfa/measurement/api/v2alpha/requisition_spec.proto";
 import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -115,10 +117,66 @@ message Measurement {
     Value value = 2 [(google.api.field_behavior) = REQUIRED];
   }
   // Map of `DataProvider` name to parameters for that `DataProvider`.
+  //
+  // Empty when `measurement_spec` carries a `MultiMeasurementSpec`, where
+  // `multimeasurement` names the `DataProvider`s.
   repeated DataProviderEntry data_providers = 4 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.field_behavior) = IMMUTABLE
   ];
+
+  // Parameters for a multimeasurement: one base vector per `Vector`, each
+  // fulfilled by its own `Requisition`, and a set of `Query`s over them.
+  message Multimeasurement {
+    // One `Requisition`, whose fulfillment returns one base vector.
+    message Vector {
+      // What `VectorSet.base_vectors` references. Assigned by the
+      // `MeasurementConsumer`. The indexes cover `0..n-1` exactly once, where
+      // `n` is the total number of `Vector`s across `data_provider_vectors`.
+      int32 index = 1 [(google.api.field_behavior) = REQUIRED];
+
+      // The `RequisitionSpec` for this vector, in plaintext.
+      RequisitionSpec requisition_spec = 2
+          [(google.api.field_behavior) = REQUIRED];
+    }
+
+    // One `DataProvider` and every `Vector` it fulfills.
+    //
+    // A multimeasurement signs nothing and encrypts nothing to the
+    // `DataProvider`'s key, so no certificate or public key is carried here.
+    message DataProviderVectors {
+      // Resource name of the `DataProvider`.
+      string data_provider = 1 [
+        (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+        (google.api.field_behavior) = REQUIRED
+      ];
+
+      // The `Vector`s this `DataProvider` fulfills.
+      repeated Vector vectors = 2 [
+        (google.api.field_behavior) = REQUIRED,
+        (google.api.field_behavior) = UNORDERED_LIST
+      ];
+    }
+
+    // The base vectors, grouped by the `DataProvider` that fulfills them.
+    // `data_provider` is distinct across entries.
+    repeated DataProviderVectors data_provider_vectors = 1 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = UNORDERED_LIST
+    ];
+
+    // How to combine the base vectors. Opaque to the Kingdom, which forwards
+    // them to the Duchy. A `Query` naming a `VectorSet.base_vectors` value
+    // that no `Vector` carries fails in the Duchy.
+    repeated Query queries = 2 [
+      (google.api.field_behavior) = REQUIRED,
+      (google.api.field_behavior) = UNORDERED_LIST
+    ];
+  }
+  // Parameters for a multimeasurement. Set if and only if
+  // `measurement_spec` carries a `MultiMeasurementSpec`.
+  Multimeasurement multimeasurement = 13
+      [(google.api.field_behavior) = IMMUTABLE];
 
   // The `ProtocolConfig` selected for this measurement according to the
   // `measurement_spec`.
@@ -298,6 +356,112 @@ message Measurement {
     }
     // The population result.
     Population population = 5;
+
+    // Every cell of a multimeasurement.
+    //
+    // One of these per `Measurement`, holding one `QueryResult` per `Query`.
+    // A `QueryResult` states its query's id, grouping paths, fold point and
+    // noise mechanisms once, and holds a `Cell` per grouping combination.
+    message MultimeasurementResult {
+      // The cells of one `Query`.
+      message QueryResult {
+        // The `Query.id` that produced these cells, echoed unchanged.
+        string query_id = 1 [(google.api.field_behavior) = REQUIRED];
+
+        // The `Query.grouping_paths` these cells are partitioned by.
+        //
+        // `Cell.attribute_values` matches this positionally. Grouping by
+        // `["person.age_group", "person.gender"]` gives a `Cell` per
+        // combination, one of which reads:
+        //
+        //   attribute_values { enum_value: "YEARS_25_TO_34" }
+        //   attribute_values { enum_value: "FEMALE" }
+        //
+        // Empty here means one `Cell` with no `attribute_values`.
+        repeated string grouping_paths = 2;
+
+        // The `Query.max_frequency` the histograms are folded at, and so the
+        // length of `Cell.frequency_bins`.
+        int32 max_frequency = 3 [(google.api.field_behavior) = REQUIRED];
+
+        // One grouping combination.
+        message Cell {
+          // The values the `grouping_paths` fields take, positionally. Empty
+          // when the query set no grouping paths, which yields one `Cell`.
+          repeated PopulationAttributeValue attribute_values = 1;
+
+          // Number of VIDs with a non-zero count.
+          int64 reach = 2 [(google.api.field_behavior) = REQUIRED];
+
+          // Variance of `reach`. A consumer storing a standard deviation
+          // takes its square root.
+          //
+          // Unset where it is not derivable, and zero where
+          // `reach_noise_mechanism` is `NONE`.
+          double reach_variance = 3 [(google.api.field_behavior) = OPTIONAL];
+
+          // Sum of the counts.
+          int64 impressions = 4 [(google.api.field_behavior) = REQUIRED];
+
+          // Variance of `impressions`, derived from this cell's own
+          // histogram, so it cannot be hoisted. Unset where it is not
+          // derivable.
+          double impression_variance = 5
+              [(google.api.field_behavior) = OPTIONAL];
+
+          // Number of VIDs at each frequency, `max_frequency` entries.
+          //
+          // Positional: entry `i` is the number of VIDs reached exactly
+          // `i + 1` times, and the last entry folds every higher frequency
+          // into it, making it the `k+` count at `max_frequency`.
+          repeated int64 frequency_bins = 6
+              [(google.api.field_behavior) = REQUIRED];
+
+          // Variance of each entry of `frequency_bins`, in the same order and
+          // of the same length. Folding the last bin sums several draws into
+          // it, so the bins need not share a variance.
+          //
+          // Empty where the variances are not derivable.
+          repeated double frequency_bin_variance = 7
+              [(google.api.field_behavior) = OPTIONAL];
+
+          // The anonymity threshold released nothing for this cell, which
+          // distinguishes a suppressed cell from a genuinely empty one. The
+          // metrics above are zero.
+          bool suppressed = 8 [(google.api.field_behavior) = OPTIONAL];
+        }
+        // One per grouping combination the query produced.
+        repeated Cell cells = 4 [
+          (google.api.field_behavior) = REQUIRED,
+          (google.api.field_behavior) = UNORDERED_LIST
+        ];
+
+        // The mechanism used to noise the reach of every cell of this query.
+        //
+        // Per query rather than per multimeasurement: it follows the base
+        // vectors `Query.summands` reads, which differ between queries.
+        ProtocolConfig.NoiseMechanism reach_noise_mechanism = 5
+            [(google.api.field_behavior) = REQUIRED];
+
+        // The mechanism used to noise the frequency histogram of every cell
+        // of this query.
+        ProtocolConfig.NoiseMechanism frequency_noise_mechanism = 6
+            [(google.api.field_behavior) = REQUIRED];
+
+        // The mechanism used to noise the impression count of every cell of
+        // this query.
+        ProtocolConfig.NoiseMechanism impression_noise_mechanism = 7
+            [(google.api.field_behavior) = REQUIRED];
+      }
+      // One entry per `Query` of the multimeasurement.
+      repeated QueryResult query_results = 1 [
+        (google.api.field_behavior) = REQUIRED,
+        (google.api.field_behavior) = UNORDERED_LIST
+      ];
+    }
+    // Every cell of a multimeasurement. Set if and only if the `Measurement`
+    // is a multimeasurement, in which case no other field of this `Result` is.
+    MultimeasurementResult multimeasurement_result = 6;
   }
 
   // Output message for a `Result`.
@@ -313,6 +477,12 @@ message Measurement {
       (google.api.field_behavior) = REQUIRED,
       (google.api.field_behavior) = IMMUTABLE
     ];
+
+    // The `Result` itself, neither signed nor encrypted.
+    //
+    // Only populated when the `Result` type is a `MultimeasurementResult`, in
+    // which case `encrypted_result` is not populated.
+    Result result = 4 [(google.api.field_behavior) = OPTIONAL];
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
