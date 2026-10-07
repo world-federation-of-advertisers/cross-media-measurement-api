@@ -272,12 +272,12 @@ message ListEventGroupsRequest {
     // Because the sequence of [entity_type][EventGroup.EntityKey.entity_type]
     // values in a path is a prefix of the ordering declared by an
     // [EventGroupHierarchy][], and those values are distinct across the
-    // hierarchies of a ([DataProvider][], [MeasurementConsumer][]) pair, an
+    // hierarchies of a [DataProvider][], an
     // [entity_type][EventGroup.EntityKey.entity_type] identifies a level
     // exactly. There is therefore no separate depth parameter.
     //
-    // A ([DataProvider][], [MeasurementConsumer][]) pair with no declared
-    // [EventGroupHierarchy][] has no paths, so any prefix matches nothing.
+    // A [DataProvider][] with no declared [EventGroupHierarchy][] has no
+    // paths, so any prefix matches nothing.
     repeated EventGroup.EntityKey entity_path_prefix = 13;
   }
   // Filter criteria for this request.

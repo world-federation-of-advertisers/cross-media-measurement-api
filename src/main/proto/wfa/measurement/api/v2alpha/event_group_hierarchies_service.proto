@@ -37,8 +37,7 @@ service EventGroupHierarchies {
     option (google.api.method_signature) = "name";
   }
 
-  // Lists the `EventGroupHierarchy` resources for a (`DataProvider`,
-  // `MeasurementConsumer`) pair.
+  // Lists the `EventGroupHierarchy` resources for a `DataProvider`.
   rpc ListEventGroupHierarchies(ListEventGroupHierarchiesRequest)
       returns (ListEventGroupHierarchiesResponse) {
     option (google.api.method_signature) = "parent";
@@ -57,8 +56,7 @@ message GetEventGroupHierarchyRequest {
 
 // Request message for `ListEventGroupHierarchies` method.
 message ListEventGroupHierarchiesRequest {
-  // Resource name of the parent, of the form
-  // `dataProviders/{data_provider}/measurementConsumers/{measurement_consumer}`.
+  // Resource name of the parent `DataProvider`.
   string parent = 1 [
     (google.api.resource_reference).child_type =
         "halo.wfanet.org/EventGroupHierarchy",
@@ -68,8 +66,8 @@ message ListEventGroupHierarchiesRequest {
   // The maximum number of resources to return. The service may return fewer
   // than this value.
   //
-  // If unspecified, at most 50 resources will be returned. The maximum value is
-  // 100; values above this will be coerced to the maximum.
+  // If unspecified, at most 50 resources will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
   int32 page_size = 2;
 
   // A token from a previous call, specified to retrieve the next page. See
