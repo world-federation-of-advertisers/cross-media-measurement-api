@@ -31,7 +31,9 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 // Service for interacting with `EventGroupActivity` resources.
 service EventGroupActivities {
   // Batch creates or updates `EventGroupActivities`. Results in an error if any
-  // of the specified `EventGroupActivity`s fail to be updated.
+  // of the specified `EventGroupActivity`s fail to be updated. Activity can be
+  // specified as either individual resources or a contiguous date range, but
+  // not both.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
       returns (BatchUpdateEventGroupActivitiesResponse) {}
 
@@ -82,6 +84,10 @@ message UpdateEventGroupActivityRequest {
 }
 
 // Request message for BatchUpdateEventGroupActivities method.
+// (-- api-linter: core::0234::request-requests-behavior=disabled
+//     api-linter: core::0234::request-unknown-fields=disabled
+//     aip.dev/not-precedent: `activity_range` is an alternative to `requests`.
+//     --)
 message BatchUpdateEventGroupActivitiesRequest {
   // The parent EventGroup resource where these EventGroupActivities will be
   // created or updated.
@@ -93,10 +99,19 @@ message BatchUpdateEventGroupActivitiesRequest {
     }
   ];
 
-  // The requests for updating EventGroupActivities.
+  // Requests for updating individual `EventGroupActivity` resources.
+  //
   // A maximum of 1000 EventGroupActivities can be updated in a batch.
-  repeated UpdateEventGroupActivityRequest requests = 2
-      [(google.api.field_behavior) = REQUIRED];
+  // Exactly one of `requests` or `activity_range` must be specified.
+  repeated UpdateEventGroupActivityRequest requests = 2;
+
+  // Contiguous date range for which the `EventGroup` is active.
+  //
+  // Every date in this range is considered active. Both `start_date` and
+  // `end_date` must be set. `start_date` is inclusive, `end_date` is exclusive,
+  // and `end_date` must be later than `start_date`.
+  // Exactly one of `activity_range` or `requests` must be specified.
+  DateInterval activity_range = 3;
 }
 
 // Response message for BatchUpdateEventGroupActivities method.
