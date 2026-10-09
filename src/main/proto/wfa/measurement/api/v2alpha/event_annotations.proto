@@ -168,28 +168,10 @@ message EventDescriptor {
   // recommend maintaining a comment history in the Event message that describes
   // the changes between each version.
   int32 current_version = 2;
-
-  // The set of Event Data Providers that support the event.
-  //
-  // This list of strings will be read by the Halo Reporting Server
-  // along with a configuration that associates each with a DataProvider
-  // resource name.
-  repeated string event_data_providers = 3;
-}
-
-// EventTemplate annotations for enums.
-message EventTemplateEnumDescriptor {
-  // The set of data providers that supports grouping and filtering
-  // on all non-zero values of the enum.
-  repeated string supported_data_providers = 1;
 }
 
 // EventTemplate annotations for enum values.
 message EventTemplateEnumValueDescriptor {
-  // The set of data providers that supports grouping and filtering
-  // on the annotated enum value.
-  repeated string supported_data_providers = 1;
-
   // The event filter applied to requisitions when the annotated
   // enum value is used for filtering or grouping.
   //
@@ -210,13 +192,6 @@ extend google.protobuf.MessageOptions {
 extend google.protobuf.FieldOptions {
   EventFieldDescriptor template_field = 50000;
 }
-
-// Custom options for enums. Numbering starts at 50000 which is the start of
-// the range for internal use.
-extend google.protobuf.EnumOptions {
-  EventTemplateEnumDescriptor event_template_enum = 50000;
-}
-
 
 // Custom options for enum values. Numbering starts at 50000 which is the start
 // of the range for internal use.
