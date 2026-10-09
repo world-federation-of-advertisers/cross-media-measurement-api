@@ -211,10 +211,10 @@ message EventGroup {
     DateInterval interval = 1;
   }
 
-  // Canonical date ranges containing activity for this `EventGroup`.
+  // Date intervals for which this `EventGroup` has activity.
   //
-  // Ranges are ordered by `start_date` and are non-overlapping and
-  // non-adjacent.
+  // Consecutive active dates are combined into a single interval. Intervals
+  // are ordered by `start_date`.
   //
   // Only set when the view is `WITH_ACTIVITY_SUMMARY`.
   repeated AggregatedActivity aggregated_activities = 15
