@@ -85,10 +85,6 @@ message UpdateEventGroupActivityRequest {
 }
 
 // Request message for BatchUpdateEventGroupActivities method.
-// (-- api-linter: core::0234::request-requests-behavior=disabled
-//     api-linter: core::0234::request-unknown-fields=disabled
-//     aip.dev/not-precedent: `activity_range` is an alternative to `requests`.
-//     --)
 message BatchUpdateEventGroupActivitiesRequest {
   // The parent EventGroup resource where these EventGroupActivities will be
   // created or updated.
