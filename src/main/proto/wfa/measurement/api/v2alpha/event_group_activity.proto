@@ -44,3 +44,12 @@ message EventGroupActivity {
   // The date of the activity.
   google.type.Date date = 2 [(google.api.field_behavior) = REQUIRED];
 }
+
+// A contiguous date range with activity for an `EventGroup`.
+message EventGroupActivityRange {
+  // Start date, inclusive.
+  google.type.Date start_date = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // End date, exclusive. Must be later than `start_date`.
+  google.type.Date end_date = 2 [(google.api.field_behavior) = REQUIRED];
+}

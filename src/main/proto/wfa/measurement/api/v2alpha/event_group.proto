@@ -22,6 +22,7 @@ import "google/protobuf/any.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
+import "wfa/measurement/api/v2alpha/event_group_activity.proto";
 import "wfa/measurement/api/v2alpha/event_group_metadata.proto";
 import "wfa/measurement/api/v2alpha/media_type.proto";
 import "wfa/measurement/type/future_disposition.proto";
@@ -211,13 +212,19 @@ message EventGroup {
     DateInterval interval = 1;
   }
 
-  // Date intervals for which this `EventGroup` has activity.
-  //
-  // Consecutive active dates are combined into a single interval. Intervals
-  // are ordered by `start_date`.
+  // A summary of EventGroupActivity resources for this EventGroup.
   //
   // Only set when the view is `WITH_ACTIVITY_SUMMARY`.
   repeated AggregatedActivity aggregated_activities = 15
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Date ranges with activity for this `EventGroup`.
+  //
+  // Consecutive active dates are combined into a single range. Ranges are
+  // ordered by `start_date`.
+  //
+  // Only set when the view is `WITH_ACTIVITY_SUMMARY`.
+  repeated EventGroupActivityRange activity_ranges = 17
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Key of the entity in the [DataProvider][]'s system that an [EventGroup][]

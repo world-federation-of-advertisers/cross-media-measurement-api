@@ -108,11 +108,9 @@ message BatchUpdateEventGroupActivitiesRequest {
 
   // Contiguous date range for which the `EventGroup` is active.
   //
-  // Every date in this range is considered active. Both `start_date` and
-  // `end_date` must be set. `start_date` is inclusive, `end_date` is exclusive,
-  // and `end_date` must be later than `start_date`.
+  // Every date in this range is considered active.
   // Exactly one of `activity_range` or `requests` must be specified.
-  DateInterval activity_range = 3;
+  EventGroupActivityRange activity_range = 3;
 }
 
 // Response message for BatchUpdateEventGroupActivities method.
