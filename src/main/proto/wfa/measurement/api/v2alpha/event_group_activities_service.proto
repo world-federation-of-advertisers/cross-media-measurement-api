@@ -33,7 +33,8 @@ service EventGroupActivities {
   // Batch creates or updates `EventGroupActivities`. Results in an error if any
   // of the specified `EventGroupActivity`s fail to be updated. Activity can be
   // specified as either individual resources or a contiguous date range, but
-  // not both.
+  // not both. Results in an `INVALID_ARGUMENT` error if both or neither are
+  // specified.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
       returns (BatchUpdateEventGroupActivitiesResponse) {}
 
