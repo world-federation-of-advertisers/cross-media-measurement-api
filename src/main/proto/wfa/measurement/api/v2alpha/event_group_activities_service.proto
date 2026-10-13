@@ -123,19 +123,25 @@ message AddEventGroupActivitiesRequest {
 
   // Resource names of the `EventGroup`s to mark active.
   //
-  // Every `EventGroup` must be a child of `parent`. The product of the number
-  // of `EventGroup`s and dates must not exceed 1000.
+  // Every `EventGroup` must be a child of `parent`, and the field must not
+  // contain duplicate values. The product of the number of `EventGroup`s and
+  // dates must not exceed 1000.
   repeated string event_groups = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
   ];
 
-  // Dates on which every `EventGroup` is active.
+  // Dates on which every `EventGroup` is active. The field must not contain
+  // duplicate values.
   repeated google.type.Date dates = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for the `AddEventGroupActivities` method.
-message AddEventGroupActivitiesResponse {}
+message AddEventGroupActivitiesResponse {
+  // The `EventGroupActivity` resources for all requested combinations of
+  // `EventGroup` and date.
+  repeated EventGroupActivity event_group_activities = 1;
+}
 
 // Request message for the `BatchDeleteEventGroupActivities` method.
 message BatchDeleteEventGroupActivitiesRequest {
