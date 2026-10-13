@@ -53,12 +53,6 @@ message EventGroupHierarchy {
     // results in the same string. It must be distinct from the
     // [entity_type][] of every other [Level][] of every
     // [EventGroupHierarchy][] of the same [DataProvider][].
-    //
-    // The value "campaign" is reserved for legacy [EventGroup][]s, which have
-    // no [EventGroupMetadata.entity_metadata][] and cannot be in a hierarchy.
-    // [ListEventGroupsRequest.Filter.entity_type_in][] defaults to that value
-    // so that callers opt in to [EventGroup][]s with entity metadata, so it
-    // must not be used as a level.
     string entity_type = 1;
 
     // The key in [EventGroupMetadata.entity_metadata][] holding the ID of the

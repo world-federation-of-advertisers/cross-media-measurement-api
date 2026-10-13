@@ -238,6 +238,18 @@ message ListEventGroupsRequest {
   //     api-linter: core::0142::time-field-names=disabled
   //     aip.dev/not-precedent: Using structured filter instead of AIP-160. --)
   message Filter {
+    // Presence of [EventGroup.EntityKey.entity_id][].
+    enum EntityIdPresence {
+      // The default value. This value is invalid in [entity_id_presence_in][].
+      ENTITY_ID_PRESENCE_UNSPECIFIED = 0;
+
+      // An empty [EventGroup.EntityKey.entity_id][].
+      ENTITY_ID_PRESENCE_ABSENT = 1;
+
+      // A non-empty [EventGroup.EntityKey.entity_id][].
+      ENTITY_ID_PRESENCE_PRESENT = 2;
+    }
+
     // Set of
     // [MeasurementConsumer][wfa.measurement.api.v2alpha.MeasurementConsumer]
     // resource names which [EventGroup.measurement_consumer][] must be in.
@@ -279,10 +291,13 @@ message ListEventGroupsRequest {
     // [EventGroup][]. [start_date][DateInterval.start_date] and
     // [end_date][DateInterval.end_date] are required.
     DateInterval activity_contains = 9;
-    // Set of entity types which [EventGroup.EntityKey.type][] of
+    // Set of entity types which [EventGroup.EntityKey.entity_type][] of
     // [EventGroup.entity_key][] must be in.
     //
-    // If unspecified, the server will treat this as if it contains "campaign".
+    // If unspecified and neither [parent_event_group_in][] nor
+    // [entity_path_starts_with][] is specified, the server will treat this as
+    // if it contains "campaign". If either hierarchy filter is specified, an
+    // empty value does not restrict the entity type.
     repeated string entity_type_in = 11;
 
     // Set of [EventGroup][] resource names which
@@ -291,9 +306,6 @@ message ListEventGroupsRequest {
     // Only the direct children of those [EventGroup][]s are returned. Use
     // [entity_path_starts_with][] to return a whole subtree instead of a
     // single level.
-    //
-    // Like [entity_path_starts_with][], this is one term in the conjunction,
-    // so [entity_type_in][] must be specified for it to be useful.
     repeated string parent_event_group_in = 12
         [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
 
@@ -302,14 +314,8 @@ message ListEventGroupsRequest {
     // Matches the [EventGroup][] at that path, if any, and all of its
     // descendants.
     //
-    // This is one term in the conjunction, so it intersects with
-    // [entity_type_in][] rather than overriding it. Since [entity_type_in][]
-    // defaults to "campaign", which is reserved for legacy [EventGroup][]s and
-    // is never part of a hierarchy, specifying only a prefix returns nothing.
-    // Specify the [entity_type][EventGroup.EntityKey.entity_type] of a single
-    // level to select that level, or every
-    // [entity_type][EventGroup.EntityKey.entity_type] in the hierarchy to
-    // select a whole subtree.
+    // Specify [entity_type_in][] to restrict the result to particular levels,
+    // or leave it empty to select the whole subtree.
     //
     // Because the sequence of [entity_type][EventGroup.EntityKey.entity_type]
     // values in a path is a prefix of the ordering declared by an
@@ -321,6 +327,24 @@ message ListEventGroupsRequest {
     // A [DataProvider][] with no declared [EventGroupHierarchy][] has no
     // paths, so any prefix matches nothing.
     repeated EventGroup.EntityKey entity_path_starts_with = 13;
+
+    // Set of presence values which [EventGroup.EntityKey.entity_id][] must
+    // match.
+    //
+    // If unspecified and neither [parent_event_group_in][] nor
+    // [entity_path_starts_with][] is specified, the entity type "campaign"
+    // matches only [ENTITY_ID_PRESENCE_ABSENT][]. This preserves the behavior
+    // of existing callers which use "campaign" for legacy [EventGroup][]s.
+    // Other entity types are not restricted by entity ID presence.
+    //
+    // If either hierarchy filter is specified, an empty value does not
+    // restrict entity ID presence, since legacy [EventGroup][]s cannot match
+    // those filters.
+    //
+    // Specify [ENTITY_ID_PRESENCE_PRESENT][] with "campaign" in
+    // [entity_type_in][] to select entity-based campaign [EventGroup][]s.
+    // Specify both values to select both legacy and entity-based campaigns.
+    repeated EntityIdPresence entity_id_presence_in = 14;
   }
   // Filter criteria for this request.
   //
