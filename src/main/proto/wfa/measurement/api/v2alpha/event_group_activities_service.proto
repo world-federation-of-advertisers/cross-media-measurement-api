@@ -20,7 +20,6 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
-import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group_activity.proto";
 
@@ -31,19 +30,11 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 
 // Service for interacting with `EventGroupActivity` resources.
 service EventGroupActivities {
-  // Batch creates or updates `EventGroupActivities`. Results in an error if any
-  // of the specified `EventGroupActivity`s fail to be updated.
+  // Batch creates or updates `EventGroupActivity` resources atomically. The
+  // request may span `EventGroup`s under one `DataProvider` when `parent` uses
+  // the wildcard `EventGroup` ID.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
       returns (BatchUpdateEventGroupActivitiesResponse) {}
-
-  // Adds `EventGroupActivity` resources for multiple `EventGroup`s. An
-  // activity is added for every combination of `EventGroup` and date.
-  // Existing activities are left unchanged, making this method idempotent.
-  //
-  // The operation is atomic. If any referenced `EventGroup` does not exist,
-  // the request fails with `NOT_FOUND` and no activities are added.
-  rpc AddEventGroupActivities(AddEventGroupActivitiesRequest)
-      returns (AddEventGroupActivitiesResponse) {}
 
   // Deletes an existing `EventGroupActivity`. Results in a `PERMISSION_DENIED`
   // error if the authenticated user does not have access to the
@@ -93,9 +84,15 @@ message UpdateEventGroupActivityRequest {
 
 // Request message for BatchUpdateEventGroupActivities method.
 message BatchUpdateEventGroupActivitiesRequest {
-  // The parent EventGroup resource where these EventGroupActivities will be
-  // created or updated.
-  // Format: dataProviders/{data_provider}/eventGroups/{event_group}
+  // Parent `EventGroup` shared by all activities, or a wildcard `EventGroup`
+  // parent that scopes the request to one `DataProvider`.
+  //
+  // Formats:
+  // - dataProviders/{data_provider}/eventGroups/{event_group}
+  // - dataProviders/{data_provider}/eventGroups/-
+  //
+  // When the wildcard is used, every activity name in `requests` must identify
+  // an `EventGroup` under the specified `DataProvider`.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -104,6 +101,9 @@ message BatchUpdateEventGroupActivitiesRequest {
   ];
 
   // The requests for updating EventGroupActivities.
+  //
+  // Every activity name must be a child of `parent`, subject to the wildcard
+  // behavior documented above.
   // A maximum of 1000 EventGroupActivities can be updated in a batch.
   repeated UpdateEventGroupActivityRequest requests = 2
       [(google.api.field_behavior) = REQUIRED];
@@ -112,40 +112,6 @@ message BatchUpdateEventGroupActivitiesRequest {
 // Response message for BatchUpdateEventGroupActivities method.
 message BatchUpdateEventGroupActivitiesResponse {
   // The updated EventGroupActivities.
-  repeated EventGroupActivity event_group_activities = 1;
-}
-
-// Request message for the `AddEventGroupActivities` method.
-message AddEventGroupActivitiesRequest {
-  // Resource name of the parent `DataProvider`.
-  // Format: dataProviders/{data_provider}
-  string parent = 1 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider"
-  ];
-
-  // Resource names of the `EventGroup`s to mark active.
-  //
-  // At least one `EventGroup` is required. Every `EventGroup` must be a child
-  // of `parent`, and the field must not contain duplicate values. The product
-  // of the number of `EventGroup`s and dates must not exceed 1000.
-  repeated string event_groups = 2 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
-  ];
-
-  // Dates on which every `EventGroup` is active. At least one date is required.
-  // Every date must be a fully specified, valid calendar date, and the field
-  // must not contain duplicate values.
-  repeated google.type.Date dates = 3 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Response message for the `AddEventGroupActivities` method.
-message AddEventGroupActivitiesResponse {
-  // The `EventGroupActivity` resources for all requested combinations of
-  // `EventGroup` and date, including resources that already existed. Resources
-  // are ordered by `event_groups` request order and then by `dates` request
-  // order.
   repeated EventGroupActivity event_group_activities = 1;
 }
 
