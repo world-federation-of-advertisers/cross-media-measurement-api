@@ -20,6 +20,7 @@ import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/empty.proto";
+import "google/type/date.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
 import "wfa/measurement/api/v2alpha/event_group_activity.proto";
 
@@ -34,6 +35,12 @@ service EventGroupActivities {
   // of the specified `EventGroupActivity`s fail to be updated.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
       returns (BatchUpdateEventGroupActivitiesResponse) {}
+
+  // Adds `EventGroupActivity` resources for multiple `EventGroup`s. An
+  // activity is added for every combination of `EventGroup` and date.
+  // Existing activities are left unchanged.
+  rpc AddEventGroupActivities(AddEventGroupActivitiesRequest)
+      returns (AddEventGroupActivitiesResponse) {}
 
   // Deletes an existing `EventGroupActivity`. Results in a `PERMISSION_DENIED`
   // error if the authenticated user does not have access to the
@@ -104,6 +111,31 @@ message BatchUpdateEventGroupActivitiesResponse {
   // The updated EventGroupActivities.
   repeated EventGroupActivity event_group_activities = 1;
 }
+
+// Request message for the `AddEventGroupActivities` method.
+message AddEventGroupActivitiesRequest {
+  // Resource name of the parent `DataProvider`.
+  // Format: dataProviders/{data_provider}
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/DataProvider"
+  ];
+
+  // Resource names of the `EventGroup`s to mark active.
+  //
+  // Every `EventGroup` must be a child of `parent`. The product of the number
+  // of `EventGroup`s and dates must not exceed 1000.
+  repeated string event_groups = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
+  ];
+
+  // Dates on which every `EventGroup` is active.
+  repeated google.type.Date dates = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for the `AddEventGroupActivities` method.
+message AddEventGroupActivitiesResponse {}
 
 // Request message for the `BatchDeleteEventGroupActivities` method.
 message BatchDeleteEventGroupActivitiesRequest {
