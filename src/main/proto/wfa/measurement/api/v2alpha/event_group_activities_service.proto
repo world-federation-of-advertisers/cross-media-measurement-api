@@ -38,7 +38,10 @@ service EventGroupActivities {
 
   // Adds `EventGroupActivity` resources for multiple `EventGroup`s. An
   // activity is added for every combination of `EventGroup` and date.
-  // Existing activities are left unchanged.
+  // Existing activities are left unchanged, making this method idempotent.
+  //
+  // The operation is atomic. If any referenced `EventGroup` does not exist,
+  // the request fails with `NOT_FOUND` and no activities are added.
   rpc AddEventGroupActivities(AddEventGroupActivitiesRequest)
       returns (AddEventGroupActivitiesResponse) {}
 
@@ -123,23 +126,26 @@ message AddEventGroupActivitiesRequest {
 
   // Resource names of the `EventGroup`s to mark active.
   //
-  // Every `EventGroup` must be a child of `parent`, and the field must not
-  // contain duplicate values. The product of the number of `EventGroup`s and
-  // dates must not exceed 1000.
+  // At least one `EventGroup` is required. Every `EventGroup` must be a child
+  // of `parent`, and the field must not contain duplicate values. The product
+  // of the number of `EventGroup`s and dates must not exceed 1000.
   repeated string event_groups = 2 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup"
   ];
 
-  // Dates on which every `EventGroup` is active. The field must not contain
-  // duplicate values.
+  // Dates on which every `EventGroup` is active. At least one date is required.
+  // Every date must be a fully specified, valid calendar date, and the field
+  // must not contain duplicate values.
   repeated google.type.Date dates = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for the `AddEventGroupActivities` method.
 message AddEventGroupActivitiesResponse {
   // The `EventGroupActivity` resources for all requested combinations of
-  // `EventGroup` and date.
+  // `EventGroup` and date, including resources that already existed. Resources
+  // are ordered by `event_groups` request order and then by `dates` request
+  // order.
   repeated EventGroupActivity event_group_activities = 1;
 }
 
