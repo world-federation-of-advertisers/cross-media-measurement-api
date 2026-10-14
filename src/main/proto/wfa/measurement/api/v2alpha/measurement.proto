@@ -49,10 +49,13 @@ message Measurement {
 
   // Resource name of the `Certificate` belonging to the parent
   // `MeasurementConsumer`.
+  //
+  // This field will be deprecated in a future release.
   string measurement_consumer_certificate = 2 [
     (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
     (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
   ];
 
   // Serialized `MeasurementSpec` for requisitions, which can be verified using
@@ -119,10 +122,12 @@ message Measurement {
   // Map of `DataProvider` name to parameters for that `DataProvider`.
   //
   // Empty when `measurement_spec` carries a `MultiMeasurementSpec`, where
-  // `multimeasurement` names the `DataProvider`s.
+  // `multimeasurement` names the `DataProvider`s. Required otherwise.
+  //
+  // This field will be deprecated in a future release.
   repeated DataProviderEntry data_providers = 4 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
   ];
 
   // Parameters for a multimeasurement: one base vector per `Vector`, each
@@ -133,7 +138,7 @@ message Measurement {
       // What `VectorSet.base_vectors` references. Assigned by the
       // `MeasurementConsumer`. The indexes cover `0..n-1` exactly once, where
       // `n` is the total number of `Vector`s across `data_provider_vectors`.
-      int32 index = 1 [(google.api.field_behavior) = REQUIRED];
+      optional int32 index = 1 [(google.api.field_behavior) = REQUIRED];
 
       // The `RequisitionSpec` for this vector, in plaintext.
       RequisitionSpec requisition_spec = 2
@@ -175,8 +180,10 @@ message Measurement {
   }
   // Parameters for a multimeasurement. Set if and only if
   // `measurement_spec` carries a `MultiMeasurementSpec`.
-  Multimeasurement multimeasurement = 13
-      [(google.api.field_behavior) = IMMUTABLE];
+  Multimeasurement multimeasurement = 13 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = IMMUTABLE
+  ];
 
   // The `ProtocolConfig` selected for this measurement according to the
   // `measurement_spec`.
@@ -398,7 +405,8 @@ message Measurement {
           //
           // Unset where it is not derivable, and zero where
           // `reach_noise_mechanism` is `NONE`.
-          double reach_variance = 3 [(google.api.field_behavior) = OPTIONAL];
+          optional double reach_variance = 3
+              [(google.api.field_behavior) = OPTIONAL];
 
           // Sum of the counts.
           int64 impressions = 4 [(google.api.field_behavior) = REQUIRED];
@@ -406,7 +414,7 @@ message Measurement {
           // Variance of `impressions`, derived from this cell's own
           // histogram, so it cannot be hoisted. Unset where it is not
           // derivable.
-          double impression_variance = 5
+          optional double impression_variance = 5
               [(google.api.field_behavior) = OPTIONAL];
 
           // Number of VIDs at each frequency, `max_frequency` entries.
@@ -473,9 +481,11 @@ message Measurement {
     //
     // The encryption uses the `measurement_public_key` from `measurement_spec`
     // as the recipient public key.
+    //
+    // This field will be deprecated in a future release.
     EncryptedMessage encrypted_result = 3 [
-      (google.api.field_behavior) = REQUIRED,
-      (google.api.field_behavior) = IMMUTABLE
+      (google.api.field_behavior) = IMMUTABLE,
+      (type.future_disposition) = DEPRECATED
     ];
 
     // The `Result` itself, neither signed nor encrypted.
@@ -486,10 +496,12 @@ message Measurement {
 
     // Resource name of a `Certificate` belonging to the entity that produced
     // the result, which can be `Duchy` or `DataProvider`.
+    //
+    // This field will be deprecated in a future release.
     string certificate = 2 [
       (google.api.resource_reference).type = "halo.wfanet.org/Certificate",
-      (google.api.field_behavior) = REQUIRED,
-      (google.api.field_behavior) = IMMUTABLE
+      (google.api.field_behavior) = IMMUTABLE,
+      (type.future_disposition) = DEPRECATED
     ];
   }
 

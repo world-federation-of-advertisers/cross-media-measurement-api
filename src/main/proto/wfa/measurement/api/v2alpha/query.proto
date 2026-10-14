@@ -76,8 +76,10 @@ message VidFilter {
     // Without the repetition there is no conjunction: one entry holding A and
     // B sums them first, giving the VIDs reached by either, and the region
     // reached by both becomes inexpressible.
-    repeated VectorSet reached_sets = 1
-        [(google.api.field_behavior) = UNORDERED_LIST];
+    repeated VectorSet reached_sets = 1 [
+      (google.api.field_behavior) = OPTIONAL,
+      (google.api.field_behavior) = UNORDERED_LIST
+    ];
 
     // A set the VID must have a zero count in. The negation of the form.
     //
@@ -91,8 +93,10 @@ message VidFilter {
   // Without the repetition a query covers one Venn region, and a union of
   // regions becomes several queries whose results are added, each noised and
   // thresholded on its own.
-  repeated ReachClause reach_clauses = 1
-      [(google.api.field_behavior) = UNORDERED_LIST];
+  repeated ReachClause reach_clauses = 1 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
 
   // The VID falls in a subpopulation matching every entry. The key is the
   // field path, e.g. "person.age_group".
@@ -179,11 +183,13 @@ message Query {
   // its subpopulation and reads the fields from there.
   //
   // Each entry is the path of a population attribute field, e.g.
-  // "person.gender". Empty yields a single result.
-  repeated string grouping_paths = 4
-      [(google.api.field_behavior) = UNORDERED_LIST];
+  // "person.gender". Entries are distinct. Empty yields a single result.
+  repeated string grouping_paths = 4 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_behavior) = UNORDERED_LIST
+  ];
 
   // Counts above this fold into the top bin of the frequency histogram.
-  // Required.
+  // Required, and greater than 0.
   int32 max_frequency = 5 [(google.api.field_behavior) = REQUIRED];
 }
