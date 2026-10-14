@@ -110,9 +110,12 @@ message Requisition {
   // `DataProviderEntry` in `measurement`.
   //
   // A multimeasurement `Requisition` sets `requisition_spec` instead.
+  //
+  // This field will be deprecated in a future release.
   EncryptedMessage encrypted_requisition_spec = 14 [
     (google.api.field_behavior) = OUTPUT_ONLY,
-    (google.api.field_behavior) = IMMUTABLE
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
   ];
 
   // Denormalized `requisition_spec` field from the corresponding
@@ -120,12 +123,9 @@ message Requisition {
   //
   // In plaintext. Set only for a multimeasurement `Requisition`, whose
   // fulfillment carries no nonce.
-  //
-  // This field will be deprecated in a future release.
   RequisitionSpec requisition_spec = 19 [
     (google.api.field_behavior) = OUTPUT_ONLY,
-    (google.api.field_behavior) = IMMUTABLE,
-    (type.future_disposition) = DEPRECATED
+    (google.api.field_behavior) = IMMUTABLE
   ];
 
   // Denormalized `encrypted_requisition_spec.ciphertext` from the corresponding
