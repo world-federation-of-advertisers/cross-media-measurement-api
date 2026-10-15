@@ -28,18 +28,9 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 message PopulationAttributeValue {
   // Value type selector. Required.
   oneof selector {
-    // Value as a string. Only a STRING field type is supported.
-    string string_value = 1;
-
     // Value as the symbol of an enum value, e.g. "VIDEO" rather than "1". Only
     // an ENUM field type is supported.
-    string enum_value = 2;
-
-    // Value as a Boolean. Only a BOOL field type is supported.
-    bool bool_value = 3;
-
-    // Value as a float. Only a FLOAT field type is supported.
-    float float_value = 4;
+    string enum_value = 1;
   }
 }
 
