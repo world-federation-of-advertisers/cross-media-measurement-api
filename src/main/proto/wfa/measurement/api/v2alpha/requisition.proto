@@ -22,7 +22,10 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
+import "wfa/measurement/api/v2alpha/measurement_spec.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
+import "wfa/measurement/api/v2alpha/requisition_spec.proto";
+import "wfa/measurement/type/future_disposition.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -65,7 +68,16 @@ message Requisition {
   ];
 
   // Denormalized `measurement_spec` field from `measurement`.
+  //
+  // This field will be deprecated in a future release.
   SignedMessage measurement_spec = 4 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
+  ];
+
+  // Denormalized `unsigned_measurement_spec` field from `measurement`.
+  MeasurementSpec unsigned_measurement_spec = 20 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
@@ -106,7 +118,22 @@ message Requisition {
 
   // Denormalized `encrypted_requisition_spec` field from the corresponding
   // `DataProviderEntry` in `measurement`.
+  //
+  // A multimeasurement `Requisition` sets `requisition_spec` instead.
+  //
+  // This field will be deprecated in a future release.
   EncryptedMessage encrypted_requisition_spec = 14 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
+  ];
+
+  // Denormalized `requisition_spec` field from the corresponding
+  // `Measurement.Multimeasurement.Vector` in `measurement`.
+  //
+  // In plaintext. Set only for a multimeasurement `Requisition`, whose
+  // fulfillment carries no nonce.
+  RequisitionSpec requisition_spec = 19 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
