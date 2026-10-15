@@ -23,6 +23,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/direct_computation.proto";
+import "wfa/measurement/api/v2alpha/measurement_spec.proto";
 import "wfa/measurement/api/v2alpha/multi_party_computation.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/query.proto";
@@ -63,10 +64,20 @@ message Measurement {
   //
   // The version of the `MeasurementSpec` message type must correspond to the
   // API version that this resource was created in.
+  //
+  // Exactly one of `measurement_spec` and `unsigned_measurement_spec` is set.
+  //
+  // This field will be deprecated in a future release.
   SignedMessage measurement_spec = 3 [
-    (google.api.field_behavior) = REQUIRED,
-    (google.api.field_behavior) = IMMUTABLE
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
   ];
+
+  // Unsigned `MeasurementSpec` for requisitions.
+  //
+  // Set for a multimeasurement in place of `measurement_spec`.
+  MeasurementSpec unsigned_measurement_spec = 14
+      [(google.api.field_behavior) = IMMUTABLE];
 
   // Entry for `data_providers` map.
   message DataProviderEntry {
@@ -121,8 +132,8 @@ message Measurement {
   }
   // Map of `DataProvider` name to parameters for that `DataProvider`.
   //
-  // Empty when `measurement_spec` carries a `MultiMeasurementSpec`, where
-  // `multimeasurement` names the `DataProvider`s. Required otherwise.
+  // Empty when `unsigned_measurement_spec` carries a `MultiMeasurementSpec`,
+  // where `multimeasurement` names the `DataProvider`s. Required otherwise.
   //
   // This field will be deprecated in a future release.
   repeated DataProviderEntry data_providers = 4 [
@@ -179,7 +190,7 @@ message Measurement {
     ];
   }
   // Parameters for a multimeasurement. Set if and only if
-  // `measurement_spec` carries a `MultiMeasurementSpec`.
+  // `unsigned_measurement_spec` carries a `MultiMeasurementSpec`.
   Multimeasurement multimeasurement = 13 [
     (google.api.field_behavior) = OPTIONAL,
     (google.api.field_behavior) = IMMUTABLE

@@ -62,6 +62,7 @@ proto_library(
     deps = [
         ":crypto_proto",
         ":measurement_proto",
+        ":measurement_spec_proto",
         ":protocol_config_proto",
         ":requisition_spec_proto",
         "//src/main/proto/wfa/measurement/type:future_disposition_proto",
@@ -257,6 +258,7 @@ proto_library(
     deps = [
         ":crypto_proto",
         ":direct_computation_proto",
+        ":measurement_spec_proto",
         ":multi_party_computation_proto",
         ":protocol_config_proto",
         ":query_proto",

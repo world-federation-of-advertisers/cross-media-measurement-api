@@ -22,6 +22,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/measurement.proto";
+import "wfa/measurement/api/v2alpha/measurement_spec.proto";
 import "wfa/measurement/api/v2alpha/protocol_config.proto";
 import "wfa/measurement/api/v2alpha/requisition_spec.proto";
 import "wfa/measurement/type/future_disposition.proto";
@@ -67,7 +68,16 @@ message Requisition {
   ];
 
   // Denormalized `measurement_spec` field from `measurement`.
+  //
+  // This field will be deprecated in a future release.
   SignedMessage measurement_spec = 4 [
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (google.api.field_behavior) = IMMUTABLE,
+    (type.future_disposition) = DEPRECATED
+  ];
+
+  // Denormalized `unsigned_measurement_spec` field from `measurement`.
+  MeasurementSpec unsigned_measurement_spec = 20 [
     (google.api.field_behavior) = OUTPUT_ONLY,
     (google.api.field_behavior) = IMMUTABLE
   ];
