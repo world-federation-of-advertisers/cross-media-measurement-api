@@ -39,18 +39,52 @@ service EventGroups {
 
   // Creates (registers) a `EventGroup` defined in the specified
   // `DataProvider`'s system.
+  //
+  // If the `DataProvider` has an `EventGroupHierarchy` containing the
+  // `EventGroup`'s `EntityKey.entity_type`, creation also determines the
+  // `EventGroup`'s position in that hierarchy, which can affect `EventGroup`s
+  // that already exist:
+  //
+  // * The path is derived from `EventGroupMetadata.entity_metadata`, which must
+  //   specify the `id_entity_metadata_key` of every `Level` from the root of
+  //   the hierarchy down to the `EventGroup`'s own. Skipping a `Level` results
+  //   in an `INVALID_ARGUMENT` error.
+  // * An ancestor named by that path which does not yet exist is created. An
+  //   ancestor is an ordinary `EventGroup` resource whose descriptive fields,
+  //   including `media_types` and `data_availability_interval`, are derived
+  //   from its children rather than specified by the `DataProvider`.
+  // * An ancestor named by that path which already exists as an ordinary
+  //   `EventGroup` becomes an ancestor in place. Its resource name does not
+  //   change, so existing references to it remain valid, but its descriptive
+  //   fields are replaced by values derived from its children. The values it
+  //   was created with are not retained.
+  // * Creating or updating an `EventGroup` which is already an ancestor results
+  //   in a `FAILED_PRECONDITION` error. Register its descendants instead.
+  //
+  // Creation is order-independent: an `EventGroup` at any `Level` may be
+  // created before the `EventGroup`s above it, since those are derived from its
+  // own `EventGroupMetadata.entity_metadata`. An `EventGroup` with no
+  // descendants is an ordinary `EventGroup`, whether or not it sits at the
+  // innermost `Level`.
   rpc CreateEventGroup(CreateEventGroupRequest) returns (EventGroup) {
     option (google.api.method_signature) = "parent,event_group";
   }
 
   // Batch creates `EventGroup`s. Results in an error if any of the specified
   // `EventGroup`s fail to be created.
+  //
+  // See `CreateEventGroup` for the effect on existing `EventGroup`s when the
+  // `DataProvider` has an `EventGroupHierarchy`.
   rpc BatchCreateEventGroups(BatchCreateEventGroupsRequest)
       returns (BatchCreateEventGroupsResponse) {}
 
   // Updates an existing `EventGroup`. Results in a `PERMISSION_DENIED` error if
   // the authenticated user does not have access to the `EventGroup`. Results in
-  // a `NOT_FOUND` error if the specified `EventGroup` does not exist.
+  // a `NOT_FOUND` error if the specified `EventGroup` does not exist. Results
+  // in a `FAILED_PRECONDITION` error if the `EventGroup` is an ancestor in an
+  // `EventGroupHierarchy`, as its descriptive fields are derived from its
+  // children. Changing an `id_entity_metadata_key` value moves the `EventGroup`
+  // within its hierarchy; see `CreateEventGroup`.
   // (-- api-linter: core::0134::method-signature=disabled
   //     aip.dev/not-precedent: Partial update not supported. --)
   rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {
@@ -67,6 +101,10 @@ service EventGroups {
   // is irreversible. Results in a `PERMISSION_DENIED` error if the
   // authenticated user does not have access to the `EventGroup`. Results in a
   // `NOT_FOUND` error if the specified `EventGroup` does not exist.
+  //
+  // Deleting the last descendant of an ancestor in an `EventGroupHierarchy`
+  // returns that ancestor to being an ordinary `EventGroup`, retaining the
+  // field values most recently derived from its children.
   rpc DeleteEventGroup(DeleteEventGroupRequest) returns (EventGroup) {
     option (google.api.method_signature) = "name";
   }
@@ -246,6 +284,43 @@ message ListEventGroupsRequest {
     //
     // If unspecified, the server will treat this as if it contains "campaign".
     repeated string entity_type_in = 11;
+
+    // Set of [EventGroup][] resource names which
+    // [EventGroup.parent_event_group][] must be in.
+    //
+    // Only the direct children of those [EventGroup][]s are returned. Use
+    // [entity_path_starts_with][] to return a whole subtree instead of a
+    // single level.
+    //
+    // Like [entity_path_starts_with][], this is one term in the conjunction,
+    // so [entity_type_in][] must be specified for it to be useful.
+    repeated string parent_event_group_in = 12
+        [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+
+    // Prefix which [EventGroup.entity_path][] must start with.
+    //
+    // Matches the [EventGroup][] at that path, if any, and all of its
+    // descendants.
+    //
+    // This is one term in the conjunction, so it intersects with
+    // [entity_type_in][] rather than overriding it. Since [entity_type_in][]
+    // defaults to "campaign", which is reserved for legacy [EventGroup][]s and
+    // is never part of a hierarchy, specifying only a prefix returns nothing.
+    // Specify the [entity_type][EventGroup.EntityKey.entity_type] of a single
+    // level to select that level, or every
+    // [entity_type][EventGroup.EntityKey.entity_type] in the hierarchy to
+    // select a whole subtree.
+    //
+    // Because the sequence of [entity_type][EventGroup.EntityKey.entity_type]
+    // values in a path is a prefix of the ordering declared by an
+    // [EventGroupHierarchy][], and those values are distinct across the
+    // hierarchies of a [DataProvider][], an
+    // [entity_type][EventGroup.EntityKey.entity_type] identifies a level
+    // exactly. There is therefore no separate depth parameter.
+    //
+    // A [DataProvider][] with no declared [EventGroupHierarchy][] has no
+    // paths, so any prefix matches nothing.
+    repeated EventGroup.EntityKey entity_path_starts_with = 13;
   }
   // Filter criteria for this request.
   //
