@@ -56,16 +56,10 @@ message ImpressionQuery {
     string expression = 1;
   }
 
-  reserved 1;
-  reserved "entity_keys";
-
   // [EventGroup][]s to look up (treated as union).
   //
-  // Impressions are computed across all of their entities combined. Each
-  // [EventGroup][]'s `entity_key` identifies its entity in the
-  // [DataProvider][]'s system, and its `event_group_metadata` carries what the
-  // CMMS knows about that entity, such as the account that owns it.
-  repeated EventGroup event_groups = 4 [(google.api.field_behavior) = REQUIRED];
+  // Impressions are computed across all of their entities combined.
+  repeated EventGroup event_groups = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Time interval for the measurement period.
   //
