@@ -70,8 +70,8 @@ message ImpressionQuery {
   repeated EntityKey entity_keys = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Resource names of the [EventGroup][]s for the entities in `entity_keys`.
-  repeated string event_groups = 4 [(google.api.resource_reference).type =
-                                        "halo.wfanet.org/EventGroup"];
+  repeated string event_groups = 4
+      [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
 
   // Time interval for the measurement period.
   //
