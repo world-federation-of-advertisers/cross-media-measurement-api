@@ -28,7 +28,7 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 
 // Request for a `DataProvider`'s impression count.
 //
-// One request per (entity key union, time interval, filter) combination.
+// One request per (entity union, time interval, filter) combination.
 message DataProviderImpressionQueryRequest {
   // Unique identifier for idempotency and correlation.
   string request_id = 1 [
@@ -57,6 +57,16 @@ message ImpressionQuery {
     string entity_id = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
+  // An entity to look up.
+  message Entity {
+    // Key of the entity in the `DataProvider`'s system.
+    EntityKey entity_key = 1 [(google.api.field_behavior) = REQUIRED];
+
+    // Resource name of the [EventGroup][] for this entity, when available.
+    string event_group = 2
+        [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+  }
+
   // Filter to apply to events.
   message EventFilter {
     // Raw CEL expression that is applied to a message which has a field for
@@ -64,14 +74,10 @@ message ImpressionQuery {
     string expression = 1;
   }
 
-  // Entity keys to look up (treated as union).
+  // Entities to look up (treated as union).
   //
-  // Impressions are computed across all entity keys combined.
-  repeated EntityKey entity_keys = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // Resource names of the [EventGroup][]s for the entities in `entity_keys`.
-  repeated string event_groups = 4
-      [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
+  // Impressions are computed across all entities combined.
+  repeated Entity entities = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Time interval for the measurement period.
   //
