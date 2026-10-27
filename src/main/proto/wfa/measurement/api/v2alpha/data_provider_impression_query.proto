@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/field_info.proto";
 import "google/api/resource.proto";
 import "google/type/interval.proto";
+import "wfa/measurement/api/v2alpha/event_group.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
 option java_multiple_files = true;
@@ -48,21 +49,18 @@ message DataProviderImpressionQueryRequest {
 
 // Query parameters for an impression query.
 message ImpressionQuery {
-  // Identifier for an entity in the `DataProvider`'s system.
-  message EntityKey {
-    // Type of entity (e.g. "campaign", "ad_set").
-    string entity_type = 1 [(google.api.field_behavior) = REQUIRED];
-
-    // Identifier of the entity.
-    string entity_id = 2 [(google.api.field_behavior) = REQUIRED];
-  }
-
   // An entity to look up.
   message Entity {
     // Key of the entity in the `DataProvider`'s system.
-    EntityKey entity_key = 1 [(google.api.field_behavior) = REQUIRED];
+    //
+    // Both `entity_type` and `entity_id` are required.
+    EventGroup.EntityKey entity_key = 1
+        [(google.api.field_behavior) = REQUIRED];
 
     // Resource name of the [EventGroup][] for this entity, when available.
+    //
+    // If specified, the `entity_key` of the [EventGroup][] must match
+    // `entity_key`.
     string event_group = 2
         [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
   }
