@@ -242,4 +242,33 @@ message EventGroup {
   // If specified, this must be unique across all [EventGroup][]s for the
   // parent ([DataProvider][], [MeasurementConsumer][]) pair.
   EntityKey entity_key = 16 [(type.future_disposition) = REQUIRED];
+
+  // Path from the root of this [EventGroup][]'s hierarchy to this
+  // [EventGroup][], inclusive.
+  //
+  // The final entry is equal to [entity_key][]. The preceding entry, if any, is
+  // the [EntityKey][] of the parent. The sequence of
+  // [entity_type][EntityKey.entity_type] values is a prefix of the ordering
+  // declared by the [EventGroupHierarchy][] which contains this
+  // [EventGroup][]'s [entity_type][EntityKey.entity_type].
+  //
+  // This is derived from [EventGroupMetadata.entity_metadata][] and is not
+  // writable. It is empty for an [EventGroup][] whose
+  // [entity_type][EntityKey.entity_type] is not part of any
+  // [EventGroupHierarchy][].
+  repeated EntityKey entity_path = 17
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Resource name of the parent of this [EventGroup][] in its hierarchy.
+  //
+  // Unset for an [EventGroup][] at the root of a hierarchy, and for one whose
+  // [entity_type][EntityKey.entity_type] is not part of any
+  // [EventGroupHierarchy][].
+  //
+  // This is derived from [EventGroupMetadata.entity_metadata][] and is not
+  // writable.
+  string parent_event_group = 18 [
+    (google.api.resource_reference).type = "halo.wfanet.org/EventGroup",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
 }
