@@ -279,12 +279,12 @@ message ListEventGroupsRequest {
     // [EventGroup][]. [start_date][DateInterval.start_date] and
     // [end_date][DateInterval.end_date] are required.
     DateInterval activity_contains = 9;
-    // Set of entity types which [EventGroup.EntityKey.type][] of
+    // Set of entity types which [EventGroup.EntityKey.entity_type][] of
     // [EventGroup.entity_key][] must be in.
     //
     // If unspecified, the server will treat this as if it contains "campaign".
-    // This may match both legacy [EventGroup][]s and [EventGroup][]s in a
-    // hierarchy.
+    // This does not distinguish legacy [EventGroup][]s from [EventGroup][]s at
+    // a "campaign" hierarchy level.
     repeated string entity_type_in = 11;
 
     // Set of [EventGroup][] resource names which
