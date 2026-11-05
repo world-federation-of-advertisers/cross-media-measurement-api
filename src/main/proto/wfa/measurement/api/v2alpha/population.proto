@@ -59,9 +59,9 @@ message Population {
 
   // Reference to the [PopulationSpec][]. Required.
   oneof population_spec_ref {
-    // The blob for the population.
+    // Deprecated: New resources must use [population_spec][] instead.
     //
-    // Deprecated. New resources must use [population_spec][] instead.
+    // The blob for the population.
     PopulationBlob population_blob = 4
         [deprecated = true, (google.api.field_behavior) = IMMUTABLE];
 
@@ -75,11 +75,11 @@ message Population {
     ];
   }
 
-  // The EventTemplate that this population conforms to.
-  //
-  // Deprecated. The event templates can be determined from the
+  // Deprecated: The event templates can be determined from the
   // [PopulationSpec][], as each
   // [attributes][PopulationSpec.SubPopulation.attributes] element corresponds
   // to an event template.
+  //
+  // The EventTemplate that this population conforms to.
   EventTemplate event_template = 5 [deprecated = true];
 }

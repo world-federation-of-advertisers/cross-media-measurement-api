@@ -108,11 +108,11 @@ message Requisition {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
-  // Denormalized `data_provider_public_key` field with signature from the
-  // corresponding `DataProviderEntry` in `measurement`.
-  //
   // Deprecated: The `Measurement` may not have signature for this key. Use
   // `data_provider_public_key` instead.
+  //
+  // Denormalized `data_provider_public_key` field with signature from the
+  // corresponding `DataProviderEntry` in `measurement`.
   SignedMessage signed_data_provider_public_key = 7
       [(google.api.field_behavior) = OUTPUT_ONLY, deprecated = true];
 
@@ -138,10 +138,10 @@ message Requisition {
     (google.api.field_behavior) = IMMUTABLE
   ];
 
+  // Deprecated: Use `encrypted_requisition_spec`.
+  //
   // Denormalized `encrypted_requisition_spec.ciphertext` from the corresponding
   // `DataProviderEntry` in `measurement`.
-  //
-  // Deprecated: Use `encrypted_requisition_spec`.
   bytes encrypted_requisition_spec_ciphertext = 8
       [(google.api.field_behavior) = OUTPUT_ONLY, deprecated = true];
 

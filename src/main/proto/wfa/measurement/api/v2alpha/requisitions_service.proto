@@ -95,10 +95,11 @@ message ListRequisitionsRequest {
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     repeated Requisition.State states = 1;
+    // Deprecated: This field is no longer supported.
+    //
     // Matches against the `measurement_state` field.
     //
-    // This field is no longer supported. In some cases, it may be an error to
-    // set it.
+    // In some cases, it may be an error to set it.
     // (-- api-linter: core::0216::state-field-output-only=disabled
     //     aip.dev/not-precedent: This is not a resource state field. --)
     // (-- TODO(@SanjayVas): Remove this field when it is no longer being set.
@@ -162,6 +163,8 @@ message FulfillDirectRequisitionRequest {
   // must match the API version of this request message.
   EncryptedMessage encrypted_result = 4 [(type.future_disposition) = REQUIRED];
 
+  // Deprecated: Use `encrypted_result`.
+  //
   // Encrypted `SignedMessage` containing a `Measurement.Result`.
   //
   // The encryption uses the measurement_public_key from measurement_spec as
@@ -169,8 +172,6 @@ message FulfillDirectRequisitionRequest {
   //
   // The versions of the `SignedMessage` and `Measurement.Result` message types
   // must match the API version of this request message.
-  //
-  // Deprecated: Use `encrypted_result`.
   bytes encrypted_result_ciphertext = 2 [deprecated = true];
 
   // The `nonce` value from the `encrypted_requisition_spec`.

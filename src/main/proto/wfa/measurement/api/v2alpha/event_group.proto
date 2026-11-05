@@ -141,9 +141,9 @@ message EventGroup {
   EncryptedMessage encrypted_metadata = 10
       [(type.future_disposition) = DEPRECATED];
 
-  // Encrypted serialized `Metadata`.
-  //
   // Deprecated: Use `encrypted_metadata` instead.
+  //
+  // Encrypted serialized `Metadata`.
   bytes serialized_encrypted_metadata = 8 [deprecated = true];
 
   // Pre-shared packed `EncryptionPublicKey` Must be set if `encrypted_metadata`
@@ -157,10 +157,10 @@ message EventGroup {
   google.protobuf.Any measurement_consumer_public_key = 12
       [(type.future_disposition) = DEPRECATED];
 
-  // Signed pre-shared packed `EncryptionPublicKey`.
-  //
   // Deprecated: There may not be a signature available. Use
   // `measurement_consumer_public_key` instead.
+  //
+  // Signed pre-shared packed `EncryptionPublicKey`.
   SignedMessage signed_measurement_consumer_public_key = 4 [deprecated = true];
 
   // Possible states of Event Group.
