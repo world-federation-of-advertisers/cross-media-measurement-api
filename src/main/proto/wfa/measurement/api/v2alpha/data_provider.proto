@@ -63,10 +63,10 @@ message DataProvider {
   // Display name of the data provider.
   string display_name = 5;
 
+  // Deprecated: This field only applies to LLv2 protocols.
+  //
   // Resource names of every `Duchy` that must be included in all computations
   // involving this `DataProvider`.
-  //
-  // Deprecated: This field only applies to LLv2 protocols.
   repeated string required_duchies = 6 [
     (google.api.resource_reference).type = "halo.wfanet.org/Duchy",
     (google.api.field_behavior) = UNORDERED_LIST,

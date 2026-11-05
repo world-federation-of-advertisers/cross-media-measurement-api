@@ -30,9 +30,9 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 // (-- api-linter: core::0123::resource-annotation=disabled
 //     aip.dev/not-precedent: This is not a resource message. --)
 message ProtocolConfig {
-  // Resource name.
-  //
   // Deprecated: This is not a resource message type.
+  //
+  // Resource name.
   string name = 1 [deprecated = true];
 
   // Type of measurement.
@@ -98,10 +98,10 @@ message ProtocolConfig {
     // prime256v1 curve.
     int32 elliptic_curve_id = 3 [(google.api.field_behavior) = REQUIRED];
 
-    // The maximum frequency to reveal in the histogram.
-    //
     // Deprecated: Specified in MeasurementSpec instead except for legacy
     // Measurements.
+    //
+    // The maximum frequency to reveal in the histogram.
     int32 maximum_frequency = 4 [deprecated = true];
 
     // The mechanism to generate noise during computation.
@@ -344,11 +344,11 @@ message ProtocolConfig {
 
   // Configuration for the specific protocol. Deprecated.
   oneof protocol {
+    // Deprecated: Use `protocols` instead.
+    //
     // Liquid Legions v2 config.
     //
     // May only be set when `measurement_type` is `REACH_AND_FREQUENCY`.
-    //
-    // Deprecated and replace with protocols.
     LiquidLegionsV2 liquid_legions_v2 = 3 [deprecated = true];
   }
 

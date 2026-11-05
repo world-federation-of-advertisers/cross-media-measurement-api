@@ -35,8 +35,8 @@ jobs:
     - name: Set up api-linter
       uses: world-federation-of-advertisers/actions/setup-api-linter@v2
       with:
-        version: 1.69.2
-        sha256: f2d1b0fb8df62676ebc49cc905c4e1ae4b82590bca156c612ac3456e1686b1cc
+        version: 2.4.1
+        sha256: adf6b94b01bf1d82723feb2790109b69fc74af65f9be334e418dcc9b9d9ddd03
 
     - env:
         BAZEL: bazelisk

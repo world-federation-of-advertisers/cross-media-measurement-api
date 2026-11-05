@@ -66,6 +66,8 @@ message ModelLine {
     // Default 'ModelLine' that must be used to generate reports for
     // `MeasurementConsumer`s.
     PROD = 2;
+    // Deprecated: Holdback configuration is retained for legacy compatibility.
+    //
     // Used to generate reports in case of PROD 'ModelLine' outages. Holdback
     // 'ModelLine' should only includes stable and bug-free 'ModelRelease's.
     HOLDBACK = 3 [deprecated = true];
@@ -77,6 +79,8 @@ message ModelLine {
   // independently of their type.
   Type type = 6 [(google.api.field_behavior) = REQUIRED];
 
+  // Deprecated: Holdback configuration is retained for legacy compatibility.
+  //
   // The holdback [ModelLine][] that must be used to generate reports in case
   // this [ModelLine][] presents outages. May only be set if [type][] is
   // [ModelLine.Type.PROD][]. The [type][] of the referenced [ModelLine][] must
