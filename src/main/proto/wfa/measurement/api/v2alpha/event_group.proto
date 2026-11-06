@@ -235,13 +235,13 @@ message EventGroup {
     // This must be a URL-safe string, such that URL-encoding or -decoding
     // results in the same string.
     //
-    // This must be unique across all [EventGroup][]s for the parent
-    // ([DataProvider][], [MeasurementConsumer][]) pair within its
-    // [entity_type][]. An ID which is only unique within a parent entity --
-    // for example a creative ID reused across campaigns -- is not sufficient,
-    // as [entity_key][EventGroup.entity_key] would then not identify a single
-    // entity. A [DataProvider][] whose own IDs do not meet this must supply
-    // IDs that do.
+    // The combination of [entity_type][] and [entity_id][] must be unique
+    // across all [EventGroup][]s for the parent ([DataProvider][],
+    // [MeasurementConsumer][]) pair. An account and a campaign may both use ID
+    // "123", but two campaigns may not.
+    //
+    // A [DataProvider][] whose IDs are unique only within a parent entity must
+    // supply IDs that are unique within each entity type.
     string entity_id = 2 [(type.future_disposition) = REQUIRED];
   }
   // Entity in the [DataProvider][]'s system that this [EventGroup][]
@@ -268,7 +268,9 @@ message EventGroup {
   // This is derived from [EventGroupMetadata.entity_metadata][] and is not
   // writable. It is empty for an [EventGroup][] whose
   // [entity_type][EntityKey.entity_type] is not part of any
-  // [EventGroupHierarchy][].
+  // [EventGroupHierarchy][]. It is also empty for a legacy "campaign"
+  // [EventGroup][] with neither an [entity_id][EntityKey.entity_id] nor
+  // hierarchy metadata, even if "campaign" is a hierarchy level.
   repeated EntityKey entity_path = 17
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
@@ -276,7 +278,9 @@ message EventGroup {
   //
   // Unset for an [EventGroup][] at the root of a hierarchy, and for one whose
   // [entity_type][EntityKey.entity_type] is not part of any
-  // [EventGroupHierarchy][].
+  // [EventGroupHierarchy][]. Also unset for a legacy "campaign" [EventGroup][]
+  // with neither an [entity_id][EntityKey.entity_id] nor hierarchy metadata,
+  // even if "campaign" is a hierarchy level.
   //
   // This is derived from [EventGroupMetadata.entity_metadata][] and is not
   // writable.
