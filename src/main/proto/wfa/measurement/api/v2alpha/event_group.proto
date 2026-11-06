@@ -234,6 +234,14 @@ message EventGroup {
     //
     // This must be a URL-safe string, such that URL-encoding or -decoding
     // results in the same string.
+    //
+    // This must be unique across all [EventGroup][]s for the parent
+    // ([DataProvider][], [MeasurementConsumer][]) pair within its
+    // [entity_type][]. An ID which is only unique within a parent entity --
+    // for example a creative ID reused across campaigns -- is not sufficient,
+    // as [entity_key][EventGroup.entity_key] would then not identify a single
+    // entity. A [DataProvider][] whose own IDs do not meet this must supply
+    // IDs that do.
     string entity_id = 2 [(type.future_disposition) = REQUIRED];
   }
   // Entity in the [DataProvider][]'s system that this [EventGroup][]

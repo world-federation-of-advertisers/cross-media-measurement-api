@@ -279,10 +279,12 @@ message ListEventGroupsRequest {
     // [EventGroup][]. [start_date][DateInterval.start_date] and
     // [end_date][DateInterval.end_date] are required.
     DateInterval activity_contains = 9;
-    // Set of entity types which [EventGroup.EntityKey.type][] of
+    // Set of entity types which [EventGroup.EntityKey.entity_type][] of
     // [EventGroup.entity_key][] must be in.
     //
     // If unspecified, the server will treat this as if it contains "campaign".
+    // This does not distinguish legacy [EventGroup][]s from [EventGroup][]s at
+    // a "campaign" hierarchy level.
     repeated string entity_type_in = 11;
 
     // Set of [EventGroup][] resource names which
@@ -292,8 +294,9 @@ message ListEventGroupsRequest {
     // [entity_path_starts_with][] to return a whole subtree instead of a
     // single level.
     //
-    // Like [entity_path_starts_with][], this is one term in the conjunction,
-    // so [entity_type_in][] must be specified for it to be useful.
+    // Like [entity_path_starts_with][], this is one term in the conjunction and
+    // intersects with [entity_type_in][]. If [entity_type_in][] is unspecified,
+    // only direct children with entity type "campaign" are returned.
     repeated string parent_event_group_in = 12
         [(google.api.resource_reference).type = "halo.wfanet.org/EventGroup"];
 
@@ -304,8 +307,8 @@ message ListEventGroupsRequest {
     //
     // This is one term in the conjunction, so it intersects with
     // [entity_type_in][] rather than overriding it. Since [entity_type_in][]
-    // defaults to "campaign", which is reserved for legacy [EventGroup][]s and
-    // is never part of a hierarchy, specifying only a prefix returns nothing.
+    // defaults to "campaign", specifying only a prefix returns only
+    // [EventGroup][]s with that entity type in the matching subtree.
     // Specify the [entity_type][EventGroup.EntityKey.entity_type] of a single
     // level to select that level, or every
     // [entity_type][EventGroup.EntityKey.entity_type] in the hierarchy to
