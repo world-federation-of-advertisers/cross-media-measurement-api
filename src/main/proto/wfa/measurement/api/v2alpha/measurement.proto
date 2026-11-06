@@ -448,6 +448,14 @@ message Measurement {
           // distinguishes a suppressed cell from a genuinely empty one. The
           // metrics above are zero.
           bool suppressed = 8 [(google.api.field_behavior) = OPTIONAL];
+
+          // Resource names of the `DataProvider`s whose contribution passed the
+          // suppression test, sorted. Every figure in this cell covers exactly
+          // these.
+          repeated string surviving_data_providers = 9 [
+            (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
+            (google.api.field_behavior) = OPTIONAL
+          ];
         }
         // One per grouping combination the query produced.
         repeated Cell cells = 4 [
