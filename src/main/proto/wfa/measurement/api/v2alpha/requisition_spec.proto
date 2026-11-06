@@ -67,7 +67,9 @@ message RequisitionSpec {
     Value value = 2 [(google.api.field_behavior) = REQUIRED];
   }
 
-  // Deprecated list of `EventGroupEntry`s for a measurement
+  // Deprecated: Use `events.event_groups` instead.
+  //
+  // List of `EventGroupEntry`s for a measurement
   repeated EventGroupEntry event_groups = 1 [deprecated = true];
 
   // `EncryptionPublicKey` for the `Measurement` that this `RequisitionSpec` is
@@ -81,14 +83,14 @@ message RequisitionSpec {
   google.protobuf.Any measurement_public_key = 6
       [(google.api.field_behavior) = IMMUTABLE];
 
+  // Deprecated: Use `measurement_public_key` except when reading legacy
+  // resources.
+  //
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
   // `RequisitionSpec` is associated with.
   //
   // This is serialized so it can be easily compared with the same field in
   // `MeasurementSpec`.
-  //
-  // Deprecated: Use `measurement_public_key` except when reading legacy
-  // resources.
   bytes serialized_measurement_public_key = 2
       [(google.api.field_behavior) = IMMUTABLE, deprecated = true];
 

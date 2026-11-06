@@ -45,6 +45,8 @@ service ModelLines {
     option (google.api.method_signature) = "parent";
   }
 
+  // Deprecated: Holdback configuration is retained for legacy compatibility.
+  //
   // Sets the `holdback_model_line` for a `ModelLine`.
   // (-- api-linter: core::0134::synonyms=disabled
   //     aip.dev/not-precedent: This is not a standard Update method. --)

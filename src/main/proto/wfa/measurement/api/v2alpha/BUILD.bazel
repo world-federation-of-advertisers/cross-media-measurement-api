@@ -714,6 +714,7 @@ proto_library(
     srcs = ["data_provider_impression_query.proto"],
     strip_import_prefix = IMPORT_PREFIX,
     deps = [
+        ":event_group_proto",
         "@com_google_googleapis//google/api:field_behavior_proto",
         "@com_google_googleapis//google/api:field_info_proto",
         "@com_google_googleapis//google/api:resource_proto",
