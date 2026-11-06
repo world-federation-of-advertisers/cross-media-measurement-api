@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -188,6 +189,10 @@ message MeasurementSpec {
         type: "reporting.halo-cmm.org/BasicReport"
       }
     ];
+
+    // Start time of the containing `Report`.
+    google.protobuf.Timestamp report_start_time = 4
+        [(google.api.field_behavior) = IMMUTABLE];
   }
   // Metadata provided by the Reporting System.
   //
