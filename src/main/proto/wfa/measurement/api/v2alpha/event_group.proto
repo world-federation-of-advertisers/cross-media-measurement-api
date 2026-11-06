@@ -249,6 +249,11 @@ message EventGroup {
   //
   // If specified, this must be unique across all [EventGroup][]s for the
   // parent ([DataProvider][], [MeasurementConsumer][]) pair.
+  //
+  // For an [EventGroup][] in a hierarchy, the value in
+  // [EventGroupMetadata.entity_metadata][] at its level's
+  // [id_entity_metadata_key][EventGroupHierarchy.Level.id_entity_metadata_key]
+  // must equal [entity_id][EntityKey.entity_id].
   EntityKey entity_key = 16 [(type.future_disposition) = REQUIRED];
 
   // Path from the root of this [EventGroup][]'s hierarchy to this

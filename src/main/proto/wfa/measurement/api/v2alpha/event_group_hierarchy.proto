@@ -63,6 +63,11 @@ message EventGroupHierarchy {
     // Every [EventGroup][] in this hierarchy must specify this key for its own
     // level and for every level above it. Its value forms one segment of
     // [EventGroup.entity_path][].
+    //
+    // The value must be a string satisfying the requirements of
+    // [EventGroup.EntityKey.entity_id][]. For an [EventGroup][] at this level,
+    // it must equal the [entity_id][EventGroup.EntityKey.entity_id] in its
+    // [entity_key][EventGroup.entity_key].
     string id_entity_metadata_key = 2;
 
     // The keys in [EventGroupMetadata.entity_metadata][] which describe the
