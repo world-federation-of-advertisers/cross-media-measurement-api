@@ -77,14 +77,17 @@ message EventGroupHierarchy {
     // level. Keys which no [Level][] claims as its
     // [id_entity_metadata_key][] or in [entity_metadata_keys][] are not
     // interpreted, and are stored and returned unchanged.
+    // Conflicting shared ancestor values prevent hierarchy activation.
     repeated string entity_metadata_keys = 3;
   }
 
   // The levels of this hierarchy, outermost first.
   //
-  // A level may be added at the innermost end, which leaves every existing
+  // A level may be added at the innermost end, leaving existing members'
   // [EventGroup.entity_path][] unchanged. Levels are never reordered, removed,
   // or added at the outermost end, as any of those would rewrite every path in
   // the hierarchy.
+  // Paths for existing [EventGroup][]s of the new type are backfilled during
+  // activation.
   repeated Level levels = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
