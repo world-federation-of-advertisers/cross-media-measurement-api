@@ -31,6 +31,12 @@ option java_outer_classname = "EventGroupsServiceProto";
 option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
 
 // Service for interacting with `EventGroup` resources.
+//
+// Hierarchy writes atomically update ancestors from all non-deleted children:
+// union `media_types`; span `data_availability_interval` from earliest start to
+// latest end, including gaps. Moves recompute both old and new ancestor chains.
+// Ancestor metadata conflicts return `FAILED_PRECONDITION`; conflicting values
+// within a batch return `INVALID_ARGUMENT`.
 service EventGroups {
   // Returns the `EventGroup` with the specified resource key.
   rpc GetEventGroup(GetEventGroupRequest) returns (EventGroup) {
@@ -85,6 +91,7 @@ service EventGroups {
   // `EventGroupHierarchy`, as its descriptive fields are derived from its
   // children. Changing an `id_entity_metadata_key` value moves the `EventGroup`
   // within its hierarchy; see `CreateEventGroup`.
+  // Ancestors losing their last descendant revert as in `DeleteEventGroup`.
   // (-- api-linter: core::0134::method-signature=disabled
   //     aip.dev/not-precedent: Partial update not supported. --)
   rpc UpdateEventGroup(UpdateEventGroupRequest) returns (EventGroup) {
@@ -93,6 +100,8 @@ service EventGroups {
 
   // Batch updates `EventGroup`s. Results in an error if any of the specified
   // `EventGroup`s fail to be updated.
+  // Metadata is validated after all updates; changing shared ancestor values
+  // requires all affected leaves in one batch (maximum 50).
   rpc BatchUpdateEventGroups(BatchUpdateEventGroupsRequest)
       returns (BatchUpdateEventGroupsResponse) {}
 
@@ -224,7 +233,7 @@ message ListEventGroupsRequest {
   // fewer than this value.
   //
   // If unspecified, at most 10 resources will be returned. The maximum value is
-  // 500; values above this will be coerced to the maximum.
+  // 2000; values above this will be coerced to the maximum.
   int32 page_size = 2;
   // A token from a previous call, specified to retrieve the next page. See
   // https://aip.dev/158.

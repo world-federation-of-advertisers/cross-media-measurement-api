@@ -63,6 +63,11 @@ message EventGroupHierarchy {
     // Every [EventGroup][] in this hierarchy must specify this key for its own
     // level and for every level above it. Its value forms one segment of
     // [EventGroup.entity_path][].
+    //
+    // The value must be a string satisfying the requirements of
+    // [EventGroup.EntityKey.entity_id][]. For an [EventGroup][] at this level,
+    // it must equal the [entity_id][EventGroup.EntityKey.entity_id] in its
+    // [entity_key][EventGroup.entity_key].
     string id_entity_metadata_key = 2;
 
     // The keys in [EventGroupMetadata.entity_metadata][] which describe the
@@ -72,14 +77,17 @@ message EventGroupHierarchy {
     // level. Keys which no [Level][] claims as its
     // [id_entity_metadata_key][] or in [entity_metadata_keys][] are not
     // interpreted, and are stored and returned unchanged.
+    // Conflicting shared ancestor values prevent hierarchy activation.
     repeated string entity_metadata_keys = 3;
   }
 
   // The levels of this hierarchy, outermost first.
   //
-  // A level may be added at the innermost end, which leaves every existing
+  // A level may be added at the innermost end, leaving existing members'
   // [EventGroup.entity_path][] unchanged. Levels are never reordered, removed,
   // or added at the outermost end, as any of those would rewrite every path in
   // the hierarchy.
+  // Paths for existing [EventGroup][]s of the new type are backfilled during
+  // activation.
   repeated Level levels = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 }

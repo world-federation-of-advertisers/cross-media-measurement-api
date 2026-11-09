@@ -45,10 +45,10 @@ message SignedMessage {
   // Required for new requests. If not specified, use the `data` field instead.
   google.protobuf.Any message = 4;
 
-  // Serialized protobuf message to sign.
-  //
   // Deprecated: Use the `message` field except for legacy resources where it is
   // not set.
+  //
+  // Serialized protobuf message to sign.
   bytes data = 1 [deprecated = true];
 
   // Cryptographic digital signature of `message.value` (or of `data` for legacy

@@ -141,9 +141,9 @@ message EventGroup {
   EncryptedMessage encrypted_metadata = 10
       [(type.future_disposition) = DEPRECATED];
 
-  // Encrypted serialized `Metadata`.
-  //
   // Deprecated: Use `encrypted_metadata` instead.
+  //
+  // Encrypted serialized `Metadata`.
   bytes serialized_encrypted_metadata = 8 [deprecated = true];
 
   // Pre-shared packed `EncryptionPublicKey` Must be set if `encrypted_metadata`
@@ -157,10 +157,10 @@ message EventGroup {
   google.protobuf.Any measurement_consumer_public_key = 12
       [(type.future_disposition) = DEPRECATED];
 
-  // Signed pre-shared packed `EncryptionPublicKey`.
-  //
   // Deprecated: There may not be a signature available. Use
   // `measurement_consumer_public_key` instead.
+  //
+  // Signed pre-shared packed `EncryptionPublicKey`.
   SignedMessage signed_measurement_consumer_public_key = 4 [deprecated = true];
 
   // Possible states of Event Group.
@@ -234,6 +234,14 @@ message EventGroup {
     //
     // This must be a URL-safe string, such that URL-encoding or -decoding
     // results in the same string.
+    //
+    // The combination of [entity_type][] and [entity_id][] must be unique
+    // across all [EventGroup][]s for the parent ([DataProvider][],
+    // [MeasurementConsumer][]) pair. An account and a campaign may both use ID
+    // "123", but two campaigns may not.
+    //
+    // A [DataProvider][] whose IDs are unique only within a parent entity must
+    // supply IDs that are unique within each entity type.
     string entity_id = 2 [(type.future_disposition) = REQUIRED];
   }
   // Entity in the [DataProvider][]'s system that this [EventGroup][]
@@ -241,6 +249,11 @@ message EventGroup {
   //
   // If specified, this must be unique across all [EventGroup][]s for the
   // parent ([DataProvider][], [MeasurementConsumer][]) pair.
+  //
+  // For an [EventGroup][] in a hierarchy, the value in
+  // [EventGroupMetadata.entity_metadata][] at its level's
+  // [id_entity_metadata_key][EventGroupHierarchy.Level.id_entity_metadata_key]
+  // must equal [entity_id][EntityKey.entity_id].
   EntityKey entity_key = 16 [(type.future_disposition) = REQUIRED];
 
   // Path from the root of this [EventGroup][]'s hierarchy to this
@@ -255,7 +268,9 @@ message EventGroup {
   // This is derived from [EventGroupMetadata.entity_metadata][] and is not
   // writable. It is empty for an [EventGroup][] whose
   // [entity_type][EntityKey.entity_type] is not part of any
-  // [EventGroupHierarchy][].
+  // [EventGroupHierarchy][]. It is also empty for a legacy "campaign"
+  // [EventGroup][] with neither an [entity_id][EntityKey.entity_id] nor
+  // hierarchy metadata, even if "campaign" is a hierarchy level.
   repeated EntityKey entity_path = 17
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
@@ -263,7 +278,9 @@ message EventGroup {
   //
   // Unset for an [EventGroup][] at the root of a hierarchy, and for one whose
   // [entity_type][EntityKey.entity_type] is not part of any
-  // [EventGroupHierarchy][].
+  // [EventGroupHierarchy][]. Also unset for a legacy "campaign" [EventGroup][]
+  // with neither an [entity_id][EntityKey.entity_id] nor hierarchy metadata,
+  // even if "campaign" is a hierarchy level.
   //
   // This is derived from [EventGroupMetadata.entity_metadata][] and is not
   // writable.

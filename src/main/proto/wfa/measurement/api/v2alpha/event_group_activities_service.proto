@@ -30,8 +30,9 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 
 // Service for interacting with `EventGroupActivity` resources.
 service EventGroupActivities {
-  // Batch creates or updates `EventGroupActivities`. Results in an error if any
-  // of the specified `EventGroupActivity`s fail to be updated.
+  // Batch creates or updates `EventGroupActivity` resources atomically. The
+  // request may span `EventGroup`s under one `DataProvider` when `parent` uses
+  // the wildcard `EventGroup` ID.
   rpc BatchUpdateEventGroupActivities(BatchUpdateEventGroupActivitiesRequest)
       returns (BatchUpdateEventGroupActivitiesResponse) {}
 
@@ -83,9 +84,15 @@ message UpdateEventGroupActivityRequest {
 
 // Request message for BatchUpdateEventGroupActivities method.
 message BatchUpdateEventGroupActivitiesRequest {
-  // The parent EventGroup resource where these EventGroupActivities will be
-  // created or updated.
-  // Format: dataProviders/{data_provider}/eventGroups/{event_group}
+  // Parent `EventGroup` shared by all activities, or a wildcard `EventGroup`
+  // parent that scopes the request to one `DataProvider`.
+  //
+  // Formats:
+  // - dataProviders/{data_provider}/eventGroups/{event_group}
+  // - dataProviders/{data_provider}/eventGroups/-
+  //
+  // When the wildcard is used, every activity name in `requests` must identify
+  // an `EventGroup` under the specified `DataProvider`.
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
@@ -94,6 +101,9 @@ message BatchUpdateEventGroupActivitiesRequest {
   ];
 
   // The requests for updating EventGroupActivities.
+  //
+  // Every activity name must be a child of `parent`, subject to the wildcard
+  // behavior documented above.
   // A maximum of 1000 EventGroupActivities can be updated in a batch.
   repeated UpdateEventGroupActivityRequest requests = 2
       [(google.api.field_behavior) = REQUIRED];

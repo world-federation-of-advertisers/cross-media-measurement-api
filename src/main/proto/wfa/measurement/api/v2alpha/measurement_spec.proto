@@ -39,14 +39,14 @@ message MeasurementSpec {
   // `serialized_measurement_public_key`.
   google.protobuf.Any measurement_public_key = 10;
 
+  // Deprecated: Use `measurement_public_key` except for reading legacy
+  // resources.
+  //
   // Serialized `EncryptionPublicKey` for the `Measurement` that this
   // `MeasurementSpec` is associated with.
   //
   // This is serialized so it can be easily compared with the same field in
   // `RequisitionSpec`.
-  //
-  // Deprecated: Use `measurement_public_key` except for reading legacy
-  // resources.
   bytes serialized_measurement_public_key = 1 [deprecated = true];
 
   // List of `nonce_hash` values from `data_providers` of the corresponding
@@ -122,10 +122,10 @@ message MeasurementSpec {
     // `maximum_watch_duration_per_user_seconds` must be read instead.
     google.protobuf.Duration maximum_watch_duration_per_user = 4;
 
+    // Deprecated: Use `maximum_watch_duration_per_user`.
+    //
     // Maximum watch duration in seconds per user that will be included in this
     // measurement.
-    //
-    // Deprecated: Use maximum_watch_duration_per_user.
     int32 maximum_watch_duration_per_user_seconds = 2 [deprecated = true];
   }
 
