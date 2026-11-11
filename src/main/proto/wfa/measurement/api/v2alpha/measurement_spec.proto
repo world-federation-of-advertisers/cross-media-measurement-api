@@ -190,9 +190,9 @@ message MeasurementSpec {
       }
     ];
 
-    // Closed-open bounding interval of the containing `Report`. For a Report
-    // with multiple time intervals, this starts at the earliest interval start
-    // and ends at the latest interval end.
+    // Closed-open bounding interval of the originating `BasicReport`. For a
+    // `BasicReport` with multiple time intervals, this starts at the earliest
+    // interval start and ends at the latest interval end.
     //
     // When specified, both `start_time` and `end_time` must be set.
     google.type.Interval report_interval = 4 [
