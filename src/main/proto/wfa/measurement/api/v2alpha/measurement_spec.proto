@@ -20,6 +20,7 @@ import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
+import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/differential_privacy.proto";
 
 option java_package = "org.wfanet.measurement.api.v2alpha";
@@ -187,6 +188,16 @@ message MeasurementSpec {
       (google.api.resource_reference) = {
         type: "reporting.halo-cmm.org/BasicReport"
       }
+    ];
+
+    // Closed-open bounding interval of the originating `BasicReport`. For a
+    // `BasicReport` with multiple time intervals, this starts at the earliest
+    // interval start and ends at the latest interval end.
+    //
+    // When specified, both `start_time` and `end_time` must be set.
+    google.type.Interval report_interval = 4 [
+      (google.api.field_behavior) = OPTIONAL,
+      (google.api.field_behavior) = IMMUTABLE
     ];
   }
   // Metadata provided by the Reporting System.
