@@ -5,6 +5,8 @@ External API definitions for the Cross-Media Measurement system.
 The API is defined as a set of [gRPC](https://grpc.io/) services using
 [Protocol Buffers](https://developers.google.com/protocol-buffers/docs/overview).
 
+See [updating ancestor metadata](docs/event-group-hierarchy.md) for hierarchy updates.
+
 ## Design
 
 This API is resource-oriented, loosely following the

@@ -19,6 +19,7 @@ package wfa.measurement.api.v2alpha;
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
@@ -100,10 +101,22 @@ service EventGroups {
 
   // Batch updates `EventGroup`s. Results in an error if any of the specified
   // `EventGroup`s fail to be updated.
-  // Metadata is validated after all updates; changing shared ancestor values
-  // requires all affected leaves in one batch (maximum 50).
+  // Metadata is validated after all updates. Use `SetEventGroupAncestorMetadata`
+  // to change shared ancestor values without listing every affected leaf.
   rpc BatchUpdateEventGroups(BatchUpdateEventGroupsRequest)
       returns (BatchUpdateEventGroupsResponse) {}
+
+  // Sets an ancestor's metadata on itself and all non-deleted descendants.
+  // Returns `FAILED_PRECONDITION` unless it is an ancestor in an active hierarchy,
+  // or `INVALID_ARGUMENT` for keys not owned by its level or any ID key.
+  // Updates are atomic. The 50-item batch limit does not apply; transaction
+  // capacity limits return `RESOURCE_EXHAUSTED` without changing any resources.
+  // (-- api-linter: core::0134::synonyms=disabled
+  //     aip.dev/not-precedent: Updates metadata across a hierarchy subtree. --)
+  rpc SetEventGroupAncestorMetadata(SetEventGroupAncestorMetadataRequest)
+      returns (EventGroup) {
+    option (google.api.method_signature) = "name,entity_metadata";
+  }
 
   // Deletes an existing `EventGroup`. `EventGroup` will transition to a DELETED
   // state and will have all of its mutable optional fields cleared. This action
@@ -210,6 +223,20 @@ message BatchUpdateEventGroupsRequest {
 message BatchUpdateEventGroupsResponse {
   // The `EventGroup` resources.
   repeated EventGroup event_groups = 1;
+}
+
+// Request message for `SetEventGroupAncestorMetadata` method.
+message SetEventGroupAncestorMetadataRequest {
+  // Resource name of the ancestor `EventGroup`.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/EventGroup",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Replacement values for this ancestor level's `entity_metadata_keys`.
+  // Omitted keys are removed; IDs and all other metadata are unchanged.
+  google.protobuf.Struct entity_metadata = 2
+      [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for `DeleteEventGroup` method.
