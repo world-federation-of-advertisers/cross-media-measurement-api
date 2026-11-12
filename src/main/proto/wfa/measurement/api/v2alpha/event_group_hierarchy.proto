@@ -53,15 +53,15 @@ message EventGroupHierarchy {
     // results in the same string. It must be distinct from the
     // [entity_type][] of every other [Level][] of every
     // [EventGroupHierarchy][] of the same [DataProvider][].
-    // The value "campaign" is permitted even though it is also used by legacy
-    // [EventGroup][]s outside hierarchies.
+    // A new level must use a type not used by existing [EventGroup][]s unless
+    // it is the most granular level.
     string entity_type = 1;
 
     // The key in [EventGroupMetadata.entity_metadata][] holding the ID of the
     // entity at this level.
     //
     // Every [EventGroup][] in this hierarchy must specify this key for its own
-    // level and for every level above it. Its value forms one segment of
+    // level and every less granular level. Its value forms one segment of
     // [EventGroup.entity_path][].
     //
     // The value must be a string satisfying the requirements of
@@ -81,13 +81,12 @@ message EventGroupHierarchy {
     repeated string entity_metadata_keys = 3;
   }
 
-  // The levels of this hierarchy, outermost first.
+  // The levels of this hierarchy, least granular first.
   //
-  // A level may be added at the innermost end, leaving existing members'
+  // A level may be added at the most granular end, leaving existing members'
   // [EventGroup.entity_path][] unchanged. Levels are never reordered, removed,
-  // or added at the outermost end, as any of those would rewrite every path in
-  // the hierarchy.
-  // Paths for existing [EventGroup][]s of the new type are backfilled during
-  // activation.
+  // or added at the least granular end, as any of those would rewrite every
+  // path in the hierarchy. Paths for existing [EventGroup][]s of the new type
+  // are backfilled during activation.
   repeated Level levels = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 }

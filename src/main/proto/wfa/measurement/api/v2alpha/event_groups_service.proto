@@ -44,7 +44,7 @@ service EventGroups {
     option (google.api.method_signature) = "name";
   }
 
-  // Creates (registers) a `EventGroup` defined in the specified
+  // Creates an `EventGroup` defined in the specified
   // `DataProvider`'s system.
   //
   // If the `DataProvider` has an `EventGroupHierarchy` containing the
@@ -61,18 +61,14 @@ service EventGroups {
   //   including `media_types` and `data_availability_interval`, are derived
   //   from its children rather than specified by the `DataProvider`.
   // * An ancestor named by that path which already exists as an ordinary
-  //   `EventGroup` becomes an ancestor in place. Its resource name does not
-  //   change, so existing references to it remain valid, but its descriptive
-  //   fields are replaced by values derived from its children. The values it
-  //   was created with are not retained.
+  //   `EventGroup` cannot be reused; creation fails with `FAILED_PRECONDITION`.
   // * Creating or updating an `EventGroup` which is already an ancestor results
-  //   in a `FAILED_PRECONDITION` error. Register its descendants instead.
+  //   in a `FAILED_PRECONDITION` error. Create its descendants instead.
   //
-  // Creation is order-independent: an `EventGroup` at any `Level` may be
-  // created before the `EventGroup`s above it, since those are derived from its
-  // own `EventGroupMetadata.entity_metadata`. An `EventGroup` with no
-  // descendants is an ordinary `EventGroup`, whether or not it sits at the
-  // innermost `Level`.
+  // An `EventGroup` can be created at any `Level`; missing ancestors at less
+  // granular levels are derived from its `EventGroupMetadata.entity_metadata`.
+  // An `EventGroup` without descendants is ordinary, even when its level is not
+  // the most granular.
   rpc CreateEventGroup(CreateEventGroupRequest) returns (EventGroup) {
     option (google.api.method_signature) = "parent,event_group";
   }
@@ -101,16 +97,18 @@ service EventGroups {
 
   // Batch updates `EventGroup`s. Results in an error if any of the specified
   // `EventGroup`s fail to be updated.
-  // Metadata is validated after all updates. Use `SetEventGroupAncestorMetadata`
-  // to change shared ancestor values without listing every affected leaf.
+  // Metadata is validated after all updates. Use
+  // `SetEventGroupAncestorMetadata` to change shared ancestor values without
+  // listing every affected leaf.
   rpc BatchUpdateEventGroups(BatchUpdateEventGroupsRequest)
       returns (BatchUpdateEventGroupsResponse) {}
 
   // Sets an ancestor's metadata on itself and all non-deleted descendants.
-  // Returns `FAILED_PRECONDITION` unless it is an ancestor in an active hierarchy,
-  // or `INVALID_ARGUMENT` for keys not owned by its level or any ID key.
-  // Updates are atomic. The 50-item batch limit does not apply; transaction
-  // capacity limits return `RESOURCE_EXHAUSTED` without changing any resources.
+  // Returns `FAILED_PRECONDITION` unless it is an ancestor in an active
+  // hierarchy, or `INVALID_ARGUMENT` for keys not owned by its level or any ID
+  // key. Updates are atomic. The 50-item batch limit does not apply;
+  // transaction capacity limits return `RESOURCE_EXHAUSTED` without changing
+  // any resources.
   // (-- api-linter: core::0134::synonyms=disabled
   //     aip.dev/not-precedent: Updates metadata across a hierarchy subtree. --)
   rpc SetEventGroupAncestorMetadata(SetEventGroupAncestorMetadataRequest)
@@ -319,8 +317,6 @@ message ListEventGroupsRequest {
     // [EventGroup.entity_key][] must be in.
     //
     // If unspecified, the server will treat this as if it contains "campaign".
-    // This does not distinguish legacy [EventGroup][]s from [EventGroup][]s at
-    // a "campaign" hierarchy level.
     repeated string entity_type_in = 11;
 
     // Set of [EventGroup][] resource names which

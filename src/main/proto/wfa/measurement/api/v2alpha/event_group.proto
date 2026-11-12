@@ -229,6 +229,9 @@ message EventGroup {
 
     // ID of the entity in the [DataProvider][]'s system.
     //
+    // May be absent only when [entity_type][] is "campaign". An [EventGroup][]
+    // without this ID is a legacy EventGroup.
+    //
     // This should be an ID that is available to [MeasurementConsumer][]'s
     // through the [DataProvider][]'s system.
     //
@@ -268,9 +271,8 @@ message EventGroup {
   // This is derived from [EventGroupMetadata.entity_metadata][] and is not
   // writable. It is empty for an [EventGroup][] whose
   // [entity_type][EntityKey.entity_type] is not part of any
-  // [EventGroupHierarchy][]. It is also empty for a legacy "campaign"
-  // [EventGroup][] with neither an [entity_id][EntityKey.entity_id] nor
-  // hierarchy metadata, even if "campaign" is a hierarchy level.
+  // [EventGroupHierarchy][]. Also empty for a legacy [EventGroup][] without
+  // an [entity_id][EntityKey.entity_id].
   repeated EntityKey entity_path = 17
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
@@ -278,9 +280,8 @@ message EventGroup {
   //
   // Unset for an [EventGroup][] at the root of a hierarchy, and for one whose
   // [entity_type][EntityKey.entity_type] is not part of any
-  // [EventGroupHierarchy][]. Also unset for a legacy "campaign" [EventGroup][]
-  // with neither an [entity_id][EntityKey.entity_id] nor hierarchy metadata,
-  // even if "campaign" is a hierarchy level.
+  // [EventGroupHierarchy][]. Also unset for a legacy [EventGroup][] without
+  // an [entity_id][EntityKey.entity_id].
   //
   // This is derived from [EventGroupMetadata.entity_metadata][] and is not
   // writable.
@@ -288,4 +289,7 @@ message EventGroup {
     (google.api.resource_reference).type = "halo.wfanet.org/EventGroup",
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
+
+  // Whether this [EventGroup][] has any non-deleted children.
+  bool has_children = 19 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
