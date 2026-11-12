@@ -60,8 +60,9 @@ service EventGroups {
   //   ancestor is an ordinary `EventGroup` resource whose descriptive fields,
   //   including `media_types` and `data_availability_interval`, are derived
   //   from its children rather than specified by the `DataProvider`.
-  // * An ancestor named by that path which already exists as an ordinary
-  //   `EventGroup` cannot be reused; creation fails with `FAILED_PRECONDITION`.
+  // * In the initial implementation, an ancestor named by that path which
+  //   already exists as an ordinary `EventGroup` cannot be reused; creation
+  //   fails with `FAILED_PRECONDITION`.
   // * Creating or updating an `EventGroup` which is already an ancestor results
   //   in a `FAILED_PRECONDITION` error. Create its descendants instead.
   //
@@ -121,6 +122,8 @@ service EventGroups {
   // is irreversible. Results in a `PERMISSION_DENIED` error if the
   // authenticated user does not have access to the `EventGroup`. Results in a
   // `NOT_FOUND` error if the specified `EventGroup` does not exist.
+  // Returns `FAILED_PRECONDITION` if `has_children` is true; delete or move
+  // the descendants first.
   //
   // Deleting the last descendant of an ancestor in an `EventGroupHierarchy`
   // returns that ancestor to being an ordinary `EventGroup`, retaining the
