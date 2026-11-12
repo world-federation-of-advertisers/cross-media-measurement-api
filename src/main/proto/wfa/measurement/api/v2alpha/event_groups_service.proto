@@ -18,7 +18,9 @@ package wfa.measurement.api.v2alpha;
 
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
+import "google/api/field_info.proto";
 import "google/api/resource.proto";
+import "google/longrunning/operations.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "google/type/interval.proto";
@@ -107,14 +109,20 @@ service EventGroups {
   // Sets an ancestor's metadata on itself and all non-deleted descendants.
   // Returns `FAILED_PRECONDITION` unless it is an ancestor in an active
   // hierarchy, or `INVALID_ARGUMENT` for keys not owned by its level or any ID
-  // key. Updates are atomic. The 50-item batch limit does not apply;
-  // transaction capacity limits return `RESOURCE_EXHAUSTED` without changing
-  // any resources.
+  // key. Work is staged across transactions; metadata and search results switch
+  // to the new values together on success. Failed or cancelled operations leave
+  // existing values unchanged. Writes affecting the subtree return `ABORTED`
+  // while it runs. Neither the 50-item batch limit nor a single transaction's
+  // capacity bounds the subtree size.
   // (-- api-linter: core::0134::synonyms=disabled
   //     aip.dev/not-precedent: Updates metadata across a hierarchy subtree. --)
   rpc SetEventGroupAncestorMetadata(SetEventGroupAncestorMetadataRequest)
-      returns (EventGroup) {
+      returns (google.longrunning.Operation) {
     option (google.api.method_signature) = "name,entity_metadata";
+    option (google.longrunning.operation_info) = {
+      response_type: "EventGroup"
+      metadata_type: "SetEventGroupAncestorMetadataOperationMetadata"
+    };
   }
 
   // Deletes an existing `EventGroup`. `EventGroup` will transition to a DELETED
@@ -238,7 +246,18 @@ message SetEventGroupAncestorMetadataRequest {
   // Omitted keys are removed; IDs and all other metadata are unchanged.
   google.protobuf.Struct entity_metadata = 2
       [(google.api.field_behavior) = REQUIRED];
+
+  // Optional UUID4 for retry deduplication within the DataProvider. Identical
+  // requests with the same ID return the same operation for at least 24 hours
+  // after completion. Reuse with different parameters is `INVALID_ARGUMENT`.
+  string request_id = 3 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.field_info).format = UUID4
+  ];
 }
+
+// Metadata for `SetEventGroupAncestorMetadata` operations.
+message SetEventGroupAncestorMetadataOperationMetadata {}
 
 // Request message for `DeleteEventGroup` method.
 message DeleteEventGroupRequest {
