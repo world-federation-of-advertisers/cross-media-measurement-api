@@ -1,0 +1,94 @@
+// Copyright 2026 The Cross-Media Measurement Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package wfa.measurement.api.v2alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+
+option java_package = "org.wfanet.measurement.api.v2alpha";
+option java_multiple_files = true;
+option java_outer_classname = "EventGroupHierarchyProto";
+option go_package = "github.com/world-federation-of-advertisers/cross-media-measurement/cmms/apiv2alpha/cmmspb";
+
+// An ordered nesting of entity types for a [DataProvider][]'s [EventGroup][]s.
+//
+// Read-only. The contents are supplied by operator configuration, not written
+// through this API.
+//
+// A [DataProvider][] may have more than one [EventGroupHierarchy][]. Every
+// [entity_type][EventGroup.EntityKey.entity_type] belongs to exactly one of
+// them, so the hierarchy containing an [EventGroup][] is determined by its
+// [EventGroup.entity_key][].
+message EventGroupHierarchy {
+  option (google.api.resource) = {
+    type: "halo.wfanet.org/EventGroupHierarchy"
+    pattern: "dataProviders/{data_provider}/eventGroupHierarchies/{event_group_hierarchy}"
+    singular: "eventGroupHierarchy"
+    plural: "eventGroupHierarchies"
+  };
+
+  // Resource name.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // A single level of an [EventGroupHierarchy][].
+  message Level {
+    // The [EventGroup.EntityKey.entity_type][] of [EventGroup][]s at this
+    // level.
+    //
+    // This must be a URL-safe string, such that URL-encoding or -decoding
+    // results in the same string. It must be distinct from the
+    // [entity_type][] of every other [Level][] of every
+    // [EventGroupHierarchy][] of the same [DataProvider][].
+    // In the initial implementation, a new level must use a type not used by
+    // existing [EventGroup][]s unless it is the most granular level.
+    // TODO(world-federation-of-advertisers/cross-media-measurement#4545): Allow
+    // existing EventGroups to become ancestors when their first child is
+    // created, preserving their resource names.
+    string entity_type = 1;
+
+    // The key in [EventGroupMetadata.entity_metadata][] holding the ID of the
+    // entity at this level.
+    //
+    // Every [EventGroup][] in this hierarchy must specify this key for its own
+    // level and every less granular level. Its value forms one segment of
+    // [EventGroup.entity_path][].
+    //
+    // The value must be a string satisfying the requirements of
+    // [EventGroup.EntityKey.entity_id][]. For an [EventGroup][] at this level,
+    // it must equal the [entity_id][EventGroup.EntityKey.entity_id] in its
+    // [entity_key][EventGroup.entity_key].
+    string id_entity_metadata_key = 2;
+
+    // Exact keys in [EventGroupMetadata.entity_metadata][] whose values are
+    // copied from descendants onto the [EventGroup][] at this level.
+    //
+    // Key prefixes have no special meaning. Keys which no [Level][] claims as
+    // its [id_entity_metadata_key][] or in [entity_metadata_keys][] are stored
+    // and returned unchanged where supplied, but are not copied upward.
+    // Conflicting shared ancestor values prevent hierarchy activation.
+    repeated string entity_metadata_keys = 3;
+  }
+
+  // The levels of this hierarchy, least granular first.
+  //
+  // A level may be added at the most granular end, leaving existing members'
+  // [EventGroup.entity_path][] unchanged. Levels are never reordered, removed,
+  // or added at the least granular end, as any of those would rewrite every
+  // path in the hierarchy. Paths for existing [EventGroup][]s of the new type
+  // are backfilled during activation.
+  repeated Level levels = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
