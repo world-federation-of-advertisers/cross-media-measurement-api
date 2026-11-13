@@ -73,13 +73,12 @@ message EventGroupHierarchy {
     // [entity_key][EventGroup.entity_key].
     string id_entity_metadata_key = 2;
 
-    // The keys in [EventGroupMetadata.entity_metadata][] which describe the
-    // entity at this level.
+    // Exact keys in [EventGroupMetadata.entity_metadata][] whose values are
+    // copied from descendants onto the [EventGroup][] at this level.
     //
-    // These are copied onto the [EventGroup][] representing an entity at this
-    // level. Keys which no [Level][] claims as its
-    // [id_entity_metadata_key][] or in [entity_metadata_keys][] are not
-    // interpreted, and are stored and returned unchanged.
+    // Key prefixes have no special meaning. Keys which no [Level][] claims as
+    // its [id_entity_metadata_key][] or in [entity_metadata_keys][] are stored
+    // and returned unchanged where supplied, but are not copied upward.
     // Conflicting shared ancestor values prevent hierarchy activation.
     repeated string entity_metadata_keys = 3;
   }

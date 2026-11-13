@@ -106,7 +106,8 @@ service EventGroups {
   rpc BatchUpdateEventGroups(BatchUpdateEventGroupsRequest)
       returns (BatchUpdateEventGroupsResponse) {}
 
-  // Sets an ancestor's metadata on itself and all non-deleted descendants.
+  // Sets metadata declared by an ancestor's level on that ancestor and all
+  // non-deleted descendants. Metadata cannot be stored only on an ancestor.
   // Returns `FAILED_PRECONDITION` unless it is an ancestor in an active
   // hierarchy, or `INVALID_ARGUMENT` for keys not owned by its level or any ID
   // key. Work is staged across transactions; metadata and search results switch
