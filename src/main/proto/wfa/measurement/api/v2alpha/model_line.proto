@@ -29,7 +29,8 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 message ModelLine {
   option (google.api.resource) = {
     type: "halo.wfanet.org/ModelLine"
-    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/modelLines/{model_line}"
+    pattern: "modelProviders/{model_provider}/modelSuites/{model_suite}/"
+             "modelLines/{model_line}"
     singular: "modelLine"
     plural: "modelLines"
   };
@@ -101,4 +102,12 @@ message ModelLine {
   // When the 'ModelLine' was last updated.
   google.protobuf.Timestamp update_time = 9
       [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Event-template version defining this model line's population-field
+  // contract.
+  //
+  // Required for new model lines. Existing lines may omit this during migration
+  // and use an explicitly configured version. Once set, it cannot be changed.
+  optional int32 event_template_version = 10
+      [(google.api.field_behavior) = IMMUTABLE];
 }
