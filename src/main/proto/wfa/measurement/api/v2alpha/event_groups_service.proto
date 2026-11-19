@@ -78,22 +78,19 @@ service EventGroups {
     option (google.api.method_signature) = "parent";
   }
 
-  // Synchronizes the latest `EventGroup` state across all `DataProvider`s and
-  // associated `MeasurementConsumer`s. Requires deployment-wide operator
-  // authorization; `DataProvider` or `MeasurementConsumer` credentials alone
-  // do not grant access. Authorization is checked on every call.
+  // Synchronizes all `EventGroup`s. Requires operator authorization on every
+  // call; ordinary `DataProvider` or `MeasurementConsumer` credentials do not
+  // grant access.
   //
-  // Each cycle reads all pages from one fixed snapshot. An initial cycle
-  // returns the complete inventory; subsequent cycles return the latest state
-  // of resources changed since the preceding completed cycle, including
-  // resources in the DELETED state. All entity types are included. Resources
-  // use the BASIC view and canonical names.
+  // The server chooses a read time. For every page, it asks the database for
+  // the rows as they were at that time. The database keeps earlier row
+  // versions. The page token keeps the read time and position. Later writes
+  // appear in the next sync.
   //
-  // A valid expired page token results in FAILED_PRECONDITION with ErrorInfo
-  // reason SYNC_PAGE_TOKEN_EXPIRED. Resume from the last completed sync token.
-  // An expired sync token results in FAILED_PRECONDITION with ErrorInfo reason
-  // SYNC_TOKEN_EXPIRED and requires full inventory reconciliation. Malformed
-  // or mismatched tokens result in INVALID_ARGUMENT.
+  // The first sync returns all groups. Later syncs return the latest state of
+  // changed groups, including deletions. Save the new sync token only after
+  // all page writes succeed. Invalid or mismatched tokens return
+  // INVALID_ARGUMENT.
   rpc SyncEventGroups(SyncEventGroupsRequest)
       returns (SyncEventGroupsResponse) {
     option (google.api.method_signature) = "parent";
@@ -314,10 +311,8 @@ message ListEventGroupsResponse {
 
 // Request message for `SyncEventGroups` method.
 message SyncEventGroupsRequest {
-  // Resource name of the parent collection.
-  //
-  // Must be `dataProviders/-`, representing all `DataProvider`s and all
-  // associated `MeasurementConsumer`s in the deployment.
+  // Parent collection. Must be `dataProviders/-` for all `DataProvider`s and
+  // associated `MeasurementConsumer`s.
   string parent = 1 [
     (google.api.resource_reference).type = "halo.wfanet.org/DataProvider",
     (google.api.field_behavior) = REQUIRED
@@ -330,49 +325,37 @@ message SyncEventGroupsRequest {
   // in INVALID_ARGUMENT.
   int32 page_size = 2;
 
-  // Opaque token from `next_page_token` in the preceding response, used to
-  // continue the same cycle at the same snapshot and result position.
-  //
-  // All request arguments except `page_size` and `page_token` must remain
-  // unchanged while following pages, including an omitted `sync_token` during
-  // an initial cycle. Tokens do not grant authorization.
+  // Token from `next_page_token`, keeping the read time and next position.
+  // Keep `parent` and `sync_token` unchanged; `page_size` may change.
+  // An expired token returns FAILED_PRECONDITION with ErrorInfo reason
+  // SYNC_PAGE_TOKEN_EXPIRED. Restart from the last completed sync token.
   string page_token = 3;
 
-  // Opaque token from `next_sync_token` in a completed cycle's response.
-  //
-  // Omit for the initial inventory. Otherwise, begins a cycle returning the
-  // latest state of resources changed since that checkpoint. Keep this value
-  // unchanged while following `page_token` for the cycle.
+  // Token from the last completed sync. Omit for the first full inventory.
+  // Keep it unchanged while following pages. An expired token returns
+  // FAILED_PRECONDITION with ErrorInfo reason SYNC_TOKEN_EXPIRED. Restart with
+  // a full inventory and reconcile the destination.
   string sync_token = 4;
 }
 
 // Response message for `SyncEventGroups` method.
 message SyncEventGroupsResponse {
-  // Latest resource states at `read_time`, including DELETED resources.
-  //
-  // Each resource has its canonical `name`. Intermediate revisions are
-  // coalesced. Results have a stable order within the cycle; clients must use
-  // the opaque page token to continue that ordering.
+  // Latest group states at `read_time`, including DELETED groups and all entity
+  // types. Uses canonical names and BASIC view. Multiple changes to a group
+  // produce one result.
   repeated EventGroup event_groups = 1;
 
-  // Opaque token for the next page of this cycle. Empty when the cycle is
-  // complete. An empty `event_groups` does not indicate completion.
+  // Token for another page at the same read time; empty when the sync is done.
+  // An empty `event_groups` list may still have another page.
   string next_page_token = 2;
 
-  // Opaque checkpoint for beginning the next cycle. Set only when
-  // `next_page_token` is empty, including when there are no changed resources.
-  //
-  // Clients must durably apply all pages before advancing their stored sync
-  // token. The checkpoint covers all resource changes through `read_time`;
-  // changes committed later are eligible for the next cycle.
+  // Token for the next sync, covering all changes through `read_time`. Set only
+  // on the last page, even if no groups changed. Save only after all page
+  // writes succeed; writes after `read_time` appear in the next sync.
   string next_sync_token = 3;
 
-  // Server-selected snapshot time, fixed across every page of this cycle.
-  //
-  // Always set, including on empty pages. Clients can retain this value per
-  // destination key to reject writes from older snapshots, including deletions.
-  //
-  // The snapshot governs the database read itself. An upper-bound filter on
-  // resource update times alone does not provide this guarantee.
+  // Database read time, shared by every page of this sync. Always set.
+  // New syncs choose a time at or after the previous checkpoint. Clients can
+  // keep it per group, including deletions, to ignore older results.
   google.protobuf.Timestamp read_time = 4;
 }
