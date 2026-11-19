@@ -66,6 +66,15 @@ service ModelLines {
   //     aip.dev/not-precedent: This is not a standard Update method. --)
   rpc SetModelLineType(SetModelLineTypeRequest) returns (ModelLine);
 
+  // Initializes an existing model line's event-template version.
+  // Repeating the same value is idempotent; changing a set value fails with
+  // FAILED_PRECONDITION.
+  // (-- api-linter: core::0134::synonyms=disabled
+  //     aip.dev/not-precedent: This initializes immutable migration metadata.
+  //     --)
+  rpc SetModelLineEventTemplateVersion(SetModelLineEventTemplateVersionRequest)
+      returns (ModelLine);
+
   // Enumerates the [ModelLine][]s which are available across all specified
   // [DataProvider][]s for the specified time interval.
   //
@@ -229,4 +238,16 @@ message EnumerateValidModelLinesRequest {
 message EnumerateValidModelLinesResponse {
   // The `ModelLine`s that met all the criteria.
   repeated ModelLine model_lines = 1 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for `SetModelLineEventTemplateVersion`.
+message SetModelLineEventTemplateVersionRequest {
+  // Resource name of the model line.
+  string name = 1 [
+    (google.api.resource_reference).type = "halo.wfanet.org/ModelLine",
+    (google.api.field_behavior) = REQUIRED
+  ];
+
+  // Positive event-template version to initialize.
+  int32 event_template_version = 2 [(google.api.field_behavior) = REQUIRED];
 }
