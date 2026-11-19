@@ -18,3 +18,8 @@ differences from the AIPs:
 ### Resource Relationships
 
 ![resource diagram](docs/diagrams/api_resources.png)
+
+### Operator Synchronization
+
+[Event group synchronization](docs/event_group_sync.md) describes the
+operator-only inventory and incremental synchronization contract.
