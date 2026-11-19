@@ -103,8 +103,11 @@ message ModelLine {
   google.protobuf.Timestamp update_time = 9
       [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // Event-template version defining this model line's population-field
-  // contract.
+  // Version defining this model line's population-field contract.
+  //
+  // Interpreted relative to the CMMS instance's configured event-message
+  // schema, which is shared across model lines. This field does not select
+  // the event-message type.
   //
   // Required for new model lines. Existing lines may omit this during migration
   // and use an explicitly configured version. Once set, it cannot be changed.
