@@ -15,8 +15,8 @@ access.
 
 Set `parent` to `dataProviders/-`. The method includes all entity types and
 resources in the `DELETED` state. Each returned resource uses its canonical
-name, the `BASIC` view, and a server-assigned `update_time`. Activity summaries
-and independently managed event group activity resources are outside this sync.
+name and the `BASIC` view. Activity summaries and independently managed event
+group activity resources are outside this sync.
 
 An initial cycle returns the complete inventory. A later cycle returns the
 latest state of each resource changed since the preceding checkpoint. Multiple
@@ -31,12 +31,13 @@ while the caller is retrieving pages. The response exposes this time as
 `read_time`; the opaque page token preserves it between requests.
 
 For a previous checkpoint W and a new snapshot T, the incremental cycle reads
-the snapshot at T and returns resources with `W < update_time <= T`. Results
-are ordered by update time and a stable unique resource key. A page token
-continues strictly after the last returned tuple, so resources sharing an
-update timestamp are included across page boundaries. The checkpoint is derived
-from the database snapshot and its committed state, rather than the client's
-clock or the largest update time returned on a page.
+the snapshot at T and returns the latest state of resources changed after W
+through T. The server uses internal modification timestamps to select changed
+resources and a stable unique resource key to distinguish equal timestamps when
+paging. A page token continues strictly after the last returned position. These
+internal timestamps are not exposed on the public `EventGroup`. The checkpoint
+is derived from the database snapshot and its committed state, rather than the
+client's clock or the largest update time returned on a page.
 
 For example, a cycle reading at 10:05 returns a resource as it existed at 10:05,
 even if a later page is requested after a deletion at 10:06. Once that cycle has
@@ -70,11 +71,17 @@ checkpoint together. If writes require multiple batches, advance the checkpoint
 only after every batch succeeds. Run one writer per destination checkpoint, or
 coordinate writers so that concurrent runs cannot advance it inconsistently.
 
-Retain the source `update_time` for each destination key, including deletions,
-and apply records idempotently. Equal revisions may be replayed; older revisions
-must not replace newer destination state. A crash after some writes and before
-checkpointing is recovered by retrying the page. Comparing source update times
-also makes restarting an interrupted cycle safe.
+Apply records idempotently. A repeated page from the same snapshot contains the
+same resource states. A crash after some writes and before checkpointing is
+recovered by retrying the page.
+
+To guard against late responses from an older cycle, retain the response's
+`read_time` for each destination key and reject writes from older snapshots.
+Records from a newer snapshot can replace older destination state; equal
+snapshot times may be replayed. Retain this marker for deleted keys, even if the
+destination removes their resource rows. The snapshot time is sufficient for
+this comparison because every returned resource reflects its state at that
+snapshot. The client does not need the resource's internal update timestamp.
 
 Destination configuration and field mappings belong to the operator's sync
 process. This API supplies records and tokens; storage destination settings are

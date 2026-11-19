@@ -19,7 +19,6 @@ package wfa.measurement.api.v2alpha;
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/any.proto";
-import "google/protobuf/timestamp.proto";
 import "google/type/interval.proto";
 import "wfa/measurement/api/v2alpha/crypto.proto";
 import "wfa/measurement/api/v2alpha/date_interval.proto";
@@ -176,15 +175,6 @@ message EventGroup {
   }
   // Event Group state.
   State state = 9 [(google.api.field_behavior) = OUTPUT_ONLY];
-
-  // Server-assigned time of the most recent change to this `EventGroup`.
-  //
-  // Set on creation and advanced on update and deletion. Clients can compare
-  // this value when applying synchronization results to avoid replacing a
-  // newer revision with an older one. Changes to independently managed
-  // `EventGroupActivity` resources do not advance this value.
-  google.protobuf.Timestamp update_time = 17
-      [(google.api.field_behavior) = OUTPUT_ONLY];
 
   // Interval for which this [EventGroup][] has events.
   //

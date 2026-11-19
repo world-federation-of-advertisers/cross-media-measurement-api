@@ -350,10 +350,9 @@ message SyncEventGroupsRequest {
 message SyncEventGroupsResponse {
   // Latest resource states at `read_time`, including DELETED resources.
   //
-  // Each resource has its canonical `name` and server-assigned `update_time`.
-  // Intermediate revisions are coalesced. Results are ordered by increasing
-  // `update_time`, with a stable unique resource key breaking ties. Clients
-  // must use the opaque page token to continue that ordering.
+  // Each resource has its canonical `name`. Intermediate revisions are
+  // coalesced. Results have a stable order within the cycle; clients must use
+  // the opaque page token to continue that ordering.
   repeated EventGroup event_groups = 1;
 
   // Opaque token for the next page of this cycle. Empty when the cycle is
@@ -369,6 +368,9 @@ message SyncEventGroupsResponse {
   string next_sync_token = 3;
 
   // Server-selected snapshot time, fixed across every page of this cycle.
+  //
+  // Always set, including on empty pages. Clients can retain this value per
+  // destination key to reject writes from older snapshots, including deletions.
   //
   // The snapshot governs the database read itself. An upper-bound filter on
   // resource update times alone does not provide this guarantee.
