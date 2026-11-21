@@ -46,7 +46,7 @@ service EventGroups {
     option (google.api.method_signature) = "name";
   }
 
-  // Creates an `EventGroup` defined in the specified
+  // Creates an ordinary (non-derived) `EventGroup` defined in the specified
   // `DataProvider`'s system.
   //
   // If the `DataProvider` has an `EventGroupHierarchy` containing the
@@ -59,12 +59,9 @@ service EventGroups {
   //   the hierarchy down to the `EventGroup`'s own. Skipping a `Level` results
   //   in an `INVALID_ARGUMENT` error.
   // * An ancestor named by that path which does not yet exist is created. An
-  //   ancestor is an ordinary `EventGroup` resource whose descriptive fields,
+  //   ancestor is a derived `EventGroup` resource whose descriptive fields,
   //   including `media_types` and `data_availability_interval`, are derived
   //   from its children rather than specified by the `DataProvider`.
-  // * In the initial implementation, an ancestor named by that path which
-  //   already exists as an ordinary `EventGroup` cannot be reused; creation
-  //   fails with `FAILED_PRECONDITION`.
   // * Creating or updating an `EventGroup` which is already an ancestor results
   //   in a `FAILED_PRECONDITION` error. Create its descendants instead.
   //
@@ -91,6 +88,7 @@ service EventGroups {
   // `EventGroupHierarchy`, as its descriptive fields are derived from its
   // children. Changing an `id_entity_metadata_key` value moves the `EventGroup`
   // within its hierarchy; see `CreateEventGroup`.
+  // Values for another level's `entity_metadata_keys` cannot be changed.
   // Ancestors losing their last descendant revert as in `DeleteEventGroup`.
   // (-- api-linter: core::0134::method-signature=disabled
   //     aip.dev/not-precedent: Partial update not supported. --)
@@ -100,7 +98,7 @@ service EventGroups {
 
   // Batch updates `EventGroup`s. Results in an error if any of the specified
   // `EventGroup`s fail to be updated.
-  // Metadata is validated after all updates. Use
+  // The restrictions in `UpdateEventGroup` apply to each update. Use
   // `SetEventGroupAncestorMetadata` to change shared ancestor values without
   // listing every affected leaf.
   rpc BatchUpdateEventGroups(BatchUpdateEventGroupsRequest)
