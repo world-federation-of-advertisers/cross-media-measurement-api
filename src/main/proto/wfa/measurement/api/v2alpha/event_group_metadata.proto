@@ -57,6 +57,7 @@ message EventGroupMetadata {
   //
   // The schema is specific to the ([DataProvider][],
   // [EventGroup.EntityKey.entity_type][]) pair.
+  // See [EventGroupHierarchy.Level.id_entity_metadata_key][] for ID rules.
   google.protobuf.Struct entity_metadata = 3
       [(type.future_disposition) = REQUIRED];
 }
