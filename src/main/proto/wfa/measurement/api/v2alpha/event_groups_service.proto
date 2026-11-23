@@ -86,6 +86,8 @@ service EventGroups {
   // children. Changing an `id_entity_metadata_key` value moves the `EventGroup`
   // within its hierarchy; see `CreateEventGroup`.
   // Values for another level's `entity_metadata_keys` cannot be changed.
+  // TODO(world-federation-of-advertisers/cross-media-measurement#4545): Design
+  // atomic updates to shared ancestor metadata.
   // Ancestors losing their last descendant revert as in `DeleteEventGroup`.
   // (-- api-linter: core::0134::method-signature=disabled
   //     aip.dev/not-precedent: Partial update not supported. --)
