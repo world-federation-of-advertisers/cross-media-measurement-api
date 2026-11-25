@@ -27,7 +27,7 @@ option go_package = "github.com/world-federation-of-advertisers/cross-media-meas
 // An ordered nesting of entity types for a [DataProvider][]'s [EventGroup][]s.
 //
 // Read-only. The contents are supplied by operator configuration, not written
-// through this API. Only ACTIVE hierarchies are exposed as resources.
+// through this API.
 //
 // A [DataProvider][] may have more than one [EventGroupHierarchy][]. Every
 // [entity_type][EventGroup.EntityKey.entity_type] belongs to exactly one of
