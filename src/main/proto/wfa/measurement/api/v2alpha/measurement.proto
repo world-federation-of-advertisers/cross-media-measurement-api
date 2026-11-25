@@ -471,6 +471,15 @@ message Measurement {
         // this query.
         ProtocolConfig.NoiseMechanism impression_noise_mechanism = 7
             [(google.api.field_behavior) = REQUIRED];
+
+        // The methodology that computed every cell of this query. Required.
+        oneof methodology {
+          // TrusTEE multimeasurement methodology.
+          TrusTeeV2Methodology trus_tee_v2 = 8;
+
+          // Custom methodology.
+          CustomDirectMethodology custom_direct_methodology = 9;
+        }
       }
       // One entry per `Query` of the multimeasurement.
       repeated QueryResult query_results = 1 [
