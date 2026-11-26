@@ -448,6 +448,13 @@ message Measurement {
           // distinguishes a suppressed cell from a genuinely empty one. The
           // metrics above are zero.
           bool suppressed = 8 [(google.api.field_behavior) = OPTIONAL];
+
+          // Number of VIDs in the `PopulationSpec` subpopulations whose
+          // attributes match `attribute_values` and the query's
+          // `VidFilter.attributes`, across the whole population rather than
+          // the VID sampling interval. Not noised, as the `PopulationSpec` is
+          // not private.
+          int64 population_size = 9 [(google.api.field_behavior) = REQUIRED];
         }
         // One per grouping combination the query produced.
         repeated Cell cells = 4 [
@@ -471,6 +478,15 @@ message Measurement {
         // this query.
         ProtocolConfig.NoiseMechanism impression_noise_mechanism = 7
             [(google.api.field_behavior) = REQUIRED];
+
+        // The methodology that computed every cell of this query. Required.
+        oneof methodology {
+          // TrusTEE multimeasurement methodology.
+          TrusTeeV2Methodology trus_tee_v2 = 8;
+
+          // Custom methodology.
+          CustomDirectMethodology custom_direct_methodology = 9;
+        }
       }
       // One entry per `Query` of the multimeasurement.
       repeated QueryResult query_results = 1 [

@@ -29,6 +29,9 @@ message LiquidLegionsV2Methodology {}
 // Configuration for the Reach-Only Liquid Legions v2 methodology.
 message ReachOnlyLiquidLegionsV2Methodology {}
 
+// Configuration for the TrusTEE multimeasurement methodology.
+message TrusTeeV2Methodology {}
+
 // Configuration for the Honest Majority Share Shuffle methodology.
 message HonestMajorityShareShuffleMethodology {
   // The size of the sampled frequency vector. REQUIRED.
